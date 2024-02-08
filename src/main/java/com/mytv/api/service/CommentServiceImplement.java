@@ -8,7 +8,10 @@ import org.springframework.stereotype.Service;
 import com.mytv.api.model.Comment;
 import com.mytv.api.repository.CommentRepository;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class CommentServiceImplement implements CommentaireService{
 	
 	@Autowired

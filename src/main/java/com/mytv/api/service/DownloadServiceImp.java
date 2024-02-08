@@ -8,7 +8,10 @@ import org.springframework.stereotype.Service;
 import com.mytv.api.model.Download;
 import com.mytv.api.repository.DownloadRepository;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class DownloadServiceImp implements DownloadService {
 	
 	@Autowired

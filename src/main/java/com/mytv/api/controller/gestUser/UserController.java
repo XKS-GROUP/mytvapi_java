@@ -25,17 +25,20 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
+	@GetMapping("/")
+	public List<User> show(){
+		
+		return userService.show();
+	}
+	
+	
 	@PostMapping(path="/create")
 	public User create(@RequestBody User u) {
 		
 		return userService.create(u);
 	}
 	
-	@GetMapping("/show")
-	public List<User> show(){
-		
-		return userService.show();
-	}
+
 	
 	@DeleteMapping(path="/delete/{id}")
 	public Boolean delete (@PathVariable Long id) {

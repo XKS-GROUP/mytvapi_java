@@ -8,7 +8,10 @@ import org.springframework.stereotype.Service;
 import com.mytv.api.model.Favorite;
 import com.mytv.api.repository.FavoriteRepository;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class FavoriteServiceImplement implements FavoriteService{
 	
 	@Autowired
