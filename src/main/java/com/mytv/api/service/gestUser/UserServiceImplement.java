@@ -1,6 +1,7 @@
 package com.mytv.api.service.gestUser;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,9 +32,15 @@ public class UserServiceImplement implements UserService {
 	}
 
 	@Override
-	public User upadte(Long id, User p) {
+	public User upadte(final Long id, User u) {
 		
-		return null;
+		User old = userRep.findById(id).get();
+		
+		old = u;
+		//userRep.findById(id).map(p->)
+		old.setIdUser(id);
+		
+		return userRep.save(old);
 	}
 
 	@Override
@@ -44,10 +51,11 @@ public class UserServiceImplement implements UserService {
 		return null;
 	}
 
+
 	@Override
-	public List<User> showById(Long id) {
+	public Optional<User> showById(final Long id) {
 		
-		return null;//userRep.findById(1);
+		return userRep.findById(id);
 	}
 
 }

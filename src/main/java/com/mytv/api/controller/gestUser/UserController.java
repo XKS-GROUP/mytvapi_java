@@ -2,12 +2,14 @@ package com.mytv.api.controller.gestUser;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +21,7 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("User")
+@RequestMapping("user")
 public class UserController {
 	
 	@Autowired
@@ -29,6 +31,18 @@ public class UserController {
 	public List<User> show(){
 		
 		return userService.show();
+	}
+	
+	@GetMapping("/{id}")
+	public Optional<User> showbyId(@PathVariable Long id){
+		
+		return userService.showById(id);
+	}
+	
+	@PutMapping("/update/{id}")
+	public User update(@PathVariable Long id, @RequestBody User u){
+		
+		return userService.upadte(id, u);
 	}
 	
 	
