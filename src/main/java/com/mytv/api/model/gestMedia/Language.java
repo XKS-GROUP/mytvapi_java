@@ -20,6 +20,9 @@ public class Language {
 	
 	String flag;
 	
+	@Column(nullable = false, unique = true)
+	String slug;
+	
 	boolean status;
 
 	public Long getIdLang() {
@@ -53,6 +56,15 @@ public class Language {
 	public void setStatus(boolean status) {
 		this.status = status;
 	}
+
+	public String getSlug() {
+		return slug;
+	}
+
+	public void setSlug(String slug) {
+		this.slug = slug;
+	}
+	
 	
 	
 	
