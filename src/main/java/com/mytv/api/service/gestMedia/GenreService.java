@@ -1,19 +1,64 @@
 package com.mytv.api.service.gestMedia;
 
-import java.util.List;
 
-import org.springframework.boot.autoconfigure.AutoConfiguration;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.mytv.api.model.gestMedia.Genre;
+import com.mytv.api.repository.GenreRepository;
 
+import lombok.AllArgsConstructor;
 
-@AutoConfiguration
-public interface GenreService {
+@Service
+@AllArgsConstructor
+public class GenreService {
 	
-	Genre create(Genre u);
-	List<Genre> show();
-	List<Genre> showById(Long id);
-	Genre upadte(Long id, Genre p);
-	Boolean delete(Long id);
+	
+	@Autowired
+	private GenreRepository genreRep;
+
+	
+	public Genre create(Genre g) {
+		
+		return genreRep.save(g);
+		
+	}
+	
+	public List<Genre> show() {
+		
+		return genreRep.findAll();
+	}
+	
+	public Genre upadte(final Long id, Genre u) {
+		
+		Genre old = genreRep.findById(id).get();
+		
+		old = u;
+
+		old.setIdGenre(id);
+		
+		return genreRep.save(old);
+	}
+	
+	
+	
+	public Boolean delete(Long id) {
+			
+		genreRep.deleteById(id);
+		
+		return null;
+		
+	}
+
+	
+	
+	public Optional<Genre> showById(final Long id) {
+		
+		return genreRep.findById(id);
+		
+	}
 
 }

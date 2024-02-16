@@ -17,10 +17,49 @@ public class Genre {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long idMedia;
+	@Column(name = "idGenre", nullable = false)
+	Long idGenre;
 	
-	@Column(nullable = false, length = 80)
+	@Column(nullable = false, length = 80, unique = true)
 	String name;
 	
 	String imageUrl;
+	
+	boolean status;
+
+	public Long getIdGenre() {
+		return idGenre;
+	}
+
+	public void setIdGenre(Long idGenre) {
+		this.idGenre = idGenre;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
+
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+	
+	
+	
+	
 }

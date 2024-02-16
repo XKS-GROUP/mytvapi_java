@@ -1,6 +1,8 @@
 package com.mytv.api.model.gestMedia;
 
+
 import jakarta.persistence.Id;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,18 +10,39 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 @Entity
 @NoArgsConstructor
 @Getter
 @Setter
-public class MediaGenre {
-
+public class Podcast {
+	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long idMediaGenre;
+	@Column(name = "idPodcast")
+	Long idPodcast;
 	
-	Long idMedia;
+	@Column(nullable = false)
+	String name ;
 	
-	Long  idGenre;
+	String description;
+
+	String poster;
+	
+	String category;
+	
+	boolean status;
+
+	String streamType;
+	
+	String svr1;
+	String svr2;
+	
+	
+	String country;
+	
+	
+
+
 }

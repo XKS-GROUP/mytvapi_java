@@ -1,9 +1,7 @@
 package com.mytv.api.model.gestMedia;
-
-import java.util.Date;
-
 import jakarta.persistence.Id;
-
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,24 +9,25 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 @Entity
 @NoArgsConstructor
 @Getter
 @Setter
-public class Season {
-
+public class FilmGenre {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long idSaison;
+	Long idFilmGenre;
 	
-	String name;
+
+	@ManyToOne
+	@JoinColumn(name = "idFilm", insertable = true, updatable = true)
+	private Film film;
 	
-	String overview;
-	
-	String posterUrl;
-	
-	int number;
-	
-	Date releaseDate;
+	@ManyToOne
+	@JoinColumn(name = "idGenre", insertable = true, updatable = true)
+	private Genre genre;
 
 }
+

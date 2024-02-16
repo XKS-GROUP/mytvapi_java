@@ -1,6 +1,7 @@
 package com.mytv.api.service.gestMedia;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,32 +13,40 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class LangServiceImplement implements LangService {
+public class LangueService {
 	
 	@Autowired
 	private LangRepository langRep;
 
-	@Override
+	
 	public Language create(Language u) {
 		return langRep.save(u);
 	}
 
-	@Override
+	
 	public List<Language> show() {
 		return langRep.findAll();
 	}
 
-	@Override
-	public List<Language> showById(Long id) {
-		return null;
+	
+	public Optional<Language> showById(final Long id) {
+		
+		return langRep.findById(id);
+		
+	}
+	
+	public Language upadte(final Long id, Language u) {
+		
+		Language old = langRep.findById(id).get();
+		
+		old = u;
+
+		old.setIdLang(id);
+		
+		return langRep.save(old);
 	}
 
-	@Override
-	public Language upadte(Long id, Language p) {
-		return null;
-	}
-
-	@Override
+	
 	public Boolean delete(Long id) {
 		langRep.deleteById(id);
 		return true;

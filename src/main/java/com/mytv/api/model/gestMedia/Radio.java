@@ -1,52 +1,47 @@
 package com.mytv.api.model.gestMedia;
 
-import java.sql.Date;
-//import java.util.Set;
-
+import jakarta.persistence.Id;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 
 @Entity
 @NoArgsConstructor
 @Getter
 @Setter
-public class Episode {
+public class Radio {
+	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long idEpisode;
+	@Column(name="idRadio")
+	Long idRadio;
 	
-	String name;
+	@Column(nullable = false)
+	String name ;
 	
-	String overView;
+	String description;
+
+	String poster;
 	
-	//Serie serie;
-	
-	//Saison saison;
-	
-	Date realeaseDate;
-	
-	int numero;
-	
-	int duration;
+	String category;
 	
 	boolean status;
+
+	String streamType;
 	
-	String posterUrl;
-	
-	String typeFile;
-	
-	String videoFile;
-	
-	String urlvideo;
-	String urlvideo2;
-	String urlvideo3;
+	String svr1;
+	String svr2;
 	
 	
+	String country;
+	
+	
+
 
 }

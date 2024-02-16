@@ -1,4 +1,4 @@
-package com.mytv.api.controller.gestUser;
+package com.mytv.api.controller;
 
 
 import java.util.List;
@@ -21,17 +21,22 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("user")
+@RequestMapping("api/v1/user")
+
 public class UserController {
+	
+	
 	
 	@Autowired
 	private UserService userService;
+	
 	
 	@GetMapping("/")
 	public List<User> show(){
 		
 		return userService.show();
 	}
+	
 	
 	@GetMapping("/{id}")
 	public Optional<User> showbyId(@PathVariable Long id){
@@ -43,6 +48,7 @@ public class UserController {
 	public User update(@PathVariable Long id, @RequestBody User u){
 		
 		return userService.upadte(id, u);
+		
 	}
 	
 	
@@ -52,7 +58,7 @@ public class UserController {
 		return userService.create(u);
 	}
 	
-
+	
 	
 	@DeleteMapping(path="/delete/{id}")
 	public Boolean delete (@PathVariable Long id) {

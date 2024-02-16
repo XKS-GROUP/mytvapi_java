@@ -1,8 +1,5 @@
 package com.mytv.api.model.gestMedia;
 
-import java.sql.Date;
-//import java.util.Set;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,37 +12,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Episode {
+public class Saison {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long idEpisode;
-	
-	String name;
-	
-	String overView;
-	
-	//Serie serie;
-	
-	//Saison saison;
-	
-	Date realeaseDate;
-	
-	int numero;
-	
-	int duration;
-	
-	boolean status;
-	
-	String posterUrl;
-	
-	String typeFile;
-	
-	String videoFile;
-	
-	String urlvideo;
-	String urlvideo2;
-	String urlvideo3;
+	Long idSaison;
 	
 	
 

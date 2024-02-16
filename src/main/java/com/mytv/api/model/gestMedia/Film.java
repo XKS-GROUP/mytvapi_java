@@ -1,52 +1,53 @@
 package com.mytv.api.model.gestMedia;
 
 import java.sql.Date;
-//import java.util.Set;
 
+import jakarta.persistence.Id;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 
 @Entity
 @NoArgsConstructor
 @Getter
 @Setter
-public class Episode {
+public class Film {
+	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long idEpisode;
+	@Column(name = "idFilm")
+	Long idFilm;
 	
-	String name;
+	@Column(nullable = false)
+	String name ;
 	
-	String overView;
+	String overview;
 	
-	//Serie serie;
+	String Upcoming;
 	
-	//Saison saison;
+	String Content; 
 	
-	Date realeaseDate;
-	
-	int numero;
-	
-	int duration;
-	
-	boolean status;
-	
+	String Rating;
+		
 	String posterUrl;
 	
-	String typeFile;
+	String trailerUrl;
 	
-	String videoFile;
-	
-	String urlvideo;
-	String urlvideo2;
-	String urlvideo3;
+	Date releaseDate;
 	
 	
+	boolean download;
+	
+	String downloadURL;
+	
+	String country;
+	
+	int duration;
 
 }
