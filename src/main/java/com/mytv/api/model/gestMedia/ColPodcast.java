@@ -1,14 +1,12 @@
 package com.mytv.api.model.gestMedia;
 
-import java.util.Date;
-import java.util.List;
+//import java.sql.Date;
+//import java.util.Set;
 
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,25 +15,24 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Serie {
-
+public class ColPodcast {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long idSerie;
+	Long idEpisode;
 	
 	String name;
 	
-	String overview;
+	String overView;
 	
-	String posterUrl;
-	
-	String trailerURL;
+	//@ManyToOne
+	//@JoinColumn(name = "idSerie")
 	
 	boolean status;
 	
-	Date releaseDate;
+	String posterUrl;
 	
-	@OneToMany(mappedBy = "idEpisode",cascade = CascadeType.REMOVE)
-	List<Episode> episode;
+	
+	
 
 }

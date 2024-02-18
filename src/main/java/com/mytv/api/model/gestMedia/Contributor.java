@@ -3,7 +3,9 @@ package com.mytv.api.model.gestMedia;
 import java.sql.Date;
 
 import jakarta.persistence.Id;
-
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -33,6 +35,8 @@ public class Contributor {
 	
 	String nationality;
 	
-	Long idTypeIntervenant;
+	@ManyToOne(cascade =CascadeType.REMOVE )
+	@JoinColumn(name = "idcontType")
+	ContributorType idTypecontt;
 
 }

@@ -20,7 +20,7 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("api/v1/langue")
+@RequestMapping("api/v1/admin/langue")
 
 public class LangueController {
 	

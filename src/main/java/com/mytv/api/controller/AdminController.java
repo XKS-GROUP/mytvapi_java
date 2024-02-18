@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mytv.api.model.gestUser.User;
-import com.mytv.api.service.gestUser.UserService;
-
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -24,7 +22,7 @@ import lombok.AllArgsConstructor;
 
 public class AdminController {
 	
-	
+	/*
 	@Autowired
 	private UserService userService;
 	
@@ -66,5 +64,5 @@ public class AdminController {
 		return true;
 	}
 
-
+	*/
 }

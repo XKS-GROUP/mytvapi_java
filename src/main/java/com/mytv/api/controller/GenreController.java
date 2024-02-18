@@ -20,7 +20,7 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("api/v1/genre")
+@RequestMapping("api/v1/admin/genre")
 
 public class GenreController {
 	

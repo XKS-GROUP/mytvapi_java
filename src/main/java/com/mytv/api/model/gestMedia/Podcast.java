@@ -2,6 +2,9 @@ package com.mytv.api.model.gestMedia;
 
 
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,7 +33,9 @@ public class Podcast {
 
 	String poster;
 	
-	String category;
+	@ManyToOne(cascade = CascadeType.REMOVE)
+	@JoinColumn(name = "idCatPod")
+	CatPodcast category;
 	
 	boolean status;
 
@@ -38,10 +43,6 @@ public class Podcast {
 	
 	String svr1;
 	String svr2;
-	
-	
-	String country;
-	
 	
 
 

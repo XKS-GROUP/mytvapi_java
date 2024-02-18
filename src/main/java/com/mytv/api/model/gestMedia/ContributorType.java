@@ -20,9 +20,9 @@ public class ContributorType {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long idActeur;
+	Long idcontType;
 	
 	String name;
-
+	
 
 }
