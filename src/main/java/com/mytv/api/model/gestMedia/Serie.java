@@ -38,4 +38,70 @@ public class Serie {
 	@OneToMany(mappedBy = "idEpisode",cascade = CascadeType.REMOVE)
 	List<Episode> episode;
 
+	public Long getIdSerie() {
+		return idSerie;
+	}
+
+	public void setIdSerie(Long idSerie) {
+		this.idSerie = idSerie;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getOverview() {
+		return overview;
+	}
+
+	public void setOverview(String overview) {
+		this.overview = overview;
+	}
+
+	public String getPosterUrl() {
+		return posterUrl;
+	}
+
+	public void setPosterUrl(String posterUrl) {
+		this.posterUrl = posterUrl;
+	}
+
+	public String getTrailerURL() {
+		return trailerURL;
+	}
+
+	public void setTrailerURL(String trailerURL) {
+		this.trailerURL = trailerURL;
+	}
+
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+
+	public Date getReleaseDate() {
+		return releaseDate;
+	}
+
+	public void setReleaseDate(Date releaseDate) {
+		this.releaseDate = releaseDate;
+	}
+
+	public List<Episode> getEpisode() {
+		return episode;
+	}
+
+	public void setEpisode(List<Episode> episode) {
+		this.episode = episode;
+	}
+	
+	
+
 }

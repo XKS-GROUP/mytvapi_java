@@ -41,9 +41,7 @@ public class PaysService {
 		
 		return rep.save(old);
 	}
-	
-	
-	
+		
 	public Boolean delete(Long id) {
 			
 		rep.deleteById(id);

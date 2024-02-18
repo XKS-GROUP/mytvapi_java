@@ -7,42 +7,41 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mytv.api.model.gestMedia.Episode;
-import com.mytv.api.repository.EpisodeRepository;
+import com.mytv.api.model.gestMedia.CatPodcast;
+import com.mytv.api.repository.CatPodcastRepository;
+
 import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-
-public class EpisodeService {
+public class CatPodcastService {
 	
 	
 	@Autowired
-	private EpisodeRepository rep;
+	private CatPodcastRepository rep;
 
 	
-	public Episode create(Episode g) {
+	public CatPodcast create(CatPodcast g) {
 		
 		return rep.save(g);
 		
 	}
 	
-	public List<Episode> show() {
+	public List<CatPodcast> show() {
 		
 		return rep.findAll();
 	}
 	
-	public Episode upadte(final Long id, Episode u) {
+	public CatPodcast upadte(final Long id, CatPodcast u) {
 		
-		Episode old = rep.findById(id).get();
+		CatPodcast old = rep.findById(id).get();
 		
 		old = u;
 
-		old.setIdEpisode(id);
+		old.setIdCatPod(id);
 		
 		return rep.save(old);
 	}
-	
 	
 	
 	public Boolean delete(Long id) {
@@ -52,8 +51,8 @@ public class EpisodeService {
 		return null;
 		
 	}
-
-	public Optional<Episode> showById(final Long id) {
+	
+	public Optional<CatPodcast> showById(final Long id) {
 		
 		return rep.findById(id);
 		

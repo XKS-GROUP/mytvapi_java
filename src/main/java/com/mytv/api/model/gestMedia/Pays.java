@@ -20,7 +20,6 @@ import lombok.Setter;
 @Setter
 public class Pays {
 	
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idPays")

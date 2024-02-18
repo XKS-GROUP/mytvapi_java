@@ -7,38 +7,40 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mytv.api.model.gestMedia.Episode;
-import com.mytv.api.repository.EpisodeRepository;
+import com.mytv.api.model.gestMedia.Serie;
+import com.mytv.api.repository.SerieRepository;
+
 import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
 
-public class EpisodeService {
+public class SerieService {
 	
 	
 	@Autowired
-	private EpisodeRepository rep;
+	private SerieRepository rep;
 
 	
-	public Episode create(Episode g) {
+	public Serie create(Serie g) {
 		
 		return rep.save(g);
 		
 	}
 	
-	public List<Episode> show() {
+	public List<Serie> show() {
 		
 		return rep.findAll();
 	}
 	
-	public Episode upadte(final Long id, Episode u) {
+	public Serie upadte(final Long id, Serie u) {
 		
-		Episode old = rep.findById(id).get();
+		Serie old = rep.findById(id).get();
 		
 		old = u;
 
-		old.setIdEpisode(id);
+		
+		old.setIdSerie(id);
 		
 		return rep.save(old);
 	}
@@ -53,7 +55,7 @@ public class EpisodeService {
 		
 	}
 
-	public Optional<Episode> showById(final Long id) {
+	public Optional<Serie> showById(final Long id) {
 		
 		return rep.findById(id);
 		

@@ -30,7 +30,7 @@ public class GenreController {
 	private GenreService genreService;
 	
 	
-	@GetMapping("/")
+	@GetMapping("")
 	public List<Genre> show(){
 		
 		return genreService.show();

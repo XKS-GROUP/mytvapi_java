@@ -77,7 +77,7 @@ public class WUserService implements UserDetailsService {
 				addUserRole(user, null);
 			}
 
-			return "User creer avec suuces.";
+			return "user Created succefully.";
 		} catch (Exception e) {
 			e.printStackTrace();
 			return e.getCause().getMessage();
