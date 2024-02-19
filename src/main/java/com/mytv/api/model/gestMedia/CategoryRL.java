@@ -24,6 +24,10 @@ public class CategoryRL {
 	@Column(name = "idcat")
 	Long idcat;
 	
+	private String name;
+	
+	private boolean status;
+	
 	@OneToMany(mappedBy = "idRadio")
 	List<Radio> radio;
 	
@@ -31,7 +35,7 @@ public class CategoryRL {
 	List<LiveTv> liveTv;
 	
 
-	private String designation;
+
 
 
 	public Long getIdcat() {
@@ -44,13 +48,24 @@ public class CategoryRL {
 	}
 
 
-	public String getDesignation() {
-		return designation;
+	public String getName() {
+		return name;
 	}
 
 
-	public void setDesignation(String designation) {
-		this.designation = designation;
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	
+	
+	public boolean isStatus() {
+		return status;
+	}
+
+
+	public void setStatus(boolean status) {
+		this.status = status;
 	}
 
 

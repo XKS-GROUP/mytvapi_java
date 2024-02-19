@@ -70,7 +70,7 @@ public class UserAccessController {
 	@PostMapping("register")
 	public ResponseEntity<Object> register(@RequestBody UserRegisterRequestDTO request){
 		request.setPassword(passwordEncoder.encode(request.getPassword()));
-		return EntityResponse.generateResponse("Regsiter User", HttpStatus.OK, userService.createUser(request));
+		return EntityResponse.generateResponse("Regsiter User with role"+request.getRoleList(), HttpStatus.OK, userService.createUser(request));
 	}
 	
 	

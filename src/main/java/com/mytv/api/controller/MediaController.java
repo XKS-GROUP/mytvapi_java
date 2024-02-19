@@ -44,23 +44,23 @@ public class MediaController {
 	
 	@Autowired
 	private RadioService radioService;
-	
+	@Autowired
 	private LiveTvSetvice liveService;
-	
+	@Autowired
 	private PodcastService podcastservice;
-	
+	@Autowired
 	private ServiceFilm filmService;
-	
+	@Autowired
 	private SerieService serieService;
-	
+	@Autowired
 	private EpisodeService episodeService;
-	
+	@Autowired
 	private GenreService genreService;
-	
+	@Autowired
 	private CategoryLrService catLrService;
-	
+	@Autowired
 	private CatPodcastService catpodService;
-	
+	@Autowired
 	private PaysService paysService;
 	
 	

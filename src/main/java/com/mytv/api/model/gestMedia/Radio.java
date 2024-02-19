@@ -7,17 +7,20 @@ import jakarta.persistence.ManyToOne;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -30,29 +33,28 @@ public class Radio {
 	Long idRadio;
 	
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "idcat", nullable = false)
+	@ManyToOne(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+	@JoinColumn(name = "idcat", nullable = false, insertable = true, updatable = true)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	CategoryRL category;
+	
+	@Column(nullable = false)
 	String name ;
 	
-	String description;
+	@Column(columnDefinition = "TEXT", nullable = false)
+	String overview;
 
 	String poster;
 	
 	boolean status;
-
-	String streamType;
 	
-	String svr1;
-	String svr2;
-	
-	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "idPays", nullable = false)
+	@Column(nullable = false)
+	String streamLink;
+		
+	@ManyToOne(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+	@JoinColumn(name = "idPays", nullable = false, insertable = true, updatable = true)
 	Pays country;
-
-
+	
 	public void setCountry(Pays country) {
 		this.country = country;
 	}
@@ -88,13 +90,13 @@ public class Radio {
 	}
 
 
-	public String getDescription() {
-		return description;
+	public String getOverview() {
+		return overview;
 	}
 
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setOverview(String overview) {
+		this.overview = overview;
 	}
 
 
@@ -118,35 +120,20 @@ public class Radio {
 	}
 
 
-	public String getStreamType() {
-		return streamType;
+	public String getStreamLink() {
+		return streamLink;
 	}
 
 
-	public void setStreamType(String streamType) {
-		this.streamType = streamType;
+	public void setStreamLink(String streamLink) {
+		this.streamLink = streamLink;
 	}
 
 
-	public String getSvr1() {
-		return svr1;
+	public Pays getCountry() {
+		return country;
 	}
-
-
-	public void setSvr1(String svr1) {
-		this.svr1 = svr1;
-	}
-
-
-	public String getSvr2() {
-		return svr2;
-	}
-
-
-	public void setSvr2(String svr2) {
-		this.svr2 = svr2;
-	}
-
-
+	
+	
 
 }

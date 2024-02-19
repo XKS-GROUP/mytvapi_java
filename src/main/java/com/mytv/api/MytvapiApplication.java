@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 @SpringBootApplication//(exclude= {SecurityAutoConfiguration.class})
+
 @EntityScan
 @ComponentScan
 public class MytvapiApplication {
