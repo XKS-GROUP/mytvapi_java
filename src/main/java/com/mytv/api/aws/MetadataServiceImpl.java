@@ -37,12 +37,40 @@ public class MetadataServiceImpl implements MetadataService {
         String path = String.format("%s/%s", bucketName, UUID.randomUUID());
         String fileName = String.format("%s", file.getOriginalFilename());
 
-        // Uploading file to s3
+        // upload du fichier dans R2
         PutObjectResult putObjectResult = amazonS3Service.upload(
                 path, fileName, Optional.of(metadata), file.getInputStream());
 
-        // Saving metadata to db
+        // Enregistrement de la trace dans la db
         fileMetaRepository.save(new FileMeta(fileName, path, putObjectResult.getMetadata().getVersionId()));
+
+    }
+    
+    @Override
+    public String uploadR3(MultipartFile file, String dossier) throws IOException {
+    	
+    	String filepath="";
+    	
+        if (file.isEmpty())
+            throw new IllegalStateException("Cannot upload empty file");
+
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("Content-Type", file.getContentType());
+        metadata.put("Content-Length", String.valueOf(file.getSize()));
+
+        String path = String.format("%s/%s", bucketName, UUID.randomUUID());
+        String fileName = String.format("%s", file.getOriginalFilename());
+
+        // upload du fichier dans R2
+        PutObjectResult putObjectResult = amazonS3Service.upload(
+                path, fileName, Optional.of(metadata), file.getInputStream());
+
+        // Enregistrement de la trace dans la db
+        FileMeta dataMeta = new FileMeta(fileName, path, putObjectResult.getMetadata().getVersionId());
+        fileMetaRepository.save(dataMeta);
+        
+        filepath = dataMeta.getFilePath()+"/"+dataMeta.getFileName();
+        return filepath;
 
     }
 

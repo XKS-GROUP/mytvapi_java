@@ -17,5 +17,11 @@ public class MainController {
 		
 		return " API V 1.0 MY-TELEVISION";
 	}
+	
+	@GetMapping("error")
+	public String error() {
+		
+		return "Cette route n'existe pas !!!";
+	}
 
 }

@@ -1,5 +1,6 @@
 package com.mytv.api.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,8 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.mytv.api.aws.MetadataService;
 import com.mytv.api.model.gestMedia.CatPodcast;
 import com.mytv.api.model.gestMedia.CategoryRL;
 import com.mytv.api.model.gestMedia.Episode;
@@ -63,6 +67,9 @@ public class MediaController {
 	@Autowired
 	private PaysService paysService;
 	
+	@Autowired
+    private MetadataService metadataService;
+	
 	
 	//Pays
 	@PostMapping(path="pays/create")
@@ -104,8 +111,18 @@ public class MediaController {
 	//Genre 
 	@PostMapping(path="genres/create")
 
-	public Genre createG(@RequestBody Genre u) {
+	public Genre createG(@RequestBody Genre u, @RequestParam("file") MultipartFile file) throws IOException {
 		
+		
+		//Enregistrement du fichier img
+		String pathImg = metadataService.uploadR3(file, "");
+		if (file.isEmpty())
+            throw new IllegalStateException("Vous n'avez charger aucune image");
+		
+		//Enregistrement du path du fichier
+		
+		u.setImageUrl(pathImg);
+		//Save du tout
 		return genreService.create(u);
 	}
 	

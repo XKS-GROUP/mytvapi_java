@@ -23,6 +23,10 @@ public class GenreService {
 	
 	public Genre create(Genre g) {
 		
+		//Appel de la fonction upload pour enregistrer l'image sur R2
+		
+		
+		
 		return genreRep.save(g);
 		
 	}
