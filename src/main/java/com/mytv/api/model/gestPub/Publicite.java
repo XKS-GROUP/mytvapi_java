@@ -6,14 +6,12 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
-@Getter
-@Setter
+@AllArgsConstructor
 public class Publicite {
 	
 	@Id
@@ -29,5 +27,47 @@ public class Publicite {
 	String movieUrl;
 	
 	String pageTarget;
+
+	public Long getIdPublicite() {
+		return idPublicite;
+	}
+
+	public void setIdPublicite(Long idPublicite) {
+		this.idPublicite = idPublicite;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getBannerUrl() {
+		return bannerUrl;
+	}
+
+	public void setBannerUrl(String bannerUrl) {
+		this.bannerUrl = bannerUrl;
+	}
+
+	public String getMovieUrl() {
+		return movieUrl;
+	}
+
+	public void setMovieUrl(String movieUrl) {
+		this.movieUrl = movieUrl;
+	}
+
+	public String getPageTarget() {
+		return pageTarget;
+	}
+
+	public void setPageTarget(String pageTarget) {
+		this.pageTarget = pageTarget;
+	}
+	
+	
 
 }

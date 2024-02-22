@@ -6,14 +6,12 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
-@Getter
-@Setter
+@AllArgsConstructor
 public class PubliciteCat {
 	
 	@Id
@@ -23,5 +21,23 @@ public class PubliciteCat {
 	@NotBlank(message = "ce champ ne peut etre vide ")	
 	@Column(nullable = false)
 	String name;
+
+	public Long getIdCatPub() {
+		return idCatPub;
+	}
+
+	public void setIdCatPub(Long idCatPub) {
+		this.idCatPub = idCatPub;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	
 
 }
