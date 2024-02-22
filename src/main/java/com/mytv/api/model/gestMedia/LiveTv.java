@@ -1,15 +1,10 @@
 package com.mytv.api.model.gestMedia;
 
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import lombok.Getter;
@@ -29,34 +24,39 @@ public class LiveTv {
 	@Column(name = "idLiveTv")
 	Long idLiveTv;
 	
+	@NotBlank(message="ce champ ne peut pas etre vide")
 	@Column(nullable = false)
 	String name ;
 	
-	String description;
+	@NotBlank(message="ce champ ne peut pas etre vide")
+	@Column(nullable = false)
+	String overview;
 
 	String tvLogo;
 	
+	@NotNull(message="ce champ ne peut pas etre vide, un live tv doit avoir une categorie")
+	@Column(nullable = false)
+	Long category;
 	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "idcat", nullable = false)
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	CategoryRL category;
-	
+	@NotNull(message="ce champ ne peut pas etre vide, un live tv doit avoir un status qui permet de le rendre visible ou pas")
+	@Column(nullable = false, columnDefinition = "boolean default false")
 	boolean status;
-
 	
-	
-	String streamType;
 	
 	String svr1;
+	
 	String svr2;
+	
 	String svr3;
 	
 	String tvEmbedCode;
 	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "idPays", nullable = false)
-	Pays country;
+	/*@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "idPays", nullable = false)*/
+	
+	@NotNull(message="Ce champ ne peut pas etre vide")
+	@Column(nullable = false)
+	Long country;
 
 	public Long getIdLiveTv() {
 		return idLiveTv;
@@ -74,14 +74,6 @@ public class LiveTv {
 		this.name = name;
 	}
 
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
 	public String getTvLogo() {
 		return tvLogo;
 	}
@@ -90,28 +82,13 @@ public class LiveTv {
 		this.tvLogo = tvLogo;
 	}
 
-	public CategoryRL getCategory() {
-		return category;
-	}
-
-	public void setCategory(CategoryRL category) {
-		this.category = category;
-	}
-
+	
 	public boolean isStatus() {
 		return status;
 	}
 
 	public void setStatus(boolean status) {
 		this.status = status;
-	}
-
-	public String getStreamType() {
-		return streamType;
-	}
-
-	public void setStreamType(String streamType) {
-		this.streamType = streamType;
 	}
 
 	public String getSvr1() {
@@ -145,11 +122,29 @@ public class LiveTv {
 	public void setTvEmbedCode(String tvEmbedCode) {
 		this.tvEmbedCode = tvEmbedCode;
 	}
-	
-	
-	
-	
-	
 
+	public String getOverview() {
+		return overview;
+	}
+
+	public void setOverview(String overview) {
+		this.overview = overview;
+	}
+
+	public Long getCategory() {
+		return category;
+	}
+
+	public void setCategory(Long category) {
+		this.category = category;
+	}
+
+	public Long getCountry() {
+		return country;
+	}
+
+	public void setCountry(Long country) {
+		this.country = country;
+	}
 
 }

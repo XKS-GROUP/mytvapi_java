@@ -1,16 +1,10 @@
 package com.mytv.api.model.gestMedia;
 
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
-import jakarta.persistence.CascadeType;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import lombok.AllArgsConstructor;
@@ -32,33 +26,40 @@ public class Radio {
 	@Column(name="idRadio")
 	Long idRadio;
 	
-
+	/*
 	@ManyToOne(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
 	@JoinColumn(name = "idcat", nullable = false, insertable = true, updatable = true)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	CategoryRL category;
+	CategoryRL category;*/
 	
+	@NotBlank(message = "ce champ ne peut etre vide, une radio doit obligatoirement avoir un nom")
 	@Column(nullable = false)
 	String name ;
 	
+	@Column(nullable = false)
+	Long category;
+	
+	@NotBlank(message = "ce champ ne peut etre vide, une description est requise pour une radio")
 	@Column(columnDefinition = "TEXT", nullable = false)
 	String overview;
 
 	String poster;
 	
+	@NotBlank(message = "ce champ ne peut etre vide, une valeur par defaut doit etre attribuer")
+	@Column(columnDefinition = "boolean default true")
 	boolean status;
 	
+	@NotBlank(message = "ce champ ne peut etre vide, une radio doit avoir une source")
 	@Column(nullable = false)
 	String streamLink;
 		
-	@ManyToOne(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+	/*@ManyToOne(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
 	@JoinColumn(name = "idPays", nullable = false, insertable = true, updatable = true)
-	Pays country;
+	Pays country;*/
 	
-	public void setCountry(Pays country) {
-		this.country = country;
-	}
-
+	@NotNull(message = "ce champ ne peut etre vide, une radio doit etre représenter par un pays")
+	@Column(nullable = false)
+	Long country;
 
 	public Long getIdRadio() {
 		return idRadio;
@@ -67,16 +68,6 @@ public class Radio {
 
 	public void setIdRadio(Long idRadio) {
 		this.idRadio = idRadio;
-	}
-
-
-	public CategoryRL getCategory() {
-		return category;
-	}
-
-
-	public void setCategory(CategoryRL category) {
-		this.category = category;
 	}
 
 
@@ -130,9 +121,26 @@ public class Radio {
 	}
 
 
-	public Pays getCountry() {
+	public Long getCategory() {
+		return category;
+	}
+
+
+	public void setCategory(Long category) {
+		this.category = category;
+	}
+
+
+	public Long getCountry() {
 		return country;
 	}
+
+
+	public void setCountry(Long country) {
+		this.country = country;
+	}
+
+	
 	
 	
 

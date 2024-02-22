@@ -3,14 +3,17 @@ package com.mytv.api.model.gestMedia;
 import java.sql.Date;
 
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
 public class Film {
 	
@@ -20,13 +23,15 @@ public class Film {
 	@Column(name = "idFilm")
 	Long idFilm;
 	
+	@NotBlank(message = "ce champ ne peut etre vide, un film doit forcement posseder un nom")
 	@Column(nullable = false)
 	String name ;
 	
-	
+	@NotBlank(message = "ce champ ne peut etre vide, une description est requise pour un film")
+	@Column(nullable = false)
 	String overview;
 	
-	String Upcoming;
+	boolean Upcoming;
 	
 	String Content; 
 	
@@ -40,12 +45,15 @@ public class Film {
 	
 	Date releaseDate;
 	
+	@Column(nullable = false, columnDefinition = "boolean default true")
+	boolean status;
 	
+	@Column(nullable = false, columnDefinition = "boolean default false")
 	boolean download;
 	
 	String downloadURL;
 	
-	String country;
+	Long country;
 	
 	int duration;
 
@@ -73,11 +81,11 @@ public class Film {
 		this.overview = overview;
 	}
 
-	public String getUpcoming() {
+	public boolean getUpcoming() {
 		return Upcoming;
 	}
 
-	public void setUpcoming(String upcoming) {
+	public void setUpcoming(boolean upcoming) {
 		Upcoming = upcoming;
 	}
 
@@ -137,11 +145,19 @@ public class Film {
 		this.downloadURL = downloadURL;
 	}
 
-	public String getCountry() {
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+
+	public Long getCountry() {
 		return country;
 	}
 
-	public void setCountry(String country) {
+	public void setCountry(Long country) {
 		this.country = country;
 	}
 

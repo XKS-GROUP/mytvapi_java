@@ -2,6 +2,7 @@ package com.mytv.api.model.gestMedia;
 
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.List;
 
@@ -25,9 +26,11 @@ public class Pays {
 	@Column(name = "idPays")
 	Long idPays;
 	
+	@NotBlank(message="ce champ ne peut etre vide, un Pays doit forcement avoir un nom")
 	@Column(nullable = false)
 	String name ;
 	
+	@NotBlank(message="ce champ ne peut etre vide et doit etre unique, ce champ represente le code unique d'un pays ")
 	@Column(nullable = false)
 	String slug ;
 	

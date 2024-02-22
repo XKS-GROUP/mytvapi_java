@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 
 
 
@@ -22,8 +23,9 @@ public class Role implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;
-
-	@Column(name = "name", nullable = false)
+	
+	@NotBlank(message = "ce champ ne peut etre vide, un role doit obligatoirement avoir un nom et doit etre unique")
+	@Column(name = "name", nullable = false, unique = true)
 	private String name;
 	
 	

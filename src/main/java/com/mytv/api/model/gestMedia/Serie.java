@@ -5,7 +5,9 @@ import java.util.List;
 
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,20 +25,24 @@ public class Serie {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long idSerie;
 	
+	@NotBlank(message = "une serie doit forcement avoir un nom ")
+	@Column(nullable = false)
 	String name;
 	
+	@Column(nullable = false)
 	String overview;
 	
 	String posterUrl;
 	
 	String trailerURL;
 	
+	@Column(nullable = false, columnDefinition = "boolean default false")
 	boolean status;
 	
 	Date releaseDate;
 	
-	@OneToMany(mappedBy = "idEpisode",cascade = CascadeType.REMOVE)
-	List<Episode> episode;
+	@OneToMany(mappedBy = "idSaison",cascade = CascadeType.REMOVE)
+	List<Saison> saison;
 
 	public Long getIdSerie() {
 		return idSerie;
@@ -94,13 +100,6 @@ public class Serie {
 		this.releaseDate = releaseDate;
 	}
 
-	public List<Episode> getEpisode() {
-		return episode;
-	}
-
-	public void setEpisode(List<Episode> episode) {
-		this.episode = episode;
-	}
 	
 	
 

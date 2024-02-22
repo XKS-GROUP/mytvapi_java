@@ -1,18 +1,11 @@
 package com.mytv.api.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.ObjectError;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,12 +14,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.amazonaws.services.accessanalyzer.model.ResourceNotFoundException;
 import com.mytv.api.aws.MetadataService;
-import com.mytv.api.execptions.ErrorResponse;
 import com.mytv.api.model.gestMedia.CatPodcast;
 import com.mytv.api.model.gestMedia.CategoryRL;
 import com.mytv.api.model.gestMedia.Episode;
@@ -48,7 +40,6 @@ import com.mytv.api.service.gestMedia.RadioService;
 import com.mytv.api.service.gestMedia.SerieService;
 import com.mytv.api.service.gestMedia.ServiceFilm;
 
-import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
@@ -123,21 +114,9 @@ public class MediaController {
 	//Genre 
 	@PostMapping(path="genres/create")
 
-	public Genre createG(@ModelAttribute Genre u, @RequestParam("file") MultipartFile file) throws IOException {
+	public Genre createG(@Valid @ModelAttribute Genre u){
 		
-		
-	
-			//Enregistrement du fichier img
-			String pathImg = metadataService.uploadR3(file, "");
-			if (file.isEmpty())
-	            throw new IllegalStateException("Vous n'avez charger aucune image");
-			
-			//Enregistrement du path du fichier
-			
-			u.setImageUrl(pathImg);
-			//Save du tout
 			return genreService.create(u);
-		
 	}
 	
 	
@@ -148,9 +127,9 @@ public class MediaController {
 	}
 		
 	@GetMapping("genres/{id}")
-	public Optional<Genre> showbyIdG(@PathVariable Long id){
+	public Genre showbyIdG(@PathVariable Long id){
 		
-		return genreService.showById(id);
+		return genreService.showById(id).orElseThrow(() -> new ResourceNotFoundException("aucune donne avec id= " + id));
 	}
 	
 	@PutMapping("genres/update/{id}")
@@ -173,7 +152,7 @@ public class MediaController {
 	//Categorie LiveTv ou Radio 
 	@PostMapping(path="catrl/create")
 
-	public CategoryRL createCRL(@RequestBody CategoryRL u) {
+	public CategoryRL createCRL(@Valid @RequestBody CategoryRL u) {
 		
 		return catLrService.create(u);
 	}
@@ -211,7 +190,7 @@ public class MediaController {
 	
 	@PostMapping(path="catpod/create")
 
-	public CatPodcast createCP(@RequestBody CatPodcast u) {
+	public CatPodcast createCP(@Valid @RequestBody CatPodcast u) {
 		
 		return catpodService.create(u);
 	}
@@ -253,8 +232,7 @@ public class MediaController {
 	}
 	
 	@PostMapping(path="radios/create")
-	public Podcast createR(@ModelAttribute Podcast r, @RequestParam("file") MultipartFile file) throws IOException {
-		
+	public Radio createR(@Valid @ModelAttribute Radio r, @RequestParam("file") MultipartFile file) throws IOException {	
 	
 			//Enregistrement du fichier img
 			String pathImg = metadataService.uploadR3(file, "");
@@ -265,7 +243,7 @@ public class MediaController {
 			r.setPoster(pathImg);
 		
 			//Save du tout
-			return podcastservice.create(r);
+			return radioService.create(r);
 		
 	}
 		
@@ -337,14 +315,10 @@ public class MediaController {
 	@PostMapping(path="podcasts/create")
 	public Podcast createP(@ModelAttribute Podcast p, @RequestParam("file") MultipartFile file, @RequestParam("movie") MultipartFile movie) throws IOException {
 		
-	
-			//Enregistrement du fichier img
-			String pathImg = metadataService.uploadR3(file, "");
+			
 			if (file.isEmpty() || movie.isEmpty())
 	            throw new IllegalStateException("Vous n'avez charger aucune image");
-			
-			String pathmovie = metadataService.uploadR3(movie, "");
-			//Enregistrement du path du fichier
+			String pathImg = metadataService.uploadR3(file, "");
 			
 			p.setPoster(pathImg);
 		
@@ -388,9 +362,7 @@ public class MediaController {
 	@PostMapping(path="movies/create")
 	public Film createM(@ModelAttribute Film u, @RequestParam("file") MultipartFile file, @RequestParam("movie") MultipartFile movie) throws IOException {
 		
-	
-			
-			
+
 			if (file.isEmpty() || movie.isEmpty())
 	            throw new IllegalStateException("Vous n'avez charger aucune image");
 			//Enregistrement du fichier img
@@ -516,7 +488,7 @@ public class MediaController {
 			
 			e.setPosterUrl(pathImg);
 			
-			e.setUrlvideo(pathmovie);
+			e.setVideoFile(pathmovie);
 		
 			//Save du tout
 			return episodeService.create(e);

@@ -3,17 +3,20 @@ package com.mytv.api.model.gestMedia;
 import java.sql.Date;
 //import java.util.Set;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -23,31 +26,43 @@ public class Episode {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long idEpisode;
 	
+	@NotBlank(message = "Ce champ ne peut etre vide")
+	@Column(nullable = false)
 	String name;
 	
+	@NotBlank(message = "Ce champ ne peut etre vide")
+	@Column(nullable = false)
 	String overView;
 	
-	@ManyToOne
+	/*@ManyToOne
 	@JoinColumn(name = "idSerie")
-	Serie serie;
+	Serie serie; */
+	
+	@NotBlank(message = "Ce champ ne peut etre vide, un episode doit forcement faire reference a une serie")
+	@Column(nullable = false)
+	Long serie;
 	
 	Date realeaseDate;
 	
+	@Column(nullable = false)
 	int numero;
 	
-	int duration;
+	String duration;
 	
+	@NotNull(message = "un satus par defaut doit etre attribuer")
+	@Column(nullable = false, columnDefinition = "boolean default true")
 	boolean status;
 	
 	String posterUrl;
 	
-	String typeFile;
-	
 	String videoFile;
 	
-	String urlvideo;
-	String urlvideo2;
-	String urlvideo3;
+	String videoFileR1;
+	
+	String videoFileR2;
+	
+	String videoFileR3;
+	
 	public Long getIdEpisode() {
 		return idEpisode;
 	}
@@ -66,10 +81,11 @@ public class Episode {
 	public void setOverView(String overView) {
 		this.overView = overView;
 	}
-	public Serie getSerie() {
+
+	public Long getSerie() {
 		return serie;
 	}
-	public void setSerie(Serie serie) {
+	public void setSerie(Long serie) {
 		this.serie = serie;
 	}
 	public Date getRealeaseDate() {
@@ -84,10 +100,10 @@ public class Episode {
 	public void setNumero(int numero) {
 		this.numero = numero;
 	}
-	public int getDuration() {
+	public String getDuration() {
 		return duration;
 	}
-	public void setDuration(int duration) {
+	public void setDuration(String duration) {
 		this.duration = duration;
 	}
 	public boolean isStatus() {
@@ -102,35 +118,30 @@ public class Episode {
 	public void setPosterUrl(String posterUrl) {
 		this.posterUrl = posterUrl;
 	}
-	public String getTypeFile() {
-		return typeFile;
-	}
-	public void setTypeFile(String typeFile) {
-		this.typeFile = typeFile;
-	}
+	
 	public String getVideoFile() {
 		return videoFile;
 	}
 	public void setVideoFile(String videoFile) {
 		this.videoFile = videoFile;
 	}
-	public String getUrlvideo() {
-		return urlvideo;
+	public String getVideoFileR1() {
+		return videoFileR1;
 	}
-	public void setUrlvideo(String urlvideo) {
-		this.urlvideo = urlvideo;
+	public void setVideoFileR1(String videoFileR1) {
+		this.videoFileR1 = videoFileR1;
 	}
-	public String getUrlvideo2() {
-		return urlvideo2;
+	public String getVideoFileR2() {
+		return videoFileR2;
 	}
-	public void setUrlvideo2(String urlvideo2) {
-		this.urlvideo2 = urlvideo2;
+	public void setVideoFileR2(String videoFileR2) {
+		this.videoFileR2 = videoFileR2;
 	}
-	public String getUrlvideo3() {
-		return urlvideo3;
+	public String getVideoFileR3() {
+		return videoFileR3;
 	}
-	public void setUrlvideo3(String urlvideo3) {
-		this.urlvideo3 = urlvideo3;
+	public void setVideoFileR3(String videoFileR3) {
+		this.videoFileR3 = videoFileR3;
 	}
 	
 	

@@ -6,8 +6,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "Lang")
 public class Language {
 	
@@ -15,11 +20,13 @@ public class Language {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long idLang;
 	
-	@Column(length = 25, nullable = false)
+	@NotBlank(message = "ce champ ne peut pas etre vide")
+	@Column(length = 50, nullable = false)
 	String name;
 	
 	String flag;
 	
+	@NotBlank(message = "ce champ ne peut pas etre vide et doit etre unique, ce champ represente le code unique d'une langue")
 	@Column(nullable = false, unique = true)
 	String slug;
 	

@@ -1,7 +1,11 @@
 package com.mytv.api.model.gestMedia;
 
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
+
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,9 +29,14 @@ public class Genre {
 	@NotBlank(message = "Ce champ ne puis etre vide")
 	String name;
 	
-	String imageUrl;
-	
+	@Column(nullable = false, columnDefinition = "boolean default false")
 	boolean status;
+	
+	@OneToMany(mappedBy = "idFilm")
+	List<Film> film;
+	
+	@OneToMany(mappedBy = "idSerie")
+	List<Serie> serie;
 
 	public Long getIdGenre() {
 		return idGenre;
@@ -45,13 +54,6 @@ public class Genre {
 		this.name = name;
 	}
 
-	public String getImageUrl() {
-		return imageUrl;
-	}
-
-	public void setImageUrl(String imageUrl) {
-		this.imageUrl = imageUrl;
-	}
 
 	public boolean isStatus() {
 		return status;
@@ -60,6 +62,23 @@ public class Genre {
 	public void setStatus(boolean status) {
 		this.status = status;
 	}
+
+	public List<Film> getFilm() {
+		return film;
+	}
+
+	public void setFilm(List<Film> film) {
+		this.film = film;
+	}
+
+	public List<Serie> getSerie() {
+		return serie;
+	}
+
+	public void setSerie(List<Serie> serie) {
+		this.serie = serie;
+	}
+	
 	
 	
 	

@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,6 +25,7 @@ public class CatPodcast {
 	@Column(name = "idCatPod")
 	Long idCatPod;
 	
+	@NotBlank(message="ce champ ne peut etre vide")
 	@Column(nullable = false)
 	String name;
 	

@@ -14,6 +14,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "User")
@@ -32,6 +34,9 @@ public class User implements Serializable, UserDetails{
 	@Column(name = "password")
 	String password;
 	
+	@Email(message = "Ce champ doit etre une adresse mail valide")
+	@NotBlank(message = "ce champ ne peut pas etre vide et doit etre unique")
+	@Column(nullable = false, unique = true)
 	String email;
 
 	String imageUrl;

@@ -2,9 +2,8 @@ package com.mytv.api.model.gestMedia;
 
 
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.CascadeType;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,23 +25,32 @@ public class Podcast {
 	@Column(name = "idPodcast")
 	Long idPodcast;
 	
+	@NotBlank(message="ce champ ne peut etre vide, un podcast doit forcement avoir un nom")
 	@Column(nullable = false)
 	String name ;
 	
-	String description;
+	
+	@NotBlank(message="ce champ ne peut etre vide, un podcast doit forcement avoir une description")
+	String overview;
 
 	String poster;
 	
-	@ManyToOne(cascade = CascadeType.REMOVE)
-	@JoinColumn(name = "idCatPod")
-	CatPodcast category;
+	/*@ManyToOne(cascade = CascadeType.REMOVE)
+	@JoinColumn(name = "idCatPod")*/
+	@NotNull(message="Un podcast doit forcement avoir une categori")
+	Long category;
 	
+	@Column(nullable = false, columnDefinition = "boolean default true")
 	boolean status;
 
 	String streamType;
 	
 	String svr1;
+	
 	String svr2;
+	
+	
+	
 	public Long getIdPodcast() {
 		return idPodcast;
 	}
@@ -56,10 +64,10 @@ public class Podcast {
 		this.name = name;
 	}
 	public String getDescription() {
-		return description;
+		return overview;
 	}
 	public void setDescription(String description) {
-		this.description = description;
+		this.overview = description;
 	}
 	public String getPoster() {
 		return poster;
@@ -67,10 +75,11 @@ public class Podcast {
 	public void setPoster(String poster) {
 		this.poster = poster;
 	}
-	public CatPodcast getCategory() {
+	
+	public Long getCategory() {
 		return category;
 	}
-	public void setCategory(CatPodcast category) {
+	public void setCategory(Long category) {
 		this.category = category;
 	}
 	public boolean isStatus() {

@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,8 +25,10 @@ public class CategoryRL {
 	@Column(name = "idcat")
 	Long idcat;
 	
+	@NotBlank(message = "ce champ ne peut pas etre vide")
 	private String name;
 	
+	@Column(nullable = false, columnDefinition = "boolean default false")
 	private boolean status;
 	
 	@OneToMany(mappedBy = "idRadio")
