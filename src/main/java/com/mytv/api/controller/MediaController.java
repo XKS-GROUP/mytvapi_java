@@ -1,22 +1,32 @@
 package com.mytv.api.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mytv.api.aws.MetadataService;
+import com.mytv.api.execptions.ErrorResponse;
 import com.mytv.api.model.gestMedia.CatPodcast;
 import com.mytv.api.model.gestMedia.CategoryRL;
 import com.mytv.api.model.gestMedia.Episode;
@@ -38,6 +48,8 @@ import com.mytv.api.service.gestMedia.RadioService;
 import com.mytv.api.service.gestMedia.SerieService;
 import com.mytv.api.service.gestMedia.ServiceFilm;
 
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -72,9 +84,9 @@ public class MediaController {
 	
 	
 	//Pays
-	@PostMapping(path="pays/create")
+	@PostMapping( path="pays/create")
 
-	public Pays createPays(@RequestBody Pays u) {
+	public Pays createPays(@Valid @RequestBody Pays u) {
 		
 		return paysService.create(u);
 	}
@@ -111,19 +123,21 @@ public class MediaController {
 	//Genre 
 	@PostMapping(path="genres/create")
 
-	public Genre createG(@RequestBody Genre u, @RequestParam("file") MultipartFile file) throws IOException {
+	public Genre createG(@ModelAttribute Genre u, @RequestParam("file") MultipartFile file) throws IOException {
 		
 		
-		//Enregistrement du fichier img
-		String pathImg = metadataService.uploadR3(file, "");
-		if (file.isEmpty())
-            throw new IllegalStateException("Vous n'avez charger aucune image");
+	
+			//Enregistrement du fichier img
+			String pathImg = metadataService.uploadR3(file, "");
+			if (file.isEmpty())
+	            throw new IllegalStateException("Vous n'avez charger aucune image");
+			
+			//Enregistrement du path du fichier
+			
+			u.setImageUrl(pathImg);
+			//Save du tout
+			return genreService.create(u);
 		
-		//Enregistrement du path du fichier
-		
-		u.setImageUrl(pathImg);
-		//Save du tout
-		return genreService.create(u);
 	}
 	
 	
@@ -231,19 +245,28 @@ public class MediaController {
 	}
 	
 	
-	//Radio
-	@PostMapping(path="radios/create")
-
-	public Radio create(@RequestBody Radio u) {
-		
-		return radioService.create(u);
-	}
-	
-	
+	//Radio	
 	@GetMapping("radios")
 	public List<Radio> showR(){
 		
 		return radioService.show();
+	}
+	
+	@PostMapping(path="radios/create")
+	public Podcast createR(@ModelAttribute Podcast r, @RequestParam("file") MultipartFile file) throws IOException {
+		
+	
+			//Enregistrement du fichier img
+			String pathImg = metadataService.uploadR3(file, "");
+			if (file.isEmpty())
+	            throw new IllegalStateException("Vous n'avez charger aucune image");
+			
+			
+			r.setPoster(pathImg);
+		
+			//Save du tout
+			return podcastservice.create(r);
+		
 	}
 		
 	@GetMapping("radios/{id}")
@@ -305,18 +328,29 @@ public class MediaController {
 	}
 	
 	//Podcast
-	
-	@PostMapping(path="podcasts/create")
-	public Podcast createP(@RequestBody Podcast u) {
-		
-		return podcastservice.create(u);
-	}
-	
-	
 	@GetMapping("podcasts")
 	public List<Podcast> showP(){
 		
 		return podcastservice.show();
+	}
+	
+	@PostMapping(path="podcasts/create")
+	public Podcast createP(@ModelAttribute Podcast p, @RequestParam("file") MultipartFile file, @RequestParam("movie") MultipartFile movie) throws IOException {
+		
+	
+			//Enregistrement du fichier img
+			String pathImg = metadataService.uploadR3(file, "");
+			if (file.isEmpty() || movie.isEmpty())
+	            throw new IllegalStateException("Vous n'avez charger aucune image");
+			
+			String pathmovie = metadataService.uploadR3(movie, "");
+			//Enregistrement du path du fichier
+			
+			p.setPoster(pathImg);
+		
+			//Save du tout
+			return podcastservice.create(p);
+		
 	}
 	
 	
@@ -351,6 +385,27 @@ public class MediaController {
 		return filmService.show();
 	}
 	
+	@PostMapping(path="movies/create")
+	public Film createM(@ModelAttribute Film u, @RequestParam("file") MultipartFile file, @RequestParam("movie") MultipartFile movie) throws IOException {
+		
+	
+			
+			
+			if (file.isEmpty() || movie.isEmpty())
+	            throw new IllegalStateException("Vous n'avez charger aucune image");
+			//Enregistrement du fichier img
+			String pathImg = metadataService.uploadR3(file, "");
+			String pathmovie = metadataService.uploadR3(movie, "");
+			
+			//Enregistrement du path du fichier
+			
+			u.setPosterUrl(pathImg);
+			u.setDownloadURL(pathmovie);
+		
+			//Save du tout
+			return filmService.create(u);
+		
+	}
 	
 	@GetMapping("movies/{id}")
 	public Optional<Film> showbyIdM(@PathVariable Long id){
@@ -359,7 +414,20 @@ public class MediaController {
 	}
 	
 	@PutMapping("movies/update/{id}")
-	public Film updateM(@PathVariable Long id, @RequestBody Film u){
+	public Film updateM(@PathVariable Long id, @ModelAttribute Film u, @RequestParam("file") MultipartFile file, @RequestParam("movie") MultipartFile movie) throws IOException{
+		
+		
+		//Enregistrement du fichier img
+		
+		if (file.isEmpty() || movie.isEmpty())
+            throw new IllegalStateException("Vous n'avez charger aucune image");
+		String pathImg = metadataService.uploadR3(file, "");
+		String pathmovie = metadataService.uploadR3(movie, "");
+		
+		//Enregistrement du path du fichier
+		
+		u.setPosterUrl(pathImg);
+		u.setDownloadURL(pathmovie);
 		
 		return filmService.upadte(id, u);
 		
@@ -380,6 +448,23 @@ public class MediaController {
 	public List<Serie> showS(){
 		
 		return serieService.show();
+	}
+	
+	@PostMapping(path="series/create")
+	public Podcast createS(@ModelAttribute Podcast serie, @RequestParam("file") MultipartFile file) throws IOException {
+		
+	
+			//Enregistrement du fichier img
+			String pathImg = metadataService.uploadR3(file, "");
+			if (file.isEmpty())
+	            throw new IllegalStateException("Vous n'avez charger aucune image");
+			
+			
+			serie.setPoster(pathImg);
+		
+			//Save du tout
+			return podcastservice.create(serie);
+		
 	}
 	
 	@GetMapping("series/{id}")
@@ -415,6 +500,27 @@ public class MediaController {
 	public Optional<Episode> showbyIdE(@PathVariable Long id){
 		
 		return episodeService.showById(id);
+	}
+	
+	@PostMapping(path="episodes/create")
+	public Episode createE(@ModelAttribute Episode e, @RequestParam("file") MultipartFile file, @RequestParam("ep") MultipartFile ep) throws IOException {
+		
+	
+			//Enregistrement du fichier img
+			String pathImg = metadataService.uploadR3(file, "");
+			if (file.isEmpty())
+	            throw new IllegalStateException("Vous n'avez charger aucune image");
+			
+			String pathmovie = metadataService.uploadR3(file, "");
+			
+			
+			e.setPosterUrl(pathImg);
+			
+			e.setUrlvideo(pathmovie);
+		
+			//Save du tout
+			return episodeService.create(e);
+		
 	}
 	
 	@PutMapping("episodes/update/{id}")

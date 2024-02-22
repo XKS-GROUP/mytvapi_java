@@ -1,18 +1,19 @@
 package com.mytv.api.model.gestMedia;
 
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
+@Data
+@AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 public class Genre {
 	
 	@Id
@@ -21,6 +22,7 @@ public class Genre {
 	Long idGenre;
 	
 	@Column(nullable = false, length = 80, unique = true)
+	@NotBlank(message = "Ce champ ne puis etre vide")
 	String name;
 	
 	String imageUrl;

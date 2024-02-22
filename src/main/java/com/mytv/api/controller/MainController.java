@@ -21,7 +21,7 @@ public class MainController {
 	@GetMapping("error")
 	public String error() {
 		
-		return "Cette route n'existe pas !!!";
+		return  "Cette route n'existe pas !!!";
 	}
 
 }

@@ -30,7 +30,7 @@ public class LangueController {
 	private LangueService langService;
 	
 	
-	@GetMapping("/")
+	@GetMapping
 	public List<Language> show(){
 		
 		return langService.show();

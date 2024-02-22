@@ -7,15 +7,11 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 
 @Entity
 @NoArgsConstructor
-@Getter
-@Setter
 public class Film {
 	
 	
@@ -26,6 +22,7 @@ public class Film {
 	
 	@Column(nullable = false)
 	String name ;
+	
 	
 	String overview;
 	
@@ -38,6 +35,8 @@ public class Film {
 	String posterUrl;
 	
 	String trailerUrl;
+	
+	String movieFile;
 	
 	Date releaseDate;
 	
@@ -153,6 +152,15 @@ public class Film {
 	public void setDuration(int duration) {
 		this.duration = duration;
 	}
+
+	public String getMovieFile() {
+		return movieFile;
+	}
+
+	public void setMovieFile(String movieFile) {
+		this.movieFile = movieFile;
+	}
+	
 	
 	
 
