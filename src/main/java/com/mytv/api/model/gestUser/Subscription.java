@@ -34,6 +34,8 @@ public class Subscription {
 	@ManyToOne
 	@JoinColumn(name = "idSubscriptionType", insertable = true, updatable = true)
 	private SubscriptionType substypes;
+	
+	
 
 	public Long getIdAbonnement() {
 		return idAbonnement;

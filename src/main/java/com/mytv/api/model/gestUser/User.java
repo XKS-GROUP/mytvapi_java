@@ -2,17 +2,20 @@ package com.mytv.api.model.gestUser;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.mytv.api.model.gestMedia.Film;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -38,9 +41,9 @@ public class User implements Serializable, UserDetails{
 	@NotBlank(message = "ce champ ne peut pas etre vide et doit etre unique")
 	@Column(nullable = false, unique = true)
 	String email;
-
+	
 	String imageUrl;
-
+	
 	/**
 	 * @return the id
 	 */

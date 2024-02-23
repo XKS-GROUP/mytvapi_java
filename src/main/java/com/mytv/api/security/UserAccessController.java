@@ -58,10 +58,15 @@ public class UserAccessController {
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 		} catch (DisabledException e) {
+			
 			throw new Exception("USER_DISABLED", e);
+			
 		} catch (BadCredentialsException e) {
+			
 			throw new Exception("INVALID_CREDENTIALS", e);
+			
 		}catch(Exception e) {
+			
 			throw new Exception("INVALID_CREDENTIALS", e.getCause());
 			
 		}
@@ -69,7 +74,9 @@ public class UserAccessController {
 	
 	@PostMapping("register")
 	public ResponseEntity<Object> register(@RequestBody UserRegisterRequestDTO request){
+		
 		request.setPassword(passwordEncoder.encode(request.getPassword()));
+		
 		return EntityResponse.generateResponse("Regsiter User with role"+request.getRoleList(), HttpStatus.OK, userService.createUser(request));
 	}
 	
