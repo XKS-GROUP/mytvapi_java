@@ -131,6 +131,7 @@ public class WUserService implements UserDetailsService {
 		target.setUsername(source.getUsername());
 		target.setPassword(source.getPassword());
 		target.setEmail(source.getEmail());
+		
 		return target;
 	}
 

@@ -1,4 +1,4 @@
-package com.mytv.api.security;
+package com.mytv.api.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mytv.api.security.AuthenticationRequest;
+import com.mytv.api.security.AuthenticationResponse;
+import com.mytv.api.security.EntityResponse;
+import com.mytv.api.security.JWTTokenUtil;
+import com.mytv.api.security.UserRegisterRequestDTO;
 import com.mytv.api.service.gestUser.WUserService;
 
 @RestController
@@ -85,5 +90,7 @@ public class UserAccessController {
 	public ResponseEntity<Object> retrieveUserProfile(){
 		return EntityResponse.generateResponse("User Profile", HttpStatus.OK, userService.findCurrentUser());
 	}
+	
+	
 	
 }

@@ -1,4 +1,4 @@
-package com.mytv.api.controller;
+package com.mytv.api.config;
 
 public class ConfigController {
 

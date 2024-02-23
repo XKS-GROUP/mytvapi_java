@@ -1,3 +1,4 @@
+/*Model renvoyer après chaque exception ou validation de donée*/
 package com.mytv.api.execptions;
 
 import java.util.List;

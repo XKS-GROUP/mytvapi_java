@@ -2,12 +2,18 @@ package com.mytv.api.model;
 
 import java.sql.Date;
 
+import org.hibernate.annotations.CreationTimestamp;
 
+import com.mytv.api.model.gestMedia.Film;
+import com.mytv.api.model.gestUser.User;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,14 +21,24 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
 public class Download {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long idComment;
+	
+	@CreationTimestamp
 	Date dateDown;
-	Long idMedia;
-	Long idUser;
+	
+	@ManyToOne
+	@JoinColumn(name = "user_id", insertable = true, updatable = true)
+	private User user;
+	
+	@ManyToOne
+	@JoinColumn(name = "idFilm", insertable = true, updatable = true)
+	private Film movie;
+
 
 }

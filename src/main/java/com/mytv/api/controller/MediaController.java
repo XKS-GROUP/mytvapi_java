@@ -24,6 +24,7 @@ import com.mytv.api.model.gestMedia.CategoryRL;
 import com.mytv.api.model.gestMedia.Episode;
 import com.mytv.api.model.gestMedia.Film;
 import com.mytv.api.model.gestMedia.Genre;
+import com.mytv.api.model.gestMedia.Language;
 import com.mytv.api.model.gestMedia.LiveTv;
 import com.mytv.api.model.gestMedia.Pays;
 import com.mytv.api.model.gestMedia.Podcast;
@@ -33,6 +34,7 @@ import com.mytv.api.service.gestMedia.CatPodcastService;
 import com.mytv.api.service.gestMedia.CategoryLrService;
 import com.mytv.api.service.gestMedia.EpisodeService;
 import com.mytv.api.service.gestMedia.GenreService;
+import com.mytv.api.service.gestMedia.LangueService;
 import com.mytv.api.service.gestMedia.LiveTvSetvice;
 import com.mytv.api.service.gestMedia.PaysService;
 import com.mytv.api.service.gestMedia.PodcastService;
@@ -40,6 +42,7 @@ import com.mytv.api.service.gestMedia.RadioService;
 import com.mytv.api.service.gestMedia.SerieService;
 import com.mytv.api.service.gestMedia.ServiceFilm;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
@@ -69,20 +72,59 @@ public class MediaController {
 	private CatPodcastService catpodService;
 	@Autowired
 	private PaysService paysService;
-	
 	@Autowired
     private MetadataService metadataService;
+	@Autowired
+	private LangueService langService;
 	
+	
+	
+	//Langue
+	@GetMapping("langs")
+	public List<Language> showLang(){
+		
+		return langService.show();
+	}
+	
+	
+	@GetMapping("langs/{id}")
+	public Optional<Language> showLangById(@PathVariable Long id){
+		
+		return langService.showById(id);
+	}
+	
+	@PutMapping("langs/update/{id}")
+	public Language updateLang(@PathVariable Long id, @RequestBody Language u){
+		
+		return langService.upadte(id, u);
+		
+	}
+	
+	@PostMapping(path="langs/create")
+	public Language createLang(@RequestBody Language u) {
+		
+		return langService.create(u);
+	}
+	
+	@DeleteMapping(path="langs/delete/{id}")
+	public Boolean delete (@PathVariable Long id) {
+		
+		langService.delete(id);
+		
+		return true;
+	}
+
+
 	
 	//Pays
-	@PostMapping( path="pays/create")
+	@PostMapping("pays/create")
 
 	public Pays createPays(@Valid @RequestBody Pays u) {
 		
 		return paysService.create(u);
 	}
 	
-	
+	@Tag(name = "GET", description = "Revoi tous les pays sous format JSON")
 	@GetMapping("pays")
 	public List<Pays> showPays(){
 		
