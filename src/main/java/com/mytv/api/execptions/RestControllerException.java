@@ -1,9 +1,11 @@
 package com.mytv.api.execptions;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+
+import com.amazonaws.services.apigatewaymanagementapi.model.ForbiddenException;
 
 
 @RestControllerAdvice
@@ -30,6 +34,28 @@ public class RestControllerException {
     public ResponseEntity<Object> handleAll(Exception ex, WebRequest request) {
         ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), Collections.singletonList("Error occurred"));
         return new ResponseEntity<>(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    
+    
+    @ExceptionHandler(value = {ForbiddenException.class})
+    public ResponseEntity<Object> handleForbidden(Exception ex, WebRequest request) {
+        ApiError apiError = new ApiError(HttpStatus.FORBIDDEN, ex.getMessage(), Collections.singletonList("Accès non autorisé a cet route, veuillez vous authentifier avec les droits appropries"));
+        return new ResponseEntity<>(apiError, HttpStatus.FORBIDDEN);
+    }
+    
+    //@ExceptionHandler(value = {DataIntegrityViolationException.class})
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+        ApiError apiError = new ApiError(HttpStatus.FORBIDDEN, ex.getMessage(), Collections.singletonList("Violation de l'intégrité des données. Veuillez vérifier que cette valeur n'existe pas déja."));
+        
+        return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
+    }
+    
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    public ResponseEntity<Object> handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException ex) {
+        ApiError apiError = new ApiError(HttpStatus.FORBIDDEN, ex.getMessage(), Collections.singletonList("Violation de l'intégrité des données. Veuillez vérifier que cette valeur n'existe pas déja."));
+        
+        return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
     }
     
     // Gérer les execptions levées par les validations

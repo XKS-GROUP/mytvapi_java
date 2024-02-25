@@ -74,10 +74,34 @@ public class WUserService implements UserDetailsService {
 					}
 				}
 			} else {
-				addUserRole(user, null);
+				addUserRole(user, roleService.findRoleByName("ROLE_ADMIN"));
 			}
 
-			return "user Created succefully.";
+			return "Un nouvel utilisateur a été creer";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return e.getCause().getMessage();
+		}
+
+	}
+	
+	public String createAbonne(UserRegisterRequestDTO request) {
+		try {
+			User user = (User) dtoMapperRequestDtoToUser(request);
+
+			user = userRepository.save(user);
+			if (!request.getRoleList().isEmpty()) {
+				for (String role : request.getRoleList()) {
+					Role existingRole = roleService.findRoleByName("ROLE_" + role.toUpperCase());
+					if(existingRole != null) {
+						addUserRole(user, existingRole);
+					}
+				}
+			} else {
+				addUserRole(user, roleService.findRoleByName("ROLE_USER"));
+			}
+
+			return "Un nouvel utilisateur a été creer";
 		} catch (Exception e) {
 			e.printStackTrace();
 			return e.getCause().getMessage();
@@ -94,7 +118,17 @@ public class WUserService implements UserDetailsService {
 		User user = (User) dtoMapperRequestDtoToUser(userRequestDTO);
 
 		user = userRepository.save(user);
-		addUserRole(user, null);
+		addUserRole(user, roleService.findRoleByName("ROLE_ADMIN"));
+
+		return user;
+	}
+	
+	public User updateAbonne(UserRegisterRequestDTO userRequestDTO) {
+
+		User user = (User) dtoMapperRequestDtoToUser(userRequestDTO);
+
+		user = userRepository.save(user);
+		addUserRole(user, roleService.findRoleByName("ROLE_USER"));
 
 		return user;
 	}
@@ -103,7 +137,21 @@ public class WUserService implements UserDetailsService {
 		return userRepository.findById(SecurityPrincipal.getInstance().getLoggedInPrincipal().getId()).get();
 
 	}
-
+	
+	public String deleteUserFromId(Long id) {
+		
+		userRepository.deleteById(id);
+		
+		return "Utilisateur "+this.findCurrentUser().getUsername()+"a été supprimer avec succès";
+	}
+	
+	public String deleteCurrentUser() {
+		
+		userRepository.delete(this.findCurrentUser());
+		
+		return "Utilisateur "+this.findCurrentUser().getUsername()+"a été supprimer avec succès";
+	}
+	
 	public List<UserRole> findAllCurrentUserRole() {
 		return userRoleRepository.findAllByUserId(SecurityPrincipal.getInstance().getLoggedInPrincipal().getId());
 

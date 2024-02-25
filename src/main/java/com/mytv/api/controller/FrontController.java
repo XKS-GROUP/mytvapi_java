@@ -33,6 +33,7 @@ import com.mytv.api.service.gestMedia.RadioService;
 import com.mytv.api.service.gestMedia.SerieService;
 import com.mytv.api.service.gestMedia.ServiceFilm;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
@@ -40,6 +41,8 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @RequestMapping("api/v1/front/")
 
+
+@Tag(name = "Routes Abonné ", description = "Ensemble des routes consommé par la partie front de l'api précisement par l'abonné")
 public class FrontController {
 	
 	@Autowired
@@ -64,13 +67,6 @@ public class FrontController {
 	private PaysService paysService;
 	
 	//Pays
-	@PostMapping( path="pays/create")
-
-	public Pays createPays(@Valid @RequestBody Pays u) {
-		
-		return paysService.create(u);
-	}
-	
 	
 	@GetMapping("pays")
 	public List<Pays> showPays(){
@@ -173,14 +169,6 @@ public class FrontController {
 	public Optional<Film> showbyIdM(@PathVariable Long id){
 		
 		return filmService.showById(id);
-	}
-	
-	@DeleteMapping(path="movies/delete/{id}")
-	public Boolean deleteM (@PathVariable Long id) {
-		
-		filmService.delete(id);
-		
-		return true;
 	}
 	
 	//Series

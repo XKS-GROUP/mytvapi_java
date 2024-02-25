@@ -23,6 +23,8 @@ import com.mytv.api.security.JWTTokenUtil;
 import com.mytv.api.security.UserRegisterRequestDTO;
 import com.mytv.api.service.gestUser.WUserService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("api/v1/auth")
 public class UserAccessController {
@@ -47,7 +49,7 @@ public class UserAccessController {
 			authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 		} catch (Exception e) {
 			return EntityResponse.generateResponse("Authentication", HttpStatus.UNAUTHORIZED,
-					"Invalid credentials, please check details and try again.");
+					"Info non valide, le nom d utilsateur ou le mot de passe est incorrecte");
 		}
 		final UserDetails userDetails = userService.loadUserByUsername(authenticationRequest.getUsername());
 
@@ -64,25 +66,25 @@ public class UserAccessController {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 		} catch (DisabledException e) {
 			
-			throw new Exception("USER_DISABLED", e);
+			throw new Exception("USER_DISABLED = UTILISATEUR DESACTIVE ou NON ACTIVE", e);
 			
 		} catch (BadCredentialsException e) {
 			
-			throw new Exception("INVALID_CREDENTIALS", e);
+			throw new Exception("Le nom d utilsateur ou le mt de passe est incorrecte", e);
 			
 		}catch(Exception e) {
 			
-			throw new Exception("INVALID_CREDENTIALS", e.getCause());
+			throw new Exception("Le nom d utilsateur ou le mt de passe est incorrecte", e.getCause());
 			
 		}
 	}
 	
 	@PostMapping("register")
-	public ResponseEntity<Object> register(@RequestBody UserRegisterRequestDTO request){
+	public ResponseEntity<Object> register(@Valid @RequestBody UserRegisterRequestDTO request){
 		
 		request.setPassword(passwordEncoder.encode(request.getPassword()));
 		
-		return EntityResponse.generateResponse("Regsiter User with role"+request.getRoleList(), HttpStatus.OK, userService.createUser(request));
+		return EntityResponse.generateResponse("Utilisateur enregistre en tant que "+request.getRoleList(), HttpStatus.OK, userService.createUser(request));
 	}
 	
 	

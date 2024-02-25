@@ -2,6 +2,9 @@ package com.mytv.api.security;
 
 import java.util.Date;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -18,9 +21,13 @@ import java.util.*;
 @NoArgsConstructor
 @ToString
 public class UserRegisterRequestDTO {
-
+	
+	@Size(min = 4)
+	@NotBlank(message = "ce champ ne peut pas etre vide et doit etre unique")
 	private String username;
-
+	
+	@Size(min = 4)
+	@NotBlank(message = "ce champ ne peut pas etre vide, un mot de passe est obligatoire")
 	private String password;
 
 	/*
@@ -40,6 +47,8 @@ public class UserRegisterRequestDTO {
 	
 	*/
 	
+	@Email(message = "Ce champ doit etre une adresse mail valide")
+	@NotBlank(message = "ce champ ne peut pas etre vide et doit etre unique")
 	private String email;
 	
 	//private String mobile;

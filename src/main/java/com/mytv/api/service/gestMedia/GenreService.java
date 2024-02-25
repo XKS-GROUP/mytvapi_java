@@ -10,10 +10,12 @@ import org.springframework.stereotype.Service;
 import com.mytv.api.model.gestMedia.Genre;
 import com.mytv.api.repository.GenreRepository;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
+@Schema(description = "Modèle représentant le genre de serie et film.")
 public class GenreService {
 	
 	
