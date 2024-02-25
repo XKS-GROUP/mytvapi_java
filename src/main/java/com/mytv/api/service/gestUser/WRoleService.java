@@ -35,5 +35,11 @@ public class WRoleService {
 	public Role findRoleByName(String role) {
 		return findAllRole().stream().filter(r -> r.getName().equals(role)).findFirst().orElse(null);
 	}
+	
+	public String delete(Long id) {
+		roleReposiroty.deleteById(id);
+		
+		return "supp";
+	}
 
 }

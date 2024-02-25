@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mytv.api.model.gestUser.Role;
 import com.mytv.api.model.gestUser.SubscriptionType;
 import com.mytv.api.security.EntityResponse;
 import com.mytv.api.security.UserRegisterRequestDTO;
@@ -46,6 +47,7 @@ public class AdminAccessController {
 	SubscriptionServiceImplement subSerice;
 	
 	
+	//Gestion du profil admin
 	@GetMapping("profile")
 	public ResponseEntity<Object> retrieveUserProfile(){
 		return EntityResponse.generateResponse("Admin Profil Info : "+userService.findCurrentUser().getUsername(), HttpStatus.OK, userService.findCurrentUser());
@@ -85,12 +87,29 @@ public class AdminAccessController {
 				userService.retrieveAllUserList());
 	}
 	
+	//Role
 	@Operation(summary = "Get All Rols", description = "Returne la liste de tous les Roles")
-	@GetMapping("role-list")
+	@GetMapping("role/role-list")
 	public ResponseEntity<Object> getAllRoleList(){
-		return EntityResponse.generateResponse("Liste des rolles disponible", HttpStatus.OK,
+		return EntityResponse.generateResponse("Liste des roles disponible", HttpStatus.OK,
 				roleService.findAllRole());
 	}
+	
+	@Operation(summary = "Creer un role", description = "Returne la liste de tous les Roles")
+	@GetMapping("role/create")
+	public ResponseEntity<Object> createRole(Role role){
+		
+		return EntityResponse.generateResponse("Creation d'un nouveau Role", HttpStatus.OK,
+				roleService.save(role));
+	}
+	
+	@Operation(summary = "Creer un role", description = "Returne la liste de tous les Roles")
+	@GetMapping("role/delete/{id}")
+	public ResponseEntity<Object> deleteRole(Long id){
+		return EntityResponse.generateResponse("role supp...........", HttpStatus.OK,
+				roleService.delete(id));
+	}
+	
 	
 	@GetMapping("logout")
 	public ResponseEntity<Object> userLogout(){
@@ -135,6 +154,7 @@ public class AdminAccessController {
 	}
 	
 	
+	//Configuration
 	@GetMapping("config")
 	public ResponseEntity<Object> ConfigApp(){
 		return EntityResponse.generateResponse("Configuration de l'app : "+userService.findCurrentUser().getUsername(), HttpStatus.OK, userService.findCurrentUser());
