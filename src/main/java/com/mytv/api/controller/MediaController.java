@@ -80,19 +80,22 @@ public class MediaController {
 	
 	
 	//Langue
+	
+	@Tag(name = "Langue")
 	@GetMapping("langs")
 	public List<Language> showLang(){
 		
 		return langService.show();
 	}
 	
-	
+	@Tag(name = "Langue")
 	@GetMapping("langs/{id}")
 	public Optional<Language> showLangById(@PathVariable Long id){
 		
 		return langService.showById(id);
 	}
 	
+	@Tag(name = "Langue")
 	@PutMapping("langs/update/{id}")
 	public Language updateLang(@PathVariable Long id, @RequestBody Language u){
 		
@@ -100,12 +103,14 @@ public class MediaController {
 		
 	}
 	
+	@Tag(name = "Langue")
 	@PostMapping(path="langs/create")
 	public Language createLang(@RequestBody Language u) {
 		
 		return langService.create(u);
 	}
 	
+	@Tag(name = "Langue")
 	@DeleteMapping(path="langs/delete/{id}")
 	public Boolean delete (@PathVariable Long id) {
 		
@@ -113,10 +118,16 @@ public class MediaController {
 		
 		return true;
 	}
-
-
+	
+	@Tag(name = "Langue", description = " Recherche par nom")
+	@GetMapping("langsbyname/{name}")
+	public Language showLangByName(@Valid @PathVariable String name){
+		
+		return langService.showByName(name);
+	}
 	
 	//Pays
+	@Tag(name = "Pays")
 	@PostMapping("pays/create")
 
 	public Pays createPays(@Valid @RequestBody Pays u) {
@@ -124,26 +135,29 @@ public class MediaController {
 		return paysService.create(u);
 	}
 	
-	@Tag(name = "GET", description = "Revoi tous les pays sous format JSON")
+	@Tag(name = "Pays")
 	@GetMapping("pays")
 	public List<Pays> showPays(){
 		
 		return paysService.show();
 	}
-		
+	
+	@Tag(name = "Pays")
 	@GetMapping("pays/{id}")
 	public Optional<Pays> showbyIdPays(@PathVariable Long id){
 		
 		return paysService.showById(id);
 	}
 	
+	@Tag(name = "Pays")
 	@PutMapping("pays/update/{id}")
 	public Pays updatePays(@PathVariable Long id, @RequestBody Pays u){
 		
 		return paysService.upadte(id, u);
 		
 	}
-		
+	
+	@Tag(name = "Pays")
 	@DeleteMapping(path="pays/delete/{id}")
 	public Boolean deletePays (@PathVariable Long id) {
 		
@@ -154,6 +168,8 @@ public class MediaController {
 	
 	
 	//Genre 
+	
+	@Tag(name = "genre")
 	@PostMapping(path="genres/create")
 
 	public Genre createG(@Valid @ModelAttribute Genre u){
@@ -161,26 +177,44 @@ public class MediaController {
 			return genreService.create(u);
 	}
 	
-	
+	@Tag(name = "genre", description = " Liste des genres")
 	@GetMapping("genres")
 	public List<Genre> showG(){
 		
 		return genreService.show();
 	}
+	
+	@Tag(name = "genre", description = " Recherche par nom")
+	@GetMapping("genresbyname/{name}")
+	public Genre showByName(@Valid @PathVariable String name){
 		
+		return genreService.showByName(name);
+	}
+	
+	@Tag(name = "genre", description = " Recherche par valeur")
+	@GetMapping("genresbynameContain/{name}")
+	public List<Genre> showByNameContain(@Valid @PathVariable String name){
+		
+		return genreService.findByNameContain(name);
+	}
+	
+	
+	@Tag(name = "genre", description = " Liste des genres")
 	@GetMapping("genres/{id}")
 	public Genre showbyIdG(@PathVariable Long id){
 		
 		return genreService.showById(id).orElseThrow(() -> new ResourceNotFoundException("aucune donne avec id= " + id));
 	}
 	
+	@Tag(name = "genre", description = " Liste des genres")
 	@PutMapping("genres/update/{id}")
 	public Genre updateG(@PathVariable Long id, @RequestBody Genre u){
 		
 		return genreService.upadte(id, u);
 		
 	}
-		
+	
+	@Tag(name = "genre", description = " Liste des genres")
 	@DeleteMapping(path="genres/delete/{id}")
 	public Boolean deleteG (@PathVariable Long id) {
 		
@@ -189,9 +223,12 @@ public class MediaController {
 		return true;
 	}
 	
-
+	
+	
 	
 	//Categorie LiveTv ou Radio 
+	
+	@Tag(name = "Categorie Radio et live ")
 	@PostMapping(path="catrl/create")
 
 	public CategoryRL createCRL(@Valid @RequestBody CategoryRL u) {
@@ -200,25 +237,32 @@ public class MediaController {
 	}
 	
 	
+	@Tag(name = "Categorie Radio et live ")
 	@GetMapping("catrl")
 	public List<CategoryRL> showCRL(){
 		
 		return catLrService.show();
 	}
-		
+	
+	
+	@Tag(name = "Categorie Radio et live ")
 	@GetMapping("catrl/{id}")
 	public Optional<CategoryRL> showbyIdCRL(@PathVariable Long id){
 		
 		return catLrService.showById(id);
 	}
 	
+	
+	@Tag(name = "Categorie Radio et live ")
 	@PutMapping("catrl/update/{id}")
 	public CategoryRL updateCRL(@PathVariable Long id, @RequestBody CategoryRL u){
 		
 		return catLrService.upadte(id, u);
 		
 	}
-		
+	
+	
+	@Tag(name = "Categorie Radio et live ")	
 	@DeleteMapping(path="catrl/delete/{id}")
 	public Boolean deleteCRL (@PathVariable Long id) {
 		
@@ -230,6 +274,8 @@ public class MediaController {
 	
 	//Categorie Podcast
 	
+	
+	@Tag(name = "Categorie Podcast")
 	@PostMapping(path="catpod/create")
 
 	public CatPodcast createCP(@Valid @RequestBody CatPodcast u) {
@@ -238,25 +284,30 @@ public class MediaController {
 	}
 	
 	
+	@Tag(name = "Categorie Podcast")
 	@GetMapping("catpod")
 	public List<CatPodcast> showCP(){
 		
 		return catpodService.show();
 	}
-		
+	
+	
+	@Tag(name = "Categorie Podcast")
 	@GetMapping("catpod/{id}")
 	public Optional<CatPodcast> showbyIdCP(@PathVariable Long id){
 		
 		return catpodService.showById(id);
 	}
 	
+	@Tag(name = "Categorie Podcast")
 	@PutMapping("catpod/update/{id}")
 	public CatPodcast updateCP(@PathVariable Long id, @RequestBody CatPodcast u){
 		
 		return catpodService.upadte(id, u);
 		
 	}
-		
+	
+	@Tag(name = "Categorie Podcast")
 	@DeleteMapping(path="catpod/delete/{id}")
 	public Boolean deleteCP (@PathVariable Long id) {
 		
@@ -266,13 +317,15 @@ public class MediaController {
 	}
 	
 	
-	//Radio	
+	//Radio
+	@Tag(name = "Radio")
 	@GetMapping("radios")
 	public List<Radio> showR(){
 		
 		return radioService.show();
 	}
 	
+	@Tag(name = "Radio")
 	@PostMapping(path="radios/create")
 	public Radio createR(@Valid @ModelAttribute Radio r, @RequestParam("file") MultipartFile file) throws IOException {	
 	
@@ -288,20 +341,30 @@ public class MediaController {
 			return radioService.create(r);
 		
 	}
-		
+	
+	@Tag(name = "Radio")
 	@GetMapping("radios/{id}")
 	public Optional<Radio> showbyIdR(@PathVariable Long id){
 		
 		return radioService.showById(id);
 	}
 	
+	@Tag(name = "Radio")
+	@GetMapping("radiosbynamecontain/{name}")
+	public List<Radio> showbyNameContain(@PathVariable String nom){
+		
+		return radioService.showByNameContaining(nom);
+	}
+	
+	@Tag(name = "Radio")
 	@PutMapping("radios/update/{id}")
 	public Radio updateR(@PathVariable Long id, @RequestBody Radio u){
 		
 		return radioService.upadte(id, u);
 		
 	}
-		
+	
+	@Tag(name = "Radio")
 	@DeleteMapping(path="radios/delete/{id}")
 	public Boolean deleteR (@PathVariable Long id) {
 		
@@ -311,26 +374,36 @@ public class MediaController {
 	}
 	
 	//ROUTES LiveTV
+	
+	@Tag(name = "LiveTv")
 	@PostMapping(path="lives/create")
 	public LiveTv createL(@RequestBody LiveTv u) {
 		
 		return liveService.create(u);
 	}
 	
-	
+	@Tag(name = "LiveTv")
 	@GetMapping("lives")
 	public List<LiveTv> showL(){
 		
 		return liveService.show();
 	}
 	
+	@Tag(name = "LiveTv")
+	@GetMapping("livesbynamecontain/{nom}")
+	public List<LiveTv> showLbyNameContainL(@PathVariable String nom){
+		
+		return liveService.showByNameContaining(nom);
+	}
 	
+	@Tag(name = "LiveTv")
 	@GetMapping("lives/{id}")
 	public Optional<LiveTv> showbyIdL(@PathVariable Long id){
 		
 		return liveService.showById(id);
 	}
 	
+	@Tag(name = "LiveTv")
 	@PutMapping("lives/update/{id}")
 	public LiveTv updateL(@PathVariable Long id, @RequestBody LiveTv u){
 		
@@ -338,7 +411,7 @@ public class MediaController {
 		
 	}
 	
-	
+	@Tag(name = "LiveTv")
 	@DeleteMapping(path="lives/delete/{id}")
 	public Boolean deleteL (@PathVariable Long id) {
 		
@@ -348,12 +421,15 @@ public class MediaController {
 	}
 	
 	//Podcast
+	
+	@Tag(name = "Podcast")
 	@GetMapping("podcasts")
 	public List<Podcast> showP(){
 		
 		return podcastservice.show();
 	}
 	
+	@Tag(name = "Podcast")
 	@PostMapping(path="podcasts/create")
 	public Podcast createP(@ModelAttribute Podcast p, @RequestParam("file") MultipartFile file, @RequestParam("movie") MultipartFile movie) throws IOException {
 		
@@ -370,12 +446,21 @@ public class MediaController {
 	}
 	
 	
+	@Tag(name = "Podcast")
 	@GetMapping("podcasts/{id}")
 	public Optional<Podcast> showbyIdP(@PathVariable Long id){
 		
 		return podcastservice.showById(id);
 	}
 	
+	@Tag(name = "Podcast")
+	@GetMapping("podcastsbynamecontain/{name}")
+	public List<Podcast> showbyIdP(@PathVariable String name){
+		
+		return podcastservice.showByNameContaining(name);
+	}
+	
+	@Tag(name = "Podcast")
 	@PutMapping("podcasts/update/{id}")
 	public Podcast updateP(@PathVariable Long id, @RequestBody Podcast u){
 		
@@ -383,7 +468,7 @@ public class MediaController {
 		
 	}
 	
-	
+	@Tag(name = "Podcast")
 	@DeleteMapping(path="podcasts/delete/{id}")
 	public Boolean deleteP (@PathVariable Long id) {
 		
@@ -395,12 +480,14 @@ public class MediaController {
 	
 	//Films
 	
+	@Tag(name = "Movie")
 	@GetMapping("movies")
 	public List<Film> showM(){
 		
 		return filmService.show();
 	}
 	
+	@Tag(name = "Movie")
 	@PostMapping(path="movies/create")
 	public Film createM(@ModelAttribute Film u, @RequestParam("file") MultipartFile file, @RequestParam("movie") MultipartFile movie) throws IOException {
 		
@@ -421,12 +508,21 @@ public class MediaController {
 		
 	}
 	
+	@Tag(name = "Movie")
 	@GetMapping("movies/{id}")
 	public Optional<Film> showbyIdM(@PathVariable Long id){
 		
 		return filmService.showById(id);
 	}
 	
+	@Tag(name = "Movie")
+	@GetMapping("moviesbynamecontain/{id}")
+	public List<Film> showbyIdM(@PathVariable String name){
+		
+		return filmService.showByNameContaining(name);
+	}
+	
+	@Tag(name = "Movie")
 	@PutMapping("movies/update/{id}")
 	public Film updateM(@PathVariable Long id, @ModelAttribute Film u, @RequestParam("file") MultipartFile file, @RequestParam("movie") MultipartFile movie) throws IOException{
 		
@@ -447,7 +543,7 @@ public class MediaController {
 		
 	}
 	
-	
+	@Tag(name = "Movie")
 	@DeleteMapping(path="movies/delete/{id}")
 	public Boolean deleteM (@PathVariable Long id) {
 		
@@ -458,12 +554,14 @@ public class MediaController {
 	
 	//Series
 	
+	@Tag(name = "Serie")
 	@GetMapping("series")
 	public List<Serie> showS(){
 		
 		return serieService.show();
 	}
 	
+	@Tag(name = "Serie")
 	@PostMapping(path="series/create")
 	public Podcast createS(@ModelAttribute Podcast serie, @RequestParam("file") MultipartFile file) throws IOException {
 		
@@ -481,12 +579,21 @@ public class MediaController {
 		
 	}
 	
+	@Tag(name = "Serie")
 	@GetMapping("series/{id}")
 	public Optional<Serie> showbyIdS(@PathVariable Long id){
 		
 		return serieService.showById(id);
 	}
 	
+	@Tag(name = "Serie")
+	@GetMapping("seriesbynamecontain/{name}")
+	public List<Serie> showbyIdS(@PathVariable String name){
+		
+		return serieService.showbyNameContaining(name);
+	}
+	
+	@Tag(name = "Serie")
 	@PutMapping("series/update/{id}")
 	public Serie updateS(@PathVariable Long id, @RequestBody Serie u){
 		
@@ -494,6 +601,7 @@ public class MediaController {
 		
 	}
 	
+	@Tag(name = "Serie")
 	@DeleteMapping(path="series/delete/{id}")
 	public Boolean deleteS (@PathVariable Long id) {
 		
@@ -504,18 +612,28 @@ public class MediaController {
 
 	
 	//Episodes
-	
+	@Tag(name = "Episode")
+	@GetMapping("episodes")
     public List<Episode> showE(){
 		
 		return episodeService.show();
 	}
 	
+    @Tag(name = "Episode")
 	@GetMapping("episodes/{id}")
 	public Optional<Episode> showbyIdE(@PathVariable Long id){
 		
 		return episodeService.showById(id);
 	}
-	
+    
+    @Tag(name = "Episode")
+	@GetMapping("episodesbynamecontain/{name}")
+	public List<Episode> showbyIdE(@PathVariable String name){
+		
+		return episodeService.showByNameContain(name);
+	}
+    
+    @Tag(name = "Episode")
 	@PostMapping(path="episodes/create")
 	public Episode createE(@ModelAttribute Episode e, @RequestParam("file") MultipartFile file, @RequestParam("ep") MultipartFile ep) throws IOException {
 		
@@ -537,6 +655,7 @@ public class MediaController {
 		
 	}
 	
+    @Tag(name = "Episode")
 	@PutMapping("episodes/update/{id}")
 	public Episode updateE(@PathVariable Long id, @RequestBody Episode u){
 		
@@ -544,6 +663,7 @@ public class MediaController {
 		
 	}
 	
+    @Tag(name = "Episode")
 	@DeleteMapping(path="episodes/delete/{id}")
 	public Boolean deleteE (@PathVariable Long id) {
 		

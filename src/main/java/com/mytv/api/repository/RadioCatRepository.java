@@ -7,5 +7,7 @@ import com.mytv.api.model.gestMedia.CategoryRL;
 
 @Repository
 public interface RadioCatRepository extends JpaRepository<CategoryRL, Long> {
+	
+	CategoryRL findByName(String name);
 
 }

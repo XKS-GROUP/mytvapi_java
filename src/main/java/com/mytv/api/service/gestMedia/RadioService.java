@@ -33,6 +33,11 @@ public class RadioService {
 		return radioRep.findAll();
 	}
 	
+	public List<Radio> showByNameContaining(String n) {
+		
+		return radioRep.findByNameContaining(n);
+	}
+	
 	public Radio upadte(final Long id, Radio u) {
 		
 		Radio old = radioRep.findById(id).get();

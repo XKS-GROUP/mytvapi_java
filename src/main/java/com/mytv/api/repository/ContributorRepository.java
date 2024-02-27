@@ -7,5 +7,8 @@ import com.mytv.api.model.gestMedia.Contributor;
 
 @Repository
 public interface ContributorRepository extends  JpaRepository<Contributor, Long> {
+	
+	Contributor findByFistNameOrLastNameContaining(String name, String last);
+
 
 }

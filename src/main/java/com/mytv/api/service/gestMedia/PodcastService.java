@@ -32,6 +32,11 @@ public class PodcastService {
 		return rep.findAll();
 	}
 	
+	public List<Podcast> showByNameContaining(String n) {
+		
+		return rep.findByNameContaining(n);
+	}
+	
 	public Podcast upadte(final Long id, Podcast u) {
 		
 		Podcast old = rep.findById(id).get();

@@ -27,8 +27,6 @@ public class GenreService {
 		
 		//Appel de la fonction upload pour enregistrer l'image sur R2
 		
-		
-		
 		return genreRep.save(g);
 		
 	}
@@ -36,6 +34,11 @@ public class GenreService {
 	public List<Genre> show() {
 		
 		return genreRep.findAll();
+	}
+	
+	public Genre showByName(String name) {
+		
+		return genreRep.findByName(name);
 	}
 	
 	public Genre upadte(final Long id, Genre u) {
@@ -59,7 +62,10 @@ public class GenreService {
 		
 	}
 
-	
+	public List<Genre> findByNameContain(String name){
+		
+		return genreRep.findByNameContaining(name);
+	}
 	
 	public Optional<Genre> showById(final Long id) {
 		

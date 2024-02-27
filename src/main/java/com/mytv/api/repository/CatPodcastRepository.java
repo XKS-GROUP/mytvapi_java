@@ -8,5 +8,6 @@ import com.mytv.api.model.gestMedia.CatPodcast;
 
 @Repository
 public interface CatPodcastRepository extends JpaRepository<CatPodcast, Long> {
-
+	
+	CatPodcast findByName(String name);
 }

@@ -32,6 +32,11 @@ public class LiveTvSetvice {
 		return rep.findAll();
 	}
 	
+	public List<LiveTv> showByNameContaining(String name) {
+		
+		return rep.findByNameContaining(name);
+	}
+	
 	public LiveTv upadte(final Long id, LiveTv u) {
 		
 		LiveTv old = rep.findById(id).get();

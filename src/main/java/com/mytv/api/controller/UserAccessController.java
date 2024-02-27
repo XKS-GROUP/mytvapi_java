@@ -82,6 +82,8 @@ public class UserAccessController {
 	@PostMapping("register")
 	public ResponseEntity<Object> register(@Valid @RequestBody UserRegisterRequestDTO request){
 		
+		
+		
 		request.setPassword(passwordEncoder.encode(request.getPassword()));
 		
 		return EntityResponse.generateResponse("Utilisateur enregistre en tant que "+request.getRoleList(), HttpStatus.OK, userService.createUser(request));

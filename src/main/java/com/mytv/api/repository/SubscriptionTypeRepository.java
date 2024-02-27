@@ -8,4 +8,5 @@ import com.mytv.api.model.gestUser.SubscriptionType;
 @Repository
 public interface SubscriptionTypeRepository extends  JpaRepository<SubscriptionType, Long>{
 
+	SubscriptionType findByName(String name);
 }

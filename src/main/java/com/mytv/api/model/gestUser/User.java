@@ -16,6 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "User")
@@ -39,10 +40,23 @@ public class User implements Serializable, UserDetails{
 	@Email(message = "Ce champ doit etre une adresse mail valide")
 	@NotBlank(message = "ce champ ne peut pas etre vide et doit etre unique")
 	@Column(nullable = false, unique = true)
+	
 	String email;
 	
 	String imageUrl;
 	
+	@Column(columnDefinition = "boolean default false")
+	@NotNull
+	boolean valide;
+	
+	public boolean isValide() {
+		return valide;
+	}
+
+	public void setValide(boolean valide) {
+		this.valide = valide;
+	}
+
 	/**
 	 * @return the id
 	 */

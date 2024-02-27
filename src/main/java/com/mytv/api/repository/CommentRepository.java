@@ -7,5 +7,7 @@ import com.mytv.api.model.Comment;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long>{
+	
+	Comment findByContenu(String name);
 
 }

@@ -32,13 +32,16 @@ public class ServiceFilm {
 		return rep.findAll();
 	}
 	
+	public List<Film> showByNameContaining(String n) {
+		
+		return rep.findByNameContaining(n);
+	}
+	
 	public Film upadte(final Long id, Film u) {
 		
 		Film old = rep.findById(id).get();
 		
 		old = u;
-
-		
 		old.setIdFilm(id);
 		
 		return rep.save(old);

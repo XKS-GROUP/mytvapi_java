@@ -39,7 +39,9 @@ public class WUserService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) {
+		
 		User user = userRepository.findByUsername(username);
+		
 		if (user != null) {
 			List<UserRole> userRoles = userRoleRepository.findAllByUserId(user.getId());
 
@@ -109,6 +111,17 @@ public class WUserService implements UserDetailsService {
 
 	}
 
+	
+	public List<User> AllUserValide(){	
+		
+		return userRepository.findByValideTrue();
+	}
+	
+	public List<User> AllUserNotValide(){	
+		
+		return userRepository.findByValideFalse();
+	}
+	
 	public List<User> retrieveAllUserList() {
 		return userRepository.findAll();
 	}

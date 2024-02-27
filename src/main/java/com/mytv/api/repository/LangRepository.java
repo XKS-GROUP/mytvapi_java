@@ -7,5 +7,5 @@ import com.mytv.api.model.gestMedia.Language;
 
 @Repository
 public interface LangRepository extends  JpaRepository<Language, Long>{
-
+	Language findByName(String name);
 }

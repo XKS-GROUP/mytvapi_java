@@ -32,6 +32,11 @@ public class EpisodeService {
 		return rep.findAll();
 	}
 	
+	public List<Episode> showByNameContain(String name) {
+		
+		return rep.findByNameContaining(name);
+	}
+	
 	public Episode upadte(final Long id, Episode u) {
 		
 		Episode old = rep.findById(id).get();

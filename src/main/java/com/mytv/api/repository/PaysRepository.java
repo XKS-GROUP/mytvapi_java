@@ -7,5 +7,7 @@ import com.mytv.api.model.gestMedia.Pays;
 
 @Repository
 public interface PaysRepository extends JpaRepository<Pays, Long> {
+	
+	Pays findByName(String nom);
 
 }

@@ -27,8 +27,13 @@ public class LangueService {
 	public List<Language> show() {
 		return langRep.findAll();
 	}
-
 	
+	
+	public Language showByName(String name) {
+		
+		return langRep.findByName(name);
+		
+	}
 	public Optional<Language> showById(final Long id) {
 		
 		return langRep.findById(id);

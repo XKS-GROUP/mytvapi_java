@@ -33,6 +33,11 @@ public class SerieService {
 		return rep.findAll();
 	}
 	
+	public List<Serie> showbyNameContaining(String n) {
+		
+		return rep.findByNameContaining(n);
+	}
+	
 	public Serie upadte(final Long id, Serie u) {
 		
 		Serie old = rep.findById(id).get();

@@ -22,9 +22,13 @@ public class SaisonService{
 
 	
 	public List<Saison> show() {
-		// TODO Auto-generated method stub
 		return seasRep.findAll();
 	}
+	
+	public List<Saison> showByNameContaining(String n) {
+		return seasRep.findByNameContaining(n);
+	}
+
 
 	
 	public List<Saison> showById(Long id) {

@@ -8,5 +8,6 @@ import com.mytv.api.model.gestUser.Profil;
 
 @Repository
 public interface ProfilRepository extends  JpaRepository<Profil, Long>{
-
+	
+	Profil findByProfilName(String name);
 }
