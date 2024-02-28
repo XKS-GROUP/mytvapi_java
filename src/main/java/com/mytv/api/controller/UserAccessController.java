@@ -1,5 +1,7 @@
 package com.mytv.api.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,7 @@ import com.mytv.api.security.JWTTokenUtil;
 import com.mytv.api.security.UserRegisterRequestDTO;
 import com.mytv.api.service.gestUser.WUserService;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 
 @RestController
@@ -79,17 +82,40 @@ public class UserAccessController {
 		}
 	}
 	
+
 	@PostMapping("register")
 	public ResponseEntity<Object> register(@Valid @RequestBody UserRegisterRequestDTO request){
 		
 		
 		
-		request.setPassword(passwordEncoder.encode(request.getPassword()));
+		if(userService.findByUsername(request.getUsername()) != null){
+			
+			return EntityResponse.generateResponse("Ce nom existe deja existe deja "+request.getUsername(), HttpStatus.OK, "");
+		}
+		else if (userService.findByUserEmail(request.getEmail()) !=null) {
+			
+			return EntityResponse.generateResponse("Cette adresse email existe deja "+request.getEmail(), HttpStatus.OK, "");
+		}
+			
+		else {
+			
+			
+			
+			request.setPassword(passwordEncoder.encode(request.getPassword()));
+			
+			return EntityResponse.generateResponse("Utilisateur enregistre en tant que "+request.getRoleList(), HttpStatus.OK, userService.createUser(request));
+		}
 		
-		return EntityResponse.generateResponse("Utilisateur enregistre en tant que "+request.getRoleList(), HttpStatus.OK, userService.createUser(request));
+		
 	}
 	
+	@PostMapping("activation")
+    public void activation(@RequestBody Map<String, String> activation) {
+    	
+        userService.activation(activation);
+    }
 	
+	@SecurityRequirement(name = "bearerAuth")
 	@GetMapping("profile")
 	public ResponseEntity<Object> retrieveUserProfile(){
 		return EntityResponse.generateResponse("User Profile", HttpStatus.OK, userService.findCurrentUser());

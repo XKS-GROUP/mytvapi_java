@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mytv.api.model.gestMedia.Pays;
 import com.mytv.api.service.gestMedia.PaysService;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 @RequestMapping("api/v1/front/user")
 public class UserControlleur {
 	PaysService PaysService;

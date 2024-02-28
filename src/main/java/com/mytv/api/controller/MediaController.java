@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -42,6 +43,7 @@ import com.mytv.api.service.gestMedia.RadioService;
 import com.mytv.api.service.gestMedia.SerieService;
 import com.mytv.api.service.gestMedia.ServiceFilm;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -50,6 +52,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @RequestMapping("api/v1/admin/")
 
+@SecurityRequirement(name = "bearerAuth")
 public class MediaController {
 	
 	@Autowired
@@ -326,7 +329,7 @@ public class MediaController {
 	}
 	
 	@Tag(name = "Radio")
-	@PostMapping(path="radios/create")
+	@PostMapping(path="radios/create", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE } )//MULTIPART_FORM_DATA_VALUE
 	public Radio createR(@Valid @ModelAttribute Radio r, @RequestParam("file") MultipartFile file) throws IOException {	
 	
 			//Enregistrement du fichier img

@@ -1,8 +1,10 @@
 package com.mytv.api.service.gestUser;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -33,6 +35,9 @@ public class WUserService implements UserDetailsService {
 
 	@Autowired
 	private IUserRoleRepository userRoleRepository;
+	
+	@Autowired
+	private ValidationService validationService;
 
 	@Autowired
 	WRoleService roleService;
@@ -62,6 +67,11 @@ public class WUserService implements UserDetailsService {
 	public User findByUsername(String username) {
 		return userRepository.findByUsername(username);
 	}
+	
+	public User findByUserEmail(String email) {
+		
+		return userRepository.findByEmail(email);
+	}
 
 	public String createUser(UserRegisterRequestDTO request) {
 		try {
@@ -78,7 +88,9 @@ public class WUserService implements UserDetailsService {
 			} else {
 				addUserRole(user, roleService.findRoleByName("ROLE_ADMIN"));
 			}
-
+			
+			//Envoi du mail pour la validation de son compte
+			validationService.enregistrer(user);
 			return "Un nouvel utilisateur a été creer";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -102,7 +114,8 @@ public class WUserService implements UserDetailsService {
 			} else {
 				addUserRole(user, roleService.findRoleByName("ROLE_USER"));
 			}
-
+			//Envoi du mail pour la validation de son compte
+			validationService.enregistrer(user);
 			return "Un nouvel utilisateur a été creer";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -110,6 +123,17 @@ public class WUserService implements UserDetailsService {
 		}
 
 	}
+
+    public void activation(Map<String, String> activation) {
+        com.mytv.api.model.gestUser.Validation validation = this.validationService.lireEnFonctionDuCode(activation.get("code"));
+        if(Instant.now().isAfter(validation.getExpiration())){
+            throw  new RuntimeException("Votre code a expiré");
+        }
+        User usr = userRepository.findById(validation.getUtilisateur().getId()).orElseThrow(() -> new RuntimeException("Cette utilisateur n existe pas"));
+        usr.setValide(true);
+        
+        userRepository.save(usr);
+    }
 
 	
 	public List<User> AllUserValide(){	
