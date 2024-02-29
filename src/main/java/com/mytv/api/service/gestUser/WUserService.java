@@ -171,6 +171,7 @@ public class WUserService implements UserDetailsService {
 	}
 
 	public User findCurrentUser() {
+		
 		return userRepository.findById(SecurityPrincipal.getInstance().getLoggedInPrincipal().getId()).get();
 
 	}

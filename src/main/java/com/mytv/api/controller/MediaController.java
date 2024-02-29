@@ -279,7 +279,7 @@ public class MediaController {
 	
 	
 	@Tag(name = "Categorie Podcast")
-	@PostMapping(path="catpod/create")
+	@PostMapping(path="catpod/create", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
 
 	public CatPodcast createCP(@Valid @RequestBody CatPodcast u) {
 		

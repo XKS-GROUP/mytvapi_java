@@ -35,8 +35,8 @@ public class ValidationService {
         String code = String.format("%06d", randomInteger);
 
         validation.setCode(code);
-        this.validationRepository.save(validation);
-        this.notificationService.envoyer(validation);
+        validationRepository.save(validation);
+        notificationService.envoyer(validation);
     }
 
     public Validation lireEnFonctionDuCode(String code) {

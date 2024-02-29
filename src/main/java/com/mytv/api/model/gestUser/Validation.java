@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -20,11 +22,15 @@ public class Validation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @JsonIgnoreProperties
     private Instant creation;
+    @JsonIgnoreProperties
     private Instant expiration;
+    @JsonIgnoreProperties
     private Instant activation;
+    
     private String code;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne//(cascade = CascadeType.ALL)
     private User utilisateur;
     
 	public int getId() {

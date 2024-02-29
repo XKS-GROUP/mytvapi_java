@@ -1,6 +1,10 @@
 package com.mytv.api.controller;
 
+import static java.time.temporal.ChronoUnit.MINUTES;
+
+import java.time.Instant;
 import java.util.Map;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,11 +22,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mytv.api.model.gestUser.User;
+import com.mytv.api.model.gestUser.Validation;
+import com.mytv.api.repository.ValidationRepository;
 import com.mytv.api.security.AuthenticationRequest;
 import com.mytv.api.security.AuthenticationResponse;
 import com.mytv.api.security.EntityResponse;
 import com.mytv.api.security.JWTTokenUtil;
 import com.mytv.api.security.UserRegisterRequestDTO;
+import com.mytv.api.service.gestUser.NotificationService;
+import com.mytv.api.service.gestUser.ValidationService;
 import com.mytv.api.service.gestUser.WUserService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -43,6 +52,12 @@ public class UserAccessController {
 
 	@Autowired
 	PasswordEncoder passwordEncoder;
+	
+	@Autowired
+    private ValidationRepository validationRepository;
+	
+	@Autowired
+    private NotificationService notificationService;
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ResponseEntity<Object> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest)
@@ -90,11 +105,11 @@ public class UserAccessController {
 		
 		if(userService.findByUsername(request.getUsername()) != null){
 			
-			return EntityResponse.generateResponse("Ce nom existe deja existe deja "+request.getUsername(), HttpStatus.OK, "");
+			return EntityResponse.generateResponse("Ce nom existe deja existe deja "+request.getUsername(), HttpStatus.CONFLICT, "");
 		}
 		else if (userService.findByUserEmail(request.getEmail()) !=null) {
 			
-			return EntityResponse.generateResponse("Cette adresse email existe deja "+request.getEmail(), HttpStatus.OK, "");
+			return EntityResponse.generateResponse("Cette adresse email existe deja "+request.getEmail(), HttpStatus.CONFLICT, "");
 		}
 			
 		else {
@@ -114,6 +129,52 @@ public class UserAccessController {
     	
         userService.activation(activation);
     }
+	
+	@SecurityRequirement(name = "bearerAuth")
+	@GetMapping("newcode")
+    public ResponseEntity<Object> newcode() {
+    		
+		    
+		    
+		    User user = userService.findCurrentUser();
+		    
+		    if(validationRepository.findByUtilisateurId(user.getId()) != null) {
+		    	
+		    	validationRepository.deleteById(validationRepository.findByUtilisateurId(user.getId()).getId());
+		    	
+		    	//return EntityResponse.generateResponse("Aucun utilisateur connecté, veuillez vérifier que vous ête bien authentiier", HttpStatus.BAD_REQUEST, validationRepository.findByUtilisateurId(user.getId()));
+		    }
+		    	    
+		    
+		    Validation validation = new Validation();
+	        validation.setUtilisateur(user);
+	        
+	        Instant creation = Instant.now();
+	        validation.setCreation(creation);
+	        Instant expiration = creation.plus(10, MINUTES);
+	        validation.setExpiration(expiration);
+	        Random random = new Random();
+	        int randomInteger = random.nextInt(999999);
+	        String code = String.format("%06d", randomInteger);
+
+	        validation.setCode(code);
+	        validationRepository.save(validation);
+	        notificationService.envoyer(validation);
+		  
+	        
+	        return EntityResponse.generateResponse("User Profile", HttpStatus.OK, "");
+	        
+		    
+	        
+    }
+	
+	
+	@SecurityRequirement(name = "bearerAuth")
+	@GetMapping("currentUser")
+	public User currentUser() {
+		
+		return userService.findCurrentUser();
+	}
 	
 	@SecurityRequirement(name = "bearerAuth")
 	@GetMapping("profile")
