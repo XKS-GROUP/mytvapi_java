@@ -43,6 +43,8 @@ public class Radio {
 	@Column(columnDefinition = "TEXT", nullable = false)
 	String overview;
 
+	@NotNull(message = "une image miniature est requise pour une radio")
+	String backdrop_path;
 	String poster;
 	
 	@NotNull(message = "ce champ ne peut etre vide, une valeur par defaut doit etre attribuer")
@@ -139,9 +141,5 @@ public class Radio {
 	public void setCountry(Long country) {
 		this.country = country;
 	}
-
-	
-	
-	
 
 }

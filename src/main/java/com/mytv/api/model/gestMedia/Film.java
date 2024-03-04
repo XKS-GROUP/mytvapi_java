@@ -1,9 +1,14 @@
 package com.mytv.api.model.gestMedia;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.data.annotation.CreatedDate;
 
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,9 +28,11 @@ public class Film {
 	@Column(name = "idFilm")
 	Long idFilm;
 	
+	Long IMDbId;
+	
 	@NotBlank(message = "ce champ ne peut etre vide, un film doit forcement posseder un nom")
 	@Column(nullable = false)
-	String name ;
+	String name;
 	
 	@NotBlank(message = "ce champ ne peut etre vide, une description est requise pour un film")
 	@Column(nullable = false)
@@ -33,17 +40,48 @@ public class Film {
 	
 	boolean Upcoming;
 	
-	String Content; 
-	
-	String Rating;
-		
-	String posterUrl;
-	
-	String trailerUrl;
-	
-	String movieFile;
+	@CreatedDate
+	Date addDate;
 	
 	Date releaseDate;
+	
+	String IMDbRating;
+	
+	String ContentRating;
+	
+	Long budget;
+	
+	
+	String trailerUrl;
+	String trailer;
+	
+	@Column(nullable = false, columnDefinition = "boolean default false")
+	Boolean movieAccess;
+	
+	@NotNull(message = "une image miniature est requise pour un film")
+	String backdrop_path;
+	
+	String poster;
+	
+	String Langue;
+	
+	String popularity;
+	
+	String vote_average;
+	
+	String vote_count;
+	
+	//@NotNull(message = "un fichier video initial est requis pour un film")
+	String videoFile;
+	
+	String videoFile480pLocal;
+	String videoFile480pUrl;
+	
+	String videoFile720pLocal;
+	String videoFile720pUrl;
+	
+	String videoFile1080pLocal;
+	String videoFile1080pUrl;
 	
 	@Column(nullable = false, columnDefinition = "boolean default true")
 	boolean status;
@@ -51,11 +89,15 @@ public class Film {
 	@Column(nullable = false, columnDefinition = "boolean default false")
 	boolean download;
 	
-	String downloadURL;
+	String  downloadURL;
 	
-	Long country;
+	@Column(nullable = false, columnDefinition = "boolean default false")
+	Boolean adult;
 	
-	int duration;
+	
+	List <String> acteurList = new ArrayList<>();
+	
+	List<String> genreList = new ArrayList<>();
 
 	public Long getIdFilm() {
 		return idFilm;
@@ -63,6 +105,14 @@ public class Film {
 
 	public void setIdFilm(Long idFilm) {
 		this.idFilm = idFilm;
+	}
+
+	public Long getIMDbId() {
+		return IMDbId;
+	}
+
+	public void setIMDbId(Long iMDbId) {
+		IMDbId = iMDbId;
 	}
 
 	public String getName() {
@@ -81,7 +131,7 @@ public class Film {
 		this.overview = overview;
 	}
 
-	public boolean getUpcoming() {
+	public boolean isUpcoming() {
 		return Upcoming;
 	}
 
@@ -89,28 +139,45 @@ public class Film {
 		Upcoming = upcoming;
 	}
 
-	public String getContent() {
-		return Content;
+	public Date getAddDate() {
+		return addDate;
 	}
 
-	public void setContent(String content) {
-		Content = content;
+	public void setAddDate(Date addDate) {
+		this.addDate = addDate;
 	}
 
-	public String getRating() {
-		return Rating;
+	public Date getReleaseDate() {
+		return releaseDate;
 	}
 
-	public void setRating(String rating) {
-		Rating = rating;
+	public void setReleaseDate(Date releaseDate) {
+		this.releaseDate = releaseDate;
 	}
 
-	public String getPosterUrl() {
-		return posterUrl;
+	public String getIMDbRating() {
+		return IMDbRating;
 	}
 
-	public void setPosterUrl(String posterUrl) {
-		this.posterUrl = posterUrl;
+	
+	public void setIMDbRating(String iMDbRating) {
+		IMDbRating = iMDbRating;
+	}
+
+	public String getContentRating() {
+		return ContentRating;
+	}
+
+	public void setContentRating(String contentRating) {
+		ContentRating = contentRating;
+	}
+
+	public Long getBudget() {
+		return budget;
+	}
+
+	public void setBudget(Long budget) {
+		this.budget = budget;
 	}
 
 	public String getTrailerUrl() {
@@ -121,12 +188,125 @@ public class Film {
 		this.trailerUrl = trailerUrl;
 	}
 
-	public Date getReleaseDate() {
-		return releaseDate;
+	public String getTrailer() {
+		return trailer;
 	}
 
-	public void setReleaseDate(Date releaseDate) {
-		this.releaseDate = releaseDate;
+	public void setTrailer(String trailer) {
+		this.trailer = trailer;
+	}
+
+	public Boolean getMovieAccess() {
+		return movieAccess;
+	}
+
+	public void setMovieAccess(Boolean movieAccess) {
+		this.movieAccess = movieAccess;
+	}
+
+	public String getBackdrop_path() {
+		return backdrop_path;
+	}
+
+	public void setBackdrop_path(String backdrop_path) {
+		this.backdrop_path = backdrop_path;
+	}
+
+
+	public String getLangue() {
+		return Langue;
+	}
+
+	public void setLangue(String langue) {
+		Langue = langue;
+	}
+
+	public String getPopularity() {
+		return popularity;
+	}
+
+	public void setPopularity(String popularity) {
+		this.popularity = popularity;
+	}
+
+	public String getVote_average() {
+		return vote_average;
+	}
+
+	public void setVote_average(String vote_average) {
+		this.vote_average = vote_average;
+	}
+
+	public String getVote_count() {
+		return vote_count;
+	}
+
+	public void setVote_count(String vote_count) {
+		this.vote_count = vote_count;
+	}
+
+	public String getVideoFile() {
+		return videoFile;
+	}
+
+	public void setVideoFile(String videoFile) {
+		this.videoFile = videoFile;
+	}
+
+	public String getVideoFile480pLocal() {
+		return videoFile480pLocal;
+	}
+
+	public void setVideoFile480pLocal(String videoFile480pLocal) {
+		this.videoFile480pLocal = videoFile480pLocal;
+	}
+
+	public String getVideoFile480pUrl() {
+		return videoFile480pUrl;
+	}
+
+	public void setVideoFile480pUrl(String videoFile480pUrl) {
+		this.videoFile480pUrl = videoFile480pUrl;
+	}
+
+	public String getVideoFile720pLocal() {
+		return videoFile720pLocal;
+	}
+
+	public void setVideoFile720pLocal(String videoFile720pLocal) {
+		this.videoFile720pLocal = videoFile720pLocal;
+	}
+
+	public String getVideoFile720pUrl() {
+		return videoFile720pUrl;
+	}
+
+	public void setVideoFile720pUrl(String videoFile720pUrl) {
+		this.videoFile720pUrl = videoFile720pUrl;
+	}
+
+	public String getVideoFile1080pLocal() {
+		return videoFile1080pLocal;
+	}
+
+	public void setVideoFile1080pLocal(String videoFile1080pLocal) {
+		this.videoFile1080pLocal = videoFile1080pLocal;
+	}
+
+	public String getVideoFile1080pUrl() {
+		return videoFile1080pUrl;
+	}
+
+	public void setVideoFile1080pUrl(String videoFile1080pUrl) {
+		this.videoFile1080pUrl = videoFile1080pUrl;
+	}
+
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
 	}
 
 	public boolean isDownload() {
@@ -145,39 +325,36 @@ public class Film {
 		this.downloadURL = downloadURL;
 	}
 
-	public boolean isStatus() {
-		return status;
+	public Boolean getAdult() {
+		return adult;
 	}
 
-	public void setStatus(boolean status) {
-		this.status = status;
+	public void setAdult(Boolean adult) {
+		this.adult = adult;
 	}
 
-	public Long getCountry() {
-		return country;
+	public List<String> getActeurList() {
+		return acteurList;
 	}
 
-	public void setCountry(Long country) {
-		this.country = country;
+	public void setActeurList(List<String> acteurList) {
+		this.acteurList = acteurList;
 	}
 
-	public int getDuration() {
-		return duration;
+	public List<String> getGenreList() {
+		return genreList;
 	}
 
-	public void setDuration(int duration) {
-		this.duration = duration;
+	public void setGenreList(List<String> genreList) {
+		this.genreList = genreList;
 	}
 
-	public String getMovieFile() {
-		return movieFile;
+	public String getPoster() {
+		return poster;
 	}
 
-	public void setMovieFile(String movieFile) {
-		this.movieFile = movieFile;
+	public void setPoster(String poster) {
+		this.poster = poster;
 	}
 	
-	
-	
-
 }

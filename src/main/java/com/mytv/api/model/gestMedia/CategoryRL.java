@@ -9,15 +9,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 
 @Entity
 @NoArgsConstructor
-@Getter
-@Setter
+
 public class CategoryRL {
 	
 	@Id
@@ -31,15 +28,16 @@ public class CategoryRL {
 	@Column(nullable = false, columnDefinition = "boolean default false")
 	private boolean status;
 	
+	@NotBlank(message = "Une image est requise")
+	@Column(nullable = false)
+	private String img;
+	
 	@OneToMany(mappedBy = "idRadio")
 	List<Radio> radio;
 	
 	@OneToMany(mappedBy = "idLiveTv")
 	List<LiveTv> liveTv;
 	
-
-
-
 
 	public Long getIdcat() {
 		return idcat;
@@ -89,6 +87,16 @@ public class CategoryRL {
 
 	public void setLiveTv(List<LiveTv> liveTv) {
 		this.liveTv = liveTv;
+	}
+
+
+	public String getImg() {
+		return img;
+	}
+
+
+	public void setImg(String img) {
+		this.img = img;
 	}
 	
 	

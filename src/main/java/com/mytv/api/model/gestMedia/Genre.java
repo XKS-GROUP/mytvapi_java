@@ -34,6 +34,10 @@ public class Genre {
 	@Column(nullable = false, columnDefinition = "boolean default false")
 	boolean status;
 	
+	@NotBlank(message = "Une image est requise")
+	@Column(nullable = false)
+	private String img;
+	
 	@OneToMany(mappedBy = "idFilm")
 	List<Film> film;
 	
@@ -80,9 +84,13 @@ public class Genre {
 	public void setSerie(List<Serie> serie) {
 		this.serie = serie;
 	}
-	
-	
-	
-	
+
+	public String getImg() {
+		return img;
+	}
+
+	public void setImg(String img) {
+		this.img = img;
+	}
 	
 }

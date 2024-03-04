@@ -136,7 +136,7 @@ public class AdminAccessController {
 	
 	
 	@Tag(name = "Role")
-	@Operation(summary = "Creer un role", description = "Returne la liste de tous les Roles")
+	@Operation(summary = "supp role", description = "Returne la liste de tous les Roles")
 	@GetMapping("role/delete/{id}")
 	public ResponseEntity<Object> deleteRole(Long id){
 		return EntityResponse.generateResponse("role supp...........", HttpStatus.OK,

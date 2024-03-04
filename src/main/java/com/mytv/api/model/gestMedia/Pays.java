@@ -34,7 +34,6 @@ public class Pays {
 	@Column(nullable = false)
 	String slug ;
 	
-	
 	@OneToMany(mappedBy = "idRadio")
 	List<Radio> radio;
 	

@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -31,6 +33,7 @@ import com.mytv.api.model.gestMedia.Pays;
 import com.mytv.api.model.gestMedia.Podcast;
 import com.mytv.api.model.gestMedia.Radio;
 import com.mytv.api.model.gestMedia.Serie;
+import com.mytv.api.security.EntityResponse;
 import com.mytv.api.service.gestMedia.CatPodcastService;
 import com.mytv.api.service.gestMedia.CategoryLrService;
 import com.mytv.api.service.gestMedia.EpisodeService;
@@ -80,7 +83,7 @@ public class MediaController {
 	@Autowired
 	private LangueService langService;
 	
-	
+	private final String asset ="/RESSOURCES/IMG/";
 	
 	//Langue
 	
@@ -175,9 +178,19 @@ public class MediaController {
 	@Tag(name = "genre")
 	@PostMapping(path="genres/create")
 
-	public Genre createG(@Valid @ModelAttribute Genre u){
+	public Genre createG(
+			@Valid @ModelAttribute Genre g, 
+			@RequestParam("img_file") MultipartFile file) throws IOException{
+			
+		//Enregistrement du fichier img
+		String pathImg = metadataService.uploadR3(file, this.asset);
 		
-			return genreService.create(u);
+		if (file.isEmpty())
+            throw new IllegalStateException("Vous n'avez charger aucune image");	
+		
+		g.setImg(pathImg);
+		
+		return genreService.create(g);
 	}
 	
 	@Tag(name = "genre", description = " Liste des genres")
@@ -211,9 +224,19 @@ public class MediaController {
 	
 	@Tag(name = "genre", description = " Liste des genres")
 	@PutMapping("genres/update/{id}")
-	public Genre updateG(@PathVariable Long id, @RequestBody Genre u){
+	public Genre updateG(@PathVariable Long id, 
+			@RequestBody Genre g, 
+			@RequestParam("img_file") MultipartFile file) throws IOException{
 		
-		return genreService.upadte(id, u);
+		//Enregistrement du fichier img
+		String pathImg = metadataService.uploadR3(file, this.asset);
+		
+		if (file.isEmpty())
+            throw new IllegalStateException("Vous n'avez charger aucune image");	
+		
+		g.setImg(pathImg);
+		
+		return genreService.upadte(id, g);
 		
 	}
 	
@@ -228,13 +251,22 @@ public class MediaController {
 	
 	
 	
-	
 	//Categorie LiveTv ou Radio 
 	
 	@Tag(name = "Categorie Radio et live ")
-	@PostMapping(path="catrl/create")
+	@PostMapping(path="catrl/create", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
 
-	public CategoryRL createCRL(@Valid @RequestBody CategoryRL u) {
+	public CategoryRL createCRL(
+			@Valid @ModelAttribute CategoryRL u, 
+			@RequestParam("img_file") MultipartFile file) 
+					throws IOException {
+		
+		String pathImg = metadataService.uploadR3(file, this.asset);
+		
+		if (file.isEmpty())
+            throw new IllegalStateException("Vous n'avez charger aucune image");	
+		
+		u.setImg(pathImg);
 		
 		return catLrService.create(u);
 	}
@@ -257,9 +289,19 @@ public class MediaController {
 	
 	
 	@Tag(name = "Categorie Radio et live ")
-	@PutMapping("catrl/update/{id}")
-	public CategoryRL updateCRL(@PathVariable Long id, @RequestBody CategoryRL u){
+	@PutMapping(path="catrl/update/{id}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+	public CategoryRL updateCRL(
+			@PathVariable Long id, 
+			@ModelAttribute CategoryRL u, 
+			@RequestParam("img_file") MultipartFile file) 
+			throws IOException{
 		
+		String pathImg = metadataService.uploadR3(file, this.asset);
+		
+		if (file.isEmpty())
+            throw new IllegalStateException("Vous n'avez charger aucune image");	
+		
+		u.setImg(pathImg);
 		return catLrService.upadte(id, u);
 		
 	}
@@ -271,17 +313,30 @@ public class MediaController {
 		
 		catLrService.delete(id);
 		
+		
 		return true;
 	}
 	
 	
 	//Categorie Podcast
 	
-	
+
 	@Tag(name = "Categorie Podcast")
+	
 	@PostMapping(path="catpod/create", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
 
-	public CatPodcast createCP(@Valid @RequestBody CatPodcast u) {
+	public CatPodcast createCP(
+			@Valid @ModelAttribute CatPodcast u,
+			@RequestParam("img_file") MultipartFile file) 
+					throws IOException {
+		
+		String pathImg = metadataService.uploadR3(file, this.asset);
+		
+		if (file.isEmpty())
+			
+            throw new IllegalStateException("Vous n'avez charger aucune image");	
+		
+		u.setImg(pathImg);
 		
 		return catpodService.create(u);
 	}
@@ -303,9 +358,21 @@ public class MediaController {
 	}
 	
 	@Tag(name = "Categorie Podcast")
-	@PutMapping("catpod/update/{id}")
-	public CatPodcast updateCP(@PathVariable Long id, @RequestBody CatPodcast u){
+	@PutMapping(path="catpod/update/{id}")
+	public CatPodcast updateCP(
+			
+			@PathVariable Long id, 
+			@ModelAttribute CatPodcast u, 
+			@RequestParam("img_file") MultipartFile file) 
+					throws IOException{
 		
+		String pathImg = metadataService.uploadR3(file, this.asset);
+		
+		if (file.isEmpty())
+			
+            throw new IllegalStateException("Vous n'avez charger aucune image");	
+		
+		u.setImg(pathImg);
 		return catpodService.upadte(id, u);
 		
 	}
@@ -330,19 +397,29 @@ public class MediaController {
 	
 	@Tag(name = "Radio")
 	@PostMapping(path="radios/create", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE } )//MULTIPART_FORM_DATA_VALUE
-	public Radio createR(@Valid @ModelAttribute Radio r, @RequestParam("file") MultipartFile file) throws IOException {	
+	public  ResponseEntity<Object> createR(@Valid 
+			@ModelAttribute Radio r, 
+			@RequestParam("poster_file") MultipartFile file, 
+			@RequestParam("backdrop_file") MultipartFile backdrop) throws IOException {	
 	
 			//Enregistrement du fichier img
-			String pathImg = metadataService.uploadR3(file, "");
-			if (file.isEmpty())
-	            throw new IllegalStateException("Vous n'avez charger aucune image");
+			String pathImg = metadataService.uploadR3(file, this.asset);
 			
+			String pathdrop = metadataService.uploadR3(file, this.asset);
 			
+			if (!file.isEmpty() && !backdrop.isEmpty()) {
+				if(!file.getContentType().startsWith("image/") && !backdrop.getContentType().startsWith("image/")){
+									
+					return EntityResponse.generateResponse("Type de media non supporter", HttpStatus.UNSUPPORTED_MEDIA_TYPE, " uploader une image");
+				}
+
+			}
+	            
 			r.setPoster(pathImg);
+			r.setBackdrop_path(pathdrop);
 		
 			//Save du tout
-			return radioService.create(r);
-		
+			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, radioService.create(r));
 	}
 	
 	@Tag(name = "Radio")
@@ -360,10 +437,34 @@ public class MediaController {
 	}
 	
 	@Tag(name = "Radio")
-	@PutMapping("radios/update/{id}")
-	public Radio updateR(@PathVariable Long id, @RequestBody Radio u){
+	@PutMapping(path="radios/update/{id}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+	public ResponseEntity<Object> updateR(@PathVariable Long id, 
+			@ModelAttribute Radio r, 
+			@RequestParam("poster_file") MultipartFile file, 
+			@RequestParam("backdrop_file") MultipartFile backdrop) 
+			throws IOException {
 		
-		return radioService.upadte(id, u);
+		
+			//Enregistrement du fichier img
+			String pathImg = metadataService.uploadR3(file, this.asset);
+			
+			String pathdrop = metadataService.uploadR3(file, this.asset);
+			
+			if (!file.isEmpty() && !backdrop.isEmpty()) {
+				if(!file.getContentType().startsWith("image/") && !backdrop.getContentType().startsWith("image/")){
+									
+					return EntityResponse.generateResponse("Type de media non supporter", HttpStatus.UNSUPPORTED_MEDIA_TYPE, " uploader une image");
+				}
+
+		}
+            
+		r.setPoster(pathImg);
+		r.setBackdrop_path(pathdrop);
+	
+		//Save du tout
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, radioService.upadte(id, r));
+		
+		
 		
 	}
 	
@@ -379,10 +480,26 @@ public class MediaController {
 	//ROUTES LiveTV
 	
 	@Tag(name = "LiveTv")
-	@PostMapping(path="lives/create")
-	public LiveTv createL(@RequestBody LiveTv u) {
+	@PostMapping(path="lives/create", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+	public ResponseEntity<Object> createL(
+			@Valid @ModelAttribute LiveTv lt, 
+			@RequestParam("tvlogo") MultipartFile file) 
+					throws IOException {
 		
-		return liveService.create(u);
+		//Enregistrement du fichier img
+		String pathImg = metadataService.uploadR3(file, "/LIVE/"+lt.getName().replaceAll("\\s+", "")+"/LOGO/");
+				
+		if (!file.isEmpty()) {
+			if(!file.getContentType().startsWith("image/") ){
+								
+				return EntityResponse.generateResponse("Type de media non supporter", HttpStatus.UNSUPPORTED_MEDIA_TYPE, " uploader une image");
+			}
+
+		}
+	        
+		lt.setTvLogo(pathImg);
+		
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, liveService.create(lt));
 	}
 	
 	@Tag(name = "LiveTv")
@@ -407,10 +524,28 @@ public class MediaController {
 	}
 	
 	@Tag(name = "LiveTv")
-	@PutMapping("lives/update/{id}")
-	public LiveTv updateL(@PathVariable Long id, @RequestBody LiveTv u){
+	@PutMapping(path="lives/update/{id}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+	public  ResponseEntity<Object> updateL(
+			@PathVariable Long id, 
+			@Valid @ModelAttribute LiveTv lt, 
+			@RequestParam("tvlogo") MultipartFile file) 
+					throws IOException {
 		
-		return liveService.upadte(id, u);
+		//Enregistrement du fichier img
+		String pathImg = metadataService.uploadR3(file, "/LIVE/"+lt.getName().replaceAll("\\s+", "")+"/LOGO/");
+				
+		if (!file.isEmpty()) {
+			if(!file.getContentType().startsWith("image/") ){
+								
+				return EntityResponse.generateResponse("Type de media non supporter", HttpStatus.UNSUPPORTED_MEDIA_TYPE, " uploader une image");
+			}
+
+		}
+	        
+		lt.setTvLogo(pathImg);
+		
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, liveService.create(lt));
+		
 		
 	}
 	
@@ -432,20 +567,41 @@ public class MediaController {
 		return podcastservice.show();
 	}
 	
+	
 	@Tag(name = "Podcast")
-	@PostMapping(path="podcasts/create")
-	public Podcast createP(@ModelAttribute Podcast p, @RequestParam("file") MultipartFile file, @RequestParam("movie") MultipartFile movie) throws IOException {
+	@PostMapping(path="podcasts/create", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+	public ResponseEntity<Object> createP(
+			@ModelAttribute Podcast p, 
+			@RequestParam("poster_f") MultipartFile poster,
+			@RequestParam("backdrop_f") MultipartFile backdrop_path,
+			@RequestParam("file_f") MultipartFile file)
 		
+			throws IOException {
+		
+			if(!backdrop_path.getContentType().startsWith("image/") || !poster.getContentType().startsWith("image/")){
+				
+				return EntityResponse.generateResponse("Type de media non supporter", HttpStatus.UNSUPPORTED_MEDIA_TYPE, " uploader une video");
+			}
 			
-			if (file.isEmpty() || movie.isEmpty())
-	            throw new IllegalStateException("Vous n'avez charger aucune image");
-			String pathImg = metadataService.uploadR3(file, "");
+			if(!file.getContentType().startsWith("audio/") ){
+				
+				return EntityResponse.generateResponse("Type de media non supporter", HttpStatus.UNSUPPORTED_MEDIA_TYPE, " uploader un fichier audio");
+			}
+			
+	            
+			
+			String pathImg           = metadataService.uploadR3(poster, "/PODCAST/"+p.getName().replaceAll("\\s+", "")+"/POSTER");
+			String pathBackdrop_path = metadataService.uploadR3(backdrop_path, "/PODCAST/"+p.getName().replaceAll("\\s+", "")+"/BD");
+			String pathFile          = metadataService.uploadR3(file, "/PODCAST/"+p.getName().replaceAll("\\s+", "")+"/FILE");
 			
 			p.setPoster(pathImg);
+			p.setBackdrop_path(pathBackdrop_path);
+			p.setFile(pathFile);
 		
 			//Save du tout
-			return podcastservice.create(p);
-		
+			
+			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, podcastservice.create(p) );
+	
 	}
 	
 	
@@ -464,10 +620,43 @@ public class MediaController {
 	}
 	
 	@Tag(name = "Podcast")
-	@PutMapping("podcasts/update/{id}")
-	public Podcast updateP(@PathVariable Long id, @RequestBody Podcast u){
+	@PutMapping(path="podcasts/update/{id}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+	public ResponseEntity<Object> updateP(
+			@PathVariable Long id,
+			@ModelAttribute Podcast p,
+			@RequestParam("poster") MultipartFile poster,
+			@RequestParam("backdrop_path") MultipartFile backdrop_path,
+			@RequestParam("file") MultipartFile file)
 		
-		return podcastservice.upadte(id, u);
+			throws IOException {
+		
+			
+			if (!backdrop_path.isEmpty() && !poster.isEmpty()) {
+				
+				if(!backdrop_path.getContentType().startsWith("image/") && !poster.getContentType().startsWith("image/")){
+					
+					return EntityResponse.generateResponse("Type de media non supporter", HttpStatus.UNSUPPORTED_MEDIA_TYPE, " uploader une video");
+				}
+			}
+			
+			if (!file.isEmpty()) {
+				
+				if(!file.getContentType().startsWith("audio/") ){
+					
+					return EntityResponse.generateResponse("Type de media non supporter", HttpStatus.UNSUPPORTED_MEDIA_TYPE, " uploader une video");
+				}
+			}
+	            
+			
+			String pathImg = metadataService.uploadR3(file, "/PODCAST/"+p.getName()+"POSTER");
+			String pathBackdrop_path = metadataService.uploadR3(file, "/PODCAST/"+p.getName()+"BD");
+			String pathFile = metadataService.uploadR3(file, "/PODCAST/"+p.getName()+"FILE");
+			p.setPoster(pathImg);
+			p.setBackdrop_path(pathBackdrop_path);
+			p.setFile(pathFile);
+			
+			//Save du tout
+			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, podcastservice.upadte(id, p) );
 		
 	}
 	
@@ -491,23 +680,84 @@ public class MediaController {
 	}
 	
 	@Tag(name = "Movie")
-	@PostMapping(path="movies/create")
-	public Film createM(@ModelAttribute Film u, @RequestParam("file") MultipartFile file, @RequestParam("movie") MultipartFile movie) throws IOException {
-		
-
-			if (file.isEmpty() || movie.isEmpty())
-	            throw new IllegalStateException("Vous n'avez charger aucune image");
+	@PostMapping(path="movies/create", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+	public ResponseEntity<Object> createM(
+			@ModelAttribute Film film, 
+			@RequestParam("backdrop_file") MultipartFile backdrop_path, 
+			@RequestParam("poster_file") MultipartFile poster,
+			@RequestParam("videoFile_file") MultipartFile videoFile,
+			@RequestParam("videoFile480pLocal_file") MultipartFile videoFile480pLocal,
+			@RequestParam("videoFile720pLocal_file") MultipartFile videoFile720pLocal,
+			@RequestParam("videoFile1080pLocal_file") MultipartFile videoFile1080pLocal,
+			@RequestParam("trailer_file") MultipartFile trailer) 
+			throws IOException {
+			
+			
+			if (!backdrop_path.isEmpty() && !poster.isEmpty()) {
+				
+				if(!backdrop_path.getContentType().startsWith("image/") && !poster.getContentType().startsWith("image/")){
+					
+					return EntityResponse.generateResponse("Type de media non supporter", HttpStatus.UNSUPPORTED_MEDIA_TYPE, " uploader une video");
+				}
+			}
+			
+			//
+			if(!videoFile.isEmpty() 
+					|| videoFile480pLocal.isEmpty() 
+					|| videoFile720pLocal.isEmpty() 
+					|| videoFile1080pLocal.isEmpty()) {
+				
+				if(!videoFile.getContentType().startsWith("video/") 
+						|| videoFile480pLocal.getContentType().startsWith("video/") 
+						|| videoFile720pLocal.getContentType().startsWith("video/")  
+						|| videoFile1080pLocal.getContentType().startsWith("video/"))  {
+					
+					return EntityResponse.generateResponse("Type de media non supporter", HttpStatus.UNSUPPORTED_MEDIA_TYPE, "Uploader une image");
+				}
+				
+			}
+				
+				
+			
+			String pathFilm = "/FILM/"+film.getName()+"MOVIE/";
+			String pathTrailer ="FILM/"+film.getName()+"TRAILER/";
+			String pathBack ="FILM/"+film.getName()+"BACKDROP/";
+			String pathPoster ="FILM/"+film.getName()+"POSTER/";
+			
+			
+			
 			//Enregistrement du fichier img
-			String pathImg = metadataService.uploadR3(file, "");
-			String pathmovie = metadataService.uploadR3(movie, "");
+			String backdropPath = metadataService.uploadR3(backdrop_path, pathBack);
+			String postr = metadataService.uploadR3(poster, pathPoster);
+			
+			//Trailer
+			String traile = metadataService.uploadR3(trailer, pathTrailer);
+			
+			//Video enregistrement
+			String videoFil = metadataService.uploadR3(videoFile, pathFilm);
+			
+			//Differents format disponible
+			String videoFile480pL = metadataService.uploadR3(videoFile480pLocal, pathFilm+"/480P/");
+			String videoFile720pL = metadataService.uploadR3(videoFile720pLocal, pathFilm+"/720P/");
+			String videoFile1080pL = metadataService.uploadR3(videoFile1080pLocal, pathFilm+"/1080P/");
+			
 			
 			//Enregistrement du path du fichier
 			
-			u.setPosterUrl(pathImg);
-			u.setDownloadURL(pathmovie);
+			film.setBackdrop_path(backdropPath);
+			film.setPoster(postr);
+			film.setTrailer(traile);
+			film.setVideoFile(videoFil);
+			
+			//Ajot des formats videos
+			
+			film.setVideoFile1080pLocal(videoFile1080pL);
+			film.setVideoFile720pLocal(videoFile720pL);
+			film.setVideoFile480pLocal(videoFile480pL);
 		
 			//Save du tout
-			return filmService.create(u);
+			return EntityResponse.generateResponse("Succes", HttpStatus.CREATED, filmService.create(film));
+		
 		
 	}
 	
@@ -526,23 +776,83 @@ public class MediaController {
 	}
 	
 	@Tag(name = "Movie")
-	@PutMapping("movies/update/{id}")
-	public Film updateM(@PathVariable Long id, @ModelAttribute Film u, @RequestParam("file") MultipartFile file, @RequestParam("movie") MultipartFile movie) throws IOException{
+	@PutMapping(path="movies/update/{id}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+	public ResponseEntity<Object> updateM(@PathVariable Long id,
+			@ModelAttribute Film film, 
+			@RequestParam("backdrop_file") MultipartFile backdrop_path, 
+			@RequestParam("poster_file") MultipartFile poster,
+			@RequestParam("videoFile_file") MultipartFile videoFile,
+			@RequestParam("videoFile480pLocal_file") MultipartFile videoFile480pLocal,
+			@RequestParam("videoFile720pLocal_file") MultipartFile videoFile720pLocal,
+			@RequestParam("videoFile1080pLocal_file") MultipartFile videoFile1080pLocal,
+			@RequestParam("trailer_file") MultipartFile trailer) throws IOException {
+		
+		
+		if (!backdrop_path.isEmpty() && !poster.isEmpty()) {
+			
+			if(!backdrop_path.getContentType().startsWith("image/") && !poster.getContentType().startsWith("image/")){
+				
+				return EntityResponse.generateResponse("Type de media non supporter", HttpStatus.UNSUPPORTED_MEDIA_TYPE, " uploader une image");
+			}
+		}
+		
+		//
+		if(!videoFile.isEmpty() 
+				|| videoFile480pLocal.isEmpty() 
+				|| videoFile720pLocal.isEmpty() 
+				|| videoFile1080pLocal.isEmpty()) {
+			
+			if(!videoFile.getContentType().startsWith("video/") 
+					|| videoFile480pLocal.getContentType().startsWith("video/") 
+					|| videoFile720pLocal.getContentType().startsWith("video/")  
+					|| videoFile1080pLocal.getContentType().startsWith("video/"))  {
+				
+				return EntityResponse.generateResponse("Type de media non supporter", HttpStatus.UNSUPPORTED_MEDIA_TYPE, "Uploader une video");
+			}
+			
+		}
+			
+			
+		
+		String pathFilm = "/FILM/"+film.getName()+"MOVIE/";
+		String pathTrailer ="FILM/"+film.getName()+"TRAILER/";
+		String pathBack ="FILM/"+film.getName()+"BACKDROP/";
+		String pathPoster ="FILM/"+film.getName()+"POSTER/";
+		
 		
 		
 		//Enregistrement du fichier img
+		String backdropPath = metadataService.uploadR3(backdrop_path, pathBack);
+		String postr = metadataService.uploadR3(poster, pathPoster);
 		
-		if (file.isEmpty() || movie.isEmpty())
-            throw new IllegalStateException("Vous n'avez charger aucune image");
-		String pathImg = metadataService.uploadR3(file, "");
-		String pathmovie = metadataService.uploadR3(movie, "");
+		//Trailer
+		String traile = metadataService.uploadR3(trailer, pathTrailer);
+		
+		//Video enregistrement
+		String videoFil = metadataService.uploadR3(videoFile, pathFilm);
+		
+		//Differents format disponible
+		String videoFile480pL = metadataService.uploadR3(videoFile480pLocal, pathFilm+"/480P/");
+		String videoFile720pL = metadataService.uploadR3(videoFile720pLocal, pathFilm+"/720P/");
+		String videoFile1080pL = metadataService.uploadR3(videoFile1080pLocal, pathFilm+"/1080P/");
+		
 		
 		//Enregistrement du path du fichier
 		
-		u.setPosterUrl(pathImg);
-		u.setDownloadURL(pathmovie);
+		film.setBackdrop_path(backdropPath);
+		film.setPoster(postr);
+		film.setTrailer(traile);
+		film.setVideoFile(videoFil);
 		
-		return filmService.upadte(id, u);
+		//Ajout des formats videos
+		
+		film.setVideoFile1080pLocal(videoFile1080pL);
+		film.setVideoFile720pLocal(videoFile720pL);
+		film.setVideoFile480pLocal(videoFile480pL);
+	
+		//Save du tout
+		return EntityResponse.generateResponse("Succes", HttpStatus.CREATED, filmService.upadte(id, film));
+	
 		
 	}
 	
@@ -565,20 +875,47 @@ public class MediaController {
 	}
 	
 	@Tag(name = "Serie")
-	@PostMapping(path="series/create")
-	public Podcast createS(@ModelAttribute Podcast serie, @RequestParam("file") MultipartFile file) throws IOException {
+	@PostMapping(path="series/create", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+	public ResponseEntity<Object> createS(
+			@Valid @ModelAttribute Serie serie, 
+			@RequestParam("backdrop_file") MultipartFile backdrop_path,
+			@RequestParam("poster_file") MultipartFile poster,
+			@RequestParam("trailer_file") MultipartFile trailer ) 
+					throws IOException {
 		
-	
+			
 			//Enregistrement du fichier img
-			String pathImg = metadataService.uploadR3(file, "");
-			if (file.isEmpty())
-	            throw new IllegalStateException("Vous n'avez charger aucune image");
+			String pathbackdrop = metadataService.uploadR3(backdrop_path, "/SERIE/"+serie.getName().replaceAll("\\s+", "")+"/BD");
+			String pathposter = metadataService.uploadR3(poster, "/SERIE/"+serie.getName().replaceAll("\\s+", "")+"/POSTER");
 			
+			//Enregistrement du Trailer
+			String pathtrailer = metadataService.uploadR3(trailer, "/SERIE/"+serie.getName().replaceAll("\\s+", "")+"/TRAILER");
 			
-			serie.setPoster(pathImg);
+			if (!backdrop_path.isEmpty() && !poster.isEmpty()) {
+				
+				if(!backdrop_path.getContentType().startsWith("image/") && !poster.getContentType().startsWith("image/")){
+					
+					return EntityResponse.generateResponse("Type de media non supporter", HttpStatus.UNSUPPORTED_MEDIA_TYPE, " uploader une image");
+				}
+			}
+			
+			if (!trailer.isEmpty() ) {
+							
+				if(!trailer.getContentType().startsWith("video/") ){
+					
+					return EntityResponse.generateResponse("Type de media non supporter", HttpStatus.UNSUPPORTED_MEDIA_TYPE, " uploader une image");
+				}
+			}
+	            
+			
+			//Ajout des path dans la db
+			serie.setPoster(pathposter);
+			serie.setBackdrop_path(pathbackdrop);
+			serie.setTrailer(pathtrailer);
 		
 			//Save du tout
-			return podcastservice.create(serie);
+			return EntityResponse.generateResponse("Type de media non supporter", HttpStatus.CREATED , serieService.create(serie));
+			
 		
 	}
 	
@@ -597,10 +934,49 @@ public class MediaController {
 	}
 	
 	@Tag(name = "Serie")
-	@PutMapping("series/update/{id}")
-	public Serie updateS(@PathVariable Long id, @RequestBody Serie u){
+	@PutMapping(path="series/update/{id}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+	public ResponseEntity<Object> updateS(
+			@PathVariable Long id, 
+			@ModelAttribute Serie serie,
+			@RequestParam("backdrop_file") MultipartFile backdrop_path,
+			@RequestParam("poster_file") MultipartFile poster,
+			@RequestParam("trailer_file") MultipartFile trailer ) 
+					throws IOException {
 		
-		return serieService.upadte(id, u);
+			
+			//Enregistrement du fichier img
+			String pathbackdrop = metadataService.uploadR3(backdrop_path, "/SERIE/"+serie.getName().replaceAll("\\s+", "")+"/BD");
+			String pathposter = metadataService.uploadR3(poster, "/SERIE/"+serie.getName().replaceAll("\\s+", "")+"/POSTER");
+			
+			//Enregistrement du Trailer
+			String pathtrailer = metadataService.uploadR3(trailer, "/SERIE/"+serie.getName().replaceAll("\\s+", "")+"/TRAILER");
+			
+			if (!backdrop_path.isEmpty() && !poster.isEmpty()) {
+				
+				if(!backdrop_path.getContentType().startsWith("image/") && !poster.getContentType().startsWith("image/")){
+					
+					
+					
+					return EntityResponse.generateResponse("Type de media non supporter", HttpStatus.UNSUPPORTED_MEDIA_TYPE, " uploader une image");
+				}
+			}
+			
+			if (!trailer.isEmpty() ) {
+							
+				if(!trailer.getContentType().startsWith("video/") ){
+					
+					return EntityResponse.generateResponse("Type de media non supporter", HttpStatus.UNSUPPORTED_MEDIA_TYPE, " uploader une image");
+				}
+			}
+	            
+			
+			//Ajout des path dans la db
+			serie.setPoster(pathposter);
+			serie.setBackdrop_path(pathbackdrop);
+			serie.setTrailer(pathtrailer);
+		
+			//Save du tout
+			return EntityResponse.generateResponse("Type de media non supporter", HttpStatus.CREATED , serieService.upadte(id, serie));
 		
 	}
 	
@@ -637,32 +1013,164 @@ public class MediaController {
 	}
     
     @Tag(name = "Episode")
-	@PostMapping(path="episodes/create")
-	public Episode createE(@ModelAttribute Episode e, @RequestParam("file") MultipartFile file, @RequestParam("ep") MultipartFile ep) throws IOException {
+	@PostMapping(path="episodes/create", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+	public ResponseEntity<Object> createE(
+			@Valid @ModelAttribute Episode episode, 
+			@RequestParam("backdrop_file") MultipartFile backdrop_path, 
+			@RequestParam("poster_file") MultipartFile poster,
+			@RequestParam("videoFile_file") MultipartFile videoFile,
+			@RequestParam("videoFile480pLocal_file") MultipartFile videoFile480pLocal,
+			@RequestParam("videoFile720pLocal_file") MultipartFile videoFile720pLocal,
+			@RequestParam("videoFile1080pLocal_file") MultipartFile videoFile1080pLocal,
+			@RequestParam("trailer_file") MultipartFile trailer) throws IOException {
 		
+		
+		if (!backdrop_path.isEmpty() && !poster.isEmpty()) {
+			
+			if(!backdrop_path.getContentType().startsWith("image/") && !poster.getContentType().startsWith("image/")){
+				
+				return EntityResponse.generateResponse("Type de media non supporter", HttpStatus.UNSUPPORTED_MEDIA_TYPE, " uploader une image");
+			}
+		}
+		
+		//
+		if(!videoFile.isEmpty() 
+				|| videoFile480pLocal.isEmpty() 
+				|| videoFile720pLocal.isEmpty() 
+				|| videoFile1080pLocal.isEmpty()) {
+			
+			if(!videoFile.getContentType().startsWith("video/") 
+					|| videoFile480pLocal.getContentType().startsWith("video/") 
+					|| videoFile720pLocal.getContentType().startsWith("video/")  
+					|| videoFile1080pLocal.getContentType().startsWith("video/"))  {
+				
+				return EntityResponse.generateResponse("Type de media non supporter", HttpStatus.UNSUPPORTED_MEDIA_TYPE, "Uploader une video");
+			}
+			
+		}
+			
+			
+		
+		String pathFilm = "/EPISODE/"+episode.getName().replaceAll("\\s+", "")+"/MOVIE/";
+		String pathTrailer ="/EPISODE/"+episode.getName().replaceAll("\\s+", "")+"/TRAILER/";
+		String pathBack ="/EPISODE/"+episode.getName().replaceAll("\\s+", "")+"/BACKDROP/";
+		String pathPoster ="/EPISODE/"+episode.getName().replaceAll("\\s+", "")+"/POSTER/";
+		
+		
+		
+		//Enregistrement du fichier img
+		String backdropPath = metadataService.uploadR3(backdrop_path, pathBack);
+		String postr = metadataService.uploadR3(poster, pathPoster);
+		
+		//Trailer
+		String traile = metadataService.uploadR3(trailer, pathTrailer);
+		
+		//Video enregistrement
+		String videoFil = metadataService.uploadR3(videoFile, pathFilm);
+		
+		//Differents format disponible
+		String videoFile480pL = metadataService.uploadR3(videoFile480pLocal, pathFilm+"/480P/");
+		String videoFile720pL = metadataService.uploadR3(videoFile720pLocal, pathFilm+"/720P/");
+		String videoFile1080pL = metadataService.uploadR3(videoFile1080pLocal, pathFilm+"/1080P/");
+		
+		
+		//Enregistrement du path du fichier
+		
+		episode.setThumbnail(backdropPath);
+		episode.setPosterUrl(postr);
+		episode.setTrailer(traile);
+		episode.setVideoFile(videoFil);
+		
+		//Ajout des formats videos
+		
+		episode.setVideoFile1080pLocal(videoFile1080pL);
+		episode.setVideoFile720pLocal(videoFile720pL);
+		episode.setVideoFile480pLocal(videoFile480pL);
 	
-			//Enregistrement du fichier img
-			String pathImg = metadataService.uploadR3(file, "");
-			if (file.isEmpty())
-	            throw new IllegalStateException("Vous n'avez charger aucune image");
-			
-			String pathmovie = metadataService.uploadR3(file, "");
-			
-			
-			e.setPosterUrl(pathImg);
-			
-			e.setVideoFile(pathmovie);
-		
-			//Save du tout
-			return episodeService.create(e);
+		//Save du tout
+		return EntityResponse.generateResponse("Succes", HttpStatus.CREATED, episodeService.create(episode));
+
 		
 	}
 	
     @Tag(name = "Episode")
-	@PutMapping("episodes/update/{id}")
-	public Episode updateE(@PathVariable Long id, @RequestBody Episode u){
+	@PutMapping(path="episodes/update/{id}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+	public ResponseEntity<Object> updateE(
+			Long id,
+			@Valid @ModelAttribute Episode episode, 
+			@RequestParam("backdrop_file") MultipartFile backdrop_path, 
+			@RequestParam("poster_file") MultipartFile poster,
+			@RequestParam("videoFile_file") MultipartFile videoFile,
+			@RequestParam("videoFile480pLocal_file") MultipartFile videoFile480pLocal,
+			@RequestParam("videoFile720pLocal_file") MultipartFile videoFile720pLocal,
+			@RequestParam("videoFile1080pLocal_file") MultipartFile videoFile1080pLocal,
+			@RequestParam("trailer_file") MultipartFile trailer) throws IOException {
 		
-		return episodeService.upadte(id, u);
+		
+		if (!backdrop_path.isEmpty() && !poster.isEmpty()) {
+			
+			if(!backdrop_path.getContentType().startsWith("image/") && !poster.getContentType().startsWith("image/")){
+				
+				return EntityResponse.generateResponse("Type de media non supporter", HttpStatus.UNSUPPORTED_MEDIA_TYPE, " uploader une image");
+			}
+		}
+		
+		//
+		if(!videoFile.isEmpty() 
+				|| videoFile480pLocal.isEmpty() 
+				|| videoFile720pLocal.isEmpty() 
+				|| videoFile1080pLocal.isEmpty()) {
+			
+			if(!videoFile.getContentType().startsWith("video/") 
+					|| videoFile480pLocal.getContentType().startsWith("video/") 
+					|| videoFile720pLocal.getContentType().startsWith("video/")  
+					|| videoFile1080pLocal.getContentType().startsWith("video/"))  {
+				
+				return EntityResponse.generateResponse("Type de media non supporter", HttpStatus.UNSUPPORTED_MEDIA_TYPE, "Uploader une video");
+			}
+			
+		}
+			
+			
+		
+		String pathFilm = "/EPISODE/"+episode.getName().replaceAll("\\s+", "")+"/MOVIE/";
+		String pathTrailer ="/EPISODE/"+episode.getName().replaceAll("\\s+", "")+"/TRAILER/";
+		String pathBack ="/EPISODE/"+episode.getName().replaceAll("\\s+", "")+"/BACKDROP/";
+		String pathPoster ="/EPISODE/"+episode.getName().replaceAll("\\s+", "")+"/POSTER/";
+		
+		
+		
+		//Enregistrement du fichier img
+		String backdropPath = metadataService.uploadR3(backdrop_path, pathBack);
+		String postr = metadataService.uploadR3(poster, pathPoster);
+		
+		//Trailer
+		String traile = metadataService.uploadR3(trailer, pathTrailer);
+		
+		//Video enregistrement
+		String videoFil = metadataService.uploadR3(videoFile, pathFilm);
+		
+		//Differents format disponible
+		String videoFile480pL = metadataService.uploadR3(videoFile480pLocal, pathFilm+"/480P/");
+		String videoFile720pL = metadataService.uploadR3(videoFile720pLocal, pathFilm+"/720P/");
+		String videoFile1080pL = metadataService.uploadR3(videoFile1080pLocal, pathFilm+"/1080P/");
+		
+		
+		//Enregistrement du path du fichier
+		
+		episode.setThumbnail(backdropPath);
+		episode.setPosterUrl(postr);
+		episode.setTrailer(traile);
+		episode.setVideoFile(videoFil);
+		
+		//Ajout des formats videos
+		
+		episode.setVideoFile1080pLocal(videoFile1080pL);
+		episode.setVideoFile720pLocal(videoFile720pL);
+		episode.setVideoFile480pLocal(videoFile480pL);
+	
+		//Save du tout
+		return EntityResponse.generateResponse("Succes", HttpStatus.CREATED, episodeService.upadte(id, episode));
 		
 	}
 	
@@ -674,8 +1182,5 @@ public class MediaController {
 		
 		return true;
 	}
-
-	
-	
 
 }

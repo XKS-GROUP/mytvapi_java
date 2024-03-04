@@ -3,6 +3,8 @@ package com.mytv.api.model.gestMedia;
 import java.sql.Date;
 //import java.util.Set;
 
+import org.springframework.data.annotation.CreatedDate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,15 +13,11 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 public class Episode {
 	
 	@Id
@@ -34,13 +32,12 @@ public class Episode {
 	@Column(nullable = false)
 	String overView;
 	
-	/*@ManyToOne
-	@JoinColumn(name = "idSerie")
-	Serie serie; */
-	
 	@NotBlank(message = "Ce champ ne peut etre vide, un episode doit forcement faire reference a une serie")
 	@Column(nullable = false)
-	Long serie;
+	Long idSerie;
+	
+	@CreatedDate
+	Date addDate;
 	
 	Date realeaseDate;
 	
@@ -53,98 +50,197 @@ public class Episode {
 	@Column(nullable = false, columnDefinition = "boolean default true")
 	boolean status;
 	
+	@NotNull(message = "une image miniature est requise pour un episode")
+	String thumbnail;
+	
 	String posterUrl;
 	
+	String trailer;
+	
+	@NotNull(message = "un fichier fideo initial est requis pour un episode")
 	String videoFile;
 	
-	String videoFileR1;
+	String videoFile480pLocal;
+	String videoFile480pUrl;
 	
-	String videoFileR2;
+	String videoFile720pLocal;
+	String videoFile720pUrl;
 	
-	String videoFileR3;
+	String videoFile1080pLocal;
+	String videoFile1080pUrl;
 	
+	@Column(nullable = false, columnDefinition = "boolean default false")
+	boolean download;
+	
+	String  downloadURL;
+
 	public Long getIdEpisode() {
 		return idEpisode;
 	}
+
 	public void setIdEpisode(Long idEpisode) {
 		this.idEpisode = idEpisode;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public String getOverView() {
 		return overView;
 	}
+
 	public void setOverView(String overView) {
 		this.overView = overView;
 	}
 
-	public Long getSerie() {
-		return serie;
-	}
-	public void setSerie(Long serie) {
-		this.serie = serie;
-	}
 	public Date getRealeaseDate() {
 		return realeaseDate;
 	}
+
 	public void setRealeaseDate(Date realeaseDate) {
 		this.realeaseDate = realeaseDate;
 	}
+
 	public int getNumero() {
 		return numero;
 	}
+
 	public void setNumero(int numero) {
 		this.numero = numero;
 	}
+
 	public String getDuration() {
 		return duration;
 	}
+
 	public void setDuration(String duration) {
 		this.duration = duration;
 	}
+
 	public boolean isStatus() {
 		return status;
 	}
+
 	public void setStatus(boolean status) {
 		this.status = status;
 	}
+
+	public String getThumbnail() {
+		return thumbnail;
+	}
+
+	public void setThumbnail(String thumbnail) {
+		this.thumbnail = thumbnail;
+	}
+
 	public String getPosterUrl() {
 		return posterUrl;
 	}
+
 	public void setPosterUrl(String posterUrl) {
 		this.posterUrl = posterUrl;
 	}
-	
+
 	public String getVideoFile() {
 		return videoFile;
 	}
+
 	public void setVideoFile(String videoFile) {
 		this.videoFile = videoFile;
 	}
-	public String getVideoFileR1() {
-		return videoFileR1;
-	}
-	public void setVideoFileR1(String videoFileR1) {
-		this.videoFileR1 = videoFileR1;
-	}
-	public String getVideoFileR2() {
-		return videoFileR2;
-	}
-	public void setVideoFileR2(String videoFileR2) {
-		this.videoFileR2 = videoFileR2;
-	}
-	public String getVideoFileR3() {
-		return videoFileR3;
-	}
-	public void setVideoFileR3(String videoFileR3) {
-		this.videoFileR3 = videoFileR3;
-	}
-	
-	
-	
 
+	
+	public String getTrailer() {
+		return trailer;
+	}
+
+	public void setTrailer(String trailer) {
+		this.trailer = trailer;
+	}
+
+	public String getVideoFile480pLocal() {
+		return videoFile480pLocal;
+	}
+
+	public void setVideoFile480pLocal(String videoFile480pLocal) {
+		this.videoFile480pLocal = videoFile480pLocal;
+	}
+
+	public String getVideoFile480pUrl() {
+		return videoFile480pUrl;
+	}
+
+	public void setVideoFile480pUrl(String videoFile480pUrl) {
+		this.videoFile480pUrl = videoFile480pUrl;
+	}
+
+	public String getVideoFile720pLocal() {
+		return videoFile720pLocal;
+	}
+
+	public void setVideoFile720pLocal(String videoFile720pLocal) {
+		this.videoFile720pLocal = videoFile720pLocal;
+	}
+
+	public String getVideoFile720pUrl() {
+		return videoFile720pUrl;
+	}
+
+	public void setVideoFile720pUrl(String videoFile720pUrl) {
+		this.videoFile720pUrl = videoFile720pUrl;
+	}
+
+	public String getVideoFile1080pLocal() {
+		return videoFile1080pLocal;
+	}
+
+	public void setVideoFile1080pLocal(String videoFile1080pLocal) {
+		this.videoFile1080pLocal = videoFile1080pLocal;
+	}
+
+	public String getVideoFile1080pUrl() {
+		return videoFile1080pUrl;
+	}
+
+	public void setVideoFile1080pUrl(String videoFile1080pUrl) {
+		this.videoFile1080pUrl = videoFile1080pUrl;
+	}
+
+	public boolean isDownload() {
+		return download;
+	}
+
+	public void setDownload(boolean download) {
+		this.download = download;
+	}
+
+	public String getDownloadURL() {
+		return downloadURL;
+	}
+
+	public void setDownloadURL(String downloadURL) {
+		this.downloadURL = downloadURL;
+	}
+
+	public Long getIdSerie() {
+		return idSerie;
+	}
+
+	public void setIdSerie(Long idSerie) {
+		this.idSerie = idSerie;
+	}
+
+	public Date getAddDate() {
+		return addDate;
+	}
+
+	public void setAddDate(Date addDate) {
+		this.addDate = addDate;
+	}
+	
 }

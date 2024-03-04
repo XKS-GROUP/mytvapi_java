@@ -49,14 +49,11 @@ public class RadioService {
 		return radioRep.save(old);
 	}
 	
-	
-	
 	public Boolean delete(Long id) {
 			
 		radioRep.deleteById(id);
 		
 		return null;
-		
 	}
 
 	public Optional<Radio> showById(final Long id) {

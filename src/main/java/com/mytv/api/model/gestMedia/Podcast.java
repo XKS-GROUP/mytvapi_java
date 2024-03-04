@@ -4,19 +4,19 @@ package com.mytv.api.model.gestMedia;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 public class Podcast {
 	
 	
@@ -29,26 +29,23 @@ public class Podcast {
 	@Column(nullable = false)
 	String name ;
 	
-	
 	@NotBlank(message="ce champ ne peut etre vide, un podcast doit forcement avoir une description")
 	String overview;
-
+	
+	@NotNull(message = "une image miniature est requise pour un podcast")
+	String backdrop_path;
+	
 	String poster;
 	
-	/*@ManyToOne(cascade = CascadeType.REMOVE)
-	@JoinColumn(name = "idCatPod")*/
 	@NotNull(message="Un podcast doit forcement avoir une categori")
 	Long category;
 	
 	@Column(nullable = false, columnDefinition = "boolean default true")
 	boolean status;
-
-	String streamType;
 	
-	String svr1;
+	String file;
 	
-	String svr2;
-	
+	String url;
 	
 	
 	public Long getIdPodcast() {
@@ -63,11 +60,17 @@ public class Podcast {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getDescription() {
+	public String getOverview() {
 		return overview;
 	}
-	public void setDescription(String description) {
-		this.overview = description;
+	public void setOverview(String overview) {
+		this.overview = overview;
+	}
+	public String getBackdrop_path() {
+		return backdrop_path;
+	}
+	public void setBackdrop_path(String backdrop_path) {
+		this.backdrop_path = backdrop_path;
 	}
 	public String getPoster() {
 		return poster;
@@ -75,7 +78,6 @@ public class Podcast {
 	public void setPoster(String poster) {
 		this.poster = poster;
 	}
-	
 	public Long getCategory() {
 		return category;
 	}
@@ -88,26 +90,18 @@ public class Podcast {
 	public void setStatus(boolean status) {
 		this.status = status;
 	}
-	public String getStreamType() {
-		return streamType;
+	public String getFile() {
+		return file;
 	}
-	public void setStreamType(String streamType) {
-		this.streamType = streamType;
+	public void setFile(String file) {
+		this.file = file;
 	}
-	public String getSvr1() {
-		return svr1;
+	public String getUrl() {
+		return url;
 	}
-	public void setSvr1(String svr1) {
-		this.svr1 = svr1;
+	public void setUrl(String url) {
+		this.url = url;
 	}
-	public String getSvr2() {
-		return svr2;
-	}
-	public void setSvr2(String svr2) {
-		this.svr2 = svr2;
-	}
-	
-	
 	
 	
 

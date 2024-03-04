@@ -7,15 +7,11 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 
 @Entity
 @NoArgsConstructor
-@Getter
-@Setter
 public class LiveTv {
 	
 	
@@ -36,7 +32,7 @@ public class LiveTv {
 	
 	@NotNull(message="ce champ ne peut pas etre vide, un live tv doit avoir une categorie")
 	@Column(nullable = false)
-	Long category;
+	Long idcategory;
 	
 	@NotNull(message="ce champ ne peut pas etre vide, un live tv doit avoir un status qui permet de le rendre visible ou pas")
 	@Column(nullable = false, columnDefinition = "boolean default false")
@@ -131,20 +127,20 @@ public class LiveTv {
 		this.overview = overview;
 	}
 
-	public Long getCategory() {
-		return category;
-	}
-
-	public void setCategory(Long category) {
-		this.category = category;
-	}
-
 	public Long getCountry() {
 		return country;
 	}
 
 	public void setCountry(Long country) {
 		this.country = country;
+	}
+
+	public Long getIdcategory() {
+		return idcategory;
+	}
+
+	public void setIdcategory(Long idcategory) {
+		this.idcategory = idcategory;
 	}
 
 }

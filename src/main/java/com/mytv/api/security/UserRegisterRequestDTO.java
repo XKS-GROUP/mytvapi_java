@@ -33,7 +33,7 @@ public class UserRegisterRequestDTO {
 	private String email;
 	
 	//private String mobile;
-
+	
 	private List<String> roleList = new ArrayList<>();
 	/**
 	 * @return the username

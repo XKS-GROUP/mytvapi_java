@@ -23,8 +23,8 @@ public class SerieGenre {
 	
 
 	@ManyToOne
-	@JoinColumn(name = "idFilm", insertable = true, updatable = true)
-	private Film film;
+	@JoinColumn(name = "idSerie", insertable = true, updatable = true)
+	private Serie Serie;
 	
 	@ManyToOne
 	@JoinColumn(name = "idGenre", insertable = true, updatable = true)

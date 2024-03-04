@@ -71,9 +71,5 @@ public class Language {
 	public void setSlug(String slug) {
 		this.slug = slug;
 	}
-	
-	
-	
-	
 
 }

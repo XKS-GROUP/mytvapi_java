@@ -202,6 +202,7 @@ public class WUserService implements UserDetailsService {
 	public void addUserRole(User user, Role role) {
 
 		UserRole userRole = new UserRole();
+		
 		userRole.setUser(user);
 
 		if (role == null) {

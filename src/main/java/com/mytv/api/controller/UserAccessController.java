@@ -22,8 +22,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mytv.api.model.gestUser.Jwt;
 import com.mytv.api.model.gestUser.User;
 import com.mytv.api.model.gestUser.Validation;
+import com.mytv.api.repository.JwtRepository;
 import com.mytv.api.repository.ValidationRepository;
 import com.mytv.api.security.AuthenticationRequest;
 import com.mytv.api.security.AuthenticationResponse;
@@ -31,7 +33,6 @@ import com.mytv.api.security.EntityResponse;
 import com.mytv.api.security.JWTTokenUtil;
 import com.mytv.api.security.UserRegisterRequestDTO;
 import com.mytv.api.service.gestUser.NotificationService;
-import com.mytv.api.service.gestUser.ValidationService;
 import com.mytv.api.service.gestUser.WUserService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -58,6 +59,9 @@ public class UserAccessController {
 	
 	@Autowired
     private NotificationService notificationService;
+	
+	@Autowired
+	private JwtRepository jwtRep;
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ResponseEntity<Object> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest)
@@ -69,12 +73,25 @@ public class UserAccessController {
 			return EntityResponse.generateResponse("Authentication", HttpStatus.UNAUTHORIZED,
 					"Info non valide, le nom d utilsateur ou le mot de passe est incorrecte");
 		}
+		
 		final UserDetails userDetails = userService.loadUserByUsername(authenticationRequest.getUsername());
 
 		final String token = jwtTokenUtil.generateToken(userDetails);
+		
 		final String refreshToken = jwtTokenUtil.generateRefreshToken(userDetails);
+		
+		Jwt jwtToken = new Jwt();
+		
+		jwtToken.setValue(token);
+		jwtToken.setExpire(jwtTokenUtil.validateToken(token, userDetails));
+		
+		//jwtToken.setUser(userService.findCurrentUser());
+	
+		
+		//jwtRep.save(jwtToken);
 
 		return EntityResponse.generateResponse("Authentication", HttpStatus.OK,
+				
 				new AuthenticationResponse(token, refreshToken));
 
 	}
@@ -96,12 +113,9 @@ public class UserAccessController {
 			
 		}
 	}
-	
 
-	@PostMapping("register")
+	@PostMapping("admin-register")
 	public ResponseEntity<Object> register(@Valid @RequestBody UserRegisterRequestDTO request){
-		
-		
 		
 		if(userService.findByUsername(request.getUsername()) != null){
 			
@@ -114,11 +128,30 @@ public class UserAccessController {
 			
 		else {
 			
+			request.setPassword(passwordEncoder.encode(request.getPassword()));
+			return EntityResponse.generateResponse("Utilisateur enregistre en tant que "+request.getRoleList(), HttpStatus.OK, userService.createUser(request));
+		}
+		
+		
+	}
+	
+	
+	@PostMapping("abonne-register")
+	public ResponseEntity<Object> registerA(@Valid @RequestBody UserRegisterRequestDTO request){
+		
+		if(userService.findByUsername(request.getUsername()) != null){
 			
+			return EntityResponse.generateResponse("Ce nom existe deja existe deja "+request.getUsername(), HttpStatus.CONFLICT, "");
+		}
+		else if (userService.findByUserEmail(request.getEmail()) !=null) {
+			
+			return EntityResponse.generateResponse("Cette adresse email existe deja "+request.getEmail(), HttpStatus.CONFLICT, "");
+		}
+			
+		else {
 			
 			request.setPassword(passwordEncoder.encode(request.getPassword()));
-			
-			return EntityResponse.generateResponse("Utilisateur enregistre en tant que "+request.getRoleList(), HttpStatus.OK, userService.createUser(request));
+			return EntityResponse.generateResponse("Utilisateur enregistre en tant que "+request.getRoleList(), HttpStatus.OK, userService.createAbonne(request));
 		}
 		
 		
@@ -134,15 +167,14 @@ public class UserAccessController {
 	@GetMapping("newcode")
     public ResponseEntity<Object> newcode() {
     		
-		    
-		    
 		    User user = userService.findCurrentUser();
 		    
 		    if(validationRepository.findByUtilisateurId(user.getId()) != null) {
 		    	
 		    	validationRepository.deleteById(validationRepository.findByUtilisateurId(user.getId()).getId());
 		    	
-		    	//return EntityResponse.generateResponse("Aucun utilisateur connecté, veuillez vérifier que vous ête bien authentiier", HttpStatus.BAD_REQUEST, validationRepository.findByUtilisateurId(user.getId()));
+		    	//
+		    	return EntityResponse.generateResponse("Aucun utilisateur connecté, veuillez vérifier que vous ête bien authentiier", HttpStatus.BAD_REQUEST, validationRepository.findByUtilisateurId(user.getId()));
 		    }
 		    	    
 		    
@@ -160,14 +192,10 @@ public class UserAccessController {
 	        validation.setCode(code);
 	        validationRepository.save(validation);
 	        notificationService.envoyer(validation);
-		  
-	        
-	        return EntityResponse.generateResponse("User Profile", HttpStatus.OK, "");
-	        
-		    
+		 
+	        return EntityResponse.generateResponse("User Profile", HttpStatus.OK, "Nouveau Code Renvoyer a l'adresse "+user.getEmail());   
 	        
     }
-	
 	
 	@SecurityRequirement(name = "bearerAuth")
 	@GetMapping("currentUser")
@@ -182,6 +210,5 @@ public class UserAccessController {
 		return EntityResponse.generateResponse("User Profile", HttpStatus.OK, userService.findCurrentUser());
 	}
 	
-	
-	
+		
 }

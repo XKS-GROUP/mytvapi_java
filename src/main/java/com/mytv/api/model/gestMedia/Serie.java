@@ -1,24 +1,26 @@
 package com.mytv.api.model.gestMedia;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import org.springframework.data.annotation.CreatedDate;
 
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 public class Serie {
 
 	@Id
@@ -32,17 +34,59 @@ public class Serie {
 	@Column(nullable = false)
 	String overview;
 	
-	String posterUrl;
+	@OneToMany(mappedBy = "idSaison",cascade = CascadeType.REMOVE)
+	List<Saison> saison;
 	
-	String trailerURL;
+	@OneToMany(mappedBy = "idEpisode",cascade = CascadeType.REMOVE)
+	List<Episode> episode;
 	
-	@Column(nullable = false, columnDefinition = "boolean default false")
-	boolean status;
+	//
+	
+	boolean Upcoming;
+	
+	@CreatedDate
+	Date addDate;
 	
 	Date releaseDate;
 	
-	@OneToMany(mappedBy = "idSaison",cascade = CascadeType.REMOVE)
-	List<Saison> saison;
+	String IMDbRating;
+	
+	String ContentRating;
+	
+	Long budget;
+	
+	
+	String trailerUrl;
+	String trailer;
+	
+	@Column(nullable = false, columnDefinition = "boolean default false")
+	Boolean movieAccess;
+	
+	@NotNull(message = "une image miniature est requise pour une serie")
+	String backdrop_path;
+	
+	String poster;
+	
+	String Langue;
+	
+	String popularity;
+	
+	String vote_average;
+	
+	String vote_count;
+	
+	
+	@Column(nullable = false, columnDefinition = "boolean default true")
+	boolean status;
+	
+	
+	@Column(nullable = false, columnDefinition = "boolean default false")
+	Boolean adult;
+	
+	
+	List <String> acteurList = new ArrayList<>();
+	
+	List<String> genreList = new ArrayList<>();
 
 	public Long getIdSerie() {
 		return idSerie;
@@ -68,28 +112,36 @@ public class Serie {
 		this.overview = overview;
 	}
 
-	public String getPosterUrl() {
-		return posterUrl;
+	public List<Saison> getSaison() {
+		return saison;
 	}
 
-	public void setPosterUrl(String posterUrl) {
-		this.posterUrl = posterUrl;
+	public void setSaison(List<Saison> saison) {
+		this.saison = saison;
 	}
 
-	public String getTrailerURL() {
-		return trailerURL;
+	public List<Episode> getEpisode() {
+		return episode;
 	}
 
-	public void setTrailerURL(String trailerURL) {
-		this.trailerURL = trailerURL;
+	public void setEpisode(List<Episode> episode) {
+		this.episode = episode;
 	}
 
-	public boolean isStatus() {
-		return status;
+	public boolean isUpcoming() {
+		return Upcoming;
 	}
 
-	public void setStatus(boolean status) {
-		this.status = status;
+	public void setUpcoming(boolean upcoming) {
+		Upcoming = upcoming;
+	}
+
+	public Date getAddDate() {
+		return addDate;
+	}
+
+	public void setAddDate(Date addDate) {
+		this.addDate = addDate;
 	}
 
 	public Date getReleaseDate() {
@@ -100,7 +152,135 @@ public class Serie {
 		this.releaseDate = releaseDate;
 	}
 
-	
+	public String getIMDbRating() {
+		return IMDbRating;
+	}
+
+	public void setIMDbRating(String iMDbRating) {
+		IMDbRating = iMDbRating;
+	}
+
+	public String getContentRating() {
+		return ContentRating;
+	}
+
+	public void setContentRating(String contentRating) {
+		ContentRating = contentRating;
+	}
+
+	public Long getBudget() {
+		return budget;
+	}
+
+	public void setBudget(Long budget) {
+		this.budget = budget;
+	}
+
+	public String getTrailerUrl() {
+		return trailerUrl;
+	}
+
+	public void setTrailerUrl(String trailerUrl) {
+		this.trailerUrl = trailerUrl;
+	}
+
+	public String getTrailer() {
+		return trailer;
+	}
+
+	public void setTrailer(String trailer) {
+		this.trailer = trailer;
+	}
+
+	public Boolean getMovieAccess() {
+		return movieAccess;
+	}
+
+	public void setMovieAccess(Boolean movieAccess) {
+		this.movieAccess = movieAccess;
+	}
+
+	public String getBackdrop_path() {
+		return backdrop_path;
+	}
+
+	public void setBackdrop_path(String backdrop_path) {
+		this.backdrop_path = backdrop_path;
+	}
+
+
+
+	public String getLangue() {
+		return Langue;
+	}
+
+	public void setLangue(String langue) {
+		Langue = langue;
+	}
+
+	public String getPopularity() {
+		return popularity;
+	}
+
+	public void setPopularity(String popularity) {
+		this.popularity = popularity;
+	}
+
+	public String getVote_average() {
+		return vote_average;
+	}
+
+	public void setVote_average(String vote_average) {
+		this.vote_average = vote_average;
+	}
+
+	public String getVote_count() {
+		return vote_count;
+	}
+
+	public void setVote_count(String vote_count) {
+		this.vote_count = vote_count;
+	}
+
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+
+	public Boolean getAdult() {
+		return adult;
+	}
+
+	public void setAdult(Boolean adult) {
+		this.adult = adult;
+	}
+
+	public List<String> getActeurList() {
+		return acteurList;
+	}
+
+	public void setActeurList(List<String> acteurList) {
+		this.acteurList = acteurList;
+	}
+
+	public List<String> getGenreList() {
+		return genreList;
+	}
+
+	public void setGenreList(List<String> genreList) {
+		this.genreList = genreList;
+	}
+
+	public String getPoster() {
+		return poster;
+	}
+
+	public void setPoster(String poster) {
+		this.poster = poster;
+	}
 	
 
 }

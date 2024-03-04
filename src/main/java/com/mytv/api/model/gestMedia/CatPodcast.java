@@ -29,6 +29,10 @@ public class CatPodcast {
 	@Column(nullable = false)
 	String name;
 	
+	@NotBlank(message = "Une image est requise")
+	@Column(nullable = false)
+	private String img;
+	
 	@OneToMany(mappedBy = "idPodcast")
 	List<Podcast> podcast;
 

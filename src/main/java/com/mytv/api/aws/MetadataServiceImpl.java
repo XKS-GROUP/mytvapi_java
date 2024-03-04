@@ -39,16 +39,21 @@ public class MetadataServiceImpl implements MetadataService {
 
         // upload du fichier dans R2
         PutObjectResult putObjectResult = amazonS3Service.upload(
-                path, fileName, Optional.of(metadata), file.getInputStream());
+                path, fileName.replaceAll("\\s+", ""), Optional.of(metadata), file.getInputStream());
 
         // Enregistrement de la trace dans la db
-        fileMetaRepository.save(new FileMeta(fileName, path, putObjectResult.getMetadata().getVersionId()));
+        fileMetaRepository.save(new FileMeta(fileName.replaceAll("\\s+", ""), path, putObjectResult.getMetadata().getVersionId()));
 
     }
     
     @Override
     public String uploadR3(MultipartFile file, String dossier) throws IOException {
     	
+    	
+    	if(dossier=="") {
+    		
+    		dossier="/sansNom";
+    	}
     	String filepath="";
     	
         if (file.isEmpty())
@@ -58,7 +63,7 @@ public class MetadataServiceImpl implements MetadataService {
         metadata.put("Content-Type", file.getContentType());
         metadata.put("Content-Length", String.valueOf(file.getSize()));
 
-        String path = String.format("%s/%s", bucketName, UUID.randomUUID());
+        String path = String.format("%s/%s", bucketName+dossier, UUID.randomUUID());
         String fileName = String.format("%s", file.getOriginalFilename());
 
         // upload du fichier dans R2
@@ -66,10 +71,10 @@ public class MetadataServiceImpl implements MetadataService {
                 path, fileName, Optional.of(metadata), file.getInputStream());
 
         // Enregistrement de la trace dans la db
-        FileMeta dataMeta = new FileMeta(fileName, path, putObjectResult.getMetadata().getVersionId());
+        FileMeta dataMeta = new FileMeta(fileName.replaceAll("\\s+", "-"), path, putObjectResult.getMetadata().getVersionId());
         fileMetaRepository.save(dataMeta);
         
-        filepath = dataMeta.getFilePath()+"/"+dataMeta.getFileName();
+        filepath = dataMeta.getFilePath().replaceAll("\\s+", "-")+"/"+dataMeta.getFileName();
         return filepath;
 
     }
