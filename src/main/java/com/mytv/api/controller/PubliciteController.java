@@ -15,5 +15,4 @@ import lombok.AllArgsConstructor;
 public class PubliciteController {
 	
 
-	
 }

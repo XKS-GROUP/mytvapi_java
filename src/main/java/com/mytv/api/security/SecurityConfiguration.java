@@ -64,6 +64,7 @@ public class SecurityConfiguration {
 		}).addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return httpSecurity.build();
+		
 	}
 	
 	@Bean
@@ -78,6 +79,18 @@ public class SecurityConfiguration {
 	}
 	
 	@Bean
+	public SecurityFilterChain securityFilterChainGlobalAbonneAPIv1(HttpSecurity httpSecurity) throws Exception {
+		sharedSecurityConfiguration(httpSecurity);
+		httpSecurity.securityMatcher("api/v1/front/**").authorizeHttpRequests(auth -> {
+			auth.anyRequest()
+			.hasRole("USER");
+		}).addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+
+		return httpSecurity.build();
+	}
+	
+	/*
+	@Bean
 	public SecurityFilterChain securityFilterChainGlobalAdminAPI(HttpSecurity httpSecurity) throws Exception {
 		sharedSecurityConfiguration(httpSecurity);
 		httpSecurity.securityMatcher("admin/**").authorizeHttpRequests(auth -> {
@@ -86,7 +99,7 @@ public class SecurityConfiguration {
 		}).addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return httpSecurity.build();
-	}
+	
 
 	@Bean
 	public SecurityFilterChain securityFilterChainGlobalUserProfileAPI(HttpSecurity httpSecurity) throws Exception {
@@ -97,7 +110,7 @@ public class SecurityConfiguration {
 		}).addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return httpSecurity.build();
-	}
+	}}*/
 	@Bean
 	public SecurityFilterChain securityFilterChainLoginAPI(HttpSecurity httpSecurity) throws Exception {
 		sharedSecurityConfiguration(httpSecurity);

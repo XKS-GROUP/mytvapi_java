@@ -73,4 +73,12 @@ public class OpenAPIConfiguration {
                .pathsToMatch("/api/v1/front/**")
                .build();
    }
+   
+   @Bean
+   public GroupedOpenApi UtilApi() {
+       return GroupedOpenApi.builder()
+               .group("Util")
+               .pathsToMatch("api/v1/util/**")
+               .build();
+   }
 }

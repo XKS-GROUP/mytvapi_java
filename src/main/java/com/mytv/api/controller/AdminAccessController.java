@@ -82,7 +82,7 @@ public class AdminAccessController {
 	public ResponseEntity<Object> userLogout(){
 		
 		return EntityResponse.generateResponse("Admin Fetch Role List", HttpStatus.OK,
-				roleService.findAllRole());
+				"Table Session non creer du au dialect Mysql utilsé avec ce serveur");
 	}
 	
 	@Tag(name = "Profile")
