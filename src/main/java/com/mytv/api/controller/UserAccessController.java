@@ -4,6 +4,7 @@ import static java.time.temporal.ChronoUnit.MINUTES;
 
 import java.time.Instant;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import com.mytv.api.model.gestUser.Jwt;
 import com.mytv.api.model.gestUser.User;
 import com.mytv.api.model.gestUser.Validation;
 import com.mytv.api.repository.JwtRepository;
+import com.mytv.api.repository.UserRepository;
 import com.mytv.api.repository.ValidationRepository;
 import com.mytv.api.security.AuthenticationRequest;
 import com.mytv.api.security.AuthenticationResponse;
@@ -36,6 +38,7 @@ import com.mytv.api.service.gestUser.NotificationService;
 import com.mytv.api.service.gestUser.WUserService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @RestController
@@ -53,6 +56,9 @@ public class UserAccessController {
 
 	@Autowired
 	PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	UserRepository userRepository;
 	
 	@Autowired
     private ValidationRepository validationRepository;
@@ -80,15 +86,20 @@ public class UserAccessController {
 		
 		final String refreshToken = jwtTokenUtil.generateRefreshToken(userDetails);
 		
+		User usr = userService.findByUsername(authenticationRequest.getUsername());
+		
+		usr.setRemember_token(token);
+		
 		Jwt jwtToken = new Jwt();
 		
 		jwtToken.setValue(token);
-		jwtToken.setExpire(jwtTokenUtil.validateToken(token, userDetails));
+		jwtToken.setValide(jwtTokenUtil.validateToken(token, userDetails));
 		
-		//jwtToken.setUser(userService.findCurrentUser());
-	
+		jwtToken.setRefresh_token(refreshToken);
 		
-		//jwtRep.save(jwtToken);
+		jwtToken.setUser(userService.findByUsername(jwtTokenUtil.getUsernameFromToken(token)));
+		
+		jwtRep.save(jwtToken);
 
 		return EntityResponse.generateResponse("Authentication", HttpStatus.OK,
 				
@@ -105,11 +116,11 @@ public class UserAccessController {
 			
 		} catch (BadCredentialsException e) {
 			
-			throw new Exception("Le nom d utilsateur ou le mt de passe est incorrecte", e);
+			throw new Exception("Le nom d utilsateur ou le mot de passe est incorrecte", e);
 			
 		}catch(Exception e) {
 			
-			throw new Exception("Le nom d utilsateur ou le mt de passe est incorrecte", e.getCause());
+			throw new Exception("Le nom d utilsateur ou le mot de passe est incorrecte", e.getCause());
 			
 		}
 	}
@@ -210,5 +221,22 @@ public class UserAccessController {
 		return EntityResponse.generateResponse("User Profile", HttpStatus.OK, userService.findCurrentUser());
 	}
 	
+	@SecurityRequirement(name = "bearerAuth")
+	@GetMapping("logout")
+	@Transactional
+	public ResponseEntity<Object> logout() {
+		
+		User usr = userService.findCurrentUser();
+		
+		if(usr==null) {
+			
+			 return EntityResponse.generateResponse("Deconexion", HttpStatus.OK, " Aucun utilisateur connecté ou aucune session en cour ");
+			
+		}
+			 
+			 jwtRep.deleteByUser(usr); //jwtRep.deleteAll();//
+			 System.out.println("Supp ");
+			 return EntityResponse.generateResponse("Deconexion", HttpStatus.OK, usr.getUsername()+" à été deconnecter avec succès" );
+	    }
 		
 }

@@ -81,6 +81,7 @@ public class AdminAccessController {
 	@GetMapping("logout")
 	public ResponseEntity<Object> userLogout(){
 		
+		
 		return EntityResponse.generateResponse("Admin Fetch Role List", HttpStatus.OK,
 				"Table Session non creer du au dialect Mysql utilsé avec ce serveur");
 	}

@@ -51,7 +51,5 @@ public class ConfigController {
 		return EntityResponse.generateResponse("role supp...........", HttpStatus.OK,
 				roleService.delete(id));
 	}
-	
-	
 		
 }

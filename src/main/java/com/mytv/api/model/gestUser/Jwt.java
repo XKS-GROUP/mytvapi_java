@@ -1,6 +1,13 @@
 package com.mytv.api.model.gestUser;
 
+
+import java.util.Date;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,11 +29,25 @@ public class Jwt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    
+    @Column(columnDefinition = "TEXT" )
     private String value;
+    
+    @CreationTimestamp
+    private Date created;
+    
+    @UpdateTimestamp
+    private Date updated;
+    
+    @Column(columnDefinition = "TEXT" )
+    private String refresh_token;
+    
     private boolean disabled;
-    private boolean expire;
-
+    
+    private boolean valide;
+    
+    
+    
     //@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     //private RefreshToken refreshToken;
 
@@ -50,6 +71,14 @@ public class Jwt {
 		this.value = value;
 	}
 
+	public String getRefresh_token() {
+		return refresh_token;
+	}
+
+	public void setRefresh_token(String refresh_token) {
+		this.refresh_token = refresh_token;
+	}
+
 	public boolean isDisabled() {
 		return disabled;
 	}
@@ -58,12 +87,13 @@ public class Jwt {
 		this.disabled = disabled;
 	}
 
-	public boolean isExpire() {
-		return expire;
+	public boolean isValide() {
+		return valide;
 	}
 
-	public void setExpire(boolean expire) {
-		this.expire = expire;
+	
+	public void setValide(boolean valide) {
+		this.valide = valide;
 	}
 
 	public User getUser() {
@@ -73,7 +103,21 @@ public class Jwt {
 	public void setUser(User user) {
 		this.user = user;
 	}
-    
-    
-    
+
+	public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+
+	public Date getUpdated() {
+		return updated;
+	}
+
+	public void setUpdated(Date updated) {
+		this.updated = updated;
+	}
+
 }

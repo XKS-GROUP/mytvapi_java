@@ -1,5 +1,7 @@
 package com.mytv.api.config;
 
+import java.util.List;
+
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +12,7 @@ import io.swagger.v3.oas.annotations.security.SecuritySchemes;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.servers.Server;
 
 @Configuration
 @SecuritySchemes({
@@ -24,9 +27,10 @@ public class OpenAPIConfiguration {
 
    @Bean
    public OpenAPI defineOpenApi() {
-       //Server server = new Server();  Ici sera defini le server de l 'api 
-       //server.setUrl("http://localhost:8080"); Ici sera defini l'adresse de base depuis laquelle l api sera disponible 
-       //server.setDescription("Development"); Ici sera defini le mode de l'API (production ou developpement 
+	   
+       Server server = new Server();  //Ici sera defini le server de l api 
+       server.setUrl("https://localhost:8080"); //Ici sera defini l'adresse de base depuis laquelle l api sera disponible 
+       server.setDescription("Development"); //Ici sera defini le mode de l'API (production ou developpement 
 
        Contact myContact = new Contact();
        myContact.setName("XKSAPP");
@@ -35,9 +39,11 @@ public class OpenAPIConfiguration {
        Info information = new Info()
                .title("API MYTELEVISION SPRING-BOOT V 3.1.8")
                .version("1.0")
-               .description("Cette API axpose l'ensemble des endpoints necessaire pour la consomation et fonctionnement en backend de Mytelevision ")
+               .description("Cette API expose l'ensemble des endpoints necessaire pour la consomation et fonctionnement en backend de Mytelevision ")
                .contact(myContact);
-       return new OpenAPI().info(information);//.servers(List.of(server));
+       
+       return new OpenAPI()
+    		   .info(information);//.servers(List.of(server));
    }
    
    

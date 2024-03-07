@@ -43,12 +43,24 @@ public class User implements Serializable, UserDetails{
 	
 	String email;
 	
+	@Column(columnDefinition = "TEXT" )
+	String remember_token;
+	
 	String imageUrl;
 	
 	@Column(columnDefinition = "boolean default false")
 	@NotNull
 	boolean valide;
 	
+	
+	public String getRemember_token() {
+		return remember_token;
+	}
+
+	public void setRemember_token(String remember_token) {
+		this.remember_token = remember_token;
+	}
+
 	public boolean isValide() {
 		return valide;
 	}

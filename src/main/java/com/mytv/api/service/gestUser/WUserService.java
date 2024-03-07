@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
+import com.mytv.api.model.gestMedia.Language;
 import com.mytv.api.model.gestUser.Role;
 import com.mytv.api.model.gestUser.User;
 import com.mytv.api.model.gestUser.UserRole;
@@ -91,7 +92,9 @@ public class WUserService implements UserDetailsService {
 			
 			//Envoi du mail pour la validation de son compte
 			validationService.enregistrer(user);
+			
 			return "Un nouvel utilisateur a été creer";
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return e.getCause().getMessage();
@@ -149,7 +152,23 @@ public class WUserService implements UserDetailsService {
 	public List<User> retrieveAllUserList() {
 		return userRepository.findAll();
 	}
+	
+	public User updateJWT(User user, String jwt) {
+		
+		User old = userRepository.findByEmail(user.getEmail());
+		
+		old.setRemember_token(jwt);
 
+		//old.setIdLang(id);
+		
+		//return langRep.save(old);
+		user = userRepository.save(user);
+		
+		addUserRole(user, roleService.findRoleByName("ROLE_ADMIN"));
+
+		return user;
+	}
+	
 	public User updateUser(UserRegisterRequestDTO userRequestDTO) {
 
 		User user = (User) dtoMapperRequestDtoToUser(userRequestDTO);
