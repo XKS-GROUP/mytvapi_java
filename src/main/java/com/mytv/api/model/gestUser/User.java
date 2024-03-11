@@ -17,9 +17,13 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "User")
+@AllArgsConstructor
+@NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User implements Serializable, UserDetails{
 
@@ -40,8 +44,15 @@ public class User implements Serializable, UserDetails{
 	@Email(message = "Ce champ doit etre une adresse mail valide")
 	@NotBlank(message = "ce champ ne peut pas etre vide et doit etre unique")
 	@Column(nullable = false, unique = true)
-	
 	String email;
+	
+	@NotBlank(message = "ce champ ne peut pas etre vide et doit etre unique")
+	@Column(nullable = false, unique = true)
+	String phone;
+	
+	@NotBlank(message = "ce champ ne peut pas etre vide, une adresse est requise ")
+	@Column(nullable = false)
+	String Address;
 	
 	@Column(columnDefinition = "TEXT" )
 	String remember_token;
@@ -53,6 +64,22 @@ public class User implements Serializable, UserDetails{
 	boolean valide;
 	
 	
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getAddress() {
+		return Address;
+	}
+
+	public void setAddress(String address) {
+		Address = address;
+	}
+
 	public String getRemember_token() {
 		return remember_token;
 	}

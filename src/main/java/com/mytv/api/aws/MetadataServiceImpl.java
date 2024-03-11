@@ -23,6 +23,21 @@ public class MetadataServiceImpl implements MetadataService {
 
     @Value("${aws.s3.bucket.name}")
     private String bucketName;
+    
+    @Value("${aws.s3.bucket.pathMovie}")
+    private String pathMovie;
+    
+    @Value("${aws.s3.bucket.pathSerie}")
+    private String pathSerie;
+    
+    @Value("${aws.s3.bucket.pathPodcast}")
+    private String pathPodcast;
+    
+    @Value("${aws.s3.bucket.pathUserImg}")
+    private String pathUserImg;
+    
+    @Value("${aws.s3.bucket.pathEpisode}")
+    private String pathEpisode;
 
     @Override
     public void upload(MultipartFile file) throws IOException {
@@ -35,47 +50,52 @@ public class MetadataServiceImpl implements MetadataService {
         metadata.put("Content-Length", String.valueOf(file.getSize()));
 
         String path = String.format("%s/%s", bucketName, UUID.randomUUID());
-        String fileName = String.format("%s", file.getOriginalFilename());
+        String fileName = String.format("%s", file.getOriginalFilename()).replaceAll(" ", "_");
 
         // upload du fichier dans R2
         PutObjectResult putObjectResult = amazonS3Service.upload(
                 path, fileName.replaceAll("\\s+", ""), Optional.of(metadata), file.getInputStream());
 
         // Enregistrement de la trace dans la db
+
         fileMetaRepository.save(new FileMeta(fileName.replaceAll("\\s+", ""), path, putObjectResult.getMetadata().getVersionId()));
 
     }
     
     @Override
-    public String uploadR3(MultipartFile file, String dossier) throws IOException {
+    public FileMeta uploadR3(MultipartFile file, String dossier) throws IOException {
     	
-    	
-    	if(dossier=="") {
+    	file.getSize();
+    	if(dossier.isEmpty()) {
     		
-    		dossier="/sansNom";
+    		dossier="SansNom";
     	}
+    	
     	String filepath="";
     	
         if (file.isEmpty())
-            throw new IllegalStateException("Cannot upload empty file");
+            throw new IllegalStateException("Vous tentez d'uploader un fichier vide");
 
         Map<String, String> metadata = new HashMap<>();
         metadata.put("Content-Type", file.getContentType());
         metadata.put("Content-Length", String.valueOf(file.getSize()));
 
-        String path = String.format("%s/%s", bucketName+dossier, UUID.randomUUID());
+        String path = String.format("%s/%s", bucketName+"/"+dossier, UUID.randomUUID());
         String fileName = String.format("%s", file.getOriginalFilename());
 
         // upload du fichier dans R2
         PutObjectResult putObjectResult = amazonS3Service.upload(
-                path, fileName, Optional.of(metadata), file.getInputStream());
+                path, fileName.replaceAll("\\s+", "-"), Optional.of(metadata), file.getInputStream());
 
         // Enregistrement de la trace dans la db
         FileMeta dataMeta = new FileMeta(fileName.replaceAll("\\s+", "-"), path, putObjectResult.getMetadata().getVersionId());
+        
+        dataMeta.setSize(file.getSize());
         fileMetaRepository.save(dataMeta);
         
         filepath = dataMeta.getFilePath().replaceAll("\\s+", "-")+"/"+dataMeta.getFileName();
-        return filepath;
+        
+        return dataMeta;
 
     }
 
@@ -90,5 +110,57 @@ public class MetadataServiceImpl implements MetadataService {
         List<FileMeta> metas = new ArrayList<>();
         fileMetaRepository.findAll().forEach(metas::add);
         return metas;
+    }
+	
+    public List<FileMeta> lisByName(String nom){
+    	
+    	return fileMetaRepository.findByFileName(nom);
+    }
+    
+    
+    
+    public void uploadMovie(MultipartFile file) throws IOException{
+    	
+    	this.uploadR3(file, pathMovie);
+    	
+    }
+    
+    public void uploadSerie(MultipartFile file) throws IOException{
+    	
+    	this.uploadR3(file, pathSerie);
+    	
+    }
+    
+    public void uploadPodcast(MultipartFile file) throws IOException{
+    	
+    	this.uploadR3(file, pathPodcast);
+    	
+    }
+   
+    public void uploadEpisode(MultipartFile file) throws IOException{
+    	
+    	this.uploadR3(file, pathEpisode);
+    	
+    }
+    
+    public void uploadUserIMG(MultipartFile file) throws IOException{
+    	
+    	this.uploadR3(file, pathUserImg);
+    	
+    }
+    
+    public void deleteByName(String nom) {
+    	
+    	fileMetaRepository.deleteByFileName(nom);
+    }
+    
+    public void deleteByVersion(String version) {
+    	
+    	fileMetaRepository.deleteByVersion(version);
+    }
+    
+    public void updateFile(int id) {
+    	
+    	
     }
 }

@@ -36,6 +36,14 @@ public class DashboardController {
         return "redirect:/dashboard";
     }
 
+    @DeleteMapping("delete")
+    
+    public String delete(
+            @RequestParam("file") MultipartFile file) throws IOException {
+        metadataService.upload(file);
+        return "redirect:/dashboard";
+    }
+
     @GetMapping("download/{id}")
     @ResponseBody
     public HttpEntity<byte[]> download(Model model, @PathVariable int id, HttpServletResponse response) throws

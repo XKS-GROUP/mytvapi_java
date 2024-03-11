@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mytv.api.model.gestUser.Role;
 import com.mytv.api.model.gestUser.SubscriptionType;
+import com.mytv.api.model.gestUser.User;
+import com.mytv.api.repository.JwtRepository;
 import com.mytv.api.security.EntityResponse;
 import com.mytv.api.security.UserRegisterRequestDTO;
 import com.mytv.api.service.gestUser.SubscriptionServiceImplement;
@@ -46,6 +49,9 @@ public class AdminAccessController {
 	@Autowired
 	SubscriptionServiceImplement subSerice;
 	
+	@Autowired
+	private JwtRepository jwtRep;
+	
 	
 	//Gestion du profil admin
 	
@@ -54,38 +60,96 @@ public class AdminAccessController {
 	public ResponseEntity<Object> retrieveUserProfile(){
 		return EntityResponse.generateResponse("Admin Profil Info : "+userService.findCurrentUser().getUsername(), HttpStatus.OK, userService.findCurrentUser());
 	}
+	
+	//Affiche by id
 	@Tag(name = "Profile")
-	@GetMapping("profile/createAccount")
+	@GetMapping("profileById/{id}")
+	public ResponseEntity<Object> retrieveUserProfilebyId(@PathVariable Long id){
+		if(id <= 0) {
+			return EntityResponse.generateResponse("User ERREUR ", HttpStatus.OK, " l'id utilisateur ne peut être vide ");
+		}
+		else {
+			
+			return EntityResponse.generateResponse("Admin Profil Info : "+userService.findUserById(id).get().getUsername(), HttpStatus.OK, userService.findUserById(id));
+		}
+		
+	}
+	
+	@Tag(name = "Profile")
+	@PostMapping("profile/createAccount")
 	public ResponseEntity<Object> createAdmin(@Valid @RequestBody UserRegisterRequestDTO u){
 		return EntityResponse.generateResponse("Creation d'un nouvel admin : "+ userService.findCurrentUser().getUsername(), HttpStatus.OK, userService.createUser(u));
 	}
+	
+	//Update Current profil
 	@Tag(name = "Profile")
 	@PutMapping("updateProfile")
 	public ResponseEntity<Object> updateProfile(@Valid @RequestBody UserRegisterRequestDTO user){
-		
 		
 		userService.updateUser(user);
 
 		return EntityResponse.generateResponse("User "+user.getUsername()+" a été mis a jour ", HttpStatus.OK, userService.findCurrentUser());
 	}
 	
+	@Tag(name = "Profile")
+	@PutMapping("updateProfileById/{id}")
+	public ResponseEntity<Object> updateProfilebyId(@PathVariable Long id, @Valid @RequestBody User u){
+		
+		if(id <= 0) {
+			return EntityResponse.generateResponse("User MAJ ERREUR ", HttpStatus.OK, " l'id utilisateur ne peut être vide ");
+		}
+		else {
+			
+			userService.updateByid(id, u) ;
+
+			return EntityResponse.generateResponse("User "+u.getUsername()+" a été mis a jour ", HttpStatus.OK, userService.updateByid(id, u));
+		}
+		
+	}
 	
 	
+	//Sup compte actuel
 	@Tag(name = "Profile")
 	@DeleteMapping("deletecurrentAcount")
 	public ResponseEntity<Object> delCurrentProfile(){
 		return EntityResponse.generateResponse("User Profile", HttpStatus.OK, userService.findCurrentUser());
 	}
 	
+	//Supp by id
+	@Tag(name = "Profile")
+	@DeleteMapping("deleteById/{id}")
+	public ResponseEntity<Object> delCurrentProfileByid(@PathVariable Long id){
+		
+		if(id <= 0) {
+			return EntityResponse.generateResponse("User SUPP ERREUR ", HttpStatus.OK, " l'id utilisateur ne peut être vide ");
+		}
+		else {
+			
+			return EntityResponse.generateResponse("User Profile", HttpStatus.OK, userService.deleteUserFromId(id));
+		}
+		
+	}
+	
+	//Deconexion
 	@Tag(name = "Profile")
 	@GetMapping("logout")
 	public ResponseEntity<Object> userLogout(){
 		
+		User usr = userService.findCurrentUser();
 		
-		return EntityResponse.generateResponse("Admin Fetch Role List", HttpStatus.OK,
-				"Table Session non creer du au dialect Mysql utilsé avec ce serveur");
-	}
+		if(usr==null) {
+				
+			 return EntityResponse.generateResponse("Deconexion", HttpStatus.OK, " Aucun utilisateur connecté ou aucune session en cour ");
+			
+		}
+			 
+			 jwtRep.deleteByUser(usr); //jwtRep.deleteAll();//
+			 System.out.println("Supp ");
+			 return EntityResponse.generateResponse("Deconexion", HttpStatus.OK, usr.getUsername()+" à été deconnecter avec succès" );
+	  }
+		
 	
+	//Supp by id
 	@Tag(name = "Profile")
 	@DeleteMapping("deleteAcountById/{id}")
 	public ResponseEntity<Object> deleteProfileById(Long id){
@@ -94,6 +158,7 @@ public class AdminAccessController {
 		return EntityResponse.generateResponse("User Profile", HttpStatus.OK, userService.deleteUserFromId(id));
 	}
 	
+	//List User
 	@Tag(name = "Profile")
 	@Operation(summary = "Get All Users", description = "Returne la liste de tous les utilisateurs")
 	@GetMapping("user-list")

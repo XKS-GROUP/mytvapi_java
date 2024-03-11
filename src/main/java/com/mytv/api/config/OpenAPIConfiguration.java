@@ -29,7 +29,7 @@ public class OpenAPIConfiguration {
    public OpenAPI defineOpenApi() {
 	   
        Server server = new Server();  //Ici sera defini le server de l api 
-       server.setUrl("https://localhost:8080"); //Ici sera defini l'adresse de base depuis laquelle l api sera disponible 
+       server.setUrl("https://localhost:808"); //Ici sera defini l'adresse de base depuis laquelle l api sera disponible 
        server.setDescription("Development"); //Ici sera defini le mode de l'API (production ou developpement 
 
        Contact myContact = new Contact();
@@ -44,6 +44,7 @@ public class OpenAPIConfiguration {
        
        return new OpenAPI()
     		   .info(information);//.servers(List.of(server));
+ 
    }
    
    

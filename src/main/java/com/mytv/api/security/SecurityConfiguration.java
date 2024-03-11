@@ -59,7 +59,7 @@ public class SecurityConfiguration {
 	@Bean
 	public SecurityFilterChain securityFilterChainGlobalAPI(HttpSecurity httpSecurity) throws Exception {
 		sharedSecurityConfiguration(httpSecurity);
-		httpSecurity.securityMatcher("user", "admin", "api/v1/admin", "api/v1/auth/newcode").authorizeHttpRequests(auth -> {
+		httpSecurity.securityMatcher("user", "admin", "api/v1/admin").authorizeHttpRequests(auth -> {
 			auth.anyRequest().authenticated();
 		}).addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 

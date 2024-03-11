@@ -29,6 +29,7 @@ import jakarta.transaction.Transactional;
 @Service
 @Transactional
 public class WUserService implements UserDetailsService {
+	
 	private static final Logger LOG = LoggerFactory.getLogger(WUserService.class);
 
 	@Autowired
@@ -128,7 +129,9 @@ public class WUserService implements UserDetailsService {
 	}
 
     public void activation(Map<String, String> activation) {
+    	
         com.mytv.api.model.gestUser.Validation validation = this.validationService.lireEnFonctionDuCode(activation.get("code"));
+        
         if(Instant.now().isAfter(validation.getExpiration())){
             throw  new RuntimeException("Votre code a expiré");
         }
@@ -168,7 +171,14 @@ public class WUserService implements UserDetailsService {
 
 		return user;
 	}
-	
+	public User updateByid(Long id, User u) {
+		
+		User old = userRepository.findById(id).get();
+		
+		old.setId(id);
+		
+		return userRepository.save(old);
+	}
 	public User updateUser(UserRegisterRequestDTO userRequestDTO) {
 
 		User user = (User) dtoMapperRequestDtoToUser(userRequestDTO);
@@ -240,5 +250,6 @@ public class WUserService implements UserDetailsService {
 		
 		return target;
 	}
+	
 
 }

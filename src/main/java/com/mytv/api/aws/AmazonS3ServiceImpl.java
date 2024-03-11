@@ -1,6 +1,8 @@
 package com.mytv.api.aws;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.Bucket;
+import com.amazonaws.services.s3.model.DeleteObjectsResult;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectResult;
 import com.amazonaws.services.s3.model.S3Object;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -37,8 +40,18 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
         //log.debug("Path: " + path + ", FileName:" + fileName);
         return amazonS3.putObject(path, fileName, inputStream, objectMetadata);
     }
-
+    
+    public void deleteR2(String path, String fileName) 
+    {
+    	amazonS3.deleteObject(path, fileName);
+    }
+    
     public S3Object download(String path, String fileName) {
         return amazonS3.getObject(path, fileName);
+    }
+    
+    public List<Bucket> allFolder() {
+    	
+    	return amazonS3.listBuckets();
     }
 }

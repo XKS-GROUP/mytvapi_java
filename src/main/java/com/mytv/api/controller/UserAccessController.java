@@ -4,7 +4,7 @@ import static java.time.temporal.ChronoUnit.MINUTES;
 
 import java.time.Instant;
 import java.util.Map;
-import java.util.Optional;
+
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +17,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +36,7 @@ import com.mytv.api.security.EntityResponse;
 import com.mytv.api.security.JWTTokenUtil;
 import com.mytv.api.security.UserRegisterRequestDTO;
 import com.mytv.api.service.gestUser.NotificationService;
+import com.mytv.api.service.gestUser.ValidationService;
 import com.mytv.api.service.gestUser.WUserService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -50,6 +52,9 @@ public class UserAccessController {
 
 	@Autowired
 	WUserService userService;
+	
+	@Autowired
+	ValidationService validationService;
 
 	@Autowired
 	private JWTTokenUtil jwtTokenUtil;
@@ -88,28 +93,36 @@ public class UserAccessController {
 		
 		User usr = userService.findByUsername(authenticationRequest.getUsername());
 		
-		usr.setRemember_token(token);
-		
-		Jwt jwtToken = new Jwt();
-		
-		jwtToken.setValue(token);
-		jwtToken.setValide(jwtTokenUtil.validateToken(token, userDetails));
-		
-		jwtToken.setRefresh_token(refreshToken);
-		
-		jwtToken.setUser(userService.findByUsername(jwtTokenUtil.getUsernameFromToken(token)));
-		
-		jwtRep.save(jwtToken);
-
-		return EntityResponse.generateResponse("Authentication", HttpStatus.OK,
+		if(usr.isValide()) {
+			
+				usr.setRemember_token(token);	
 				
-				new AuthenticationResponse(token, refreshToken));
+				Jwt jwtToken = new Jwt();
+				
+				jwtToken.setValue(token);
+				jwtToken.setValide(jwtTokenUtil.validateToken(token, userDetails));
+				
+				jwtToken.setRefresh_token(refreshToken);
+				
+				jwtToken.setUser(userService.findByUsername(jwtTokenUtil.getUsernameFromToken(token)));
+				
+				jwtRep.save(jwtToken);
+				
+				return EntityResponse.generateResponse("Authentication", HttpStatus.OK,
+				
+						new AuthenticationResponse(token, refreshToken, usr));
+				}else {
+					
+					return EntityResponse.generateResponse("Authentication", HttpStatus.BAD_REQUEST, "Ce compte n'est pas active, veuillez activez ce compte ");
+				}
 
 	}
 
 	private void authenticate(String username, String password) throws Exception {
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+			
+			
 		} catch (DisabledException e) {
 			
 			throw new Exception("USER_DISABLED = UTILISATEUR DESACTIVE ou NON ACTIVE", e);
@@ -168,43 +181,104 @@ public class UserAccessController {
 		
 	}
 	
-	@PostMapping("activation")
-    public void activation(@RequestBody Map<String, String> activation) {
+	@PostMapping("activation/{email}")
+    public ResponseEntity<Object> activation(@RequestBody Map<String, String> activation, @PathVariable String email) {
+		
+		//String email = userService.
+		User user = userService.findByUserEmail(email);
+		
+	    if(email.isEmpty()) {
+	    	
+	    	return EntityResponse.generateResponse("Champ email vide", HttpStatus.BAD_REQUEST, "le champ email ne puis être vide");
+	    }
+	    
+	    
+	    else if(userService.findByUserEmail(email) ==null ) {
+	    	
+	    	return EntityResponse.generateResponse("Utilisateur Introuvable", HttpStatus.BAD_REQUEST, "Aucun utilisateur enregistré sous "+email.toString());
+	    	
+	    }
     	
-        userService.activation(activation);
+	    else if (user.isValide()) {
+	    	
+	    	return EntityResponse.generateResponse("Utilisateur Valide", HttpStatus.BAD_REQUEST, "Ce compte a déja été validé");
+	    	
+    	}
+    	else {
+	        userService.activation(activation);
+	        return EntityResponse.generateResponse("Activation", HttpStatus.OK, "Utilisateur activé avec succès");
+    	}
+	    
     }
 	
-	@SecurityRequirement(name = "bearerAuth")
-	@GetMapping("newcode")
-    public ResponseEntity<Object> newcode() {
+	@GetMapping("newcode/{email}")
+	@Transactional
+    public ResponseEntity<Object> newcode(@PathVariable String email) {
     		
-		    User user = userService.findCurrentUser();
 		    
-		    if(validationRepository.findByUtilisateurId(user.getId()) != null) {
+		    if(email.isEmpty()) {
 		    	
-		    	validationRepository.deleteById(validationRepository.findByUtilisateurId(user.getId()).getId());
-		    	
-		    	//
-		    	return EntityResponse.generateResponse("Aucun utilisateur connecté, veuillez vérifier que vous ête bien authentiier", HttpStatus.BAD_REQUEST, validationRepository.findByUtilisateurId(user.getId()));
+		    	return EntityResponse.generateResponse("Champ email vide", HttpStatus.BAD_REQUEST, "le champ email ne puis être vide");
 		    }
-		    	    
 		    
-		    Validation validation = new Validation();
-	        validation.setUtilisateur(user);
-	        
-	        Instant creation = Instant.now();
-	        validation.setCreation(creation);
-	        Instant expiration = creation.plus(10, MINUTES);
-	        validation.setExpiration(expiration);
-	        Random random = new Random();
-	        int randomInteger = random.nextInt(999999);
-	        String code = String.format("%06d", randomInteger);
-
-	        validation.setCode(code);
-	        validationRepository.save(validation);
-	        notificationService.envoyer(validation);
-		 
-	        return EntityResponse.generateResponse("User Profile", HttpStatus.OK, "Nouveau Code Renvoyer a l'adresse "+user.getEmail());   
+		    
+		    else if(userService.findByUserEmail(email) ==null ) {
+		    	
+		    	return EntityResponse.generateResponse("Utilisateur Introuvable", HttpStatus.BAD_REQUEST, "Aucun utilisateur enregistré sous "+email.toString());
+		    	
+		    }
+		    
+		    else {
+		    	
+		    	
+		    	User user = userService.findByUserEmail(email);
+		    	
+		    	if (user.isValide()) {
+			    	
+			    	return EntityResponse.generateResponse("Utilisateur Valide", HttpStatus.BAD_REQUEST, "Ce compte a déja été validé");
+			    	
+		    	}
+		    	else {
+		    		
+		    		
+				    Validation validation = new Validation();
+				    
+			        validation.setUtilisateur(user);
+			        
+			        Instant creation = Instant.now();
+			        validation.setCreation(creation);
+			        Instant expiration = creation.plus(10, MINUTES);
+			        validation.setExpiration(expiration);
+			        Random random = new Random();
+			        int randomInteger = random.nextInt(999999);
+			        String code = String.format("%06d", randomInteger);
+			        
+			        validation.setCode(code);
+			        
+			        
+			        if(validationRepository.findByUtilisateurId(user.getId()) != null ){
+			        	
+			        	System.out.println(" Je sui ici");
+			        	System.out.println(user.getId());
+			        	System.out.println("Code "+validationRepository.findByUtilisateurId(user.getId()).getCode());
+			        	
+			        	//String cd = validationRepository.findByUtilisateurId(user.getId()).getCode();
+			        	System.out.println("Supresionnnnn");
+			        	
+			        	validationRepository.delete(validationRepository.findByUtilisateurId(user.getId()));
+			        	 
+			        	//return EntityResponse.generateResponse("User Profile", HttpStatus.OK, "Nouveau Code Renvoyer a l'adresse "+user.get
+			        }
+			        //validationRepository.deleteById(validationRepository.findByUtilisateurId(user.getId()).getId());
+			        System.out.println(" Je sui passer");
+			        validationRepository.save(validation);
+			        //validationRepository.delete(validationRepository.findByUtilisateurId(user.getId()));
+			        System.out.println(" Envoi du mail ");
+			        notificationService.envoyer(validation); 
+			        
+			        return EntityResponse.generateResponse("User Profile", HttpStatus.OK, "Nouveau Code Renvoyer a l'adresse "+user.getEmail()); 
+		    	}
+		    } 
 	        
     }
 	
@@ -229,7 +303,7 @@ public class UserAccessController {
 		User usr = userService.findCurrentUser();
 		
 		if(usr==null) {
-			
+				
 			 return EntityResponse.generateResponse("Deconexion", HttpStatus.OK, " Aucun utilisateur connecté ou aucune session en cour ");
 			
 		}

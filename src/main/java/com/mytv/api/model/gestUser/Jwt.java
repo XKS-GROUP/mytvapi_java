@@ -46,8 +46,6 @@ public class Jwt {
     
     private boolean valide;
     
-    
-    
     //@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     //private RefreshToken refreshToken;
 

@@ -20,8 +20,18 @@ public class FileMeta {
 
     @Column(name = "VERSION")
     private String version;
+    
+    private Long Size;
 
-    public FileMeta(String fileName, String filePath, String version) {
+    public Long getSize() {
+		return Size;
+	}
+
+	public void setSize(Long size) {
+		Size = size;
+	}
+
+	public FileMeta(String fileName, String filePath, String version) {
         this.fileName = fileName;
         this.filePath = filePath;
         this.version = version;

@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface AmazonS3Service {
+	
     public PutObjectResult upload(
             String path,
             String fileName,

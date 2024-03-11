@@ -12,7 +12,9 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.mytv.api.model.gestUser.User;
 import com.mytv.api.repository.JwtRepository;
+import com.mytv.api.service.gestUser.WUserService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -30,7 +32,10 @@ public class JWTRequestFilter extends OncePerRequestFilter {
 	
 	@Autowired
 	private JwtRepository jwtRep;
-
+	
+	@Autowired
+	private WUserService userService;
+	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws ServletException, IOException {
@@ -46,13 +51,21 @@ public class JWTRequestFilter extends OncePerRequestFilter {
 		String jwtToken = requestTokenHeader.split(" ")[1].trim();
 		String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
 		UserDetails userValueObject = userDetailsService.loadUserByUsername(username);
+		
+		User usr = userService.findByUsername(username);
+		
+		System.out.println("Le nom d'utilisateur est  "+username);
 
-		if (jwtTokenUtil.validateToken(jwtToken, userValueObject) && !jwtRep.findByValue(jwtToken).isEmpty()) {
-
+		if (jwtTokenUtil.validateToken(jwtToken, userValueObject) && !jwtRep.findByValue(jwtToken).isEmpty() && usr.isValide()) {
+			System.out.println("Le nom d'utilisateur est  "+username);
 			UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
 					userValueObject, null, userValueObject.getAuthorities());
 			usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 			SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+		}
+		else if(!usr.isValide()) {
+			
+			System.out.println("Compte non valide, veuillez activer votre compte Mr  "+username);
 		}
 		else {
 			
