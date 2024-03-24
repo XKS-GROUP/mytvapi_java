@@ -1,13 +1,11 @@
 package com.mytv.api.model.gestMedia;
 
-import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import lombok.NoArgsConstructor;
 
@@ -31,13 +29,6 @@ public class CategoryRL {
 	@NotBlank(message = "Une image est requise")
 	@Column(nullable = false)
 	private String img;
-	
-	@OneToMany(mappedBy = "idRadio")
-	List<Radio> radio;
-	
-	@OneToMany(mappedBy = "idLiveTv")
-	List<LiveTv> liveTv;
-	
 
 	public Long getIdcat() {
 		return idcat;
@@ -58,49 +49,20 @@ public class CategoryRL {
 		this.name = name;
 	}
 	
-	
-	
 	public boolean isStatus() {
 		return status;
 	}
-
 
 	public void setStatus(boolean status) {
 		this.status = status;
 	}
 
-
-	public List<Radio> getRadio() {
-		return radio;
-	}
-
-
-	public void setRadio(List<Radio> radio) {
-		this.radio = radio;
-	}
-
-
-	public List<LiveTv> getLiveTv() {
-		return liveTv;
-	}
-
-
-	public void setLiveTv(List<LiveTv> liveTv) {
-		this.liveTv = liveTv;
-	}
-
-
 	public String getImg() {
 		return img;
 	}
-
 
 	public void setImg(String img) {
 		this.img = img;
 	}
 	
-	
-	
-	
-
 }

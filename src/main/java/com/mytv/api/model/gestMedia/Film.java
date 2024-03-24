@@ -38,6 +38,7 @@ public class Film {
 	@Column(nullable = false)
 	String overview;
 	
+	@Column(nullable = false, columnDefinition = "boolean default false")
 	boolean Upcoming;
 	
 	@CreatedDate
@@ -49,14 +50,14 @@ public class Film {
 	
 	String ContentRating;
 	
-	Long budget;
+	float budget;
 	
 	
 	String trailerUrl;
 	String trailer;
 	
 	@Column(nullable = false, columnDefinition = "boolean default false")
-	Boolean movieAccess;
+	Boolean movieAccessFree;
 	
 	@NotNull(message = "une image miniature est requise pour un film")
 	String backdrop_path;
@@ -96,6 +97,8 @@ public class Film {
 	
 	
 	List <String> acteurList = new ArrayList<>();
+	
+	List <String> directorList = new ArrayList<>();
 	
 	List<String> genreList = new ArrayList<>();
 
@@ -172,14 +175,6 @@ public class Film {
 		ContentRating = contentRating;
 	}
 
-	public Long getBudget() {
-		return budget;
-	}
-
-	public void setBudget(Long budget) {
-		this.budget = budget;
-	}
-
 	public String getTrailerUrl() {
 		return trailerUrl;
 	}
@@ -194,14 +189,6 @@ public class Film {
 
 	public void setTrailer(String trailer) {
 		this.trailer = trailer;
-	}
-
-	public Boolean getMovieAccess() {
-		return movieAccess;
-	}
-
-	public void setMovieAccess(Boolean movieAccess) {
-		this.movieAccess = movieAccess;
 	}
 
 	public String getBackdrop_path() {
@@ -355,6 +342,30 @@ public class Film {
 
 	public void setPoster(String poster) {
 		this.poster = poster;
+	}
+
+	public float getBudget() {
+		return budget;
+	}
+
+	public void setBudget(float budget) {
+		this.budget = budget;
+	}
+
+	public Boolean getMovieAccessFree() {
+		return movieAccessFree;
+	}
+
+	public void setMovieAccessFree(Boolean movieAccessFree) {
+		this.movieAccessFree = movieAccessFree;
+	}
+
+	public List<String> getDirectorList() {
+		return directorList;
+	}
+
+	public void setDirectorList(List<String> directorList) {
+		this.directorList = directorList;
 	}
 	
 }

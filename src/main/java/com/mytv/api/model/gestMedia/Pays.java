@@ -1,10 +1,8 @@
 package com.mytv.api.model.gestMedia;
 
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 
-import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -34,11 +32,6 @@ public class Pays {
 	@Column(nullable = false)
 	String slug ;
 	
-	@OneToMany(mappedBy = "idRadio")
-	List<Radio> radio;
-	
-	@OneToMany(mappedBy = "idLiveTv")
-	List<LiveTv> liveTv;
 
 	public Long getIdPays() {
 		return idPays;
@@ -64,10 +57,4 @@ public class Pays {
 		this.slug = slug;
 	}
 	
-	
-
-	
-	
-
-
 }

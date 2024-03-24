@@ -45,7 +45,7 @@ public class Radio {
 
 	@NotNull(message = "une image miniature est requise pour une radio")
 	String backdrop_path;
-	String poster;
+	String poster_path;
 	
 	@NotNull(message = "ce champ ne peut etre vide, une valeur par defaut doit etre attribuer")
 	@Column(columnDefinition = "boolean default true")
@@ -94,12 +94,12 @@ public class Radio {
 
 
 	public String getPoster() {
-		return poster;
+		return poster_path;
 	}
 
 
 	public void setPoster(String poster) {
-		this.poster = poster;
+		this.poster_path = poster;
 	}
 
 

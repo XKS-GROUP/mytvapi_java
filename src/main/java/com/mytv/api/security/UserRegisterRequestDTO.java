@@ -1,5 +1,6 @@
 package com.mytv.api.security;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -32,7 +33,13 @@ public class UserRegisterRequestDTO {
 	@NotBlank(message = "ce champ ne peut pas etre vide et doit etre unique")
 	private String email;
 	
-	//private String mobile;
+	@NotBlank(message = "ce champ ne peut pas etre vide et doit etre unique")
+	@Column(nullable = false, unique = true)
+	String phone;
+	
+	@NotBlank(message = "ce champ ne peut pas etre vide, une adresse est requise ")
+	@Column(nullable = false)
+	String Address;
 	
 	private List<String> roleList = new ArrayList<>();
 	/**

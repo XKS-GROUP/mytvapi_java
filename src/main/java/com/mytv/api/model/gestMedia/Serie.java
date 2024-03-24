@@ -7,10 +7,8 @@ import java.util.List;
 import org.springframework.data.annotation.CreatedDate;
 
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,12 +32,13 @@ public class Serie {
 	@Column(nullable = false)
 	String overview;
 	
+	/*
 	@OneToMany(mappedBy = "idSaison",cascade = CascadeType.REMOVE)
 	List<Saison> saison;
 	
 	@OneToMany(mappedBy = "idEpisode",cascade = CascadeType.REMOVE)
 	List<Episode> episode;
-	
+	*/
 	//
 	
 	boolean Upcoming;
@@ -60,12 +59,12 @@ public class Serie {
 	String trailer;
 	
 	@Column(nullable = false, columnDefinition = "boolean default false")
-	Boolean movieAccess;
+	Boolean AccessFree;
 	
 	@NotNull(message = "une image miniature est requise pour une serie")
 	String backdrop_path;
 	
-	String poster;
+	String poster_path;
 	
 	String Langue;
 	
@@ -85,6 +84,8 @@ public class Serie {
 	
 	
 	List <String> acteurList = new ArrayList<>();
+	
+	List <String> directorList = new ArrayList<>();
 	
 	List<String> genreList = new ArrayList<>();
 
@@ -111,23 +112,6 @@ public class Serie {
 	public void setOverview(String overview) {
 		this.overview = overview;
 	}
-
-	public List<Saison> getSaison() {
-		return saison;
-	}
-
-	public void setSaison(List<Saison> saison) {
-		this.saison = saison;
-	}
-
-	public List<Episode> getEpisode() {
-		return episode;
-	}
-
-	public void setEpisode(List<Episode> episode) {
-		this.episode = episode;
-	}
-
 	public boolean isUpcoming() {
 		return Upcoming;
 	}
@@ -192,13 +176,6 @@ public class Serie {
 		this.trailer = trailer;
 	}
 
-	public Boolean getMovieAccess() {
-		return movieAccess;
-	}
-
-	public void setMovieAccess(Boolean movieAccess) {
-		this.movieAccess = movieAccess;
-	}
 
 	public String getBackdrop_path() {
 		return backdrop_path;
@@ -207,8 +184,6 @@ public class Serie {
 	public void setBackdrop_path(String backdrop_path) {
 		this.backdrop_path = backdrop_path;
 	}
-
-
 
 	public String getLangue() {
 		return Langue;
@@ -274,13 +249,30 @@ public class Serie {
 		this.genreList = genreList;
 	}
 
-	public String getPoster() {
-		return poster;
+	public Boolean getAccessFree() {
+		return AccessFree;
 	}
 
-	public void setPoster(String poster) {
-		this.poster = poster;
+	public void setAccessFree(Boolean accessFree) {
+		AccessFree = accessFree;
 	}
+
+	public String getPoster_path() {
+		return poster_path;
+	}
+
+	public void setPoster_path(String poster_path) {
+		this.poster_path = poster_path;
+	}
+
+	public List<String> getDirectorList() {
+		return directorList;
+	}
+
+	public void setDirectorList(List<String> directorList) {
+		this.directorList = directorList;
+	}
+	
 	
 
 }

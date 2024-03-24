@@ -21,11 +21,16 @@ public class Subscription {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long idAbonnement;
+	
 	Long idUtilisateur;
+	
 	Long idSubType;
 	
 	@CreationTimestamp
 	Date datebegin;
+	
+	@CreationTimestamp
+	Date dateEnd;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id", insertable = true, updatable = true)
@@ -83,6 +88,14 @@ public class Subscription {
 
 	public void setSubstypes(SubscriptionType substypes) {
 		this.substypes = substypes;
+	}
+
+	public Date getDateEnd() {
+		return dateEnd;
+	}
+
+	public void setDateEnd(Date dateEnd) {
+		this.dateEnd = dateEnd;
 	}
 	
 	

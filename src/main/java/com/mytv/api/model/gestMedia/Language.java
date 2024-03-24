@@ -24,7 +24,7 @@ public class Language {
 	@Column(length = 50, nullable = false)
 	String name;
 	
-	String flag;
+	String flag_file;
 	
 	@NotBlank(message = "ce champ ne peut pas etre vide et doit etre unique, ce champ represente le code unique d'une langue")
 	@Column(nullable = false, unique = true)
@@ -49,11 +49,11 @@ public class Language {
 	}
 
 	public String getFlag() {
-		return flag;
+		return flag_file;
 	}
 
 	public void setFlag(String flag) {
-		this.flag = flag;
+		this.flag_file = flag;
 	}
 
 	public boolean isStatus() {

@@ -14,11 +14,11 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Contributor {
+public class Director {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long idContributor;
+	Long idDirector;
 	
 	@NotBlank(message = "Ce champ ne puis etre vide")
 	@Column(nullable = false)
@@ -43,14 +43,6 @@ public class Contributor {
 	@NotBlank(message = "Ce champ ne peut etre vide")
 	@Column(nullable = false)
 	Long idTypecontt;
-
-	public Long getIdContributor() {
-		return idContributor;
-	}
-
-	public void setIdContributor(Long idContributor) {
-		this.idContributor = idContributor;
-	}
 
 	public String getFistName() {
 		return fistName;
@@ -106,6 +98,22 @@ public class Contributor {
 
 	public void setIdTypecontt(Long idTypecontt) {
 		this.idTypecontt = idTypecontt;
+	}
+
+	public Long getPays() {
+		return pays;
+	}
+
+	public void setPays(Long pays) {
+		this.pays = pays;
+	}
+
+	public Long getIdDirector() {
+		return idDirector;
+	}
+
+	public void setIdDirector(Long idDirector) {
+		this.idDirector = idDirector;
 	}
 	
 	

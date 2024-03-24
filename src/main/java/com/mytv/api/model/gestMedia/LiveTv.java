@@ -28,7 +28,7 @@ public class LiveTv {
 	@Column(nullable = false)
 	String overview;
 
-	String tvLogo;
+	String tvLogo_path;
 	
 	@NotNull(message="ce champ ne peut pas etre vide, un live tv doit avoir une categorie")
 	@Column(nullable = false)
@@ -39,11 +39,11 @@ public class LiveTv {
 	boolean status;
 	
 	
-	String svr1;
+	String svr1_url;
 	
-	String svr2;
+	String svr2_url;
 	
-	String svr3;
+	String svr3_url;
 	
 	String tvEmbedCode;
 	
@@ -69,15 +69,6 @@ public class LiveTv {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public String getTvLogo() {
-		return tvLogo;
-	}
-
-	public void setTvLogo(String tvLogo) {
-		this.tvLogo = tvLogo;
-	}
-
 	
 	public boolean isStatus() {
 		return status;
@@ -85,30 +76,6 @@ public class LiveTv {
 
 	public void setStatus(boolean status) {
 		this.status = status;
-	}
-
-	public String getSvr1() {
-		return svr1;
-	}
-
-	public void setSvr1(String svr1) {
-		this.svr1 = svr1;
-	}
-
-	public String getSvr2() {
-		return svr2;
-	}
-
-	public void setSvr2(String svr2) {
-		this.svr2 = svr2;
-	}
-
-	public String getSvr3() {
-		return svr3;
-	}
-
-	public void setSvr3(String svr3) {
-		this.svr3 = svr3;
 	}
 
 	public String getTvEmbedCode() {
@@ -142,5 +109,38 @@ public class LiveTv {
 	public void setIdcategory(Long idcategory) {
 		this.idcategory = idcategory;
 	}
+
+	public String getTvLogo_path() {
+		return tvLogo_path;
+	}
+
+	public void setTvLogo_path(String tvLogo_path) {
+		this.tvLogo_path = tvLogo_path;
+	}
+
+	public String getSvr1_url() {
+		return svr1_url;
+	}
+
+	public void setSvr1_url(String svr1_url) {
+		this.svr1_url = svr1_url;
+	}
+
+	public String getSvr2_url() {
+		return svr2_url;
+	}
+
+	public void setSvr2_url(String svr2_url) {
+		this.svr2_url = svr2_url;
+	}
+
+	public String getSvr3_url() {
+		return svr3_url;
+	}
+
+	public void setSvr3_url(String svr3_url) {
+		this.svr3_url = svr3_url;
+	}
+	
 
 }

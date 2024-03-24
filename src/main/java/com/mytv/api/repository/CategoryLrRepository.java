@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.mytv.api.model.gestMedia.CategoryRL;
 
 @Repository
-public interface CategoryLrRepository extends JpaRepository<CategoryRL, Long> {
+public interface CategoryLrRepository extends  JpaRepository<CategoryRL, Long> {
 	
 	CategoryRL findByName(String name);
 

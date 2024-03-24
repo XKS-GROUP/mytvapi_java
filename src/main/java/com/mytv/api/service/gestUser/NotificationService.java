@@ -30,4 +30,23 @@ public class NotificationService {
 
         javaMailSender.send(message);
     }
+    
+    public void envoyerPour(Validation validation, String obj) {
+    	
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("test@smeth-dev.site");
+        message.setTo(validation.getUtilisateur().getEmail());
+        message.setSubject(obj.toString());
+
+        String texte = String.format(
+                "Bonjour %s, Votre code d'action est %s; ce code expirera dans 10 minute",
+                validation.getUtilisateur().getUsername(),
+                validation.getCode()
+                
+                );
+        
+        message.setText(texte);
+
+        javaMailSender.send(message);
+    }
 }

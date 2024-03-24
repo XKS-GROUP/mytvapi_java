@@ -4,7 +4,11 @@ package com.mytv.api.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,6 +19,7 @@ import com.mytv.api.service.gestUser.WUserService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("api/v1/util")
@@ -37,8 +42,8 @@ public class ConfigController {
 	
 	@Tag(name = "util")
 	@Operation(summary = "Creer un role", description = "Returne la liste de tous les Roles")
-	@GetMapping("role/create")
-	public ResponseEntity<Object> createRole(Role role){
+	@PostMapping("role/create")
+	public ResponseEntity<Object> createRole(@Valid @RequestBody Role role){
 		
 		return EntityResponse.generateResponse("Creation d'un nouveau Role", HttpStatus.OK,
 				roleService.save(role));
@@ -46,8 +51,8 @@ public class ConfigController {
 	
 	@Tag(name = "util")
 	@Operation(summary = "supp role", description = "Returne la liste de tous les Roles")
-	@GetMapping("role/delete/{id}")
-	public ResponseEntity<Object> deleteRole(Long id){
+	@DeleteMapping("role/delete/{id}")
+	public ResponseEntity<Object> deleteRole(@PathVariable Long id){
 		return EntityResponse.generateResponse("role supp...........", HttpStatus.OK,
 				roleService.delete(id));
 	}

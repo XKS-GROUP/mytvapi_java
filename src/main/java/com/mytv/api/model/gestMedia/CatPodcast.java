@@ -1,13 +1,11 @@
 package com.mytv.api.model.gestMedia;
 
-import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,9 +30,10 @@ public class CatPodcast {
 	@NotBlank(message = "Une image est requise")
 	@Column(nullable = false)
 	private String img;
-	
+	/*
 	@OneToMany(mappedBy = "idPodcast")
 	List<Podcast> podcast;
+	*/
 
 	public Long getIdCatPod() {
 		return idCatPod;
@@ -51,17 +50,5 @@ public class CatPodcast {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public List<Podcast> getPodcast() {
-		return podcast;
-	}
-
-	public void setPodcast(List<Podcast> podcast) {
-		this.podcast = podcast;
-	}
-	
-	
-	
-	
 
 }

@@ -14,12 +14,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 public class Saison {
 	
 	@Id
@@ -41,10 +41,10 @@ public class Saison {
 	@NotNull(message = "une image miniature est requise pour une serie")
 	String backdrop_path;
 	
-	String posterUrl;
+	String poster_path;
 	
 	String trailerURL;
-	String trailer;
+	String trailerFile;
 	
 	@Column(nullable = false, columnDefinition = "boolean default false")
 	boolean status;
@@ -97,13 +97,7 @@ public class Saison {
 		this.backdrop_path = backdrop_path;
 	}
 
-	public String getPosterUrl() {
-		return posterUrl;
-	}
 
-	public void setPosterUrl(String posterUrl) {
-		this.posterUrl = posterUrl;
-	}
 
 	public String getTrailerURL() {
 		return trailerURL;
@@ -113,13 +107,6 @@ public class Saison {
 		this.trailerURL = trailerURL;
 	}
 
-	public String getTrailer() {
-		return trailer;
-	}
-
-	public void setTrailer(String trailer) {
-		this.trailer = trailer;
-	}
 
 	public boolean isStatus() {
 		return status;
@@ -151,6 +138,22 @@ public class Saison {
 
 	public void setEpisode(List<Episode> episode) {
 		this.episode = episode;
+	}
+
+	public String getPoster_path() {
+		return poster_path;
+	}
+
+	public void setPoster_path(String poster_path) {
+		this.poster_path = poster_path;
+	}
+
+	public String getTrailerFile() {
+		return trailerFile;
+	}
+
+	public void setTrailerFile(String trailerFile) {
+		this.trailerFile = trailerFile;
 	}
 	
 	

@@ -5,8 +5,6 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -35,7 +33,7 @@ public class Podcast {
 	@NotNull(message = "une image miniature est requise pour un podcast")
 	String backdrop_path;
 	
-	String poster;
+	String poster_path;
 	
 	@NotNull(message="Un podcast doit forcement avoir une categori")
 	Long category;
@@ -43,9 +41,9 @@ public class Podcast {
 	@Column(nullable = false, columnDefinition = "boolean default true")
 	boolean status;
 	
-	String file;
+	String fileLink;
 	
-	String url;
+	String streamlink;
 	
 	
 	public Long getIdPodcast() {
@@ -72,12 +70,7 @@ public class Podcast {
 	public void setBackdrop_path(String backdrop_path) {
 		this.backdrop_path = backdrop_path;
 	}
-	public String getPoster() {
-		return poster;
-	}
-	public void setPoster(String poster) {
-		this.poster = poster;
-	}
+
 	public Long getCategory() {
 		return category;
 	}
@@ -90,20 +83,23 @@ public class Podcast {
 	public void setStatus(boolean status) {
 		this.status = status;
 	}
-	public String getFile() {
-		return file;
+	public String getStreamlink() {
+		return streamlink;
 	}
-	public void setFile(String file) {
-		this.file = file;
+	public void setStreamlink(String streamlink) {
+		this.streamlink = streamlink;
 	}
-	public String getUrl() {
-		return url;
+	public String getFileLink() {
+		return fileLink;
 	}
-	public void setUrl(String url) {
-		this.url = url;
+	public void setFileLink(String fileLink) {
+		this.fileLink = fileLink;
 	}
-	
-	
-
+	public String getPoster_path() {
+		return poster_path;
+	}
+	public void setPoster_path(String poster_path) {
+		this.poster_path = poster_path;
+	}
 
 }

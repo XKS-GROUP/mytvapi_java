@@ -1,10 +1,7 @@
 package com.mytv.api.model.gestMedia;
 
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
-
-import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,18 +33,13 @@ public class Genre {
 	
 	@NotBlank(message = "Une image est requise")
 	@Column(nullable = false)
-	private String img;
+	private String img_path;
 	
-	@OneToMany(mappedBy = "idFilm")
-	List<Film> film;
-	
-	@OneToMany(mappedBy = "idSerie")
-	List<Serie> serie;
-
 	public Long getIdGenre() {
 		return idGenre;
 	}
 
+	
 	public void setIdGenre(Long idGenre) {
 		this.idGenre = idGenre;
 	}
@@ -69,28 +61,12 @@ public class Genre {
 		this.status = status;
 	}
 
-	public List<Film> getFilm() {
-		return film;
-	}
-
-	public void setFilm(List<Film> film) {
-		this.film = film;
-	}
-
-	public List<Serie> getSerie() {
-		return serie;
-	}
-
-	public void setSerie(List<Serie> serie) {
-		this.serie = serie;
-	}
-
 	public String getImg() {
-		return img;
+		return img_path;
 	}
 
 	public void setImg(String img) {
-		this.img = img;
+		this.img_path = img;
 	}
 	
 }

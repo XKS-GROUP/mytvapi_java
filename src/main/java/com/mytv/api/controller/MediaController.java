@@ -10,7 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -93,7 +92,7 @@ public class MediaController {
 	@Autowired
 	private LangueService langService;
 	
-	private final String asset ="/RESSOURCES/IMG/";
+	//private final String asset ="/RESSOURCES/IMG/";
 	
 	//Langue
 	
@@ -189,7 +188,7 @@ public class MediaController {
 	@PostMapping(path="genres/create")
 
 	public Genre createG(
-			@Valid @ModelAttribute Genre g, 
+			@Valid @RequestBody Genre g, 
 			@RequestParam("img_file") MultipartFile file) throws IOException{
 			
 		//Enregistrement du fichier img
@@ -205,7 +204,7 @@ public class MediaController {
 	@Tag(name = "genre")
 	@PostMapping(path="genres/create")
 
-	public Genre createG( @Valid @ModelAttribute Genre g) {
+	public Genre createG( @Valid @RequestBody Genre g) {
 		
 		return genreService.create(g);
 	}
@@ -263,7 +262,7 @@ public class MediaController {
 	@Tag(name = "Categorie Radio et live ")
 	@PostMapping(path="catrl/create")
 
-	public CategoryRL createCRL(@Valid @ModelAttribute CategoryRL u) {
+	public CategoryRL createCRL(@Valid @RequestBody CategoryRL u) {
 		
 		return catLrService.create(u);
 	}
@@ -289,7 +288,7 @@ public class MediaController {
 	@PutMapping(path="catrl/update/{id}")
 	public CategoryRL updateCRL(
 			@PathVariable Long id, 
-			@ModelAttribute CategoryRL u) {
+			@RequestBody CategoryRL u) {
 		
 		return catLrService.upadte(id, u);
 		
@@ -315,7 +314,7 @@ public class MediaController {
 	@PostMapping(path="catpod/create")
 
 	public CatPodcast createCP(
-			@Valid @ModelAttribute CatPodcast u) {
+			@Valid @RequestBody CatPodcast u) {
 		
 		return catpodService.create(u);
 	}
@@ -341,7 +340,7 @@ public class MediaController {
 	public CatPodcast updateCP(
 			
 			@PathVariable Long id, 
-			@ModelAttribute CatPodcast u){
+			@RequestBody CatPodcast u){
 		
 		return catpodService.upadte(id, u);
 		
@@ -368,7 +367,7 @@ public class MediaController {
 	@Tag(name = "Radio")
 	@PostMapping(path="radios/create")
 	public  ResponseEntity<Object> createR(@Valid 
-			@ModelAttribute Radio r ){	
+			@RequestBody Radio r ){	
 	
 			
 			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, radioService.create(r));
@@ -391,7 +390,7 @@ public class MediaController {
 	@Tag(name = "Radio")
 	@PutMapping(path="radios/update/{id}")
 	public ResponseEntity<Object> updateR(@PathVariable Long id, 
-			@ModelAttribute Radio r) {
+			@RequestBody Radio r) {
 			
 		//Save du tout
 		return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, radioService.upadte(id, r));
@@ -412,7 +411,7 @@ public class MediaController {
 	@Tag(name = "LiveTv")
 	@PostMapping(path="lives/create")
 	public ResponseEntity<Object> createL(
-			@Valid @ModelAttribute LiveTv lt) {
+			@Valid @RequestBody LiveTv lt) {
 		
 		return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, liveService.create(lt));
 	}
@@ -442,7 +441,7 @@ public class MediaController {
 	@PutMapping(path="lives/update/{id}")
 	public  ResponseEntity<Object> updateL(
 			@PathVariable Long id, 
-			@Valid @ModelAttribute LiveTv lt) {
+			@Valid @RequestBody LiveTv lt) {
 		
 		
 		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, liveService.create(lt));
@@ -472,7 +471,7 @@ public class MediaController {
 	@Tag(name = "Podcast")
 	@PostMapping(path="podcasts/create")
 	public ResponseEntity<Object> createP(
-			@ModelAttribute Podcast p){
+			@RequestBody Podcast p){
 		
 			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, podcastservice.create(p) );
 	
@@ -497,7 +496,7 @@ public class MediaController {
 	@PutMapping(path="podcasts/update/{id}")
 	public ResponseEntity<Object> updateP(
 			@PathVariable Long id,
-			@ModelAttribute Podcast p) {
+			@RequestBody Podcast p) {
 		
 			//Save du tout
 			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, podcastservice.upadte(id, p) );
@@ -526,7 +525,7 @@ public class MediaController {
 	@Tag(name = "Movie")
 	@PostMapping(path="movies/create")
 	public ResponseEntity<Object> createM(
-			@ModelAttribute Film film) {
+			@RequestBody Film film) {
 		
 			//Save du tout
 			return EntityResponse.generateResponse("Succes", HttpStatus.CREATED, filmService.create(film));
@@ -551,7 +550,7 @@ public class MediaController {
 	@Tag(name = "Movie")
 	@PutMapping(path="movies/update/{id}")
 	public ResponseEntity<Object> updateM(@PathVariable Long id,
-			@ModelAttribute Film film)  {
+			@RequestBody Film film)  {
 		return EntityResponse.generateResponse("Succes", HttpStatus.CREATED, filmService.upadte(id, film));
 	
 	}
@@ -577,7 +576,7 @@ public class MediaController {
 	@Tag(name = "Serie")
 	@PostMapping(path="series/create" )
 	public ResponseEntity<Object> createS(
-			@Valid @ModelAttribute Serie serie){
+			@Valid @RequestBody Serie serie){
 		
 			//Save du tout
 			return EntityResponse.generateResponse("Type de media non supporter", HttpStatus.CREATED , serieService.create(serie));
@@ -603,7 +602,7 @@ public class MediaController {
 	@PutMapping(path="series/update/{id}")
 	public ResponseEntity<Object> updateS(
 			@PathVariable Long id, 
-			@ModelAttribute Serie serie){
+			@RequestBody Serie serie){
 		
 			return EntityResponse.generateResponse("Type de media non supporter", HttpStatus.CREATED , serieService.upadte(id, serie));
 		
@@ -644,7 +643,7 @@ public class MediaController {
     @Tag(name = "Episode")
 	@PostMapping(path="episodes/create")
 	public ResponseEntity<Object> createE(
-			@Valid @ModelAttribute Episode episode) {
+			@Valid @RequestBody Episode episode) {
 		
 		return EntityResponse.generateResponse("Succes", HttpStatus.CREATED, episodeService.create(episode));
 
@@ -655,7 +654,7 @@ public class MediaController {
 	@PutMapping(path="episodes/update/{id}")
 	public ResponseEntity<Object> updateE(
 			Long id,
-			@Valid @ModelAttribute Episode episode){
+			@Valid @RequestBody Episode episode){
 		
 		//Save du tout
 		return EntityResponse.generateResponse("Succes", HttpStatus.CREATED, episodeService.upadte(id, episode));
@@ -695,7 +694,8 @@ public class MediaController {
     }
 	
 	@Tag(name = "R2")
-    @PostMapping("uploadfile")
+    @PostMapping(path="uploadfile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	
     public FileMeta upload(@RequestParam("file") MultipartFile file) throws IOException {
 		
 		return metadataService.uploadR3(file, "");
@@ -703,7 +703,7 @@ public class MediaController {
     }
 	
 	@Tag(name = "R2")
-    @PostMapping("uploadfileFolder/{folder}")
+    @PostMapping(path="uploadfileFolder/{folder}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Object>  uploadWithFolderName(@RequestParam("file") MultipartFile file, @PathVariable String folder) throws IOException {
 		
 		

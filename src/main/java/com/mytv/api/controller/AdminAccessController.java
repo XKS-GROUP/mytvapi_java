@@ -132,7 +132,7 @@ public class AdminAccessController {
 	
 	//Deconexion
 	@Tag(name = "Profile")
-	@GetMapping("logout")
+	@PostMapping("logout")
 	public ResponseEntity<Object> userLogout(){
 		
 		User usr = userService.findCurrentUser();
@@ -152,7 +152,7 @@ public class AdminAccessController {
 	//Supp by id
 	@Tag(name = "Profile")
 	@DeleteMapping("deleteAcountById/{id}")
-	public ResponseEntity<Object> deleteProfileById(Long id){
+	public ResponseEntity<Object> deleteProfileById(@PathVariable Long id){
 		
 		
 		return EntityResponse.generateResponse("User Profile", HttpStatus.OK, userService.deleteUserFromId(id));
@@ -167,6 +167,7 @@ public class AdminAccessController {
 				userService.retrieveAllUserList());
 	}
 	
+	//List des utilisateur non valide
 	@Tag(name = "Profile")
 	@GetMapping("userNotValide")
 	public ResponseEntity<Object> getAllUserValideList(){
@@ -174,6 +175,7 @@ public class AdminAccessController {
 				userService.AllUserNotValide());
 	}
 	
+	//List des utilisateur valide
 	@Tag(name = "Profile")
 	@GetMapping("userValide")
 	public ResponseEntity<Object> getAllUserNotValideList(){
@@ -182,7 +184,6 @@ public class AdminAccessController {
 	}
 	
 	//Role
-	
 	@Tag(name = "Role")
 	@Operation(summary = "Get All Rols", description = "Returne la liste de tous les Roles")
 	@GetMapping("role/role-list")
@@ -191,28 +192,27 @@ public class AdminAccessController {
 				roleService.findAllRole());
 	}
 	
+	//Creer un nouveau role
 	@Tag(name = "Role")
 	@Operation(summary = "Creer un role", description = "Returne la liste de tous les Roles")
-	@GetMapping("role/create")
-	public ResponseEntity<Object> createRole(Role role){
+	@PostMapping("role/create")
+	public ResponseEntity<Object> createRole(@Valid @RequestBody Role role){
 		
 		return EntityResponse.generateResponse("Creation d'un nouveau Role", HttpStatus.OK,
 				roleService.save(role));
 	}
 	
-	
+	//Supp un role
 	@Tag(name = "Role")
 	@Operation(summary = "supp role", description = "Returne la liste de tous les Roles")
-	@GetMapping("role/delete/{id}")
-	public ResponseEntity<Object> deleteRole(Long id){
+	@DeleteMapping("role/delete/{id}")
+	public ResponseEntity<Object> deleteRole(@PathVariable Long id){
 		return EntityResponse.generateResponse("role supp...........", HttpStatus.OK,
 				roleService.delete(id));
 	}
 	
-
 	
-	//Abonnement et type d'abonnement
-	
+	//Liste Abonnement et type d'abonnement
 	@Tag(name = "subscriptionType")
 	@GetMapping("subscriptionType")
 	@Operation(summary = "Get All Subscription", description = "Returne la liste de tous les abonnements")
@@ -230,24 +230,28 @@ public class AdminAccessController {
 
 	}
 	
+	//Creer un Abonnement
 	@Tag(name = "subscriptionType")
 	@PostMapping("subscriptionType/create")
-	public ResponseEntity<Object> createSubscriptionType(SubscriptionType sub){
-		return EntityResponse.generateResponse("creation d'un nouveau type d abonnement", HttpStatus.OK,
-				
-				subTypService.create(sub));
+	public ResponseEntity<Object> createSubscriptionType(@Valid @RequestBody SubscriptionType sub){
+		
+		return EntityResponse.generateResponse("creation d'un nouveau type d abonnement", HttpStatus.OK, subTypService.create(sub));
+		
 	}
 	
+	
+	//Maj Abbonement
 	@Tag(name = "subscriptionType")
 	@PutMapping("subscriptionType/update/{id}")
-	public ResponseEntity<Object> updateSubscriptionTypeById(Long id, SubscriptionType sub){
+	public ResponseEntity<Object> updateSubscriptionTypeById(@PathVariable Long id, @Valid @RequestBody SubscriptionType sub){
 		return EntityResponse.generateResponse("MAJ Sub Type by id ...", HttpStatus.OK,
 				subTypService.upadte(id , sub));
 	}
 	
+	//Supp Abonnement
 	@Tag(name = "subscriptionType")
 	@DeleteMapping("subcriptionType/delete/{id}")
-	public ResponseEntity<Object> deleteSubscriptionType(Long id){
+	public ResponseEntity<Object> deleteSubscriptionType(@PathVariable Long id){
 		return EntityResponse.generateResponse("Suppression d un abonnement", HttpStatus.OK,
 				subTypService.delete(id));
 	}

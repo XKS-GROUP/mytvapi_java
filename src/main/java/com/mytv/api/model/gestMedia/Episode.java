@@ -36,6 +36,10 @@ public class Episode {
 	@Column(nullable = false)
 	Long idSerie;
 	
+	@NotBlank(message = "Ce champ ne peut etre vide, un episode doit forcement faire reference a une saison")
+	@Column(nullable = false)
+	Long idSaison;
+	
 	@CreatedDate
 	Date addDate;
 	
@@ -241,6 +245,14 @@ public class Episode {
 
 	public void setAddDate(Date addDate) {
 		this.addDate = addDate;
+	}
+
+	public Long getIdSaison() {
+		return idSaison;
+	}
+
+	public void setIdSaison(Long idSaison) {
+		this.idSaison = idSaison;
 	}
 	
 }
