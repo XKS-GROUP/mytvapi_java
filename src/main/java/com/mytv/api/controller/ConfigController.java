@@ -27,11 +27,11 @@ public class ConfigController {
 
 	@Autowired
 	WUserService userService;
-	
+
 	@Autowired
 	WRoleService roleService;
 
-	
+
 	@Tag(name = "util")
 	@Operation(summary = "Get All Rols", description = "Returne la liste de tous les Roles")
 	@GetMapping("role/role-list")
@@ -39,16 +39,16 @@ public class ConfigController {
 		return EntityResponse.generateResponse("Liste des roles disponible", HttpStatus.OK,
 				roleService.findAllRole());
 	}
-	
+
 	@Tag(name = "util")
 	@Operation(summary = "Creer un role", description = "Returne la liste de tous les Roles")
 	@PostMapping("role/create")
 	public ResponseEntity<Object> createRole(@Valid @RequestBody Role role){
-		
+
 		return EntityResponse.generateResponse("Creation d'un nouveau Role", HttpStatus.OK,
 				roleService.save(role));
 	}
-	
+
 	@Tag(name = "util")
 	@Operation(summary = "supp role", description = "Returne la liste de tous les Roles")
 	@DeleteMapping("role/delete/{id}")
@@ -56,5 +56,5 @@ public class ConfigController {
 		return EntityResponse.generateResponse("role supp...........", HttpStatus.OK,
 				roleService.delete(id));
 	}
-		
+
 }

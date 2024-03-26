@@ -8,7 +8,7 @@ import com.mytv.api.model.gestPub.PartenerCat;
 
 @AutoConfiguration
 public interface PartenerCatService {
-	
+
 	PartenerCat create(PartenerCat u);
 	List<PartenerCat> show();
 	List<PartenerCat> showById(Long id);

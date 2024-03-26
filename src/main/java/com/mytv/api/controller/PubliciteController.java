@@ -13,6 +13,6 @@ import lombok.AllArgsConstructor;
 
 @SecurityRequirement(name = "bearerAuth")
 public class PubliciteController {
-	
+
 
 }

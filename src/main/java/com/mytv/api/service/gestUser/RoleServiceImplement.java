@@ -13,8 +13,8 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 public class RoleServiceImplement implements RoleService {
-	
-	
+
+
 	private RoleRepository roleRep;
 
 	@Override
@@ -37,7 +37,7 @@ public class RoleServiceImplement implements RoleService {
 
 	@Override
 	public Boolean delete(Long id) {
-		
+
 		roleRep.deleteById(id);
 
 		return true;

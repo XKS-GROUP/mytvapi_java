@@ -27,10 +27,10 @@ public class OpenAPIConfiguration {
 
    @Bean
    public OpenAPI defineOpenApi() {
-	   
-       Server server = new Server();  //Ici sera defini le server de l api 
-       server.setUrl("https://localhost:808"); //Ici sera defini l'adresse de base depuis laquelle l api sera disponible 
-       server.setDescription("Development"); //Ici sera defini le mode de l'API (production ou developpement 
+
+       Server server = new Server();  //Ici sera defini le server de l api
+       server.setUrl("https://localhost:808"); //Ici sera defini l'adresse de base depuis laquelle l api sera disponible
+       server.setDescription("Development"); //Ici sera defini le mode de l'API (production ou developpement
 
        Contact myContact = new Contact();
        myContact.setName("XKSAPP");
@@ -46,7 +46,7 @@ public class OpenAPIConfiguration {
     	                new Server()
     	                        .url("http://localhost:8080")
     	                        .description("Generated URL"),
-    	                
+
     	                new Server()
     	                        .url("http://localhost:8082")
     	                        .description("server test "),
@@ -54,10 +54,10 @@ public class OpenAPIConfiguration {
     	                        .url("https://api.mytelevision.fr")
     	                        .description("PROD")))
     		    .info(information);//.servers(List.of(server));
- 
+
    }
-   
-   
+
+
    @Bean
    public GroupedOpenApi allApi() {
        return GroupedOpenApi.builder()
@@ -65,7 +65,7 @@ public class OpenAPIConfiguration {
                .pathsToMatch("/**")
                .build();
    }
-   
+
    @Bean
    public GroupedOpenApi authApi() {
        return GroupedOpenApi.builder()
@@ -74,7 +74,7 @@ public class OpenAPIConfiguration {
                .build();
    }
 
-   
+
    @Bean
    public GroupedOpenApi adminApi() {
        return GroupedOpenApi.builder()
@@ -82,7 +82,7 @@ public class OpenAPIConfiguration {
                .pathsToMatch("/api/v1/admin/**")
                .build();
    }
-   
+
    @Bean
    public GroupedOpenApi frontApi() {
        return GroupedOpenApi.builder()
@@ -90,7 +90,7 @@ public class OpenAPIConfiguration {
                .pathsToMatch("/api/v1/front/**")
                .build();
    }
-   
+
    @Bean
    public GroupedOpenApi UtilApi() {
        return GroupedOpenApi.builder()

@@ -19,63 +19,63 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Episode {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long idEpisode;
-	
+
 	@NotBlank(message = "Ce champ ne peut etre vide")
 	@Column(nullable = false)
 	String name;
-	
+
 	@NotBlank(message = "Ce champ ne peut etre vide")
 	@Column(nullable = false)
 	String overView;
-	
+
 	@NotBlank(message = "Ce champ ne peut etre vide, un episode doit forcement faire reference a une serie")
 	@Column(nullable = false)
 	Long idSerie;
-	
+
 	@NotBlank(message = "Ce champ ne peut etre vide, un episode doit forcement faire reference a une saison")
 	@Column(nullable = false)
 	Long idSaison;
-	
+
 	@CreatedDate
 	Date addDate;
-	
+
 	Date realeaseDate;
-	
+
 	@Column(nullable = false)
 	int numero;
-	
+
 	String duration;
-	
+
 	@NotNull(message = "un satus par defaut doit etre attribuer")
 	@Column(nullable = false, columnDefinition = "boolean default true")
 	boolean status;
-	
+
 	@NotNull(message = "une image miniature est requise pour un episode")
 	String thumbnail;
-	
+
 	String posterUrl;
-	
+
 	String trailer;
-	
+
 	@NotNull(message = "un fichier fideo initial est requis pour un episode")
 	String videoFile;
-	
+
 	String videoFile480pLocal;
 	String videoFile480pUrl;
-	
+
 	String videoFile720pLocal;
 	String videoFile720pUrl;
-	
+
 	String videoFile1080pLocal;
 	String videoFile1080pUrl;
-	
+
 	@Column(nullable = false, columnDefinition = "boolean default false")
 	boolean download;
-	
+
 	String  downloadURL;
 
 	public Long getIdEpisode() {
@@ -158,7 +158,7 @@ public class Episode {
 		this.videoFile = videoFile;
 	}
 
-	
+
 	public String getTrailer() {
 		return trailer;
 	}
@@ -254,5 +254,5 @@ public class Episode {
 	public void setIdSaison(Long idSaison) {
 		this.idSaison = idSaison;
 	}
-	
+
 }

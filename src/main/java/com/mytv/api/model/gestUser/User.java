@@ -28,42 +28,42 @@ import lombok.NoArgsConstructor;
 public class User implements Serializable, UserDetails{
 
 	private static final long serialVersionUID = 5926468583005150707L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;
-	
+
 	@NotBlank(message = "ce champ ne peut pas etre vide et doit etre unique")
 	@Column(name = "username", unique = true)
 	String username;
-	
+
 	@NotBlank(message = "ce champ ne peut pas etre vide, un mot de passe est obligatoire")
 	@Column(name = "password")
 	String password;
-	
+
 	@Email(message = "Ce champ doit etre une adresse mail valide")
 	@NotBlank(message = "ce champ ne peut pas etre vide et doit etre unique")
 	@Column(nullable = false, unique = true)
 	String email;
-	
+
 	@NotBlank(message = "ce champ ne peut pas etre vide et doit etre unique")
 	@Column(nullable = false, unique = true)
 	String phone;
-	
+
 	@NotBlank(message = "ce champ ne peut pas etre vide, une adresse est requise ")
 	@Column(nullable = false)
 	String Address;
-	
+
 	@Column(columnDefinition = "TEXT" )
 	String remember_token;
-	
+
 	String imageUrl;
-	
+
 	@Column(columnDefinition = "boolean default false")
 	@NotNull
 	boolean valide;
-	
-	
+
+
 	public String getPhone() {
 		return phone;
 	}
@@ -186,8 +186,8 @@ public class User implements Serializable, UserDetails{
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
 	}
-	
-	
-	
+
+
+
 
 }

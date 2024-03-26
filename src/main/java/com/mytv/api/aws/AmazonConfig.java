@@ -1,5 +1,9 @@
 package com.mytv.api.aws;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -7,9 +11,6 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class AmazonConfig {
@@ -22,20 +23,20 @@ public class AmazonConfig {
 
     @Value("${aws.s3.region}")
     private String region;
-    
+
     @Value("${aws.s3.endpoint}")
     private String endpoint;
 
     @Bean
     public AmazonS3 s3() {
-    	
-    	EndpointConfiguration endpointc = new EndpointConfiguration(endpoint, "auto"); 
-    	
+
+    	EndpointConfiguration endpointc = new EndpointConfiguration(endpoint, "auto");
+
         AWSCredentials awsCredentials = new BasicAWSCredentials(accessKey, secretKey);
-        
+
         ClientConfiguration clientConfiguration = new ClientConfiguration();
-        clientConfiguration.setSignerOverride("AWSS3V4SignerType");    
-        
+        clientConfiguration.setSignerOverride("AWSS3V4SignerType");
+
         return AmazonS3ClientBuilder
                 .standard()
                 .withEndpointConfiguration(endpointc)
@@ -47,12 +48,12 @@ public class AmazonConfig {
                 .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
                 .withEndpointConfiguration(endpoint)
                 .build();
-                
+
         return AmazonS3ClientBuilder
                 .standard()
                 .withRegion(region)
                 .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
                 .build();
-         */ 
+         */
     }
 }

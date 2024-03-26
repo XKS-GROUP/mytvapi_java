@@ -21,39 +21,39 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Saison {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long idSaison;
-	
+
 	@NotBlank(message = "ce champs ne peut pas etre null")
 	@Column(nullable = false)
 	String name;
-	
+
 	@NotBlank(message = "ce champs ne peut pas etre null")
 	@Column(nullable = false)
 	String overview;
-	
+
 	@NotNull(message ="Ce champs ne peut pas etre null ou vide, une saison doit forcement faire reference a une serie")
 	@Column(nullable = false)
 	Long idSerie;
-	
+
 	@NotNull(message = "une image miniature est requise pour une serie")
 	String backdrop_path;
-	
+
 	String poster_path;
-	
+
 	String trailerURL;
 	String trailerFile;
-	
+
 	@Column(nullable = false, columnDefinition = "boolean default false")
 	boolean status;
-	
+
 	@CreatedDate
 	Date addDate;
-	
+
 	Date releaseDate;
-	
+
 	@OneToMany(mappedBy = "idEpisode",cascade = CascadeType.REMOVE)
 	List<Episode> episode;
 
@@ -155,9 +155,9 @@ public class Saison {
 	public void setTrailerFile(String trailerFile) {
 		this.trailerFile = trailerFile;
 	}
-	
-	
-	
-	
+
+
+
+
 
 }

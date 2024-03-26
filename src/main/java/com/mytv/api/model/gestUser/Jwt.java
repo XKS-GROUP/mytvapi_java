@@ -5,10 +5,9 @@ import java.util.Date;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,27 +28,27 @@ public class Jwt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     @Column(columnDefinition = "TEXT" )
     private String value;
-    
+
     @CreationTimestamp
     private Date created;
-    
+
     @UpdateTimestamp
     private Date updated;
-    
+
     @Column(columnDefinition = "TEXT" )
     private String refresh_token;
-    
+
     private boolean disabled;
-    
+
     private boolean valide;
-    
+
     //@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     //private RefreshToken refreshToken;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE})
+    @ManyToOne(fetch = FetchType.LAZY )
     @JoinColumn(name = "idUser")
     private User user;
 
@@ -89,7 +88,7 @@ public class Jwt {
 		return valide;
 	}
 
-	
+
 	public void setValide(boolean valide) {
 		this.valide = valide;
 	}

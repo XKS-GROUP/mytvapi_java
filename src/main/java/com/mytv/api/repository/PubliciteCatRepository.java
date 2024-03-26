@@ -8,6 +8,6 @@ import com.mytv.api.model.gestPub.PubliciteCat;
 
 @Repository
 public interface PubliciteCatRepository extends  JpaRepository<PubliciteCat, Long>{
-	
-	
+
+
 }

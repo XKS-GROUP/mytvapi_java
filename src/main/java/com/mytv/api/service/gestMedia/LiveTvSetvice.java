@@ -15,53 +15,53 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 
 public class LiveTvSetvice {
-	
-	
+
+
 	@Autowired
 	private LiveTvRepository rep;
 
-	
+
 	public LiveTv create(LiveTv g) {
-		
+
 		return rep.save(g);
-		
+
 	}
-	
+
 	public List<LiveTv> show() {
-		
+
 		return rep.findAll();
 	}
-	
+
 	public List<LiveTv> showByNameContaining(String name) {
-		
+
 		return rep.findByNameContaining(name);
 	}
-	
+
 	public LiveTv upadte(final Long id, LiveTv u) {
-		
+
 		LiveTv old = rep.findById(id).get();
-		
+
 		old = u;
 
 		old.setIdLiveTv(id);
-		
+
 		return rep.save(old);
 	}
-	
-	
-	
+
+
+
 	public Boolean delete(Long id) {
-			
+
 		rep.deleteById(id);
-		
+
 		return null;
-		
+
 	}
 
 	public Optional<LiveTv> showById(final Long id) {
-		
+
 		return rep.findById(id);
-		
+
 	}
 
 }

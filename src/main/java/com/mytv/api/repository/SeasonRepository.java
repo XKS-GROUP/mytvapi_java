@@ -9,7 +9,7 @@ import com.mytv.api.model.gestMedia.Saison;
 
 @Repository
 public interface SeasonRepository extends  JpaRepository<Saison, Long>{
-	
+
 	Saison findByName(String name);
 	List<Saison> findByNameContaining(String nom);
 

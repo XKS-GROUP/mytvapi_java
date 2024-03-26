@@ -13,25 +13,25 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 public class SubscriptionServiceImplement implements SubscriptionService {
-	
+
 	@Autowired
 	private SubscriptionRepository sbRep;
 
 	@Override
 	public Subscription create(Subscription sb) {
-		
+
 		return sbRep.save(sb);
 	}
 
 	@Override
 	public List<Subscription> show() {
-		
+
 		return sbRep.findAll();
 	}
 
 	@Override
 	public Subscription upadte(Long id, Subscription p) {
-		
+
 		return null;
 	}
 

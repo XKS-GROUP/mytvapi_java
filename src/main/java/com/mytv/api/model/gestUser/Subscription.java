@@ -4,12 +4,12 @@ import java.sql.Date;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -17,30 +17,30 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Subscription {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long idAbonnement;
-	
+
 	Long idUtilisateur;
-	
+
 	Long idSubType;
-	
+
 	@CreationTimestamp
 	Date datebegin;
-	
+
 	@CreationTimestamp
 	Date dateEnd;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "user_id", insertable = true, updatable = true)
 	private User user;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "idSubscriptionType", insertable = true, updatable = true)
 	private SubscriptionType substypes;
-	
-	
+
+
 
 	public Long getIdAbonnement() {
 		return idAbonnement;
@@ -97,6 +97,6 @@ public class Subscription {
 	public void setDateEnd(Date dateEnd) {
 		this.dateEnd = dateEnd;
 	}
-	
-	
+
+
 }

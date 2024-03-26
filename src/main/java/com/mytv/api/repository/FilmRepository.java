@@ -10,7 +10,7 @@ import com.mytv.api.model.gestMedia.Film;
 
 @Repository
 public interface FilmRepository  extends JpaRepository<Film, Long>{
-	
+
 	Film findByName(String nom);
 	List<Film> findByNameContaining(String val);
 

@@ -14,44 +14,44 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 public class LangueService {
-	
+
 	@Autowired
 	private LangRepository langRep;
 
-	
+
 	public Language create(Language u) {
 		return langRep.save(u);
 	}
 
-	
+
 	public List<Language> show() {
 		return langRep.findAll();
 	}
-	
-	
+
+
 	public Language showByName(String name) {
-		
+
 		return langRep.findByName(name);
-		
+
 	}
 	public Optional<Language> showById(final Long id) {
-		
+
 		return langRep.findById(id);
-		
+
 	}
-	
+
 	public Language upadte(final Long id, Language u) {
-		
+
 		Language old = langRep.findById(id).get();
-		
+
 		old = u;
 
 		old.setIdLang(id);
-		
+
 		return langRep.save(old);
 	}
 
-	
+
 	public Boolean delete(Long id) {
 		langRep.deleteById(id);
 		return true;

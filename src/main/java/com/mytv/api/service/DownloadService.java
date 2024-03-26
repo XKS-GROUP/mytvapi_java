@@ -9,7 +9,7 @@ import com.mytv.api.model.Download;
 
 @AutoConfiguration
 public interface DownloadService {
-	
+
 	Download create(Download u);
 	List<Download> show();
 	List<Download> showById(Long id);

@@ -1,15 +1,23 @@
 package com.mytv.api.aws;
 
-import com.amazonaws.services.s3.model.PutObjectResult;
-import com.amazonaws.services.s3.model.S3Object;
-import jakarta.persistence.EntityNotFoundException;
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import java.io.IOException;
-import java.util.*;
+
+import com.amazonaws.services.s3.model.PutObjectResult;
+import com.amazonaws.services.s3.model.S3Object;
+
+import jakarta.persistence.EntityNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
@@ -23,27 +31,28 @@ public class MetadataServiceImpl implements MetadataService {
 
     @Value("${aws.s3.bucket.name}")
     private String bucketName;
-    
+
     @Value("${aws.s3.bucket.pathMovie}")
     private String pathMovie;
-    
+
     @Value("${aws.s3.bucket.pathSerie}")
     private String pathSerie;
-    
+
     @Value("${aws.s3.bucket.pathPodcast}")
     private String pathPodcast;
-    
+
     @Value("${aws.s3.bucket.pathUserImg}")
     private String pathUserImg;
-    
+
     @Value("${aws.s3.bucket.pathEpisode}")
     private String pathEpisode;
 
     @Override
     public void upload(MultipartFile file) throws IOException {
 
-        if (file.isEmpty())
-            throw new IllegalStateException("Cannot upload empty file");
+        if (file.isEmpty()) {
+			throw new IllegalStateException("Cannot upload empty file");
+		}
 
         Map<String, String> metadata = new HashMap<>();
         metadata.put("Content-Type", file.getContentType());
@@ -61,20 +70,21 @@ public class MetadataServiceImpl implements MetadataService {
         fileMetaRepository.save(new FileMeta(fileName.replaceAll("\\s+", ""), path, putObjectResult.getMetadata().getVersionId()));
 
     }
-    
+
     @Override
     public FileMeta uploadR3(MultipartFile file, String dossier) throws IOException {
-    	
+
     	file.getSize();
     	if(dossier.isEmpty()) {
-    		
+
     		dossier="SansNom";
     	}
-    	
+
     	String filepath="";
-    	
-        if (file.isEmpty())
-            throw new IllegalStateException("Vous tentez d'uploader un fichier vide");
+
+        if (file.isEmpty()) {
+			throw new IllegalStateException("Vous tentez d'uploader un fichier vide");
+		}
 
         Map<String, String> metadata = new HashMap<>();
         metadata.put("Content-Type", file.getContentType());
@@ -89,12 +99,13 @@ public class MetadataServiceImpl implements MetadataService {
 
         // Enregistrement de la trace dans la db
         FileMeta dataMeta = new FileMeta(fileName.replaceAll("\\s+", "-"), path, putObjectResult.getMetadata().getVersionId());
-        
+
         dataMeta.setSize(file.getSize());
+        dataMeta.setFormat(file.getContentType());
         fileMetaRepository.save(dataMeta);
-        
+
         filepath = dataMeta.getFilePath().replaceAll("\\s+", "-")+"/"+dataMeta.getFileName();
-        
+
         return dataMeta;
 
     }
@@ -111,56 +122,56 @@ public class MetadataServiceImpl implements MetadataService {
         fileMetaRepository.findAll().forEach(metas::add);
         return metas;
     }
-	
+
     public List<FileMeta> lisByName(String nom){
-    	
+
     	return fileMetaRepository.findByFileName(nom);
     }
-    
-    
-    
+
+
+
     public void uploadMovie(MultipartFile file) throws IOException{
-    	
+
     	this.uploadR3(file, pathMovie);
-    	
+
     }
-    
+
     public void uploadSerie(MultipartFile file) throws IOException{
-    	
+
     	this.uploadR3(file, pathSerie);
-    	
+
     }
-    
+
     public void uploadPodcast(MultipartFile file) throws IOException{
-    	
+
     	this.uploadR3(file, pathPodcast);
-    	
+
     }
-   
+
     public void uploadEpisode(MultipartFile file) throws IOException{
-    	
+
     	this.uploadR3(file, pathEpisode);
-    	
+
     }
-    
+
     public void uploadUserIMG(MultipartFile file) throws IOException{
-    	
+
     	this.uploadR3(file, pathUserImg);
-    	
+
     }
-    
+
     public void deleteByName(String nom) {
-    	
+
     	fileMetaRepository.deleteByFileName(nom);
     }
-    
+
     public void deleteByVersion(String version) {
-    	
+
     	fileMetaRepository.deleteByVersion(version);
     }
-    
+
     public void updateFile(int id) {
-    	
-    	
+
+
     }
 }

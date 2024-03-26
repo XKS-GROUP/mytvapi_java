@@ -1,6 +1,15 @@
 package com.mytv.api.aws;
 
-import jakarta.persistence.*;
+import java.util.Date;
+
+import org.hibernate.annotations.CreationTimestamp;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 
 @Entity
@@ -11,7 +20,7 @@ public class FileMeta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
+    
     @Column(name = "FILE_NAME")
     private String fileName;
 
@@ -21,6 +30,13 @@ public class FileMeta {
     @Column(name = "VERSION")
     private String version;
     
+    String format;
+    
+    @CreationTimestamp
+    Date addDate;
+    
+    
+
     private Long Size;
 
     public Long getSize() {
@@ -76,9 +92,21 @@ public class FileMeta {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-    
-    
-	
 
+	public Date getAddDate() {
+		return addDate;
+	}
+
+	public void setAddDate(Date addDate) {
+		this.addDate = addDate;
+	}
+
+	public String getFormat() {
+		return format;
+	}
+
+	public void setFormat(String format) {
+		this.format = format;
+	}
 
 }

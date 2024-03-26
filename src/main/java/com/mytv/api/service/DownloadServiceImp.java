@@ -13,10 +13,10 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 public class DownloadServiceImp implements DownloadService {
-	
+
 	@Autowired
 	private DownloadRepository downRep;
-	
+
 	@Override
 	public Download create(Download u) {
 
@@ -33,7 +33,7 @@ public class DownloadServiceImp implements DownloadService {
 	public List<Download> showById(Long id) {
 
 		return null;
-		
+
 	}
 
 	@Override
@@ -44,13 +44,13 @@ public class DownloadServiceImp implements DownloadService {
 
 	@Override
 	public Boolean delete(Long id) {
-		
+
 		downRep.deleteById(id);
-		
+
 		return true;
 	}
-	
-	
-	
+
+
+
 
 }

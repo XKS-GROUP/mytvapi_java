@@ -1,14 +1,14 @@
 package com.mytv.api.aws;
 
-import com.amazonaws.services.s3.model.PutObjectResult;
-import com.amazonaws.services.s3.model.S3Object;
-
 import java.io.InputStream;
 import java.util.Map;
 import java.util.Optional;
 
+import com.amazonaws.services.s3.model.PutObjectResult;
+import com.amazonaws.services.s3.model.S3Object;
+
 public interface AmazonS3Service {
-	
+
     public PutObjectResult upload(
             String path,
             String fileName,

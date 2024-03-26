@@ -13,7 +13,7 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 public class FavoriteServiceImplement implements FavoriteService{
-	
+
 	@Autowired
 	private FavoriteRepository favRep;
 
@@ -43,12 +43,12 @@ public class FavoriteServiceImplement implements FavoriteService{
 
 	@Override
 	public Boolean delete(Long id) {
-		
+
 		favRep.deleteById(id);
 
 		return true;
 	}
-	
-	
+
+
 
 }

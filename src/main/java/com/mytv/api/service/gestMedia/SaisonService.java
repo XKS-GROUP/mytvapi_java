@@ -10,39 +10,39 @@ import com.mytv.api.repository.SeasonRepository;
 
 @Service
 public class SaisonService{
-	
+
 	@Autowired
 	private SeasonRepository seasRep;
 
-	
+
 	public Saison create(Saison u) {
-		
+
 		return seasRep.save(u);
 	}
 
-	
+
 	public List<Saison> show() {
 		return seasRep.findAll();
 	}
-	
+
 	public List<Saison> showByNameContaining(String n) {
 		return seasRep.findByNameContaining(n);
 	}
 
 
-	
+
 	public List<Saison> showById(Long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	
+
 	public Saison upadte(Long id, Saison p) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	
+
 	public Boolean delete(Long id) {
 		seasRep.deleteById(id);
 		return null;

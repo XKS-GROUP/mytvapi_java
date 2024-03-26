@@ -8,7 +8,7 @@ import com.mytv.api.model.View;
 
 @AutoConfiguration
 public interface ViewService {
-	
+
 	View create(View u);
 	List<View> show();
 	List<View> showById(Long id);

@@ -13,7 +13,7 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 public class CommentServiceImplement implements CommentaireService{
-	
+
 	@Autowired
 	private CommentRepository comRep;
 
@@ -25,9 +25,9 @@ public class CommentServiceImplement implements CommentaireService{
 
 	@Override
 	public List<Comment> show() {
-		
+
 		return comRep.findAll();
-	
+
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class CommentServiceImplement implements CommentaireService{
 	public Boolean delete(Long id) {
 
 		comRep.deleteById(id);
-		
+
 		return true;
 	}
 

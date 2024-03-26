@@ -1,5 +1,10 @@
 package com.mytv.api.security;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -11,8 +16,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.*;
-
 @Data
 @Getter
 @Setter
@@ -20,11 +23,11 @@ import java.util.*;
 @NoArgsConstructor
 @ToString
 public class UserRegisterRequestDTO {
-	
+
 	@Size(min = 4)
 	@NotBlank(message = "ce champ ne peut pas etre vide et doit etre unique")
 	private String username;
-	
+
 	@Size(min = 4)
 	@NotBlank(message = "ce champ ne peut pas etre vide, un mot de passe est obligatoire")
 	private String password;
@@ -32,15 +35,15 @@ public class UserRegisterRequestDTO {
 	@Email(message = "Ce champ doit etre une adresse mail valide")
 	@NotBlank(message = "ce champ ne peut pas etre vide et doit etre unique")
 	private String email;
-	
+
 	@NotBlank(message = "ce champ ne peut pas etre vide et doit etre unique")
 	@Column(nullable = false, unique = true)
 	String phone;
-	
+
 	@NotBlank(message = "ce champ ne peut pas etre vide, une adresse est requise ")
 	@Column(nullable = false)
 	String Address;
-	
+	@JsonIgnore
 	private List<String> roleList = new ArrayList<>();
 	/**
 	 * @return the username
@@ -92,6 +95,6 @@ public class UserRegisterRequestDTO {
 	public void setRoleList(List<String> roleList) {
 		this.roleList = roleList;
 	}
-	
-	
+
+
 }

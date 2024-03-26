@@ -8,14 +8,14 @@ import com.mytv.api.model.gestPub.PartenerCat;
 import com.mytv.api.repository.PartenerCatRepository;
 
 public class PartenerCatServiceImplement implements PartenerCatService {
-	
+
 	@Autowired
 	private PartenerCatRepository partCatRep;
 
 	@Override
 	public PartenerCat create(PartenerCat u) {
-		
-		
+
+
 		return partCatRep.save(u);
 	}
 
@@ -33,15 +33,15 @@ public class PartenerCatServiceImplement implements PartenerCatService {
 
 	@Override
 	public PartenerCat upadte(Long id, PartenerCat p) {
-		
-		
+
+
 		return null;
-		
+
 	}
 
 	@Override
 	public Boolean delete(Long id) {
-		
+
 		partCatRep.deleteById(id);
 		return true;
 	}

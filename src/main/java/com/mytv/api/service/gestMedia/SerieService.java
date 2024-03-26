@@ -16,54 +16,54 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 
 public class SerieService {
-	
-	
+
+
 	@Autowired
 	private SerieRepository rep;
 
-	
+
 	public Serie create(Serie g) {
-		
+
 		return rep.save(g);
-		
+
 	}
-	
+
 	public List<Serie> show() {
-		
+
 		return rep.findAll();
 	}
-	
+
 	public List<Serie> showbyNameContaining(String n) {
-		
+
 		return rep.findByNameContaining(n);
 	}
-	
+
 	public Serie upadte(final Long id, Serie u) {
-		
+
 		Serie old = rep.findById(id).get();
-		
+
 		old = u;
 
-		
+
 		old.setIdSerie(id);
-		
+
 		return rep.save(old);
 	}
-	
-	
-	
+
+
+
 	public Boolean delete(Long id) {
-			
+
 		rep.deleteById(id);
-		
+
 		return null;
-		
+
 	}
 
 	public Optional<Serie> showById(final Long id) {
-		
+
 		return rep.findById(id);
-		
+
 	}
 
 }

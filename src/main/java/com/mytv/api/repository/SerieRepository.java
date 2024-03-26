@@ -9,7 +9,7 @@ import com.mytv.api.model.gestMedia.Serie;
 
 @Repository
 public interface SerieRepository extends JpaRepository<Serie, Long> {
-	
+
 	Serie findByName(String name);
 	List<Serie> findByNameContaining(String nom);
 

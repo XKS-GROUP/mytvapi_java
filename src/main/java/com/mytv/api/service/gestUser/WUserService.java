@@ -15,7 +15,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
-import com.mytv.api.model.gestMedia.Language;
 import com.mytv.api.model.gestUser.Role;
 import com.mytv.api.model.gestUser.User;
 import com.mytv.api.model.gestUser.UserRole;
@@ -29,7 +28,7 @@ import jakarta.transaction.Transactional;
 @Service
 @Transactional
 public class WUserService implements UserDetailsService {
-	
+
 	private static final Logger LOG = LoggerFactory.getLogger(WUserService.class);
 
 	@Autowired
@@ -37,7 +36,7 @@ public class WUserService implements UserDetailsService {
 
 	@Autowired
 	private IUserRoleRepository userRoleRepository;
-	
+
 	@Autowired
 	private ValidationService validationService;
 
@@ -46,9 +45,9 @@ public class WUserService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) {
-		
+
 		User user = userRepository.findByUsername(username);
-		
+
 		if (user != null) {
 			List<UserRole> userRoles = userRoleRepository.findAllByUserId(user.getId());
 
@@ -69,9 +68,9 @@ public class WUserService implements UserDetailsService {
 	public User findByUsername(String username) {
 		return userRepository.findByUsername(username);
 	}
-	
+
 	public User findByUserEmail(String email) {
-		
+
 		return userRepository.findByEmail(email);
 	}
 
@@ -90,19 +89,19 @@ public class WUserService implements UserDetailsService {
 			} else {
 				addUserRole(user, roleService.findRoleByName("ROLE_ADMIN"));
 			}
-			
+
 			//Envoi du mail pour la validation de son compte
 			validationService.enregistrer(user);
-			
-			return "Un nouvel utilisateur a été creer";
-			
+
+			return "Un nouvel utilisateur , un mail a été envoyer a l adresse mail "+user.getEmail().toString();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return e.getCause().getMessage();
 		}
 
 	}
-	
+
 	public String createAbonne(UserRegisterRequestDTO request) {
 		try {
 			User user = (User) dtoMapperRequestDtoToUser(request);
@@ -120,7 +119,7 @@ public class WUserService implements UserDetailsService {
 			}
 			//Envoi du mail pour la validation de son compte
 			validationService.enregistrer(user);
-			return "Un nouvel utilisateur a été creer";
+			return "Un nouvel utilisateur , un mail a été envoyer a l adresse mail "+user.getEmail().toString();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return e.getCause().getMessage();
@@ -129,54 +128,55 @@ public class WUserService implements UserDetailsService {
 	}
 
     public void activation(Map<String, String> activation) {
-    	
+
         com.mytv.api.model.gestUser.Validation validation = this.validationService.lireEnFonctionDuCode(activation.get("code"));
-        
+
         if(Instant.now().isAfter(validation.getExpiration())){
             throw  new RuntimeException("Votre code a expiré");
         }
         User usr = userRepository.findById(validation.getUtilisateur().getId()).orElseThrow(() -> new RuntimeException("Cette utilisateur n existe pas"));
         usr.setValide(true);
-        
+
         userRepository.save(usr);
     }
 
-	
-	public List<User> AllUserValide(){	
-		
+
+	public List<User> AllUserValide(){
+
 		return userRepository.findByValideTrue();
 	}
-	
-	public List<User> AllUserNotValide(){	
-		
+
+	public List<User> AllUserNotValide(){
+
 		return userRepository.findByValideFalse();
 	}
-	
+
 	public List<User> retrieveAllUserList() {
 		return userRepository.findAll();
 	}
-	
+
 	public User updateJWT(User user, String jwt) {
-		
+
 		User old = userRepository.findByEmail(user.getEmail());
-		
+
 		old.setRemember_token(jwt);
 
 		//old.setIdLang(id);
-		
+
 		//return langRep.save(old);
 		user = userRepository.save(user);
-		
+
 		addUserRole(user, roleService.findRoleByName("ROLE_ADMIN"));
 
 		return user;
 	}
 	public User updateByid(Long id, User u) {
-		
+
 		User old = userRepository.findById(id).get();
 		
+		old = u;
 		old.setId(id);
-		
+
 		return userRepository.save(old);
 	}
 	public User updateUser(UserRegisterRequestDTO userRequestDTO) {
@@ -188,7 +188,7 @@ public class WUserService implements UserDetailsService {
 
 		return user;
 	}
-	
+
 	public User updateAbonne(UserRegisterRequestDTO userRequestDTO) {
 
 		User user = (User) dtoMapperRequestDtoToUser(userRequestDTO);
@@ -200,25 +200,25 @@ public class WUserService implements UserDetailsService {
 	}
 
 	public User findCurrentUser() {
-		
+
 		return userRepository.findById(SecurityPrincipal.getInstance().getLoggedInPrincipal().getId()).get();
 
 	}
-	
+
 	public String deleteUserFromId(Long id) {
-		
+
 		userRepository.deleteById(id);
-		
+
 		return "Utilisateur "+this.findCurrentUser().getUsername()+"a été supprimer avec succès";
 	}
-	
+
 	public String deleteCurrentUser() {
-		
+
 		userRepository.delete(this.findCurrentUser());
-		
+
 		return "Utilisateur "+this.findCurrentUser().getUsername()+"a été supprimer avec succès";
 	}
-	
+
 	public List<UserRole> findAllCurrentUserRole() {
 		return userRoleRepository.findAllByUserId(SecurityPrincipal.getInstance().getLoggedInPrincipal().getId());
 
@@ -231,13 +231,13 @@ public class WUserService implements UserDetailsService {
 	public void addUserRole(User user, Role role) {
 
 		UserRole userRole = new UserRole();
-		
+
 		userRole.setUser(user);
 
 		if (role == null) {
 			role = roleService.findDefaultRole();
 		}
-		
+
 		userRole.setRole(role);
 		userRoleRepository.save(userRole);
 	}
@@ -251,6 +251,6 @@ public class WUserService implements UserDetailsService {
 		target.setPhone(source.getPhone());
 		return target;
 	}
-	
+
 
 }

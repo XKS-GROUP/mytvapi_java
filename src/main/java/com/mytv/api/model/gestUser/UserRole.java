@@ -2,7 +2,6 @@ package com.mytv.api.model.gestUser;
 
 import java.io.Serializable;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
@@ -20,19 +19,19 @@ import jakarta.persistence.Table;
 public class UserRole implements Serializable{
 
 	private static final long serialVersionUID = 5926468583005150707L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;
-	
-	@ManyToOne(cascade = CascadeType.ALL)
+
+	@ManyToOne( cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id", insertable = true, updatable = true)
 	private User user;
-	
-	@ManyToOne(cascade = CascadeType.ALL)
+
+	@ManyToOne( cascade = CascadeType.ALL)
 	@JoinColumn(name = "role_id", insertable = true, updatable = true)
 	private Role role;
-	
+
 	/**
 	 * @return the id
 	 */

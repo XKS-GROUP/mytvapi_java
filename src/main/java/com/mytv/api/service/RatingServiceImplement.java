@@ -14,7 +14,7 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 public class RatingServiceImplement implements RatingService{
-	
+
 	@Autowired
 	private RatingRepository ratRep;
 
@@ -47,8 +47,8 @@ public class RatingServiceImplement implements RatingService{
 		ratRep.deleteById(id);
 		return true;
 	}
-	
-	
-	
+
+
+
 
 }

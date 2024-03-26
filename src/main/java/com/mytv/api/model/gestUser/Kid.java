@@ -1,9 +1,5 @@
-package com.mytv.api.model;
+package com.mytv.api.model.gestUser;
 
-import java.sql.Date;
-
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,20 +18,17 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Comment {
+public class Kid {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long idComment;
+	Long idProfil;
 
-	@NotBlank(message=" un commentaire ne peut etre vide, il dois avoir du contenu ")
-	@Column(nullable = false, length = 700)
-	String contenu;
+	@NotBlank(message = "ce champ ne peut etre vide, un profil doit avoir au moin un nom ")
+	@Column(nullable = false)
+	String profilName;
 
-	@CreationTimestamp
-	Date datePub;
-	
-	@UpdateTimestamp
-	Date dateMaj;
-	
+	String img_path;
+
+	String lang;
 }

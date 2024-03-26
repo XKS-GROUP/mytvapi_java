@@ -9,7 +9,7 @@ import com.mytv.api.model.gestMedia.Podcast;
 
 @Repository
 public interface PodcastRepository extends JpaRepository<Podcast, Long> {
-	
+
 	Podcast findByName(String nom);
 	List<Podcast> findByNameContaining(String nom);
 }

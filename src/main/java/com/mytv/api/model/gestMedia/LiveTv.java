@@ -1,55 +1,55 @@
 package com.mytv.api.model.gestMedia;
 
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;
 
 
 @Entity
 @NoArgsConstructor
 public class LiveTv {
-	
-	
+
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idLiveTv")
 	Long idLiveTv;
-	
+
 	@NotBlank(message="ce champ ne peut pas etre vide")
 	@Column(nullable = false)
 	String name ;
-	
+
 	@NotBlank(message="ce champ ne peut pas etre vide")
 	@Column(nullable = false)
 	String overview;
 
 	String tvLogo_path;
-	
+
 	@NotNull(message="ce champ ne peut pas etre vide, un live tv doit avoir une categorie")
 	@Column(nullable = false)
 	Long idcategory;
-	
+
 	@NotNull(message="ce champ ne peut pas etre vide, un live tv doit avoir un status qui permet de le rendre visible ou pas")
 	@Column(nullable = false, columnDefinition = "boolean default false")
 	boolean status;
-	
-	
+
+
 	String svr1_url;
-	
+
 	String svr2_url;
-	
+
 	String svr3_url;
-	
+
 	String tvEmbedCode;
-	
+
 	/*@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "idPays", nullable = false)*/
-	
+
 	@NotNull(message="Ce champ ne peut pas etre vide")
 	@Column(nullable = false)
 	Long country;
@@ -69,7 +69,7 @@ public class LiveTv {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public boolean isStatus() {
 		return status;
 	}
@@ -141,6 +141,6 @@ public class LiveTv {
 	public void setSvr3_url(String svr3_url) {
 		this.svr3_url = svr3_url;
 	}
-	
+
 
 }

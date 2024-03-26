@@ -9,7 +9,7 @@ import com.mytv.api.model.gestMedia.LiveTv;
 
 @Repository
 public interface LiveTvRepository extends JpaRepository<LiveTv, Long>{
-	
+
 	LiveTv findByName(String nom);
 	List<LiveTv> findByNameContaining(String val);
 

@@ -12,7 +12,7 @@ import com.mytv.api.model.gestUser.UserRole;
 
 @Repository
 public interface IUserRoleRepository extends JpaRepository<UserRole, Long>{
-	
+
 	List<UserRole> findAllByUserId(Long id);
 
 }

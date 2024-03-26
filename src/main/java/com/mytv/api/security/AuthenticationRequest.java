@@ -2,9 +2,7 @@ package com.mytv.api.security;
 
 import java.io.Serializable;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 
 
@@ -15,16 +13,16 @@ public class AuthenticationRequest implements Serializable {
 
 	private String username;
 	private String password;
-	
+
 	public AuthenticationRequest() {
-		
+
 	}
-	
+
 	public AuthenticationRequest(String username, String password) {
 		this.setUsername(username);
 		this.setPassword(password);
 	}
-	
+
 	public String getUsername() {
 		return username;
 	}

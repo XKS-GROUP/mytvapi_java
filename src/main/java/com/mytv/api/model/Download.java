@@ -4,7 +4,6 @@ import java.sql.Date;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,13 +19,12 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Download {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long idComment;
-	
+	Long idDownload;
+
 	@CreationTimestamp
 	Date dateDown;
-	
 
 }

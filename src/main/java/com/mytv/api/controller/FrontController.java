@@ -40,7 +40,7 @@ import lombok.AllArgsConstructor;
 
 @SecurityRequirement(name = "bearerAuth")
 public class FrontController {
-	
+
 	@Autowired
 	private RadioService radioService;
 	@Autowired
@@ -61,148 +61,148 @@ public class FrontController {
 	private CatPodcastService catpodService;
 	@Autowired
 	private PaysService paysService;
-	
+
 	//Pays
 	@Tag(name = "Pays")
 	@GetMapping("pays")
 	public List<Pays> showPays(){
-		
+
 		return paysService.show();
 	}
-	
-	@Tag(name = "Pays")	
+
+	@Tag(name = "Pays")
 	@GetMapping("pays/{id}")
 	public Optional<Pays> showbyIdPays(@PathVariable Long id){
-		
+
 		return paysService.showById(id);
 	}
-	
-	
-	//Genre 
-	
+
+
+	//Genre
+
 	@Tag(name = "Genres")
 	@GetMapping("genres")
 	public List<Genre> showG(){
-		
+
 		return genreService.show();
 	}
-	
+
 	@Tag(name = "Genres")
 	@GetMapping("genres/{id}")
 	public Optional<Genre> showbyIdG(@PathVariable Long id){
-		
+
 		return genreService.showById(id);
 	}
-	
-	
+
+
 	//Categorie LiveTv ou Radio
 	@Tag(name = "Categorie Radio et LiveTv")
 	@GetMapping("catrl")
 	public List<CategoryRL> showCRL(){
-		
+
 		return catLrService.show();
 	}
-		
-	
+
+
 	//Categorie Podcast
-	
+
 	@Tag(name = "Categorie Podcast")
 	@GetMapping("catpod")
 	public List<CatPodcast> showCP(){
-		
+
 		return catpodService.show();
 	}
-		
-	
-	//Radio	
+
+
+	//Radio
 	@Tag(name = "Radios")
 	@GetMapping("radios")
 	public List<Radio> showR(){
-		
+
 		return radioService.show();
 	}
-	
+
 	@Tag(name = "Radios")
 	@GetMapping("radios/{id}")
 	public Optional<Radio> showbyIdR(@PathVariable Long id){
-		
+
 		return radioService.showById(id);
 	}
-	
+
 	//ROUTES LiveTV
 	@Tag(name = "Lives")
 	@GetMapping("lives")
 	public List<LiveTv> showL(){
-		
+
 		return liveService.show();
 	}
-	
+
 	@Tag(name = "Lives")
 	@GetMapping("lives/{id}")
 	public Optional<LiveTv> showbyIdL(@PathVariable Long id){
-		
+
 		return liveService.showById(id);
 	}
-	
+
 	//Podcast
 	@Tag(name = "Podcasts")
 	@GetMapping("podcasts")
 	public List<Podcast> showP(){
-		
+
 		return podcastservice.show();
 	}
-	
+
 	@Tag(name = "Podcasts")
 	@GetMapping("podcasts/{id}")
 	public Optional<Podcast> showbyIdP(@PathVariable Long id){
-		
+
 		return podcastservice.showById(id);
 	}
-	
+
 	//Films
 	@Tag(name = "Films")
 	@GetMapping("movies")
 	public List<Film> showM(){
-		
+
 		return filmService.show();
 	}
-	
+
 	@Tag(name = "Films")
 	@GetMapping("movies/{id}")
 	public Optional<Film> showbyIdM(@PathVariable Long id){
-		
+
 		return filmService.showById(id);
 	}
-	
+
 	//Series
 	@Tag(name = "Serıes")
 	@GetMapping("series")
 	public List<Serie> showS(){
-		
+
 		return serieService.show();
 	}
-	
+
 	@Tag(name = "Serıes")
 	@GetMapping("series/{id}")
 	public Optional<Serie> showbyIdS(@PathVariable Long id){
-		
+
 		return serieService.showById(id);
 	}
-	
-	
+
+
 	//Episodes
 	@Tag(name = "Epısodes")
 	@GetMapping("episodes")
     public List<Episode> showE(){
-		
+
 		return episodeService.show();
 	}
-	
+
 	@Tag(name = "Epısodes")
 	@GetMapping("episodes/{id}")
 	public Optional<Episode> showbyIdE(@PathVariable Long id){
-		
+
 		return episodeService.showById(id);
 	}
-	
+
 }

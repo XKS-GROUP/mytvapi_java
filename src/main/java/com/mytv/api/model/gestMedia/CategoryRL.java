@@ -14,21 +14,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 
 public class CategoryRL {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idcat")
 	Long idcat;
-	
+
 	@NotBlank(message = "ce champ ne peut pas etre vide")
 	private String name;
-	
+
 	@Column(nullable = false, columnDefinition = "boolean default false")
 	private boolean status;
-	
+
 	@NotBlank(message = "Une image est requise")
 	@Column(nullable = false)
-	private String img;
+	private String img_path;
 
 	public Long getIdcat() {
 		return idcat;
@@ -48,7 +48,7 @@ public class CategoryRL {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public boolean isStatus() {
 		return status;
 	}
@@ -57,12 +57,14 @@ public class CategoryRL {
 		this.status = status;
 	}
 
-	public String getImg() {
-		return img;
+
+	public String getImg_path() {
+		return img_path;
 	}
 
-	public void setImg(String img) {
-		this.img = img;
+
+	public void setImg_path(String img_path) {
+		this.img_path = img_path;
 	}
-	
+
 }

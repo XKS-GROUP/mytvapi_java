@@ -1,12 +1,12 @@
 package com.mytv.api.model.gestMedia;
 
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,26 +19,26 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Radio {
-	
-	
+
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="idRadio")
 	Long idRadio;
-	
+
 	/*
 	@ManyToOne(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
 	@JoinColumn(name = "idcat", nullable = false, insertable = true, updatable = true)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	CategoryRL category;*/
-	
+
 	@NotBlank(message = "ce champ ne peut etre vide, une radio doit obligatoirement avoir un nom")
 	@Column(nullable = false)
 	String name ;
-	
+
 	@Column(nullable = false)
 	Long category;
-	
+
 	@NotBlank(message = "ce champ ne peut etre vide, une description est requise pour une radio")
 	@Column(columnDefinition = "TEXT", nullable = false)
 	String overview;
@@ -46,19 +46,19 @@ public class Radio {
 	@NotNull(message = "une image miniature est requise pour une radio")
 	String backdrop_path;
 	String poster_path;
-	
+
 	@NotNull(message = "ce champ ne peut etre vide, une valeur par defaut doit etre attribuer")
 	@Column(columnDefinition = "boolean default true")
 	boolean status;
-	
+
 	@NotBlank(message = "ce champ ne peut etre vide, une radio doit avoir une source")
 	@Column(nullable = false)
 	String streamLink;
-		
+
 	/*@ManyToOne(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
 	@JoinColumn(name = "idPays", nullable = false, insertable = true, updatable = true)
 	Pays country;*/
-	
+
 	@NotNull(message = "ce champ ne peut etre vide, une radio doit etre représenter par un pays")
 	@Column(nullable = false)
 	Long country;

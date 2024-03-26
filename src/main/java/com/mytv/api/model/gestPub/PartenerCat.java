@@ -1,11 +1,11 @@
 package com.mytv.api.model.gestPub;
 
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -13,12 +13,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PartenerCat {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long idCatPart;
-	
-	@NotBlank(message = "ce champ ne peut etre vide, un partenair doit avoir au moin un nom ")	
+
+	@NotBlank(message = "ce champ ne peut etre vide, un partenair doit avoir au moin un nom ")
 	@Column(nullable = false)
 	String name;
 
@@ -37,5 +37,5 @@ public class PartenerCat {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 }

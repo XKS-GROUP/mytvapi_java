@@ -17,22 +17,22 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 
 public class ColPodcast {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long idColPd;
-	
+
 	@NotBlank(message="ce champ ne peut etre nulle")
 	@Column(nullable = false)
 	String name;
-	
+
 	@NotBlank(message="ce champ ne peut etre nulle")
 	@Column(nullable = false)
 	String overView;
-	
+
 	@NotBlank(message = "Une image est requise")
 	@Column(nullable = false)
-	
+
 	private String cover;
 
 	@NotNull(message = "un satus par defaut doit etre attribuer")
@@ -77,6 +77,6 @@ public class ColPodcast {
 
 	public void setIdColPd(Long idColPd) {
 		this.idColPd = idColPd;
-	}	
-	
+	}
+
 }

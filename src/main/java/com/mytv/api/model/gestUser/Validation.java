@@ -1,6 +1,9 @@
 package com.mytv.api.model.gestUser;
 
-import jakarta.persistence.CascadeType;
+import java.time.Instant;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -10,10 +13,6 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-
-import java.time.Instant;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,13 +28,13 @@ public class Validation {
     private Instant expiration;
     @JsonIgnoreProperties
     private Instant activation;
-    
+
     private String code;
-    
-    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.LAZY , orphanRemoval = true)
+
+    @OneToOne( fetch = FetchType.LAZY )
     private User utilisateur;
 
-    
+
 	public Instant getCreation() {
 		return creation;
 	}
@@ -72,7 +71,5 @@ public class Validation {
 	public void setId(Long id) {
 		this.id = id;
 	}
-    
-    
-    
+
 }

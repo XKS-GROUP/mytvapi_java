@@ -9,7 +9,7 @@ import com.mytv.api.model.Rating;
 
 @AutoConfiguration
 public interface RatingService {
-	
+
 	Rating create(Rating u);
 	List<Rating> show();
 	List<Rating> showById(Long id);

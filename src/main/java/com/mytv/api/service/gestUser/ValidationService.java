@@ -1,6 +1,9 @@
 package com.mytv.api.service.gestUser;
 
-import lombok.AllArgsConstructor;
+import static java.time.temporal.ChronoUnit.MINUTES;
+
+import java.time.Instant;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,18 +12,15 @@ import com.mytv.api.model.gestUser.User;
 import com.mytv.api.model.gestUser.Validation;
 import com.mytv.api.repository.ValidationRepository;
 
-import java.time.Instant;
-import java.util.Random;
-
-import static java.time.temporal.ChronoUnit.MINUTES;
+import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @Service
 public class ValidationService {
-	
+
 	@Autowired
     private ValidationRepository validationRepository;
-	
+
     private NotificationService notificationService;
 
     public void enregistrer(User utilisateur) {
@@ -38,10 +38,19 @@ public class ValidationService {
         validationRepository.save(validation);
         notificationService.envoyer(validation);
     }
+    
+	public Validation updateByid(Long id, Validation v) {
 
+		Validation old = validationRepository.findById(id).get();
+		old = v;
+		old.setId(id);
+
+		return validationRepository.save(old);
+	}
+    
     public Validation lireEnFonctionDuCode(String code) {
         return this.validationRepository.findByCode(code).orElseThrow(() -> new RuntimeException("Votre code est invalide"));
     }
-    
-    
+
+
 }

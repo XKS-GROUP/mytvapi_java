@@ -6,7 +6,7 @@ import com.mytv.api.model.gestUser.Subscription;
 
 
 public interface SubscriptionService {
-	
+
 	Subscription create(Subscription u);
 	List<Subscription> show();
 	//List<User> showById();

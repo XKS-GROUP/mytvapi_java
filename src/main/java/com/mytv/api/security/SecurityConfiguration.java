@@ -1,5 +1,9 @@
 package com.mytv.api.security;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,8 +23,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.*;
-
 
 @Configuration
 @EnableWebSecurity
@@ -32,10 +34,10 @@ public class SecurityConfiguration {
 	@Autowired
 	private JWTRequestFilter jwtRequestFilter;
 
-	
+
 	@Autowired
 	PasswordEncoder passwordEncoder;
-	
+
 
 	@Bean
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
@@ -64,9 +66,9 @@ public class SecurityConfiguration {
 		}).addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return httpSecurity.build();
-		
+
 	}
-	
+
 	@Bean
 	public SecurityFilterChain securityFilterChainGlobalAdminAPIv1(HttpSecurity httpSecurity) throws Exception {
 		sharedSecurityConfiguration(httpSecurity);
@@ -77,7 +79,7 @@ public class SecurityConfiguration {
 
 		return httpSecurity.build();
 	}
-	
+
 	@Bean
 	public SecurityFilterChain securityFilterChainGlobalAbonneAPIv1(HttpSecurity httpSecurity) throws Exception {
 		sharedSecurityConfiguration(httpSecurity);
@@ -88,7 +90,7 @@ public class SecurityConfiguration {
 
 		return httpSecurity.build();
 	}
-	
+
 	/*
 	@Bean
 	public SecurityFilterChain securityFilterChainGlobalAdminAPI(HttpSecurity httpSecurity) throws Exception {
@@ -99,7 +101,7 @@ public class SecurityConfiguration {
 		}).addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return httpSecurity.build();
-	
+
 
 	@Bean
 	public SecurityFilterChain securityFilterChainGlobalUserProfileAPI(HttpSecurity httpSecurity) throws Exception {

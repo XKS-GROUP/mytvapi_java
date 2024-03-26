@@ -1,6 +1,7 @@
 package com.mytv.api.model.gestUser;
 
 import java.io.Serializable;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
@@ -19,16 +20,16 @@ import jakarta.validation.constraints.NotBlank;
 public class Role implements Serializable{
 
 	private static final long serialVersionUID = 5926468583005150707L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;
-	
+
 	@NotBlank(message = "ce champ ne peut etre vide, un role doit obligatoirement avoir un nom et doit etre unique")
 	@Column(name = "name", nullable = false, unique = true)
 	private String name;
-	
-	
+
+
 	public Long getId() {
 		return id;
 	}

@@ -15,9 +15,9 @@ import lombok.AllArgsConstructor;
 public class ProfilServiceImplement implements ProfilService {
 
 	@Autowired
-	
+
 	private ProfilRepository proRep;
-	
+
 	@Override
 	public Profil create(Profil p) {
 
@@ -46,7 +46,7 @@ public class ProfilServiceImplement implements ProfilService {
 	public Boolean delete(Long id) {
 
 		proRep.deleteById(id);
-		
+
 		return true;
 	}
 

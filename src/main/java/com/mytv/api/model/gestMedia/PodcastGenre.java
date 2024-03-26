@@ -16,17 +16,17 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PodcastGenre {
-	
-	
+
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idPodcastGenre")
 	Long id;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "idPodcast", insertable = true, updatable = true)
 	private Podcast podcast;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "idGenre", insertable = true, updatable = true)
 	private Genre genre;

@@ -26,41 +26,41 @@ import io.jsonwebtoken.ExpiredJwtException;
 public class RestControllerException {
 
 
- 
+
     // Gérer les erreurs 500 - Internal Server Error
     @ExceptionHandler(value = {Exception.class})
     public ResponseEntity<Object> handleAll(Exception ex, WebRequest request) {
         ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), Collections.singletonList("Error occurred"));
         return new ResponseEntity<>(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    
-    
+
+
     @ExceptionHandler(value = {ForbiddenException.class})
     public ResponseEntity<Object> handleForbidden(Exception ex, WebRequest request) {
         return EntityResponse.generateResponse("Mauvaise entrée", HttpStatus.BAD_REQUEST, "Accès non autorisé a cet route, veuillez vous authentifier avec les droits appropries");
     }
-    
+
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
         ApiError apiError = new ApiError(HttpStatus.CONFLICT, ex.getMessage(), Collections.singletonList("Violation de l'intégrité des données. Veuillez vérifier que cette valeur n'existe pas déja."));
-        
+
         return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
     }
-    
+
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
     public ResponseEntity<Object> handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException ex) {
-        
+
         return EntityResponse.generateResponse("Mauvaise entrée", HttpStatus.BAD_REQUEST, "Violation de l'intégrité des données. Veuillez vérifier que cette valeur n'existe pas déja");
     }
-    
+
     @ExceptionHandler(ExpiredJwtException.class)
     public ResponseEntity<Object> ExpiredJwtException(ExpiredJwtException ex) {
-    	
+
         	return EntityResponse.generateResponse("Authentication", HttpStatus.OK, "Votre session a expiré");
     }
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<Object> NullPointerException(NullPointerException ex) {
-    	
+
         return EntityResponse.generateResponse("Authentication", HttpStatus.BAD_REQUEST, "Verifié que votre compte est bien valide ou à été activé, que la asession n'est pas expiré car vous tentez une operation sur un utilisateur null ou qui n'existe plus");
     }
     // Gérer les execptions levées par les validations

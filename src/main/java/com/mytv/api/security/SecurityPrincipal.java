@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.mytv.api.security;
 
@@ -25,16 +25,16 @@ public class SecurityPrincipal {
 
 	@Autowired
 	private SecurityPrincipal(WUserService userService) {
-		this.userService = userService;
+		SecurityPrincipal.userService = userService;
 	}
 
-	
+
 	public static SecurityPrincipal getInstance() {
 		securityPrincipal = new SecurityPrincipal(userService);
 		return securityPrincipal;
 	}
 
-	
+
 	public User getLoggedInPrincipal() {
 		if (principal != null) {
 			UserDetails loggedInPrincipal = (UserDetails) principal.getPrincipal();
@@ -43,7 +43,7 @@ public class SecurityPrincipal {
 		return null;
 	}
 
-	
+
 	public Collection<?> getLoggedInPrincipalAuthorities() {
 		return ((UserDetails) principal.getPrincipal()).getAuthorities();
 	}

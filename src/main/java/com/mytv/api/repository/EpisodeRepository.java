@@ -9,8 +9,8 @@ import com.mytv.api.model.gestMedia.Episode;
 
 @Repository
 public interface EpisodeRepository extends  JpaRepository<Episode, Long> {
-	
-	
+
+
 	List<Episode> findByNameContaining(String nom);
 
 }
