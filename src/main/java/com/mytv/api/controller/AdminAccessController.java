@@ -66,7 +66,7 @@ public class AdminAccessController {
 	@GetMapping("profileById/{id}")
 	public ResponseEntity<Object> retrieveUserProfilebyId(@PathVariable Long id){
 		if(id <= 0) {
-			return EntityResponse.generateResponse("User ERREUR ", HttpStatus.OK, " l'id utilisateur ne peut être vide ");
+			return EntityResponse.generateResponse("User ERREUR ", HttpStatus.BAD_REQUEST, " l'id utilisateur ne peut être vide ");
 		}
 		else {
 
@@ -96,7 +96,7 @@ public class AdminAccessController {
 	public ResponseEntity<Object> updateProfilebyId(@PathVariable Long id, @Valid @RequestBody User u){
 
 		if(id <= 0) {
-			return EntityResponse.generateResponse("User MAJ ERREUR ", HttpStatus.OK, " l'id utilisateur ne peut être vide ");
+			return EntityResponse.generateResponse("User MAJ ERREUR ", HttpStatus.BAD_REQUEST, " l'id utilisateur ne peut être vide ");
 		}
 		else {
 
@@ -121,7 +121,7 @@ public class AdminAccessController {
 	public ResponseEntity<Object> delCurrentProfileByid(@PathVariable Long id){
 
 		if(id <= 0) {
-			return EntityResponse.generateResponse("User SUPP ERREUR ", HttpStatus.OK, " l'id utilisateur ne peut être vide ");
+			return EntityResponse.generateResponse("User SUPP ERREUR ", HttpStatus.BAD_REQUEST, " l'id utilisateur ne peut être vide ");
 		}
 		else {
 
@@ -139,7 +139,7 @@ public class AdminAccessController {
 
 		if(usr==null) {
 
-			 return EntityResponse.generateResponse("Deconexion", HttpStatus.OK, " Aucun utilisateur connecté ou aucune session en cour ");
+			 return EntityResponse.generateResponse("Deconexion", HttpStatus.BAD_REQUEST, " Aucun utilisateur connecté ou aucune session en cour ");
 
 		}
 

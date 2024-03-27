@@ -6,6 +6,7 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
@@ -36,7 +37,8 @@ public class User implements Serializable, UserDetails{
 	@NotBlank(message = "ce champ ne peut pas etre vide et doit etre unique")
 	@Column(name = "username", unique = true)
 	String username;
-
+	
+	@JsonIgnore
 	@NotBlank(message = "ce champ ne peut pas etre vide, un mot de passe est obligatoire")
 	@Column(name = "password")
 	String password;

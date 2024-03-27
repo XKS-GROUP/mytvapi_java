@@ -128,6 +128,12 @@ public class FrontController {
 
 		return radioService.showById(id);
 	}
+	@Tag(name = "Radios")
+	@GetMapping("radiosbynamecontain/{name}")
+	public List<Radio> showbyNameContain(@PathVariable String nom){
+
+		return radioService.showByNameContaining(nom);
+	}
 
 	//ROUTES LiveTV
 	@Tag(name = "Lives")
@@ -143,7 +149,14 @@ public class FrontController {
 
 		return liveService.showById(id);
 	}
+    
+	@Tag(name = "Lives")
+	@GetMapping("livesbynamecontain/{nom}")
+	public List<LiveTv> showLbyNameContainL(@PathVariable String nom){
 
+		return liveService.showByNameContaining(nom);
+	}
+	
 	//Podcast
 	@Tag(name = "Podcasts")
 	@GetMapping("podcasts")
@@ -158,6 +171,14 @@ public class FrontController {
 
 		return podcastservice.showById(id);
 	}
+	
+	@Tag(name = "Podcasts")
+	@GetMapping("podcastsbynamecontain/{name}")
+	public List<Podcast> showbyIdP(@PathVariable String name){
+
+		return podcastservice.showByNameContaining(name);
+	}
+
 
 	//Films
 	@Tag(name = "Films")
@@ -173,7 +194,14 @@ public class FrontController {
 
 		return filmService.showById(id);
 	}
+    
+	@Tag(name = "Films")
+	@GetMapping("moviesbynamecontain/{id}")
+	public List<Film> showbyIdM(@PathVariable String name){
 
+		return filmService.showByNameContaining(name);
+	}
+	
 	//Series
 	@Tag(name = "Serıes")
 	@GetMapping("series")
@@ -188,21 +216,32 @@ public class FrontController {
 
 		return serieService.showById(id);
 	}
+	@Tag(name = "Series")
+	@GetMapping("seriesbynamecontain/{name}")
+	public List<Serie> showbyIdS(@PathVariable String name){
 
+		return serieService.showbyNameContaining(name);
+	}
 
 	//Episodes
-	@Tag(name = "Epısodes")
+	@Tag(name = "Episodes")
 	@GetMapping("episodes")
     public List<Episode> showE(){
 
 		return episodeService.show();
 	}
 
-	@Tag(name = "Epısodes")
+	@Tag(name = "Episodes")
 	@GetMapping("episodes/{id}")
 	public Optional<Episode> showbyIdE(@PathVariable Long id){
 
 		return episodeService.showById(id);
 	}
+	
+	@Tag(name = "Episodes")
+	@GetMapping("episodesbynamecontain/{name}")
+	public List<Episode> showbyIdE(@PathVariable String name){
 
+		return episodeService.showByNameContain(name);
+	}
 }

@@ -38,6 +38,8 @@ import com.mytv.api.service.gestUser.NotificationService;
 import com.mytv.api.service.gestUser.ValidationService;
 import com.mytv.api.service.gestUser.WUserService;
 
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -183,9 +185,15 @@ public class UserAccessController {
 
 	}
 
-	//Activé un uttilisateur apres envoi du code
+	//Activation un uttilisateur apres envoi du code
 	@PostMapping("activation/{email}")
-    public ResponseEntity<Object> activation(@RequestBody Map<String, String> activation, @PathVariable String email) {
+    public ResponseEntity<Object> activation(
+    		@Schema(
+    			    description = "code recu", 
+    			    name = "code", 
+    			    type = "string", 
+    			    example = " 'code' : '7896541' ")
+            @RequestBody Map<String, String> activation, @PathVariable String email) {
 
 		//String email = userService.
 		User user = userService.findByUserEmail(email);

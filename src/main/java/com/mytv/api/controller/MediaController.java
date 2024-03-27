@@ -37,6 +37,8 @@ import com.mytv.api.model.gestMedia.Pays;
 import com.mytv.api.model.gestMedia.Podcast;
 import com.mytv.api.model.gestMedia.Radio;
 import com.mytv.api.model.gestMedia.Serie;
+import com.mytv.api.repository.CatPodcastRepository;
+import com.mytv.api.repository.CategoryLrRepository;
 import com.mytv.api.security.EntityResponse;
 import com.mytv.api.service.gestMedia.CatPodcastService;
 import com.mytv.api.service.gestMedia.CategoryLrService;
@@ -93,7 +95,10 @@ public class MediaController {
 	private PaysService paysService;
 	@Autowired
 	private LangueService langService;
-
+	@Autowired
+	private CategoryLrRepository catlrRep;
+    @Autowired
+    private CatPodcastRepository catPodRep;
 	//private final String asset ="/RESSOURCES/IMG/";
 
 	//Langue
@@ -206,9 +211,19 @@ public class MediaController {
 	@Tag(name = "genre")
 	@PostMapping(path="genres/create")
 
-	public Genre create(@Valid @RequestBody Genre g) {
-
-		return genreService.create(g);
+	public ResponseEntity<Object> create(@Valid @RequestBody Genre g) {
+		
+			
+		if(!genreService.findByNameContain(g.getName()).isEmpty()) {
+			
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.CONFLICT, "Ce genre existe déja");
+		}
+		else {
+			
+		    g.setName(g.getName().toLowerCase());
+		    return EntityResponse.generateResponse("Succes", HttpStatus.CREATED, genreService.create(g));
+		
+		}
 	}
 
 	@Tag(name = "genre", description = " Liste des genres")
@@ -270,10 +285,18 @@ public class MediaController {
 
 	@Tag(name = "Categorie Radio et live ")
 	@PostMapping(path="catrl/create")
-
-	public CategoryRL createCRL(@Valid @RequestBody CategoryRL u) {
-
-		return catLrService.create(u);
+	public ResponseEntity<Object> createCRL(@Valid @RequestBody CategoryRL u) {
+		
+		if(catlrRep.findByName(u.getName()) != null) {
+			
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.CONFLICT, "Cette categorie existe déja");
+		}
+		else {
+			
+		
+		    return EntityResponse.generateResponse("Succes", HttpStatus.CREATED, catLrService.create(u));
+		
+		}
 	}
 
 
@@ -322,10 +345,20 @@ public class MediaController {
 
 	@PostMapping(path="catpod/create")
 
-	public CatPodcast createCP(
+	public ResponseEntity<Object> createCP(
 			@Valid @RequestBody CatPodcast u) {
 
-		return catpodService.create(u);
+		
+		if(catPodRep.findByName(u.getName()) != null) {
+			
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.CONFLICT, "Cette categorie de podcast existe déja");
+		}
+		else {
+			
+		
+		    return EntityResponse.generateResponse("Succes", HttpStatus.CREATED, catpodService.create(u));
+		
+		}
 	}
 
 
