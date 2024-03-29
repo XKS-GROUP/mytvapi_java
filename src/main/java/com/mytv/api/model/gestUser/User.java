@@ -51,10 +51,7 @@ public class User implements Serializable, UserDetails{
 	@NotBlank(message = "ce champ ne peut pas etre vide et doit etre unique")
 	@Column(nullable = false, unique = true)
 	String phone;
-
-	@NotBlank(message = "ce champ ne peut pas etre vide, une adresse est requise ")
-	@Column(nullable = false)
-	String Address;
+	
 
 	@Column(columnDefinition = "TEXT" )
 	String remember_token;
@@ -72,14 +69,6 @@ public class User implements Serializable, UserDetails{
 
 	public void setPhone(String phone) {
 		this.phone = phone;
-	}
-
-	public String getAddress() {
-		return Address;
-	}
-
-	public void setAddress(String address) {
-		Address = address;
 	}
 
 	public String getRemember_token() {

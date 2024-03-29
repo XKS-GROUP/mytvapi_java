@@ -5,11 +5,17 @@ import java.sql.Date;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.mytv.api.model.gestMedia.LiveTv;
+import com.mytv.api.model.gestUser.User;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,7 +28,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Comment {
+public class ComLive {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,5 +43,13 @@ public class Comment {
 	
 	@UpdateTimestamp
 	Date dateMaj;
+	
+	@ManyToOne( cascade = CascadeType.ALL)
+	@JoinColumn(name = "user_id", insertable = true, updatable = true)
+	private User user;
+
+	@ManyToOne( cascade = CascadeType.ALL)
+	@JoinColumn(name = "idEpisode", insertable = true, updatable = true)
+	private LiveTv livetv;
 	
 }

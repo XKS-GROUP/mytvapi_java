@@ -9,7 +9,6 @@ import com.mytv.api.model.gestUser.Profil;
 import com.mytv.api.model.gestUser.User;
 
 
-
 @Repository
 public interface ProfilRepository extends  JpaRepository<Profil, Long>{
 

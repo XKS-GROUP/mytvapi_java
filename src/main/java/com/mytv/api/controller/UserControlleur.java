@@ -50,13 +50,14 @@ public class UserControlleur {
 	@Autowired
 	JwtRepository jwtRep;
 	
-	
+	//Affiche info utilisateur
 	@Tag(name = "Profil Abonne")
 	@GetMapping("userInfo")
 	public ResponseEntity<Object> retrieveUserProfile(){
 		return EntityResponse.generateResponse("Abonne Profil Info : "+userService.findCurrentUser().getUsername(), HttpStatus.OK, userService.findCurrentUser());
 	}
 
+	//Update User
 	@Tag(name = "Profil Abonne")
 	@PutMapping("updateUser/{id}")
 	public ResponseEntity<Object> updateProfilebyId(@PathVariable Long id, @Valid @RequestBody User u){
@@ -72,22 +73,24 @@ public class UserControlleur {
 		}
 
 	}
-
+    
+	//Delete le compte actuel
 	@Tag(name = "Profil Abonne")
 	@DeleteMapping("deleteCurrentAcountUser")
-	public ResponseEntity<Object> delCurrentProfil(@PathVariable Long id){
+	public ResponseEntity<Object> delCurrentProfil(){
 
-		if(id <= 0) {
-			return EntityResponse.generateResponse("User SUPP ERREUR ", HttpStatus.BAD_REQUEST, " l'id utilisateur ne peut être vide ");
+		if(!userService.findCurrentUser().isValide()) {
+			return EntityResponse.generateResponse("User SUPP ERREUR ", HttpStatus.BAD_REQUEST, " cet utilisateur n est pas valide ");
 		}
 		else {
-
+			
 			return EntityResponse.generateResponse("User Profile", HttpStatus.OK, 
 					userService.deleteUserFromId(userService.findCurrentUser().getId()));
 		}
 
 	}
 	
+	//Delete by id
 	@Tag(name = "Profil Abonne")
 	@DeleteMapping("deleteCurrentAcountUser/{id}")
 	public ResponseEntity<Object> delCurrentProfileByid(@PathVariable Long id){
@@ -104,12 +107,12 @@ public class UserControlleur {
 
 	//Gestion des profil
 	
-	//List des pro
+	//List des profils
 	@Tag(name = "Profil Abonne")
 	@GetMapping("list-profile")
 	public List<Profil> listProfile(){
 
-		return profilService.show();
+		return profilRep.findByUtilisateur(userService.findCurrentUser());
 	}
 	
 	//Creation de pro
@@ -117,7 +120,7 @@ public class UserControlleur {
 	@PostMapping("createProfile")
 	public ResponseEntity<Object> createProfil(@Valid @RequestBody Profil p){
 		
-		
+		System.out.println(" NOM ++ "+p.getProfilName());
 		int lim = profilRep.findByUtilisateur(userService.findCurrentUser()).size();
 		
 		if(lim == 4) {
@@ -130,8 +133,9 @@ public class UserControlleur {
 			return EntityResponse.generateResponse("Profil ERREUR ", HttpStatus.BAD_REQUEST, " ce nom de profil existe déja");
 			
 		}
-		else if ( p.getProfilName().toLowerCase() == "kid" || p.getProfilName().toLowerCase() =="kids"  ){
+		else if ( p.getProfilName().toString() == "kid" || p.getProfilName().toString() == "kids"  ){
 			
+			System.out.println("JE SUIS  NOM ++ "+p.getProfilName());
 			return EntityResponse.generateResponse("Profil ERREUR ", HttpStatus.BAD_REQUEST, " vous ne pouvez creer un profil avec ce nom, celui ci est reservé ");
 		}
 		else {
@@ -160,10 +164,11 @@ public class UserControlleur {
 	
 	//Delete pro
 	@Tag(name = "Profil Abonne")
-	@PostMapping("deleteProfile")
+	@DeleteMapping("deleteProfile/{id}")
 	public ResponseEntity<Object> deleteProfil(@PathVariable Long id){
 
 		if(id <= 0) {
+			
 			return EntityResponse.generateResponse("User SUPP ERREUR ", HttpStatus.BAD_REQUEST, " l'id utilisateur ne peut être vide ");
 		}
 		else {
@@ -218,6 +223,8 @@ public class UserControlleur {
 			 jwtRep.deleteByUser(usr); //jwtRep.deleteAll();//
 			 return EntityResponse.generateResponse("Deconexion", HttpStatus.OK, usr.getUsername()+" à été deconnecter avec succès" );
 	  }
+	
+	
 	
 	//Payment et Facture
 

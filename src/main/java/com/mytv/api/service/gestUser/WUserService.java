@@ -15,11 +15,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
+import com.mytv.api.model.gestUser.Profil;
 import com.mytv.api.model.gestUser.Role;
 import com.mytv.api.model.gestUser.User;
 import com.mytv.api.model.gestUser.UserRole;
 import com.mytv.api.repository.IUserRepository;
 import com.mytv.api.repository.IUserRoleRepository;
+import com.mytv.api.repository.ProfilRepository;
 import com.mytv.api.security.SecurityPrincipal;
 import com.mytv.api.security.UserRegisterRequestDTO;
 
@@ -39,7 +41,10 @@ public class WUserService implements UserDetailsService {
 
 	@Autowired
 	private ValidationService validationService;
-
+	
+	@Autowired
+	private ProfilRepository proRep;
+	
 	@Autowired
 	WRoleService roleService;
 
@@ -73,7 +78,13 @@ public class WUserService implements UserDetailsService {
 
 		return userRepository.findByEmail(email);
 	}
+	
+	public User findByUserPhone(String email) {
 
+		return userRepository.findByPhone(email);
+	}
+	
+	//Creation d'un admin
 	public String createUser(UserRegisterRequestDTO request) {
 		try {
 			User user = (User) dtoMapperRequestDtoToUser(request);
@@ -101,7 +112,9 @@ public class WUserService implements UserDetailsService {
 		}
 
 	}
-
+	
+	
+	//creation d'un abonne
 	public String createAbonne(UserRegisterRequestDTO request) {
 		try {
 			User user = (User) dtoMapperRequestDtoToUser(request);
@@ -118,6 +131,13 @@ public class WUserService implements UserDetailsService {
 				addUserRole(user, roleService.findRoleByName("ROLE_USER"));
 			}
 			//Envoi du mail pour la validation de son compte
+			
+			Profil pro = new Profil();
+			pro.setProfilName(user.getUsername());
+			pro.setUtilisateur(user);
+			pro.setImg_path("defaulf.png");
+			System.out.println(" creation d'un profil par defaut Emma");
+			proRep.save(pro);
 			validationService.enregistrer(user);
 			return "Un nouvel utilisateur , un mail a été envoyer a l adresse mail "+user.getEmail().toString();
 		} catch (Exception e) {
@@ -126,7 +146,8 @@ public class WUserService implements UserDetailsService {
 		}
 
 	}
-
+	
+	//Activation d'un compte
     public void activation(Map<String, String> activation) {
 
         com.mytv.api.model.gestUser.Validation validation = this.validationService.lireEnFonctionDuCode(activation.get("code"));
@@ -140,17 +161,19 @@ public class WUserService implements UserDetailsService {
         userRepository.save(usr);
     }
 
-
+    //Liste des utilisateur active
 	public List<User> AllUserValide(){
 
 		return userRepository.findByValideTrue();
 	}
-
+	
+	//Liste des Utilisateur non Active
 	public List<User> AllUserNotValide(){
 
 		return userRepository.findByValideFalse();
 	}
-
+	
+	//Liste de tous les Utilisateurs
 	public List<User> retrieveAllUserList() {
 		return userRepository.findAll();
 	}
@@ -170,7 +193,8 @@ public class WUserService implements UserDetailsService {
 
 		return user;
 	}
-	public User updateByid(Long id, User u) {
+	
+    public User updateByid(Long id, User u) {
 
 		User old = userRepository.findById(id).get();
 		
@@ -179,7 +203,8 @@ public class WUserService implements UserDetailsService {
 
 		return userRepository.save(old);
 	}
-	public User updateUser(UserRegisterRequestDTO userRequestDTO) {
+	
+    public User updateUser(UserRegisterRequestDTO userRequestDTO) {
 
 		User user = (User) dtoMapperRequestDtoToUser(userRequestDTO);
 
@@ -198,27 +223,32 @@ public class WUserService implements UserDetailsService {
 
 		return user;
 	}
-
+	
+	//Renvoi  utilisateur actuellement connecte
 	public User findCurrentUser() {
-
+		
 		return userRepository.findById(SecurityPrincipal.getInstance().getLoggedInPrincipal().getId()).get();
+		
 
 	}
-
+	
+	//Supp l utilisateur actuel par id
 	public String deleteUserFromId(Long id) {
 
 		userRepository.deleteById(id);
 
 		return "Utilisateur "+this.findCurrentUser().getUsername()+"a été supprimer avec succès";
 	}
-
+	
+	//Supp l utilisateur actuel
 	public String deleteCurrentUser() {
 
 		userRepository.delete(this.findCurrentUser());
 
 		return "Utilisateur "+this.findCurrentUser().getUsername()+"a été supprimer avec succès";
 	}
-
+	
+	//Renvoi la liste des roles
 	public List<UserRole> findAllCurrentUserRole() {
 		return userRoleRepository.findAllByUserId(SecurityPrincipal.getInstance().getLoggedInPrincipal().getId());
 
@@ -227,7 +257,9 @@ public class WUserService implements UserDetailsService {
 	public Optional<User> findUserById(long id) {
 		return userRepository.findById(id);
 	}
-
+	
+	
+	//Ajouter un role a un utilisateur
 	public void addUserRole(User user, Role role) {
 
 		UserRole userRole = new UserRole();
@@ -241,13 +273,14 @@ public class WUserService implements UserDetailsService {
 		userRole.setRole(role);
 		userRoleRepository.save(userRole);
 	}
-
+	
+	
+	//Hidradation DTO 
 	private Object dtoMapperRequestDtoToUser(UserRegisterRequestDTO source) {
 		User target = new User();
 		target.setUsername(source.getUsername());
 		target.setPassword(source.getPassword());
 		target.setEmail(source.getEmail());
-		target.setAddress(source.getAddress());
 		target.setPhone(source.getPhone());
 		return target;
 	}

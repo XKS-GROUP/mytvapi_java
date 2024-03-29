@@ -40,9 +40,6 @@ public class UserRegisterRequestDTO {
 	@Column(nullable = false, unique = true)
 	String phone;
 
-	@NotBlank(message = "ce champ ne peut pas etre vide, une adresse est requise ")
-	@Column(nullable = false)
-	String Address;
 	@JsonIgnore
 	private List<String> roleList = new ArrayList<>();
 	/**

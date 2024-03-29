@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -113,7 +115,10 @@ public class FrontController {
 		return catpodService.show();
 	}
 
-
+	
+	/*
+	 * GESTION DES RADIOS
+	 */
 	//Radio
 	@Tag(name = "Radios")
 	@GetMapping("radios")
@@ -134,7 +139,65 @@ public class FrontController {
 
 		return radioService.showByNameContaining(nom);
 	}
+	
+	@Tag(name = "Radios")
+	@PostMapping("radioAddcomment/{idRadio}")
+	public List<Radio> radioAddComment(@PathVariable Long idRadio){
 
+		return null;//radioService.showByNameContaining(nom);
+	}
+	@Tag(name = "Radios")
+	@DeleteMapping("radioAddcomment/{idRadio}")
+	public List<Radio> radioDelComment(@PathVariable Long idRadio){
+
+		return null;//radioService.showByNameContaining(nom);
+	}
+	
+	@Tag(name = "Radios")
+	@GetMapping("radioShowFavorie")
+	public List<Radio> radioShowLike(){
+
+		return null;//radioService.showByNameContaining(nom);
+	}
+	
+	@Tag(name = "Radios")
+	@PostMapping("radioAddlike/{idRadio}")
+	public List<Radio> radioAddLike(@PathVariable Long idRadio){
+
+		return null;//radioService.showByNameContaining(nom);
+	}
+	
+	@Tag(name = "Radios")
+	@PostMapping("radioDellike/{idRadio}")
+	public List<Radio> radioDelLike(@PathVariable Long idRadio){
+
+		return null;//radioService.showByNameContaining(nom);
+	}
+	
+
+	@Tag(name = "Radios")
+	@GetMapping("radioShowFavorie/{idRadio}")
+	public List<Radio> radioShowFavorie(){
+
+		return null;//radioService.showByNameContaining(nom);
+	}
+	@Tag(name = "Radios")
+	@PostMapping("radioAddFavorie/{idRadio}")
+	public List<Radio> radioAddFavorie(@PathVariable Long idRadio){
+
+		return null;//radioService.showByNameContaining(nom);
+	}
+	
+	@Tag(name = "Radios")
+	@PostMapping("radioDelFavorie/{idRadio}")
+	public List<Radio> radioDelFavorie(@PathVariable Long idRadio){
+
+		return null;//radioService.showByNameContaining(nom);
+	}
+
+	/*
+	 * GESTION DES LIVES TV 
+	 */
 	//ROUTES LiveTV
 	@Tag(name = "Lives")
 	@GetMapping("lives")
@@ -157,6 +220,77 @@ public class FrontController {
 		return liveService.showByNameContaining(nom);
 	}
 	
+	//COM
+	@Tag(name = "Lives")
+	@GetMapping("liveShowcomment/{idlive}")
+	public List<Radio> liveShowComment(@PathVariable Long idlive){
+
+		return null;//radioService.showByNameContaining(nom);
+	}
+	
+	@Tag(name = "Lives")
+	@PostMapping("liveAddcomment/{idlive}")
+	public List<Radio> liveAddComment(@PathVariable Long idlive){
+
+		return null;//radioService.showByNameContaining(nom);
+	}
+	
+	@Tag(name = "Lives")
+	@DeleteMapping("liveDelcomment/{idlive}")
+	public List<Radio> liveDelComment(@PathVariable Long idlive){
+
+		return null;//radioService.showByNameContaining(nom);
+	}
+	
+	//LIKE
+	@Tag(name = "Lives")
+	@GetMapping("liveShowlike/{idlive}")
+	public List<Radio> liveShowLike(@PathVariable Long idlive){
+
+		return null;//radioService.showByNameContaining(nom);
+	}
+	
+	@Tag(name = "Lives")
+	@PostMapping("liveAddlike/{idlive}")
+	public List<Radio> liveAddLike(@PathVariable Long idlive){
+
+		return null;//radioService.showByNameContaining(nom);
+	}
+	@Tag(name = "Lives")
+	@DeleteMapping("liveDellike/{idlive}")
+	public List<Radio> liveDelLike(@PathVariable Long idlive){
+
+		return null;//radioService.showByNameContaining(nom);
+	}
+	
+	/*
+	 * GESTION DES FAVORIES
+	 */
+	//FAVORIES
+	@Tag(name = "Lives")
+	@GetMapping("liveShowFavorie/{idlive}")
+	public List<Radio> liveShowFavorie(@PathVariable Long idlive){
+
+		return null;//radioService.showByNameContaining(nom);
+	}
+	@Tag(name = "Lives")
+	@PostMapping("liveAddFavorie/{idlive}")
+	public List<Radio> liveAddFavorie(@PathVariable Long idlive){
+
+		return null;//radioService.showByNameContaining(nom);
+	}
+	@Tag(name = "Lives")
+	@DeleteMapping("liveDelFavorie/{idlive}")
+	public List<Radio> liveDelFavorie(@PathVariable Long idlive){
+
+		return null;//radioService.showByNameContaining(nom);
+	}
+
+	
+	
+	/*
+	 * GESTION DES PODCASTS
+	 */
 	//Podcast
 	@Tag(name = "Podcasts")
 	@GetMapping("podcasts")
@@ -179,7 +313,10 @@ public class FrontController {
 		return podcastservice.showByNameContaining(name);
 	}
 
-
+	
+	/*
+	 * GESTION DES FILMS
+	 */
 	//Films
 	@Tag(name = "Films")
 	@GetMapping("movies")
@@ -202,15 +339,18 @@ public class FrontController {
 		return filmService.showByNameContaining(name);
 	}
 	
+	/*
+	 * GESTION DES SERIES
+	 */
 	//Series
-	@Tag(name = "Serıes")
+	@Tag(name = "Series")
 	@GetMapping("series")
 	public List<Serie> showS(){
 
 		return serieService.show();
 	}
 
-	@Tag(name = "Serıes")
+	@Tag(name = "Series")
 	@GetMapping("series/{id}")
 	public Optional<Serie> showbyIdS(@PathVariable Long id){
 
@@ -222,7 +362,11 @@ public class FrontController {
 
 		return serieService.showbyNameContaining(name);
 	}
-
+	
+	
+	/*
+	 * GESTION DES EPISODES
+	 */
 	//Episodes
 	@Tag(name = "Episodes")
 	@GetMapping("episodes")

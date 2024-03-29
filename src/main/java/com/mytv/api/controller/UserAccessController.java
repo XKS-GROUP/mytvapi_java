@@ -38,7 +38,6 @@ import com.mytv.api.service.gestUser.NotificationService;
 import com.mytv.api.service.gestUser.ValidationService;
 import com.mytv.api.service.gestUser.WUserService;
 
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
@@ -153,7 +152,10 @@ public class UserAccessController {
 
 			return EntityResponse.generateResponse("Cette adresse email existe deja "+request.getEmail(), HttpStatus.CONFLICT, "");
 		}
+		else if (userService.findByUserPhone(request.getEmail()) !=null) {
 
+			return EntityResponse.generateResponse("Ce numéro de telephone existe deja "+request.getEmail(), HttpStatus.CONFLICT, "");
+		}
 		else {
 
 			request.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -174,6 +176,10 @@ public class UserAccessController {
 		else if (userService.findByUserEmail(request.getEmail()) !=null) {
 
 			return EntityResponse.generateResponse("Cette adresse email existe deja "+request.getEmail(), HttpStatus.CONFLICT, "");
+		}
+		else if (userService.findByUserPhone(request.getEmail()) !=null) {
+
+			return EntityResponse.generateResponse("Ce numéro de telephone existe deja "+request.getEmail(), HttpStatus.CONFLICT, "");
 		}
 
 		else {
@@ -459,4 +465,18 @@ public class UserAccessController {
 			 System.out.println("Supp ");
 			 return EntityResponse.generateResponse("Deconexion", HttpStatus.OK, usr.getUsername()+" à été deconnecter avec succès" );
 	    }
+
+
+	/*
+	 * GESTION DES COMMENTAIRES
+	 */
+	
+	/*
+	 * GESTION DES LIKES
+	 */
+	
+	/*
+	 * GESTION DES FAVORIS
+	 */
+
 }
