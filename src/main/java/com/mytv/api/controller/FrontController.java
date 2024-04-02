@@ -14,10 +14,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mytv.api.model.ComFilm;
 import com.mytv.api.model.ComPodcast;
+import com.mytv.api.model.FavFilm;
 import com.mytv.api.model.FavLiveTv;
 import com.mytv.api.model.FavPodcast;
 import com.mytv.api.model.FavRadio;
+import com.mytv.api.model.LikeFilm;
 import com.mytv.api.model.LikeLivetv;
 import com.mytv.api.model.LikePodcast;
 import com.mytv.api.model.LikeRadio;
@@ -32,18 +35,22 @@ import com.mytv.api.model.gestMedia.Podcast;
 import com.mytv.api.model.gestMedia.Radio;
 import com.mytv.api.model.gestMedia.Serie;
 import com.mytv.api.model.gestUser.User;
-import com.mytv.api.repository.ComPodcastRepository;
+import com.mytv.api.repository.FavFilmRepository;
 import com.mytv.api.repository.FavLiveRepository;
 import com.mytv.api.repository.FavPodcastRepository;
 import com.mytv.api.repository.FavRadioRepository;
+import com.mytv.api.repository.LikeFilmRepository;
 import com.mytv.api.repository.LikeLivetvRepository;
 import com.mytv.api.repository.LikePodcastRepository;
 import com.mytv.api.repository.LikeRadioRepository;
 import com.mytv.api.security.EntityResponse;
+import com.mytv.api.service.ComFilmService;
 import com.mytv.api.service.ComPodcastService;
+import com.mytv.api.service.FavFilmService;
 import com.mytv.api.service.FavLiveService;
 import com.mytv.api.service.FavPodcastService;
 import com.mytv.api.service.FavRadioService;
+import com.mytv.api.service.LikeFilmService;
 import com.mytv.api.service.LikeLiveService;
 import com.mytv.api.service.LikePodcastService;
 import com.mytv.api.service.LikeRadioService;
@@ -61,7 +68,6 @@ import com.mytv.api.service.gestUser.WUserService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -123,9 +129,18 @@ public class FrontController {
 	private LikePodcastRepository likepodRep;
 	@Autowired
 	private FavPodcastRepository favpodRep;
+	
+	//FILM FAV LIKE COM
 	@Autowired
-	private ComPodcastRepository compodRep;
-
+	private FavFilmService favfilmService;
+	@Autowired
+	private LikeFilmService likefilmService;
+	@Autowired
+	private ComFilmService comfilmService;
+	@Autowired
+	private LikeFilmRepository likefilmRep;
+	@Autowired
+	private FavFilmRepository favfilmRep;
 	
 	@Autowired
 	WUserService userService;
@@ -455,14 +470,16 @@ public class FrontController {
 		return podcastservice.showByNameContaining(name);
 	}
 	//COM
+	//AFFICHE TOUS LES COMMENTAIRES
 	@Tag(name = "Podcasts")
-	@GetMapping("podcasthowAllcomment/{idPod}")
-	public List<ComPodcast> podcastShowAllComment(@PathVariable Long idPod){
+	@GetMapping("podcasthowAllcomment")
+	public List<ComPodcast> podcastShowAllComment(){
 
 		return compodService.show() ;
 		
 	}
 	
+	//AFFICHE COMMENTAIRE D UN PODCAST
 	@Tag(name = "Podcasts")
 	@GetMapping("podcasthowcommentById/{idPod}")
 	public List<ComPodcast> podcastShowCommentById(@PathVariable Long idPod){
@@ -473,23 +490,25 @@ public class FrontController {
 	
 	//ADD COMMENT
 	@Tag(name = "Podcasts")
-	@PostMapping("podcastAddcomment")
-	public List<ComPodcast> LiveAddComment(@Valid @RequestBody ComPodcast comPodcast){
+	@PostMapping("podcastAddcomment/{idPod}")
+	public ComPodcast LiveAddComment(@PathVariable Long idPod, @RequestBody String com){
 		
-		
-		
-		//Podcast l = podcastservice.
-		//User u = userService.findCurrentUser();
-		
-		return null;//compodService.addCom(com);
+		Podcast l = podcastservice.showById(idPod).get();
+		User u = userService.findCurrentUser();
+		ComPodcast comp = new ComPodcast();
+		comp.setUser(u);
+		comp.setPodcast(l);
+		comp.setContenu(com);
+		return compodService.addCom(comp);
 		
 	}
 	
 	@Tag(name = "Podcasts")
 	@DeleteMapping("podcastDelcomment/{idCom}")
-	public List<Radio> LiveDelComment(@PathVariable Long idCom){
+	public ResponseEntity<Object> LiveDelComment(@PathVariable Long idCom){
 
-		return null; //Service.AFTER_DESTROY_EVENT;
+		return EntityResponse.generateResponse("Comentaire Supprimé avec succès", HttpStatus.OK, 
+				compodService.remove(idCom));
 		
 	}
 	
@@ -624,6 +643,155 @@ public class FrontController {
 
 		return filmService.showByNameContaining(name);
 	}
+	
+////////////////////////////////////////////////////////////////////////
+	//COM
+		//AFFICHE TOUS LES COMMENTAIRES
+		@Tag(name = "Films")
+		@GetMapping("filmhowAllcomment")
+		public List<ComFilm> filmShowAllComment(){
+
+			return comfilmService.show() ;
+			
+		}
+		
+		//AFFICHE COMMENTAIRE D UN FILM
+		@Tag(name = "Films")
+		@GetMapping("filmhowcommentById/{idFilm}")
+		public List<ComFilm> filmShowCommentById(@PathVariable Long idFilm){
+			
+			return comfilmService.findByFilm(filmService.showById(idFilm).get()) ;
+			
+		}
+		
+		//ADD COMMENT
+		@Tag(name = "Films")
+		@PostMapping("filmAddcomment/{idFilm}")
+		public ComFilm filmAddComment(@PathVariable Long idFilm, @RequestBody String com){
+			
+			Film f = filmService.showById(idFilm).get();
+			User u = userService.findCurrentUser();
+			ComFilm comp = new ComFilm();
+			comp.setUser(u);
+			comp.setFilm(f);
+			comp.setContenu(com);
+			return comfilmService.addCom(comp);
+			
+		}
+		
+		@Tag(name = "Films")
+		@DeleteMapping("filmDelcomment/{idCom}")
+		public ResponseEntity<Object> filmDelComment(@PathVariable Long idCom){
+
+			return EntityResponse.generateResponse("Comentaire Supprimé avec succès", HttpStatus.OK, 
+					comfilmService.remove(idCom));
+			
+		}
+		
+		//LIKE
+		
+		//AFFICHE LIKE PAR FILM
+		@Tag(name = "Films")
+		@GetMapping("filmShowlikebyLive/{idPod}")
+		public List<LikeFilm> filmLikebyLive(@PathVariable Long idPod){
+			
+			Film l = filmService.showById(idPod).get();
+			
+			return likefilmService.findByFilm(l);
+			
+		}
+		
+		//AFFICHE NOMBRE LIKE PAR PODCAST
+		@Tag(name = "Films")
+		@GetMapping("filmShowNblikebyRadio/{idfilm}")
+		public Long filmNbLike(@PathVariable Long idfilm){
+			
+			return likepodService.nbretotalLike(podcastservice.showById(idfilm).get());
+		}
+		
+		//ADD LIKE
+		@Tag(name = "Films")
+		@PostMapping("filmAddlike/{idfilm}")
+		public ResponseEntity<Object> filmAddLike(@PathVariable Long idfilm){
+			
+			Film l = filmService.showById(idfilm).get();
+			User u = userService.findCurrentUser();
+			
+			if(likefilmRep.findByUserAndFilm(u, l).isPresent()) {
+				Long id = likefilmRep.findByUserAndFilm(u, l).get().getIdLike();
+				
+				return EntityResponse.generateResponse("VOUS VENEZ DE DISLIKEZ ", HttpStatus.OK, 
+						likefilmService.removeLike(id) );
+			}
+			else {
+				
+				LikeFilm lt = new LikeFilm();
+				lt.setFilm(l);
+				lt.setUser(u);
+				
+				return EntityResponse.generateResponse("VOUS VENEZ DE LIKEZ", HttpStatus.OK, 
+						likefilmService.addLike(lt));
+			}
+		}
+		
+		//DELETE LIKE
+		@Tag(name = "Films")
+		@DeleteMapping("filmDellike/{idLike}")
+		public void filmDelLike(@PathVariable Long id){
+			
+			likefilmService.removeLike(id);
+			 
+		}
+		
+		/*
+		 * GESTION DES FAVORIES
+		 */
+		//FAVORIES
+		
+		@Tag(name = "Films")
+		@PostMapping("filmAddFavorie/{idfilm}")
+		public ResponseEntity<Object> filmShowFavorie(@PathVariable Long idfilm){
+	    
+			Film l = filmService.showById(idfilm).get();
+			User u = userService.findCurrentUser();
+			
+			if(favfilmRep.findByUserAndFilm(u, l).isPresent()) {
+				
+				Long id = favfilmRep.findByUserAndFilm(u, l).get().getIdFav();
+				
+				return EntityResponse.generateResponse("RETIRER DES FAVORIES ", HttpStatus.OK, 
+						favfilmService.remove(id) );
+			}
+			else {
+				
+				FavFilm fl = new FavFilm();
+				fl.setFilm(l);
+				fl.setUser(u);
+				
+				return EntityResponse.generateResponse("AJOUTEZ AUX FAVORIES", HttpStatus.OK, 
+						favfilmService.addFav(fl));
+			}
+		}
+		
+		@Tag(name = "Films")
+		@GetMapping("filmShowFavorie")
+		public ResponseEntity<Object> filmAddFavorie(){
+
+			return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK, 
+					favfilmService.findByUser(userService.findCurrentUser()));
+		}
+		
+		@Tag(name = "Films")
+		@DeleteMapping("filmDelFavorie/{idFavorie}")
+		public boolean filmDelFavorie(@PathVariable Long idFav){
+
+			return favfilmService.remove(idFav);
+			
+		}
+	
+
+		
+		
 	
 	/*
 	 * GESTION DES SERIES

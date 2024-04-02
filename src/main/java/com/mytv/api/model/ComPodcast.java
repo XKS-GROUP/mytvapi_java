@@ -5,9 +5,9 @@ import java.sql.Date;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mytv.api.model.gestMedia.Podcast;
 import com.mytv.api.model.gestUser.User;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,7 +33,7 @@ public class ComPodcast {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long idComment;
 	
-	@NotBlank(message=" un commentaire ne peut etre vide, il dois avoir du contenu ")
+	@NotBlank(message=" un commentaire ne peut etre vide, il doit avoir du contenu ")
 	@Column(nullable = false, length = 700)
 	String contenu;
 
@@ -43,11 +43,12 @@ public class ComPodcast {
 	@UpdateTimestamp
 	Date dateMaj;
 	
-	@ManyToOne( cascade = CascadeType.ALL)
+	@JsonIgnore
+	@ManyToOne
 	@JoinColumn(name = "user_id", insertable = true, updatable = true)
 	private User user;
 
-	@ManyToOne( cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "idPodcast", insertable = true, updatable = true)
 	private Podcast podcast;
 	
