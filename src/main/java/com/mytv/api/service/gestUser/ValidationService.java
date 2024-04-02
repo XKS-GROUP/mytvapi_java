@@ -20,7 +20,8 @@ public class ValidationService {
 
 	@Autowired
     private ValidationRepository validationRepository;
-
+	
+	@Autowired
     private NotificationService notificationService;
 
     public void enregistrer(User utilisateur) {

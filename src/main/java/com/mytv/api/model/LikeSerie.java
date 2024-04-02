@@ -5,10 +5,10 @@ import java.sql.Date;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mytv.api.model.gestMedia.Episode;
 import com.mytv.api.model.gestUser.User;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -37,11 +37,12 @@ public class LikeSerie {
 	@UpdateTimestamp
 	Date dateMaj;
 	
-	@ManyToOne( cascade = CascadeType.ALL)
+	@JsonIgnore
+	@ManyToOne
 	@JoinColumn(name = "user_id", insertable = true, updatable = true)
 	private User user;
     
-	@ManyToOne( cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "idSerie", insertable = true, updatable = true)
 	private Episode episode;
 }

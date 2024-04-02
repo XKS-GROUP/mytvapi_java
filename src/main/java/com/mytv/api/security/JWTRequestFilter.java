@@ -63,9 +63,13 @@ public class JWTRequestFilter extends OncePerRequestFilter {
 			usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 			SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 		}
+		else if(usr == null) {
+			
+			System.out.println("Votre token n'est pas valide   "+username);
+		}
 		else if(!usr.isValide()) {
 
-			System.out.println("Compte non valide, veuillez activer votre compte Mr  "+username);
+			System.out.println("Compte non valide, veuillez activer votre compte Mr/Mm  "+username);
 		}
 		else {
 

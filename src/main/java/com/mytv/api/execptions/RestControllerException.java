@@ -58,6 +58,12 @@ public class RestControllerException {
 
         	return EntityResponse.generateResponse("Authentication", HttpStatus.OK, "Votre session a expiré");
     }
+    @ExceptionHandler(java.util.NoSuchElementException.class)
+    public ResponseEntity<Object> NoSuchElementException(java.util.NoSuchElementException ex) {
+
+        return EntityResponse.generateResponse("Authentication", HttpStatus.NOT_FOUND, "aucun resultat trouvé pour cette valeur");
+    }
+    
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<Object> NullPointerException(NullPointerException ex) {
 
