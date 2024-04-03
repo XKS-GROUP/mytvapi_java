@@ -6,37 +6,31 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.mytv.api.model.gestMedia.Serie;
+import com.mytv.api.model.gestMedia.Saison;
 import com.mytv.api.model.gestUser.User;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 
 @Builder
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ComSerie {
-    
+public class FavSaison {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long idComment;
-	
-	
-	@NotBlank(message=" un commentaire ne peut etre vide, il dois avoir du contenu ")
-	@Column(nullable = false, length = 700)
-	String contenu;
+	Long idFavSaison;
 
 	@CreationTimestamp
 	Date datePub;
@@ -50,6 +44,7 @@ public class ComSerie {
 	private User user;
 
 	@ManyToOne
-	@JoinColumn(name = "idSerie", insertable = true, updatable = true)
-	private Serie serie;
+	@JoinColumn(name = "idSaison", insertable = true, updatable = true)
+	private Saison saison;
+	
 }

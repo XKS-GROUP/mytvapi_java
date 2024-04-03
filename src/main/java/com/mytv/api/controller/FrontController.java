@@ -14,16 +14,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mytv.api.model.ComEpisode;
 import com.mytv.api.model.ComFilm;
 import com.mytv.api.model.ComPodcast;
+import com.mytv.api.model.ComSaison;
+import com.mytv.api.model.ComSerie;
+import com.mytv.api.model.FavEpisode;
 import com.mytv.api.model.FavFilm;
 import com.mytv.api.model.FavLiveTv;
 import com.mytv.api.model.FavPodcast;
 import com.mytv.api.model.FavRadio;
+import com.mytv.api.model.FavSaison;
+import com.mytv.api.model.FavSerie;
+import com.mytv.api.model.LikeEpisode;
 import com.mytv.api.model.LikeFilm;
 import com.mytv.api.model.LikeLivetv;
 import com.mytv.api.model.LikePodcast;
 import com.mytv.api.model.LikeRadio;
+import com.mytv.api.model.LikeSaison;
+import com.mytv.api.model.LikeSerie;
 import com.mytv.api.model.gestMedia.CatPodcast;
 import com.mytv.api.model.gestMedia.CategoryRL;
 import com.mytv.api.model.gestMedia.Episode;
@@ -33,27 +42,43 @@ import com.mytv.api.model.gestMedia.LiveTv;
 import com.mytv.api.model.gestMedia.Pays;
 import com.mytv.api.model.gestMedia.Podcast;
 import com.mytv.api.model.gestMedia.Radio;
+import com.mytv.api.model.gestMedia.Saison;
 import com.mytv.api.model.gestMedia.Serie;
 import com.mytv.api.model.gestUser.User;
+import com.mytv.api.repository.FavEpisodeRepository;
 import com.mytv.api.repository.FavFilmRepository;
 import com.mytv.api.repository.FavLiveRepository;
 import com.mytv.api.repository.FavPodcastRepository;
 import com.mytv.api.repository.FavRadioRepository;
+import com.mytv.api.repository.FavSaisonRepository;
+import com.mytv.api.repository.FavSerieRepository;
+import com.mytv.api.repository.LikeEpisodeRepository;
 import com.mytv.api.repository.LikeFilmRepository;
 import com.mytv.api.repository.LikeLivetvRepository;
 import com.mytv.api.repository.LikePodcastRepository;
 import com.mytv.api.repository.LikeRadioRepository;
+import com.mytv.api.repository.LikeSaisonRepository;
+import com.mytv.api.repository.LikeSerieRepository;
 import com.mytv.api.security.EntityResponse;
+import com.mytv.api.service.ComEpisodeService;
 import com.mytv.api.service.ComFilmService;
 import com.mytv.api.service.ComPodcastService;
+import com.mytv.api.service.ComSaisonService;
+import com.mytv.api.service.ComSerieService;
+import com.mytv.api.service.FavEpisodeService;
 import com.mytv.api.service.FavFilmService;
 import com.mytv.api.service.FavLiveService;
 import com.mytv.api.service.FavPodcastService;
 import com.mytv.api.service.FavRadioService;
+import com.mytv.api.service.FavSaisonService;
+import com.mytv.api.service.FavSerieService;
+import com.mytv.api.service.LikeEpisodeService;
 import com.mytv.api.service.LikeFilmService;
 import com.mytv.api.service.LikeLiveService;
 import com.mytv.api.service.LikePodcastService;
 import com.mytv.api.service.LikeRadioService;
+import com.mytv.api.service.LikeSaisonService;
+import com.mytv.api.service.LikeSerieService;
 import com.mytv.api.service.gestMedia.CatPodcastService;
 import com.mytv.api.service.gestMedia.CategoryLrService;
 import com.mytv.api.service.gestMedia.EpisodeService;
@@ -62,6 +87,7 @@ import com.mytv.api.service.gestMedia.LiveTvSetvice;
 import com.mytv.api.service.gestMedia.PaysService;
 import com.mytv.api.service.gestMedia.PodcastService;
 import com.mytv.api.service.gestMedia.RadioService;
+import com.mytv.api.service.gestMedia.SaisonService;
 import com.mytv.api.service.gestMedia.SerieService;
 import com.mytv.api.service.gestMedia.ServiceFilm;
 import com.mytv.api.service.gestUser.WUserService;
@@ -142,6 +168,43 @@ public class FrontController {
 	@Autowired
 	private FavFilmRepository favfilmRep;
 	
+	//SERIE FAV LIKE COM
+	@Autowired
+	private FavSerieService favserieService;
+	@Autowired
+	private LikeSerieService likeserieService;
+	@Autowired
+	private ComSerieService comserieService;
+	@Autowired
+	private LikeSerieRepository likeserieRep;
+	@Autowired
+	private FavSerieRepository favserieRep;
+	
+	//EPISODE FAV LIKE COM
+	@Autowired
+	private FavEpisodeService favepisodeService;
+	@Autowired
+	private LikeEpisodeService likeepisodeService;
+	@Autowired
+	private ComEpisodeService comepisodeService;
+	@Autowired
+	private LikeEpisodeRepository likeepisodeRep;
+	@Autowired
+	private FavEpisodeRepository favepisodeRep;
+	
+	//SAISON FAV LIKE COM
+	@Autowired
+	private SaisonService saisonService;
+	@Autowired
+	private FavSaisonService favsaisonService;
+	@Autowired
+	private LikeSaisonService likesaisonService;
+	@Autowired
+	private ComSaisonService comsaisonService;
+	@Autowired
+	private LikeSaisonRepository likesaisonRep;
+	@Autowired
+	private FavSaisonRepository favsaisonRep;
 	@Autowired
 	WUserService userService;
 	
@@ -645,6 +708,9 @@ public class FrontController {
 	}
 	
 ////////////////////////////////////////////////////////////////////////
+/*
+ * DEBUT DU MODUL
+ */
 	//COM
 		//AFFICHE TOUS LES COMMENTAIRES
 		@Tag(name = "Films")
@@ -790,7 +856,11 @@ public class FrontController {
 		}
 	
 
-		
+/*
+ * FIN DU MODULE		
+ */
+////////////////////////////////////////////////////////////////////////////////////		
+	
 		
 	
 	/*
@@ -817,6 +887,167 @@ public class FrontController {
 		return serieService.showbyNameContaining(name);
 	}
 	
+	////////////////////////////////////////////////////////////////////////
+	/*
+	* DEBUT DU MODUL
+	*/
+	//COM
+	//AFFICHE TOUS LES COMMENTAIRES
+	@Tag(name = "Series")
+	@GetMapping("seriehowAllcomment")
+	public List<ComSerie> serieShowAllComment(){
+	
+	return comserieService.show();
+	
+	}
+	
+	//AFFICHE COMMENTAIRE D UNE SERIE
+	@Tag(name = "Series")
+	@GetMapping("seriehowcommentById/{idSerie}")
+	public List<ComSerie> serieShowCommentById(@PathVariable Long idSerie){
+	
+	return comserieService.findBySerie(serieService.showById(idSerie).get()) ;
+	
+	}
+	
+	//ADD COMMENT
+	@Tag(name = "Series")
+	@PostMapping("serieAddcomment/{idSerie}")
+	public ComSerie serieAddComment(@PathVariable Long idSerie, @RequestBody String com){
+	
+	Serie f = serieService.showById(idSerie).get();
+	User u = userService.findCurrentUser();
+	ComSerie comp = new ComSerie();
+	comp.setUser(u);
+	comp.setSerie(f);
+	comp.setContenu(com);
+	return comserieService.addCom(comp);
+	
+	}
+	
+	@Tag(name = "Series")
+	@DeleteMapping("serieDelcomment/{idCom}")
+	public ResponseEntity<Object> serieDelComment(@PathVariable Long idCom){
+	
+	return EntityResponse.generateResponse("Comentaire Supprimé avec succès", HttpStatus.OK, 
+	comserieService.remove(idCom));
+	
+	}
+	
+	//LIKE
+	
+	//AFFICHE LIKE PAR FILM
+	@Tag(name = "Series")
+	@GetMapping("serieShowlikebyLive/{idSerie}")
+	public List<LikeSerie> serieLikebyLive(@PathVariable Long idSerie){
+	
+	Serie l = serieService.showById(idSerie).get();
+	
+	return likeserieService.findBySerie(l);
+	
+	}
+	
+	//AFFICHE NOMBRE LIKE PAR PODCAST
+	@Tag(name = "Series")
+	@GetMapping("serieShowNblikebyRadio/{idSerie}")
+	public Long serieNbLike(@PathVariable Long idSerie){
+	
+	return likeserieService.nbretotalLike(serieService.showById(idSerie).get());
+	}
+	
+	//ADD LIKE
+	@Tag(name = "Series")
+	@PostMapping("serieAddlike/{idSerie}")
+	public ResponseEntity<Object> serieAddLike(@PathVariable Long idSerie){
+	
+	Serie s = serieService.showById(idSerie).get();
+	User u = userService.findCurrentUser();
+	
+	if(likeserieRep.findByUserAndSerie(u, s).isPresent()) {
+	Long id = likeserieRep.findByUserAndSerie(u, s).get().getIdLike();
+	
+	return EntityResponse.generateResponse("VOUS VENEZ DE DISLIKEZ ", HttpStatus.OK, 
+	likeserieService.removeLike(id) );
+	}
+	else {
+	
+	LikeSerie ls = new LikeSerie();
+	ls.setSerie(s);
+	ls.setUser(u);
+	
+	return EntityResponse.generateResponse("VOUS VENEZ DE LIKEZ", HttpStatus.OK, 
+	likeserieService.addLike(ls));
+	}
+	}
+	
+	//DELETE LIKE
+	@Tag(name = "Series")
+	@DeleteMapping("serieDellike/{idLike}")
+	public void serieDelLike(@PathVariable Long idLike){
+	
+	likeserieService.removeLike(idLike);
+	
+	}
+	
+	/*
+	* GESTION DES FAVORIES
+	*/
+	//FAVORIES
+	
+	@Tag(name = "Series")
+	@PostMapping("serieAddFavorie/{idSerie}")
+	public ResponseEntity<Object> serieShowFavorie(@PathVariable Long idSerie){
+	
+	Serie l = serieService.showById(idSerie).get();
+	User u = userService.findCurrentUser();
+	
+	if(favserieRep.findByUserAndSerie(u, l).isPresent()) {
+	
+	Long id = favserieRep.findByUserAndSerie(u, l).get().getIdFav();
+	
+	return EntityResponse.generateResponse("RETIRER DES FAVORIES ", HttpStatus.OK, 
+	favfilmService.remove(id) );
+	}
+	else {
+	
+	FavSerie fl = new FavSerie();
+	fl.setSerie(l);
+	fl.setUser(u);
+	
+	return EntityResponse.generateResponse("AJOUTEZ AUX FAVORIES", HttpStatus.OK, 
+	favserieService.addFav(fl));
+	}
+	}
+	
+	@Tag(name = "Series")
+	@GetMapping("serieShowFavorie")
+	public ResponseEntity<Object> serieAddFavorie(){
+	
+	return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK, 
+	favserieService.findByUser(userService.findCurrentUser()));
+	}
+	
+	@Tag(name = "Series")
+	@DeleteMapping("serieDelFavorie/{idFavorie}")
+	public boolean serieDelFavorie(@PathVariable Long idFav){
+	
+	return favserieService.remove(idFav);
+	
+	}
+	
+	
+	/*
+	* FIN DU MODULE		
+	*/
+	////////////////////////////////////////////////////////////////////////////////////
+		
+
+	
+	
+	
+	
+	
+	
 	
 	/*
 	 * GESTION DES EPISODES
@@ -841,5 +1072,331 @@ public class FrontController {
 	public List<Episode> showbyIdE(@PathVariable String name){
 
 		return episodeService.showByNameContain(name);
+	}
+	
+	////////////////////////////////////////////////////////////////////////
+	/*
+	* DEBUT DU MODUL
+	*/
+	//COM
+	//AFFICHE TOUS LES COMMENTAIRES
+	@Tag(name = "Episodes")
+	@GetMapping("episodeshowAllcomment")
+	public List<ComEpisode> episodeShowAllComment(){
+	
+	return comepisodeService.show();
+	
+	}
+	
+	//AFFICHE COMMENTAIRE D UN EPISODE
+	@Tag(name = "Episodes")
+	@GetMapping("episodeshowcommentById/{idEpisode}")
+	public List<ComEpisode> episodeShowCommentById(@PathVariable Long idEpisode){
+	
+	return comepisodeService.findByEpisode(episodeService.showById(idEpisode).get()) ;
+	
+	}
+	
+	//ADD COMMENT
+	@Tag(name = "Episodes")
+	@PostMapping("episodeAddcomment/{idEpisode}")
+	public ComEpisode episodeAddComment(@PathVariable Long idEpisode, @RequestBody String com){
+	
+	Episode f = episodeService.showById(idEpisode).get();
+	User u = userService.findCurrentUser();
+	ComEpisode comp = new ComEpisode();
+	
+	comp.setUser(u);
+	comp.setEpisode(f);
+	comp.setContenu(com);
+	return comepisodeService.addCom(comp);
+	
+	}
+	
+	@Tag(name = "Episodes")
+	@DeleteMapping("episodeDelcomment/{idCom}")
+	public ResponseEntity<Object> episodeDelComment(@PathVariable Long idCom){
+	
+	return EntityResponse.generateResponse("Comentaire Supprimé avec succès", HttpStatus.OK, 
+	comepisodeService.remove(idCom));
+	
+	}
+	
+	//LIKE
+	
+	//AFFICHE LIKE PAR FILM
+	@Tag(name = "Episodes")
+	@GetMapping("episodeShowlikebyLive/{idEpisode}")
+	public List<LikeEpisode> episodeLikebyLive(@PathVariable Long idEpisode){
+	
+	Episode l = episodeService.showById(idEpisode).get();
+	
+	return likeepisodeService.findByEpisode(l);
+	
+	}
+	
+	//AFFICHE NOMBRE LIKE PAR PODCAST
+	@Tag(name = "Episodes")
+	@GetMapping("episodeShowNblikebyEpisode/{idEpisode}")
+	public Long episodeNbLike(@PathVariable Long idEpisode){
+	
+	return likeepisodeService.nbretotalLike(episodeService.showById(idEpisode).get());
+	}
+	
+	//ADD LIKE
+	@Tag(name = "Episodes")
+	@PostMapping("episodeAddlike/{idEpisode}")
+	public ResponseEntity<Object> episodeAddLike(@PathVariable Long idEpisode){
+	
+	Episode ep = episodeService.showById(idEpisode).get();
+	User u = userService.findCurrentUser();
+	
+	if(likeepisodeRep.findByUserAndEpisode(u, ep).isPresent()) {
+	Long id = likeepisodeRep.findByUserAndEpisode(u, ep).get().getIdLike();
+	
+	return EntityResponse.generateResponse("VOUS VENEZ DE DISLIKEZ ", HttpStatus.OK, 
+	likeepisodeService.removeLike(id) );
+	}
+	else {
+	
+	LikeEpisode le = new LikeEpisode();
+	le.setEpisode(ep);
+	le.setUser(u);
+	
+	return EntityResponse.generateResponse("VOUS VENEZ DE LIKEZ", HttpStatus.OK, 
+	likeepisodeService.addLike(le));
+	}
+	}
+	
+	//DELETE LIKE
+	@Tag(name = "Episodes")
+	@DeleteMapping("episodeDellike/{idEpisode}")
+	public void episodeDelLike(@PathVariable Long idEpisode){
+	
+	likeepisodeService.removeLike(idEpisode);
+	
+	}
+	
+	/*
+	* GESTION DES FAVORIES
+	*/
+	//FAVORIES
+	
+	@Tag(name = "Episodes")
+	@PostMapping("episodeAddFavorie/{idEpisode}")
+	public ResponseEntity<Object> episodeShowFavorie(@PathVariable Long idEpisode){
+	
+	Episode ep = episodeService.showById(idEpisode).get();
+	User u = userService.findCurrentUser();
+	
+	if(favepisodeRep.findByUserAndEpisode(u, ep).isPresent()) {
+	
+	Long id = favepisodeRep.findByUserAndEpisode(u, ep).get().getIdFav();
+	
+	return EntityResponse.generateResponse("RETIRER DES FAVORIES ", HttpStatus.OK, 
+	favepisodeService.remove(id) );
+	}
+	else {
+	
+	FavEpisode fe = new FavEpisode();
+	fe.setEpisode(ep);
+	fe.setUser(u);
+	
+	return EntityResponse.generateResponse("AJOUTEZ AUX FAVORIES", HttpStatus.OK, 
+	favepisodeService.addFav(fe));
+	}
+	}
+	
+	@Tag(name = "Episodes")
+	@GetMapping("episodeShowFavorie")
+	public ResponseEntity<Object> episodeAddFavorie(){
+	
+	return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK, 
+	favepisodeService.findByUser(userService.findCurrentUser()));
+	}
+	
+	@Tag(name = "Episodes")
+	@DeleteMapping("episodeDelFavorie/{idFavorie}")
+	public boolean episodeDelFavorie(@PathVariable Long idFav){
+	
+	return favepisodeService.remove(idFav);
+	
+	}
+	
+	
+	/*
+	 * GESTION DES SAISONS
+	 */
+	
+	//SAISON
+	@Tag(name = "Saison")
+	@GetMapping("saisongetAll")
+    public List<Saison> showSaison(){
+
+		return saisonService.show();
+	}
+
+	@Tag(name = "Saison")
+	@GetMapping("Saison/{id}")
+	public Saison showbyId(@PathVariable Long id){
+
+		return saisonService.showById(id);
+	}
+	
+	@Tag(name = "Saison")
+	@GetMapping("saisonshowbynamecontain/{name}")
+	public List<Saison> showbyIdSaison(@PathVariable String name){
+
+		return saisonService.showByNameContaining(name);
+	}
+	
+	////////////////////////////////////////////////////////////////////////
+	/*
+	* DEBUT DU MODUL
+	*/
+	//COM
+	//AFFICHE TOUS LES COMMENTAIRES
+	@Tag(name = "Saison")
+	@GetMapping("saisonshowAllcomment")
+	public List<ComSaison> saisonShowAllComment(){
+	
+	return comsaisonService.show();
+	
+	}
+	
+	//AFFICHE COMMENTAIRE D UNE SAISON
+	@Tag(name = "Saison")
+	@GetMapping("saisonshowcommentById/{idSaison}")
+	public List<ComSaison> saisonShowCommentById(@PathVariable Long idSaison){
+	
+	return comsaisonService.findBySaison(saisonService.showById(idSaison));
+	
+	}
+	
+	//ADD COMMENT
+	@Tag(name = "Saison")
+	@PostMapping("saisonAddcomment/{idSaison}")
+	public ComSaison saisonAddComment(@PathVariable Long idSaison, @RequestBody String com){
+	
+	Saison s = saisonService.showById(idSaison);
+	User u = userService.findCurrentUser();
+	ComSaison comp = new ComSaison();
+	
+	comp.setUser(u);
+	comp.setSaison(s);
+	comp.setContenu(com);
+	return comsaisonService.addCom(comp);
+	
+	}
+	
+	@Tag(name = "Saison")
+	@DeleteMapping("saisonDelcomment/{idCom}")
+	public ResponseEntity<Object> saisonDelComment(@PathVariable Long idCom){
+	
+	return EntityResponse.generateResponse("Comentaire Supprimé avec succès", HttpStatus.OK, 
+	comsaisonService.remove(idCom));
+	
+	}
+	
+	//LIKE
+	
+	//AFFICHE LIKE PAR SAISON
+	@Tag(name = "Saison")
+	@GetMapping("saisonShowlikebyLive/{idSaison}")
+	public List<LikeSaison> saisonLikebySaison(@PathVariable Long idSaison){
+	
+	Saison s = saisonService.showById(idSaison);
+	
+	return likesaisonService.findBySaison(s);
+	
+	}
+	
+	//AFFICHE NOMBRE LIKE PAR SAISON
+	@Tag(name = "Saison")
+	@GetMapping("saisonShowNblikebyEpisode/{idSaison}")
+	public Long saisonNbLike(@PathVariable Long idSaison){
+	
+	return likesaisonService.nbretotalLike(saisonService.showById(idSaison));
+	
+	}
+	
+	//ADD LIKE
+	@Tag(name = "Saison")
+	@PostMapping("episodeAddlike/{idSaison}")
+	public ResponseEntity<Object> saisonAddLike(@PathVariable Long idSaison){
+	
+	Saison s = saisonService.showById(idSaison);
+	User u = userService.findCurrentUser();
+	
+	if(likesaisonRep.findByUserAndSaison(u, s).isPresent()) {
+	Long id = likesaisonRep.findByUserAndSaison(u, s).get().getIdLike();
+	
+	return EntityResponse.generateResponse("VOUS VENEZ DE DISLIKEZ ", HttpStatus.OK, 
+	likesaisonService.removeLike(id) );
+	}
+	else {
+	
+	LikeSaison ls = new LikeSaison();
+	ls.setSaison(s);
+	ls.setUser(u);
+	
+	return EntityResponse.generateResponse("VOUS VENEZ DE LIKEZ", HttpStatus.OK, 
+	likesaisonService.addLike(ls));
+	}
+	}
+	
+	//DELETE LIKE
+	@Tag(name = "Saison")
+	@DeleteMapping("saisonDellike/{idSaison}")
+	public void saisonDelLike(@PathVariable Long idSaison){
+	
+	likeepisodeService.removeLike(idSaison);
+	
+	}
+	
+	/*
+	* GESTION DES FAVORIES
+	*/
+	//FAVORIES
+	
+	@Tag(name = "Saison")
+	@PostMapping("saisonAddFavorie/{idSaison}")
+	public ResponseEntity<Object> saisonShowFavorie(@PathVariable Long idSaison){
+	
+	Saison s = saisonService.showById(idSaison);
+	User u = userService.findCurrentUser();
+	
+	if(favsaisonRep.findByUserAndSaison(u, s).isPresent()) {
+	
+	Long id = favsaisonRep.findByUserAndSaison(u, s).get().getIdFavSaison();
+	
+	return EntityResponse.generateResponse("RETIRER DES FAVORIES ", HttpStatus.OK, 
+	favsaisonService.remove(id) );
+	}
+	else {
+	
+	FavSaison fe = new FavSaison();
+	fe.setSaison(s);
+	fe.setUser(u);
+	
+	return EntityResponse.generateResponse("AJOUTEZ AUX FAVORIES", HttpStatus.OK, 
+	favsaisonService.addFav(fe));
+	}
+	}
+	
+	@Tag(name = "Saison")
+	@GetMapping("saisonShowFavorie")
+	public ResponseEntity<Object> saisonAddFavorie(){
+	
+	return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK, 
+	favepisodeService.findByUser(userService.findCurrentUser()));
+	}
+	
+	@Tag(name = "Saison")
+	@DeleteMapping("saisonDelFavorie/{idFavorie}")
+	public boolean saisonDelFavorie(@PathVariable Long idFav){
+	
+	return favsaisonService.remove(idFav);
+	
 	}
 }

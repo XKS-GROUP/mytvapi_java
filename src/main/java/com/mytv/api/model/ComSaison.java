@@ -5,6 +5,7 @@ import java.sql.Date;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mytv.api.model.gestMedia.Saison;
 import com.mytv.api.model.gestUser.User;
 
@@ -43,6 +44,7 @@ public class ComSaison {
 	@UpdateTimestamp
 	Date dateMaj;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "user_id", insertable = true, updatable = true)
 	private User user;

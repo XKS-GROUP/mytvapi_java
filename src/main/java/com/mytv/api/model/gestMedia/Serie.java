@@ -35,11 +35,7 @@ public class Serie {
 	/*
 	@OneToMany(mappedBy = "idSaison",cascade = CascadeType.REMOVE)
 	List<Saison> saison;
-
-	@OneToMany(mappedBy = "idEpisode",cascade = CascadeType.REMOVE)
-	List<Episode> episode;
 	*/
-	//
 
 	boolean Upcoming;
 

@@ -31,9 +31,9 @@ public class SaisonService{
 
 
 
-	public List<Saison> showById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public Saison showById(Long id) {
+		
+		return seasRep.findById(id).get();
 	}
 
 

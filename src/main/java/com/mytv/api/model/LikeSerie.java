@@ -6,7 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.mytv.api.model.gestMedia.Episode;
+import com.mytv.api.model.gestMedia.Serie;
 import com.mytv.api.model.gestUser.User;
 
 import jakarta.persistence.Entity;
@@ -44,5 +44,5 @@ public class LikeSerie {
     
 	@ManyToOne
 	@JoinColumn(name = "idSerie", insertable = true, updatable = true)
-	private Episode episode;
+	private Serie serie;
 }

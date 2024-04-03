@@ -43,6 +43,6 @@ public class LikeEpisode {
 	private User user;
 
 	@ManyToOne
-	@JoinColumn(name = "idSerie", insertable = true, updatable = true)
+	@JoinColumn(name = "idEpisode", insertable = true, updatable = true)
 	private Episode episode;
 }

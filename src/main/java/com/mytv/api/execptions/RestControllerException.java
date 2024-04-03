@@ -61,7 +61,7 @@ public class RestControllerException {
     @ExceptionHandler(java.util.NoSuchElementException.class)
     public ResponseEntity<Object> NoSuchElementException(java.util.NoSuchElementException ex) {
 
-        return EntityResponse.generateResponse("Authentication", HttpStatus.NOT_FOUND, "aucun resultat trouvé pour cette valeur");
+        return EntityResponse.generateResponse("AUCUN RESULTAT", HttpStatus.NOT_FOUND, "aucun resultat trouvé pour cette valeur");
     }
     
     @ExceptionHandler(NullPointerException.class)

@@ -37,7 +37,6 @@ public class FavSerie {
 	@JoinColumn(name = "user_id", insertable = true, updatable = true)
 	private User user;
 	
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "idSerie", insertable = true, updatable = true)
 	private Serie serie;
