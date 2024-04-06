@@ -258,6 +258,12 @@ public class FrontController {
 
 		return catpodService.show();
 	}
+	@Tag(name = "Categorie Podcast")
+	@GetMapping("catpod/{idCat}")
+	public CatPodcast showbyIdCat(Long idCat){
+
+		return catpodService.showById(idCat).get();
+	}
 
 	
 	/*
