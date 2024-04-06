@@ -36,6 +36,7 @@ import com.mytv.api.model.gestMedia.LiveTv;
 import com.mytv.api.model.gestMedia.Pays;
 import com.mytv.api.model.gestMedia.Podcast;
 import com.mytv.api.model.gestMedia.Radio;
+import com.mytv.api.model.gestMedia.Saison;
 import com.mytv.api.model.gestMedia.Serie;
 import com.mytv.api.repository.CatPodcastRepository;
 import com.mytv.api.repository.CategoryLrRepository;
@@ -49,6 +50,7 @@ import com.mytv.api.service.gestMedia.LiveTvSetvice;
 import com.mytv.api.service.gestMedia.PaysService;
 import com.mytv.api.service.gestMedia.PodcastService;
 import com.mytv.api.service.gestMedia.RadioService;
+import com.mytv.api.service.gestMedia.SaisonService;
 import com.mytv.api.service.gestMedia.SerieService;
 import com.mytv.api.service.gestMedia.ServiceFilm;
 
@@ -99,6 +101,10 @@ public class MediaController {
 	private CategoryLrRepository catlrRep;
     @Autowired
     private CatPodcastRepository catPodRep;
+    @Autowired
+    private SaisonService saisonService;
+   
+    
 	//private final String asset ="/RESSOURCES/IMG/";
 
 	//Langue
@@ -118,7 +124,7 @@ public class MediaController {
 	}
 
 	@Tag(name = "Langue")
-	@PutMapping("langs/update/{id}")
+	@PutMapping("lang/update/{id}")
 	public Language updateLang(@PathVariable Long id, @RequestBody Language u){
 
 		return langService.upadte(id, u);
@@ -126,7 +132,7 @@ public class MediaController {
 	}
 
 	@Tag(name = "Langue")
-	@PostMapping(path="langs/create")
+	@PostMapping(path="lang/create")
 	public Language createLang(@RequestBody Language u) {
 
 		return langService.create(u);
@@ -181,11 +187,11 @@ public class MediaController {
 
 	@Tag(name = "Pays")
 	@DeleteMapping(path="pays/delete/{id}")
-	public Boolean deletePays (@PathVariable Long id) {
+	public ResponseEntity<Object> deletePays (@PathVariable Long id) {
 
 		paysService.delete(id);
 
-		return true;
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.NO_CONTENT , true);
 	}
 
 
@@ -208,7 +214,7 @@ public class MediaController {
 
 		return genreService.create(g);
 	}*/
-	@Tag(name = "genre")
+	@Tag(name = "Genre FILM SERIE")
 	@PostMapping(path="genres/create")
 
 	public ResponseEntity<Object> create(@Valid @RequestBody Genre g) {
@@ -226,43 +232,43 @@ public class MediaController {
 		}
 	}
 
-	@Tag(name = "genre", description = " Liste des genres")
+	@Tag(name = "Genre FILM SERIE", description = " Liste des genres")
 	@GetMapping("genres")
 	public List<Genre> showG(){
 
 		return genreService.show();
 	}
 
-	@Tag(name = "genre", description = " Liste des genres avec laravel ")
-	@GetMapping("genresWithPages")
+	@Tag(name = "Genre FILM SERIE", description = " Liste des genres avec laravel ")
+	@GetMapping("genres/all/whith-pages")
 	public Page<Genre> showPage(Pageable p){
 
 		return genreService.showByPages(p);
 	}
 
-	@Tag(name = "genre", description = " Recherche par nom")
-	@GetMapping("genresbyname/{name}")
+	@Tag(name = "Genre FILM SERIE", description = " Recherche par nom")
+	@GetMapping("genres/search/byName/{name}")
 	public Genre showByName(@Valid @PathVariable String name){
 
 		return genreService.showByName(name);
 	}
 
-	@Tag(name = "genre", description = " Recherche par valeur")
-	@GetMapping("genresbynameContain/{name}")
+	@Tag(name = "Genre FILM SERIE", description = " Recherche par valeur")
+	@GetMapping("genres/search/byNameC/{name}")
 	public List<Genre> showByNameContain(@Valid @PathVariable String name){
 
 		return genreService.findByNameContain(name);
 	}
 
 
-	@Tag(name = "genre", description = " Liste des genres")
+	@Tag(name = "Genre FILM SERIE", description = " Liste des genres")
 	@GetMapping("genres/{id}")
 	public Genre showbyIdG(@PathVariable Long id){
 
 		return genreService.showById(id).orElseThrow(() -> new ResourceNotFoundException("aucune donne avec id= " + id));
 	}
 
-	@Tag(name = "genre", description = " Liste des genres")
+	@Tag(name = "Genre FILM SERIE", description = " Liste des genres")
 	@PutMapping("genres/update/{id}")
 	public Genre updateG(@PathVariable Long id, @RequestBody Genre g){
 
@@ -270,7 +276,7 @@ public class MediaController {
 
 	}
 
-	@Tag(name = "genre", description = " Liste des genres")
+	@Tag(name = "Genre FILM SERIE", description = " Liste des genres")
 	@DeleteMapping(path="genres/delete/{id}")
 	public Boolean deleteG (@PathVariable Long id) {
 
@@ -300,7 +306,7 @@ public class MediaController {
 	}
 
 
-	@Tag(name = "Categorie Radio et live ")
+	@Tag(name = "Categorie RADIO LIVE ")
 	@GetMapping("catrl")
 	public List<CategoryRL> showCRL(){
 
@@ -308,7 +314,7 @@ public class MediaController {
 	}
 
 
-	@Tag(name = "Categorie Radio et live ")
+	@Tag(name = "Categorie RADIO LIVE ")
 	@GetMapping("catrl/{id}")
 	public Optional<CategoryRL> showbyIdCRL(@PathVariable Long id){
 
@@ -316,7 +322,7 @@ public class MediaController {
 	}
 
 
-	@Tag(name = "Categorie Radio et live ")
+	@Tag(name = "Categorie RADIO LIVE ")
 	@PutMapping(path="catrl/update/{id}")
 	public CategoryRL updateCRL(
 			@PathVariable Long id,
@@ -327,7 +333,7 @@ public class MediaController {
 	}
 
 
-	@Tag(name = "Categorie Radio et live ")
+	@Tag(name = "Categorie RADIO LIVE ")
 	@DeleteMapping(path="catrl/delete/{id}")
 	public Boolean deleteCRL (@PathVariable Long id) {
 
@@ -341,7 +347,7 @@ public class MediaController {
 	//Categorie Podcast
 
 
-	@Tag(name = "Categorie Podcast")
+	@Tag(name = "Categorie PODCAST")
 
 	@PostMapping(path="catpod/create")
 
@@ -362,7 +368,7 @@ public class MediaController {
 	}
 
 
-	@Tag(name = "Categorie Podcast")
+	@Tag(name = "Categorie PODCAST")
 	@GetMapping("catpod")
 	public List<CatPodcast> showCP(){
 
@@ -370,14 +376,14 @@ public class MediaController {
 	}
 
 
-	@Tag(name = "Categorie Podcast")
+	@Tag(name = "Categorie PODCAST")
 	@GetMapping("catpod/{id}")
 	public Optional<CatPodcast> showbyIdCP(@PathVariable Long id){
 
 		return catpodService.showById(id);
 	}
 
-	@Tag(name = "Categorie Podcast")
+	@Tag(name = "Categorie PODCAST")
 	@PutMapping(path="catpod/update/{id}")
 	public CatPodcast updateCP(
 
@@ -388,7 +394,7 @@ public class MediaController {
 
 	}
 
-	@Tag(name = "Categorie Podcast")
+	@Tag(name = "Categorie PODCAST")
 	@DeleteMapping(path="catpod/delete/{id}")
 	public Boolean deleteCP (@PathVariable Long id) {
 
@@ -423,7 +429,7 @@ public class MediaController {
 	}
 
 	@Tag(name = "Radio")
-	@GetMapping("radiosbynamecontain/{name}")
+	@GetMapping("radios/search/byName/{name}")
 	public List<Radio> showbyNameContain(@PathVariable String nom){
 
 		return radioService.showByNameContaining(nom);
@@ -441,11 +447,11 @@ public class MediaController {
 
 	@Tag(name = "Radio")
 	@DeleteMapping(path="radios/delete/{id}")
-	public Boolean deleteR (@PathVariable Long id) {
+	public ResponseEntity<Object> deleteR (@PathVariable Long id) {
 
 		radioService.delete(id);
 
-		return true;
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.NO_CONTENT, true);
 	}
 
 	//ROUTES LiveTV
@@ -466,7 +472,7 @@ public class MediaController {
 	}
 
 	@Tag(name = "LiveTv")
-	@GetMapping("livesbynamecontain/{nom}")
+	@GetMapping("lives/search/byName/{nom}")
 	public List<LiveTv> showLbyNameContainL(@PathVariable String nom){
 
 		return liveService.showByNameContaining(nom);
@@ -493,11 +499,11 @@ public class MediaController {
 
 	@Tag(name = "LiveTv")
 	@DeleteMapping(path="lives/delete/{id}")
-	public Boolean deleteL (@PathVariable Long id) {
+	public ResponseEntity<Object> deleteL (@PathVariable Long id) {
 
 		liveService.delete(id);
 
-		return true;
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.NO_CONTENT, true);
 	}
 
 	//Podcast
@@ -528,7 +534,7 @@ public class MediaController {
 	}
 
 	@Tag(name = "Podcast")
-	@GetMapping("podcastsbynamecontain/{name}")
+	@GetMapping("podcasts/search/byName/{name}")
 	public List<Podcast> showbyIdP(@PathVariable String name){
 
 		return podcastservice.showByNameContaining(name);
@@ -547,11 +553,11 @@ public class MediaController {
 
 	@Tag(name = "Podcast")
 	@DeleteMapping(path="podcasts/delete/{id}")
-	public Boolean deleteP (@PathVariable Long id) {
+	public ResponseEntity<Object> deleteP (@PathVariable Long id) {
 
 		liveService.delete(id);
 
-		return true;
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.NO_CONTENT, true );
 	}
 
 
@@ -583,7 +589,7 @@ public class MediaController {
 	}
 
 	@Tag(name = "Movie")
-	@GetMapping("moviesbynamecontain/{id}")
+	@GetMapping("movies/search/byName/{id}")
 	public List<Film> showbyIdM(@PathVariable String name){
 
 		return filmService.showByNameContaining(name);
@@ -599,11 +605,11 @@ public class MediaController {
 
 	@Tag(name = "Movie")
 	@DeleteMapping(path="movies/delete/{id}")
-	public Boolean deleteM (@PathVariable Long id) {
+	public ResponseEntity<Object> deleteM (@PathVariable Long id) {
 
 		filmService.delete(id);
 
-		return true;
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.NO_CONTENT, true);
 	}
 
 	//Series
@@ -634,7 +640,7 @@ public class MediaController {
 	}
 
 	@Tag(name = "Serie")
-	@GetMapping("seriesbynamecontain/{name}")
+	@GetMapping("series/search/byName/{name}")
 	public List<Serie> showbyIdS(@PathVariable String name){
 
 		return serieService.showbyNameContaining(name);
@@ -652,13 +658,76 @@ public class MediaController {
 
 	@Tag(name = "Serie")
 	@DeleteMapping(path="series/delete/{id}")
-	public Boolean deleteS (@PathVariable Long id) {
+	public ResponseEntity<Object> deleteS (@PathVariable Long id) {
 
 		serieService.delete(id);
 
-		return true;
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.NO_CONTENT, true);
 	}
 
+	//SAISON
+	/*
+	 *  CRUD DES SAISONS DE SERIE
+	 */
+	
+	@Tag(name = "Saison")
+	@GetMapping("Saisons")
+	public List<Saison> showSaison(){
+
+		return saisonService.show();
+	}
+
+	@Tag(name = "Saison")
+	@PostMapping(path="saison/create" )
+	public ResponseEntity<Object> createS(
+			@Valid @RequestBody Saison saison){
+
+			//Save du tout
+			return EntityResponse.generateResponse("Enregistré avec succès", HttpStatus.CREATED , saisonService.create(saison));
+
+
+	}
+
+	@Tag(name = "Saison")
+	@GetMapping("saison/{id}")
+	public Saison showbyIdSaison(@PathVariable Long id){
+
+		return saisonService.showById(id);
+	}
+
+	@Tag(name = "Saison")
+	@GetMapping("saison/search/byName/{name}")
+	public List<Saison> showbyNameC(@PathVariable String name){
+
+		return saisonService.showByNameContaining(name);
+		
+	}
+
+	@Tag(name = "Saison")
+	@PutMapping(path="saison/update/{id}")
+	public ResponseEntity<Object> updateSaison(
+			@PathVariable Long id,
+			@RequestBody Saison saison){
+
+			return EntityResponse.generateResponse("Saison creer avec succès", HttpStatus.OK , saisonService.upadte(id, saison));
+
+	}
+
+	@Tag(name = "Saison")
+	@DeleteMapping(path="saison/delete/{id}")
+	public ResponseEntity<Object> deleteSaison (@PathVariable Long id) {
+
+		saisonService.delete(id);
+
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.NO_CONTENT, true);
+	}
+	
+	
+	
+	
+	
+	
+	//FIN SAISON
 
 	//Episodes
 	@Tag(name = "Episode")
@@ -676,7 +745,7 @@ public class MediaController {
 	}
 
     @Tag(name = "Episode")
-	@GetMapping("episodesbynamecontain/{name}")
+	@GetMapping("episodes/search/byName/{name}")
 	public List<Episode> showbyIdE(@PathVariable String name){
 
 		return episodeService.showByNameContain(name);
@@ -705,38 +774,38 @@ public class MediaController {
 
     @Tag(name = "Episode")
 	@DeleteMapping(path="episodes/delete/{id}")
-	public Boolean deleteE (@PathVariable Long id) {
+	public ResponseEntity<Object> deleteE (@PathVariable Long id) {
 
 		episodeService.delete(id);
 
-		return true;
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.NO_CONTENT, true);
 	}
 
     /* AWS R2 FILE CRUD  */
 
-	@Tag(name = "R2")
-    @GetMapping("findall")
+	@Tag(name = "R2-CLOUDFLARE")
+    @GetMapping("r2/findall")
     public List<FileMeta> all() {
 
     	return metadataService.list();
     }
 
-	@Tag(name = "R2")
-    @GetMapping("findbyid/{id}")
-    public Optional<FileMeta> findbyid(@PathVariable int id) {
+	@Tag(name = "R2-CLOUDFLARE")
+    @GetMapping("r2/search/byId/{idFile}")
+    public Optional<FileMeta> findbyid(@PathVariable int idFile) {
 
-		return fileMetaRep.findById(id);
+		return fileMetaRep.findById(idFile);
     }
 
-	@Tag(name = "R2")
-    @GetMapping("findbyname/{name}")
+	@Tag(name = "R2-CLOUDFLARE")
+    @GetMapping("r2/search/byName/{name}")
     public List<FileMeta> findbyname(@PathVariable String name) {
 
 		return fileMetaRep.findByFileNameContaining(name);
     }
 
-	@Tag(name = "R2")
-    @PostMapping(path="uploadfile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@Tag(name = "R2-CLOUDFLARE")
+    @PostMapping(path="r2/uploadfile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 
     public FileMeta upload(@RequestParam("file") MultipartFile file) throws IOException {
 
@@ -744,57 +813,35 @@ public class MediaController {
 
     }
 
-	@Tag(name = "R2")
-    @PostMapping(path="uploadfileFolder/{folder}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Object>  uploadWithFolderName(@RequestParam("file") MultipartFile file, @PathVariable String folder) throws IOException {
+	@Tag(name = "R2-CLOUDFLARE")
+    @PostMapping(path="r2/uploadfile/in-newFolder/{newFolder}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Object>  uploadWithFolderName(@RequestParam("file") MultipartFile file, @PathVariable String newFolder) throws IOException {
 
 
-		if(folder==null) {
+		if(newFolder==null) {
 
-			return EntityResponse.generateResponse("Succes", HttpStatus.BAD_REQUEST, " le dossier ne puis être vide");
-
-		}
-		else if (file.isEmpty()) {
-
-			return EntityResponse.generateResponse("Succes", HttpStatus.BAD_REQUEST, " un fichier est requis");
-
-		}
-		else {
-
-			return EntityResponse.generateResponse("Succes", HttpStatus.CREATED, metadataService.uploadR3(file, folder));
-		 }
-    }
-
-	@Tag(name = "R2")
-    @PostMapping("updatefileFolder/{id}")
-    public ResponseEntity<Object>  updateithFolderName(@RequestParam("file") MultipartFile file, @PathVariable int id, @RequestBody String folder) throws IOException {
-
-
-		if(folder==null) {
-
-			return EntityResponse.generateResponse("Succes", HttpStatus.BAD_REQUEST, " le dossier ne puis être vide");
+			return EntityResponse.generateResponse("Erreur", HttpStatus.BAD_REQUEST, " le dossier ne puis être vide");
 
 		}
 		else if (file.isEmpty()) {
 
-			return EntityResponse.generateResponse("Succes", HttpStatus.BAD_REQUEST, " un fichier est requis");
+			return EntityResponse.generateResponse("Erreur", HttpStatus.BAD_REQUEST, " un fichier est requis");
 
 		}
 		else {
 
-			return EntityResponse.generateResponse("Succes", HttpStatus.CREATED, metadataService.uploadR3(file, folder));
+			return EntityResponse.generateResponse("Succes", HttpStatus.CREATED, metadataService.uploadR3(file, newFolder));
 		 }
     }
 
-
-	@Tag(name = "R2")
+	@Tag(name = "R2-CLOUDFLARE")
     @DeleteMapping("deleteFile/{id}")
     public ResponseEntity<Object>  deleteByName(@PathVariable  int id){
 
 
 		if (fileMetaRep.findById(id)==null) {
 
-			return EntityResponse.generateResponse("Succes", HttpStatus.CREATED, "Vous tentez de supprimez un objet qui n'existe pas ");
+			return EntityResponse.generateResponse("Erreur", HttpStatus.CREATED, "Vous tentez de supprimez un objet qui n'existe pas ");
 
 		}
 		else {
@@ -810,7 +857,7 @@ public class MediaController {
 
 			fileMetaRep.deleteById(id);
 
-			return EntityResponse.generateResponse("Succes", HttpStatus.CREATED, "Suppression");
+			return EntityResponse.generateResponse("Succes", HttpStatus.NO_CONTENT, "Supprimé");
 		}
 
 	}

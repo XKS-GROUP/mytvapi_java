@@ -18,6 +18,7 @@ public class SaisonService{
 	public Saison create(Saison u) {
 
 		return seasRep.save(u);
+		
 	}
 
 
@@ -30,7 +31,6 @@ public class SaisonService{
 	}
 
 
-
 	public Saison showById(Long id) {
 		
 		return seasRep.findById(id).get();
@@ -38,8 +38,10 @@ public class SaisonService{
 
 
 	public Saison upadte(Long id, Saison p) {
-		// TODO Auto-generated method stub
-		return null;
+
+		p.setIdSaison(id);
+		return seasRep.save(p);
+		
 	}
 
 

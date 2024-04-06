@@ -55,15 +55,15 @@ public class AdminAccessController {
 
 	//Gestion du profil admin
 
-	@Tag(name = "Profile")
-	@GetMapping("profile")
+	@Tag(name = "ADMIN Profil")
+	@GetMapping("profile/info")
 	public ResponseEntity<Object> retrieveUserProfile(){
 		return EntityResponse.generateResponse("Admin Profil Info : "+userService.findCurrentUser().getUsername(), HttpStatus.OK, userService.findCurrentUser());
 	}
 
 	//Affiche by id
-	@Tag(name = "Profile")
-	@GetMapping("profileById/{id}")
+	@Tag(name = "ADMIN Profil")
+	@GetMapping("profile/byId/{id}")
 	public ResponseEntity<Object> retrieveUserProfilebyId(@PathVariable Long id){
 		if(id <= 0) {
 			return EntityResponse.generateResponse("User ERREUR ", HttpStatus.BAD_REQUEST, " l'id utilisateur ne peut être vide ");
@@ -74,65 +74,27 @@ public class AdminAccessController {
 		}
 
 	}
-
-	@Tag(name = "Profile")
-	@PostMapping("profile/createAccount")
-	public ResponseEntity<Object> createAdmin(@Valid @RequestBody UserRegisterRequestDTO u){
-		return EntityResponse.generateResponse("Creation d'un nouvel admin : "+ userService.findCurrentUser().getUsername(), HttpStatus.OK, userService.createUser(u));
-	}
-
+	
 	//Update Current profil
-	@Tag(name = "Profile")
-	@PutMapping("updateProfile")
+	@Tag(name = "ADMIN Profil")
+	@PutMapping("profil/update")
 	public ResponseEntity<Object> updateProfile(@Valid @RequestBody UserRegisterRequestDTO user){
 
-		userService.updateUser(user);
-
-		return EntityResponse.generateResponse("User "+user.getUsername()+" a été mis a jour ", HttpStatus.OK, userService.findCurrentUser());
+		return EntityResponse.generateResponse("User "+user.getUsername()+" a été mis a jour ", HttpStatus.OK, 
+				userService.updateUser(user) );
 	}
-
-	@Tag(name = "Profile")
-	@PutMapping("updateProfileById/{id}")
-	public ResponseEntity<Object> updateProfilebyId(@PathVariable Long id, @Valid @RequestBody User u){
-
-		if(id <= 0) {
-			return EntityResponse.generateResponse("User MAJ ERREUR ", HttpStatus.BAD_REQUEST, " l'id utilisateur ne peut être vide ");
-		}
-		else {
-
-			userService.updateByid(id, u) ;
-
-			return EntityResponse.generateResponse("User "+u.getUsername()+" a été mis a jour ", HttpStatus.OK, userService.updateByid(id, u));
-		}
-
-	}
-
-
+	
 	//Sup compte actuel
-	@Tag(name = "Profile")
-	@DeleteMapping("deletecurrentAcount")
+	@Tag(name = "ADMIN Profil")
+	@DeleteMapping("profil/delete/currentAcount")
 	public ResponseEntity<Object> delCurrentProfile(){
-		return EntityResponse.generateResponse("User Profile", HttpStatus.OK, userService.findCurrentUser());
-	}
-
-	//Supp by id
-	@Tag(name = "Profile")
-	@DeleteMapping("deleteById/{id}")
-	public ResponseEntity<Object> delCurrentProfileByid(@PathVariable Long id){
-
-		if(id <= 0) {
-			return EntityResponse.generateResponse("User SUPP ERREUR ", HttpStatus.BAD_REQUEST, " l'id utilisateur ne peut être vide ");
-		}
-		else {
-
-			return EntityResponse.generateResponse("User Profile", HttpStatus.OK, userService.deleteUserFromId(id));
-		}
-
+		return EntityResponse.generateResponse("User Profile", HttpStatus.OK, 
+				userService.deleteUserFromId(userService.findCurrentUser().getId()));
 	}
 
 	//Deconexion
-	@Tag(name = "Profile")
-	@PostMapping("logout")
+	@Tag(name = "ADMIN Profil")
+	@PostMapping("profil/logout")
 	public ResponseEntity<Object> userLogout(){
 
 		User usr = userService.findCurrentUser();
@@ -148,10 +110,37 @@ public class AdminAccessController {
 			 return EntityResponse.generateResponse("Deconexion", HttpStatus.OK, usr.getUsername()+" à été deconnecter avec succès" );
 	  }
 
+	
+	@Tag(name = "User")
+	@PostMapping("user/createAccount/admin")
+	public ResponseEntity<Object> createAdmin(@Valid @RequestBody UserRegisterRequestDTO u){
+		return EntityResponse.generateResponse("Creation d'un nouvel admin : "+ userService.findCurrentUser().getUsername(), HttpStatus.OK, 
+				userService.createUser(u));
+		
+	}
+	
+	
+	//USER ABONNE 
 
 	//Supp by id
-	@Tag(name = "Profile")
-	@DeleteMapping("deleteAcountById/{id}")
+	@Tag(name = "ADMIN Profil")
+	@DeleteMapping("users/delete/ById/{id}")
+	public ResponseEntity<Object> delCurrentProfileByid(@PathVariable Long id){
+
+		if(id <= 0) {
+			return EntityResponse.generateResponse("User SUPP ERREUR ", HttpStatus.BAD_REQUEST, " l'id utilisateur ne peut être vide ");
+		}
+		else {
+
+			return EntityResponse.generateResponse("User Profile", HttpStatus.OK, userService.deleteUserFromId(id));
+		}
+
+	}
+
+
+	//Supp by id
+	@Tag(name = "User")
+	@DeleteMapping("user/deleteAcountById/{id}")
 	public ResponseEntity<Object> deleteProfileById(@PathVariable Long id){
 
 
@@ -159,25 +148,25 @@ public class AdminAccessController {
 	}
 
 	//List User
-	@Tag(name = "Profile")
+	@Tag(name = "User")
 	@Operation(summary = "Get All Users", description = "Returne la liste de tous les utilisateurs")
-	@GetMapping("user-list")
+	@GetMapping("users/all")
 	public ResponseEntity<Object> getAllUserList(){
 		return EntityResponse.generateResponse("Liste de tous les utilisateur confondu", HttpStatus.OK,
 				userService.retrieveAllUserList());
 	}
 
 	//List des utilisateur non valide
-	@Tag(name = "Profile")
-	@GetMapping("userNotValide")
+	@Tag(name = "User")
+	@GetMapping("users/notValide")
 	public ResponseEntity<Object> getAllUserValideList(){
 		return EntityResponse.generateResponse("Liste de tous les utilisateur avec un compte non valide", HttpStatus.OK,
 				userService.AllUserNotValide());
 	}
 
 	//List des utilisateur valide
-	@Tag(name = "Profile")
-	@GetMapping("userValide")
+	@Tag(name = "User")
+	@GetMapping("users/valide")
 	public ResponseEntity<Object> getAllUserNotValideList(){
 		return EntityResponse.generateResponse("Liste de tous les utilisateur avec un compte valide", HttpStatus.OK,
 				userService.AllUserValide());
@@ -195,7 +184,7 @@ public class AdminAccessController {
 	//Creer un nouveau role
 	@Tag(name = "Role")
 	@Operation(summary = "Creer un role", description = "Returne la liste de tous les Roles")
-	@PostMapping("role/create")
+	@PostMapping("user/role/create")
 	public ResponseEntity<Object> createRole(@Valid @RequestBody Role role){
 
 		return EntityResponse.generateResponse("Creation d'un nouveau Role", HttpStatus.OK,
@@ -205,7 +194,7 @@ public class AdminAccessController {
 	//Supp un role
 	@Tag(name = "Role")
 	@Operation(summary = "supp role", description = "Returne la liste de tous les Roles")
-	@DeleteMapping("role/delete/{id}")
+	@DeleteMapping("user/role/delete/{id}")
 	public ResponseEntity<Object> deleteRole(@PathVariable Long id){
 		return EntityResponse.generateResponse("role supp...........", HttpStatus.OK,
 				roleService.delete(id));
@@ -263,7 +252,5 @@ public class AdminAccessController {
 	public ResponseEntity<Object> ConfigApp(){
 		return EntityResponse.generateResponse("Configuration de l'app : "+userService.findCurrentUser().getUsername(), HttpStatus.OK, userService.findCurrentUser());
 	}
-
-
 
 }
