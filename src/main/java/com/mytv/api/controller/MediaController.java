@@ -253,7 +253,7 @@ public class MediaController {
 		return genreService.showByName(name);
 	}
 
-	@Tag(name = "Genre FILM SERIE", description = " Recherche par valeur")
+	@Tag(name = "Genre FILM SERIE")
 	@GetMapping("genres/search/byNameC/{name}")
 	public List<Genre> showByNameContain(@Valid @PathVariable String name){
 

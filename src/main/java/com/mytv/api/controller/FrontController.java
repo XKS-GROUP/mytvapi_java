@@ -249,6 +249,13 @@ public class FrontController {
 
 		return catLrService.show();
 	}
+	
+	@Tag(name = "Categorie Radio et LiveTv")
+	@GetMapping("catrl/{id}")
+	public Optional<CategoryRL> showbyIdCRL(@PathVariable Long id){
+
+		return catLrService.showById(id);
+	}
 
 
 	//Categorie Podcast
@@ -1410,11 +1417,8 @@ public class FrontController {
 	
 	//Multie Media
 	@Tag(name = "Profil Abonne")
-	@GetMapping("favories/all")
+	@GetMapping("user/favories/all")
 	public FavoriteAllResponse allFavorite(){
-		
-		
-		
 		
 		List<FavFilm> film= favfilmService.findByUser(userService.findCurrentUser()); 
 		

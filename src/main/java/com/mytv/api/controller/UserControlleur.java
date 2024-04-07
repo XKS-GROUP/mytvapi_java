@@ -76,7 +76,7 @@ public class UserControlleur {
     
 	//Delete le compte actuel
 	@Tag(name = "Profil Abonne")
-	@DeleteMapping("deleteCurrentAcount")
+	@DeleteMapping("delete/currentAcount")
 	public ResponseEntity<Object> delCurrentProfil(){
 
 		if(!userService.findCurrentUser().isValide()) {
@@ -92,7 +92,7 @@ public class UserControlleur {
 	
 	//Delete by id
 	@Tag(name = "Profil Abonne")
-	@DeleteMapping("deleteCurrentAcount/{id}")
+	@DeleteMapping("delete/currentAcount/{id}")
 	public ResponseEntity<Object> delCurrentProfileByid(@PathVariable Long id){
 
 		if(id <= 0) {
