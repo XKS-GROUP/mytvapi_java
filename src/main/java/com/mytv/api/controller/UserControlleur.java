@@ -52,14 +52,14 @@ public class UserControlleur {
 	
 	//Affiche info utilisateur
 	@Tag(name = "Profil Abonne")
-	@GetMapping("userInfo")
+	@GetMapping("info")
 	public ResponseEntity<Object> retrieveUserProfile(){
 		return EntityResponse.generateResponse("Abonne Profil Info : "+userService.findCurrentUser().getUsername(), HttpStatus.OK, userService.findCurrentUser());
 	}
 
 	//Update User
 	@Tag(name = "Profil Abonne")
-	@PutMapping("updateUser/{id}")
+	@PutMapping("update/{id}")
 	public ResponseEntity<Object> updateProfilebyId(@PathVariable Long id, @Valid @RequestBody User u){
 
 		if(id <= 0) {
@@ -76,7 +76,7 @@ public class UserControlleur {
     
 	//Delete le compte actuel
 	@Tag(name = "Profil Abonne")
-	@DeleteMapping("deleteCurrentAcountUser")
+	@DeleteMapping("deleteCurrentAcount")
 	public ResponseEntity<Object> delCurrentProfil(){
 
 		if(!userService.findCurrentUser().isValide()) {
@@ -92,7 +92,7 @@ public class UserControlleur {
 	
 	//Delete by id
 	@Tag(name = "Profil Abonne")
-	@DeleteMapping("deleteCurrentAcountUser/{id}")
+	@DeleteMapping("deleteCurrentAcount/{id}")
 	public ResponseEntity<Object> delCurrentProfileByid(@PathVariable Long id){
 
 		if(id <= 0) {
@@ -117,7 +117,7 @@ public class UserControlleur {
 	
 	//Creation de pro
 	@Tag(name = "Profil Abonne")
-	@PostMapping("createProfile")
+	@PostMapping("profile/create")
 	public ResponseEntity<Object> createProfil(@Valid @RequestBody Profil p){
 		
 		System.out.println(" NOM ++ "+p.getProfilName());
@@ -148,7 +148,7 @@ public class UserControlleur {
 	
 	//Update pro
 	@Tag(name = "Profil Abonne")
-	@PutMapping("updateProfile")
+	@PutMapping("profile/update")
 	public ResponseEntity<Object> updateProfil(@PathVariable Long id,  @Valid @RequestBody Profil p){
 		
 		if(id <= 0) {
@@ -164,7 +164,7 @@ public class UserControlleur {
 	
 	//Delete pro
 	@Tag(name = "Profil Abonne")
-	@DeleteMapping("deleteProfile/{id}")
+	@DeleteMapping("profile/delete/{id}")
 	public ResponseEntity<Object> deleteProfil(@PathVariable Long id){
 
 		if(id <= 0) {
@@ -178,31 +178,9 @@ public class UserControlleur {
 		}
 	}
 
-	//Multie Media
 	@Tag(name = "Profil Abonne")
-	@GetMapping("allFavorie")
-	public List<Pays> allFavorite(){
-
-		return null;
-	}
-
-	@Tag(name = "Profil Abonne")
-	@GetMapping("allFavorieByProfile")
-	public List<Pays> allFavorieByProfile(){
-
-		return null;
-	}
-
-	@Tag(name = "Profil Abonne")
-	@GetMapping("allDownload")
+	@GetMapping("downloads/all")
 	public List<Pays> allDownload(){
-
-		return null;
-	}
-
-	@Tag(name = "Profil Abonne")
-	@GetMapping("allDownloadByProfil")
-	public List<Pays> allDownloadByProfil(){
 
 		return null;
 	}
@@ -220,7 +198,23 @@ public class UserControlleur {
 
 		}
 
-			 jwtRep.deleteByUser(usr); //jwtRep.deleteAll();//
+			 jwtRep.deleteByUser(usr); 
+			 return EntityResponse.generateResponse("Deconexion", HttpStatus.OK, usr.getUsername()+" à été deconnecter avec succès" );
+	  }
+	
+	@Tag(name = "Profil Abonne")
+	@PostMapping("logout/AllDevice")
+	public ResponseEntity<Object> userLogoutAllDevice(){
+
+		User usr = userService.findCurrentUser();
+
+		if(usr==null) {
+
+			 return EntityResponse.generateResponse("Deconexion", HttpStatus.OK, " Aucun utilisateur connecté ou aucune session en cour ");
+
+		}
+
+		     jwtRep.deleteAll();
 			 return EntityResponse.generateResponse("Deconexion", HttpStatus.OK, usr.getUsername()+" à été deconnecter avec succès" );
 	  }
 	

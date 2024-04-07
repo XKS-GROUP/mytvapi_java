@@ -106,7 +106,6 @@ public class AdminAccessController {
 		}
 
 			 jwtRep.deleteByUser(usr); //jwtRep.deleteAll();//
-			 System.out.println("Supp ");
 			 return EntityResponse.generateResponse("Deconexion", HttpStatus.OK, usr.getUsername()+" à été deconnecter avec succès" );
 	  }
 

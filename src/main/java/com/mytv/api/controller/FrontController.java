@@ -59,6 +59,7 @@ import com.mytv.api.repository.LikePodcastRepository;
 import com.mytv.api.repository.LikeRadioRepository;
 import com.mytv.api.repository.LikeSaisonRepository;
 import com.mytv.api.repository.LikeSerieRepository;
+import com.mytv.api.response.FavoriteAllResponse;
 import com.mytv.api.security.EntityResponse;
 import com.mytv.api.service.ComEpisodeService;
 import com.mytv.api.service.ComFilmService;
@@ -372,7 +373,7 @@ public class FrontController {
 	}
 	@Tag(name = "Radios")
 	@GetMapping("radios/favories/all")
-	public ResponseEntity<Object> radioAddFavorie(){
+	public ResponseEntity<Object> radioFavorieAll(){
 
 		return EntityResponse.generateResponse("Liste des radios favorie", HttpStatus.OK, 
 				favradioService.findByUser(userService.findCurrentUser()));
@@ -424,12 +425,12 @@ public class FrontController {
 				return likeliveService.findByLivetv(l);
 			}
 			
-			//AFFICHE NOMBRE LIKE PAR RADIO
+			//AFFICHE NOMBRE LIKE PAR LIVE TV
 			@Tag(name = "Lives")
-			@GetMapping("lives/all/nblikebyRadio/{idLive}")
-			public Long liveNbLike(@PathVariable Long idLive){
+			@GetMapping("lives/all/nblikebyLiveTv/{idLivetv}")
+			public Long liveNbLike(@PathVariable Long idLivetv){
 				
-				return likeliveService.nbretotalLike(liveService.showById(idLive).get());
+				return likeliveService.nbretotalLike(liveService.showById(idLivetv).get());
 			}
 			
 			//ADD LIKE
@@ -585,7 +586,7 @@ public class FrontController {
 	
 	//AFFICHE LIKE PAR PODCAST
 	@Tag(name = "Podcasts")
-	@GetMapping("podcasts/likes/byLive/{idPod}")
+	@GetMapping("podcasts/likes/byPodcast/{idPod}")
 	public List<LikePodcast> podcastLikebyLive(@PathVariable Long idPod){
 		
 		Podcast l = podcastservice.showById(idPod).get();
@@ -595,10 +596,10 @@ public class FrontController {
 	
 	//AFFICHE NOMBRE LIKE PAR PODCAST
 	@Tag(name = "Podcasts")
-	@GetMapping("podcasts/likes/nblikebyRadio/{idLive}")
-	public Long podcastNbLike(@PathVariable Long idPod){
+	@GetMapping("podcasts/likes/nblikebyPodcast/{idPodcast}")
+	public Long podcastNbLike(@PathVariable Long idPodcast){
 		
-		return likepodService.nbretotalLike(podcastservice.showById(idPod).get());
+		return likepodService.nbretotalLike(podcastservice.showById(idPodcast).get());
 	}
 	
 	//ADD LIKE
@@ -667,7 +668,7 @@ public class FrontController {
 	
 	@Tag(name = "Podcasts")
 	@GetMapping("podcasts/favories/all")
-	public ResponseEntity<Object> podcastAddFavorie(){
+	public ResponseEntity<Object> podcastFavorieAll(){
 
 		return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK, 
 				favpodService.findByUser(userService.findCurrentUser()));
@@ -846,7 +847,7 @@ public class FrontController {
 		}
 		
 		@Tag(name = "Films")
-		@GetMapping("films/favorie/all")
+		@GetMapping("films/favories/all")
 		public ResponseEntity<Object> filmAllFavorie(){
 
 			return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK, 
@@ -944,7 +945,7 @@ public class FrontController {
 	
 	//AFFICHE LIKE PAR FILM
 	@Tag(name = "Series")
-	@GetMapping("series/likes/show/likebyLive/{idSerie}")
+	@GetMapping("series/likes/show/likebySerie/{idSerie}")
 	public List<LikeSerie> serieLikebyLive(@PathVariable Long idSerie){
 	
 	Serie l = serieService.showById(idSerie).get();
@@ -955,7 +956,7 @@ public class FrontController {
 	
 	//AFFICHE NOMBRE LIKE PAR PODCAST
 	@Tag(name = "Series")
-	@GetMapping("series/likes/shows/nblikebyRadio/{idSerie}")
+	@GetMapping("series/likes/show/nblikebySerie/{idSerie}")
 	public Long serieNbLike(@PathVariable Long idSerie){
 	
 	return likeserieService.nbretotalLike(serieService.showById(idSerie).get());
@@ -1027,7 +1028,7 @@ public class FrontController {
 	
 	@Tag(name = "Series")
 	@GetMapping("series/favories/all")
-	public ResponseEntity<Object> serieAddFavorie(){
+	public ResponseEntity<Object> serieFavorieAll(){
 	
 	return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK, 
 	favserieService.findByUser(userService.findCurrentUser()));
@@ -1132,7 +1133,7 @@ public class FrontController {
 	
 	//AFFICHE LIKE PAR EPISODE
 	@Tag(name = "Episodes")
-	@GetMapping("episodes/likes/howlikebyLive/{idEpisode}")
+	@GetMapping("episodes/likes/show/byEpisode/{idEpisode}")
 	public List<LikeEpisode> episodeLikebyLive(@PathVariable Long idEpisode){
 	
 	Episode l = episodeService.showById(idEpisode).get();
@@ -1319,7 +1320,7 @@ public class FrontController {
 	
 	//AFFICHE NOMBRE LIKE PAR SAISON
 	@Tag(name = "Saison")
-	@GetMapping("saisons/likes/nblikebyEpisode/{idSaison}")
+	@GetMapping("saisons/likes/nblikebySaison/{idSaison}")
 	public Long saisonNbLike(@PathVariable Long idSaison){
 	
 	return likesaisonService.nbretotalLike(saisonService.showById(idSaison));
@@ -1404,5 +1405,29 @@ public class FrontController {
 	
 	return favsaisonService.remove(idFav);
 	
+	}
+	
+	
+	//Multie Media
+	@Tag(name = "Profil Abonne")
+	@GetMapping("favories/all")
+	public FavoriteAllResponse allFavorite(){
+		
+		
+		
+		
+		List<FavFilm> film= favfilmService.findByUser(userService.findCurrentUser()); 
+		
+		List<FavSerie> serie= favserieService.findByUser(userService.findCurrentUser());
+		
+		List<FavRadio> radio = favradioService.findByUser(userService.findCurrentUser());
+		
+		List<FavPodcast> podcast = favpodService.findByUser(userService.findCurrentUser());
+		
+		List<FavLiveTv> livetv = favliveService.findByUser(userService.findCurrentUser());
+		
+		FavoriteAllResponse fav = new FavoriteAllResponse(film, serie, radio, podcast, livetv );
+		
+		return fav;
 	}
 }
