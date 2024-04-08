@@ -7,7 +7,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mytv.api.model.gestMedia.Genre;
 import com.mytv.api.model.gestMedia.Serie;
+import com.mytv.api.model.gestMedia.SerieGenre;
+import com.mytv.api.repository.GenreRepository;
+import com.mytv.api.repository.SerieGenreRepository;
 import com.mytv.api.repository.SerieRepository;
 
 import lombok.AllArgsConstructor;
@@ -20,11 +24,52 @@ public class SerieService {
 
 	@Autowired
 	private SerieRepository rep;
-
+	
+	@Autowired
+	GenreRepository genreRep;
+	
+	@Autowired
+	SerieGenreRepository serieGenreRep;
 
 	public Serie create(Serie g) {
+		
+		
+		//Recuperation de la liste des genres
+		//Teste de chaque valeur, si il n existe pas ce genre sera creer
+		Serie serie = rep.save(g);
 
-		return rep.save(g);
+		if (!g.getGenreList().isEmpty()){
+
+
+			for (String gr : g.getGenreList()) {
+
+					Genre existingGenre = genreRep.findByName(gr);
+
+				if(existingGenre != null) {
+
+					addSerieGenre(g, existingGenre);
+
+				}
+				else {
+
+					Genre ngr = new Genre();
+					ngr.setName(gr);
+					genreRep.save(ngr);
+					addSerieGenre(g, ngr);
+
+
+
+				}/**/
+
+			}
+
+		}
+
+		else {
+			addSerieGenre(g, genreRep.findByName("AUCUN"));
+		}
+		
+		return serie;
 
 	}
 
@@ -65,5 +110,24 @@ public class SerieService {
 		return rep.findById(id);
 
 	}
+	
+	//Lier  Serie   genres
+		public void addSerieGenre(Serie serie, Genre genre) {
+
+			SerieGenre serieGenre = new SerieGenre();
+
+			serieGenre.setSerie(serie);
+
+			//userRole.setUser(user);
+
+			/*if (role == null) {
+				role = roleService.findDefaultRole();
+			}*/
+			serieGenre.setGenre(genre);
+
+			serieGenreRep.save(serieGenre);
+
+
+		}
 
 }

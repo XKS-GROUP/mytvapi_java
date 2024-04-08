@@ -147,8 +147,8 @@ public class MediaController {
 		return true;
 	}
 
-	@Tag(name = "Langue", description = " Recherche par nom")
-	@GetMapping("langsbyname/{name}")
+	@Tag(name = "Langue")
+	@GetMapping("langs/search/byname/{name}")
 	public Language showLangByName(@Valid @PathVariable String name){
 
 		return langService.showByName(name);
@@ -232,21 +232,21 @@ public class MediaController {
 		}
 	}
 
-	@Tag(name = "Genre FILM SERIE", description = " Liste des genres")
+	@Tag(name = "Genre FILM SERIE")
 	@GetMapping("genres")
 	public List<Genre> showG(){
 
 		return genreService.show();
 	}
 
-	@Tag(name = "Genre FILM SERIE", description = " Liste des genres avec laravel ")
+	@Tag(name = "Genre FILM SERIE")
 	@GetMapping("genres/all/whith-pages")
 	public Page<Genre> showPage(Pageable p){
 
 		return genreService.showByPages(p);
 	}
 
-	@Tag(name = "Genre FILM SERIE", description = " Recherche par nom")
+	@Tag(name = "Genre FILM SERIE")
 	@GetMapping("genres/search/byName/{name}")
 	public Genre showByName(@Valid @PathVariable String name){
 
@@ -254,21 +254,21 @@ public class MediaController {
 	}
 
 	@Tag(name = "Genre FILM SERIE")
-	@GetMapping("genres/search/byNameC/{name}")
+	@GetMapping("genres/search/contain/{name}")
 	public List<Genre> showByNameContain(@Valid @PathVariable String name){
 
 		return genreService.findByNameContain(name);
 	}
 
 
-	@Tag(name = "Genre FILM SERIE", description = " Liste des genres")
+	@Tag(name = "Genre FILM SERIE")
 	@GetMapping("genres/{id}")
 	public Genre showbyIdG(@PathVariable Long id){
 
 		return genreService.showById(id).orElseThrow(() -> new ResourceNotFoundException("aucune donne avec id= " + id));
 	}
 
-	@Tag(name = "Genre FILM SERIE", description = " Liste des genres")
+	@Tag(name = "Genre FILM SERIE")
 	@PutMapping("genres/update/{id}")
 	public Genre updateG(@PathVariable Long id, @RequestBody Genre g){
 
@@ -276,7 +276,7 @@ public class MediaController {
 
 	}
 
-	@Tag(name = "Genre FILM SERIE", description = " Liste des genres")
+	@Tag(name = "Genre FILM SERIE")
 	@DeleteMapping(path="genres/delete/{id}")
 	public Boolean deleteG (@PathVariable Long id) {
 
@@ -289,7 +289,7 @@ public class MediaController {
 
 	//Categorie LiveTv ou Radio
 
-	@Tag(name = "Categorie Radio et live ")
+	@Tag(name = "Categorie RADIO LIVE ")
 	@PostMapping(path="catrl/create")
 	public ResponseEntity<Object> createCRL(@Valid @RequestBody CategoryRL u) {
 		
