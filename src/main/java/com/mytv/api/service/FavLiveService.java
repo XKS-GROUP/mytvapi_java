@@ -3,6 +3,8 @@ package com.mytv.api.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.mytv.api.model.FavLiveTv;
@@ -28,6 +30,11 @@ public class FavLiveService {
 	public List<FavLiveTv> show(){
 		
 		return favLiveRep.findAll();
+	}
+	
+	public Page<FavLiveTv> showPage(Pageable p){
+		
+		return favLiveRep.findAll(p);
 	}
 	
 	public List<FavLiveTv> findByUser(User u) {

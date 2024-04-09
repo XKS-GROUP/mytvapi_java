@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.mytv.api.model.LikeRadio;
@@ -28,6 +30,11 @@ public class LikeRadioService {
 	public List<LikeRadio> show(){
 		
 		return likeRadioRep.findAll();
+	}
+	
+	public Page<LikeRadio> showPage(Pageable p){
+		
+		return likeRadioRep.findAll(p);
 	}
 	
 	public Optional<LikeRadio> findByUser(User u) {

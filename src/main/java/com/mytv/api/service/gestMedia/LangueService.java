@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.mytv.api.model.gestMedia.Language;
@@ -27,7 +29,10 @@ public class LangueService {
 	public List<Language> show() {
 		return langRep.findAll();
 	}
-
+	
+	public Page<Language> showPage(Pageable p) {
+		return langRep.findAll(p);
+	}
 
 	public Language showByName(String name) {
 

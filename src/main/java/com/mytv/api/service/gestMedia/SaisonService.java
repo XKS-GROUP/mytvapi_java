@@ -3,6 +3,8 @@ package com.mytv.api.service.gestMedia;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.mytv.api.model.gestMedia.Saison;
@@ -25,7 +27,15 @@ public class SaisonService{
 	public List<Saison> show() {
 		return seasRep.findAll();
 	}
-
+	
+	public Page<Saison> showPage(Pageable p) {
+		return seasRep.findAll(p);
+	}
+	
+	public List<Saison> showBySerie(Long idSerie) {
+		return seasRep.findByIdSerie(idSerie);
+	}
+	
 	public List<Saison> showByNameContaining(String n) {
 		return seasRep.findByNameContaining(n);
 	}

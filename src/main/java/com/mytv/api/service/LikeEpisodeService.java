@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.mytv.api.model.LikeEpisode;
@@ -29,6 +31,12 @@ public class LikeEpisodeService {
 		
 		return likeepisodeRep.findAll();
 	}
+	
+	public Page<LikeEpisode> showPage(Pageable p){
+		
+		return likeepisodeRep.findAll(p);
+	}
+	
 	
 	public Optional<LikeEpisode> findByUser(User u) {
 		

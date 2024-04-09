@@ -10,6 +10,8 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -122,6 +124,13 @@ public class MetadataServiceImpl implements MetadataService {
         fileMetaRepository.findAll().forEach(metas::add);
         return metas;
     }
+    
+    
+    public Page<FileMeta> listWithPage(Pageable p) {
+       
+        return fileMetaRepository.findAll(p);
+    }
+    
 
     public List<FileMeta> lisByName(String nom){
 

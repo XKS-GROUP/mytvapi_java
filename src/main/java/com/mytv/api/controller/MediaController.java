@@ -411,6 +411,13 @@ public class MediaController {
 
 		return radioService.show();
 	}
+	
+	@Tag(name = "Radio")
+	@GetMapping("radios/all/page")
+	public Page<Radio> showRadioPage(Pageable p){
+
+		return radioService.showPage(p);
+	}
 
 	@Tag(name = "Radio")
 	@PostMapping(path="radios/create")
@@ -470,7 +477,14 @@ public class MediaController {
 
 		return liveService.show();
 	}
+	
+	@Tag(name = "LiveTv")
+	@GetMapping("lives/all/page")
+	public Page<LiveTv> showLivePages(Pageable p){
 
+		return liveService.showPage(p);
+	}
+	
 	@Tag(name = "LiveTv")
 	@GetMapping("lives/search/byName/{nom}")
 	public List<LiveTv> showLbyNameContainL(@PathVariable String nom){
@@ -514,7 +528,13 @@ public class MediaController {
 
 		return podcastservice.show();
 	}
+	
+	@Tag(name = "Podcast")
+	@GetMapping("podcasts/all/page")
+	public Page<Podcast> showPodcastByPage(Pageable p){
 
+		return podcastservice.showPage(p);
+	}
 
 	@Tag(name = "Podcast")
 	@PostMapping(path="podcasts/create")
@@ -569,6 +589,13 @@ public class MediaController {
 
 		return filmService.show();
 	}
+	
+	@Tag(name = "Movie")
+	@GetMapping("movies/all/page")
+	public Page<Film> showMovieByPage(Pageable p){
+
+		return filmService.showPages(p);
+	}
 
 	@Tag(name = "Movie")
 	@PostMapping(path="movies/create")
@@ -620,6 +647,14 @@ public class MediaController {
 
 		return serieService.show();
 	}
+	
+	@Tag(name = "Serie")
+	@GetMapping("series/all/page")
+	public Page<Serie> showSerieByPage(Pageable p){
+
+		return serieService.showPage(p);
+	}
+	
 
 	@Tag(name = "Serie")
 	@PostMapping(path="series/create" )
@@ -675,6 +710,20 @@ public class MediaController {
 	public List<Saison> showSaison(){
 
 		return saisonService.show();
+	}
+	
+	@Tag(name = "Saison")
+	@GetMapping("Saisons/show/page")
+	public Page<Saison> showSaisonPage(Pageable p){
+
+		return saisonService.showPage(p);
+	}
+	
+	@Tag(name = "Saison")
+	@GetMapping("Saisons/show/bySerie/{idSerie}")
+	public List<Saison> showSaisonBySerie(@PathVariable Long idSerie){
+
+		return saisonService.showBySerie(idSerie);
 	}
 
 	@Tag(name = "Saison")
@@ -736,7 +785,21 @@ public class MediaController {
 
 		return episodeService.show();
 	}
+	
+	@Tag(name = "Episode")
+	@GetMapping("episodes/show/page")
+    public Page<Episode> showE(Pageable p){
 
+		return episodeService.showPage(p);
+	}
+	
+	@Tag(name = "Episode")
+	@GetMapping("episodes/show/bySaison/{idSaison}")
+    public List<Episode> showE(@PathVariable Long idSaison){
+
+		return episodeService.showBySaison(idSaison);
+	}
+	
     @Tag(name = "Episode")
 	@GetMapping("episodes/{id}")
 	public Optional<Episode> showbyIdE(@PathVariable Long id){

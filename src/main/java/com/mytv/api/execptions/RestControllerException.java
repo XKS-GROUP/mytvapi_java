@@ -19,6 +19,8 @@ import com.amazonaws.services.apigatewaymanagementapi.model.ForbiddenException;
 import com.mytv.api.security.EntityResponse;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
 
 
 @RestControllerAdvice
@@ -69,6 +71,30 @@ public class RestControllerException {
 
         return EntityResponse.generateResponse("Authentication", HttpStatus.BAD_REQUEST, "Verifié que votre compte est bien valide ou à été activé, que la asession n'est pas expiré car vous tentez une operation sur un utilisateur null ou qui n'existe plus");
     }
+    
+    
+    
+    @ExceptionHandler(MalformedJwtException.class)
+    public ResponseEntity<Object> malformedJwtException(MalformedJwtException ex) {
+
+        return EntityResponse.generateResponse("Authentication", HttpStatus.BAD_REQUEST, "Vous avez entrer un token non valide, vérifié bien votre token et rassurez vous qu il soit correcte");
+    }
+    
+    
+    //Erreur signature token
+    @ExceptionHandler(SignatureException.class)
+    public ResponseEntity<Object> signatureException(SignatureException ex) {
+
+        return EntityResponse.generateResponse("Authentication", HttpStatus.BAD_REQUEST, "Vous avez entrer un token non valide, vérifié bien votre token et rassurez vous qu il soit correcte");
+    }
+    
+    //Erreur signature token Security
+    @ExceptionHandler(java.security.SignatureException.class)
+    public ResponseEntity<Object> signatureExceptionS(java.security.SignatureException ex) {
+
+        return EntityResponse.generateResponse("Authentication", HttpStatus.BAD_REQUEST, "Vous avez entrer un token non valide, vérifié bien votre token et rassurez vous qu il soit correcte");
+    }
+    
     // Gérer les execptions levées par les validations
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> handleValidationExceptions(MethodArgumentNotValidException ex) {
@@ -78,6 +104,9 @@ public class RestControllerException {
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
         });
+        
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
+    
+    
 }

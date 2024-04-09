@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.mytv.api.model.gestMedia.Podcast;
@@ -33,6 +35,10 @@ public class PodcastService {
 		return rep.findAll();
 	}
 
+	public Page<Podcast> showPage(Pageable p) {
+
+		return rep.findAll(p);
+	}
 	public List<Podcast> showByNameContaining(String n) {
 
 		return rep.findByNameContaining(n);

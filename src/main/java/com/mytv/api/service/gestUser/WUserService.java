@@ -10,6 +10,8 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -178,6 +180,10 @@ public class WUserService implements UserDetailsService {
 		return userRepository.findAll();
 	}
 
+	public Page<User> retrieveAllUserListPages(Pageable p) {
+		return userRepository.findAll(p);
+	}
+	
 	public User updateJWT(User user, String jwt) {
 
 		User old = userRepository.findByEmail(user.getEmail());

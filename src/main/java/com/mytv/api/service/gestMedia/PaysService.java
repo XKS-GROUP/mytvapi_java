@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.mytv.api.model.gestMedia.Pays;
@@ -29,6 +31,11 @@ public class PaysService {
 	public List<Pays> show() {
 
 		return rep.findAll();
+	}
+	
+	public Page<Pays> showPage(Pageable p) {
+
+		return rep.findAll(p);
 	}
 
 	public Pays upadte(final Long id, Pays u) {

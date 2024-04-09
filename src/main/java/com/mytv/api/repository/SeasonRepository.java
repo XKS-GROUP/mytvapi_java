@@ -12,5 +12,6 @@ public interface SeasonRepository extends  JpaRepository<Saison, Long>{
 
 	Saison findByName(String name);
 	List<Saison> findByNameContaining(String nom);
+	List<Saison> findByIdSerie(Long idSerie);
 
 }

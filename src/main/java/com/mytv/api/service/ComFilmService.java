@@ -3,6 +3,8 @@ package com.mytv.api.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.mytv.api.model.ComFilm;
@@ -28,6 +30,11 @@ public class ComFilmService {
 	public List<ComFilm> show(){
 		
 		return comfilmRep.findAll();
+	}
+	
+    public Page<ComFilm> showPages(Pageable p){
+		
+		return comfilmRep.findAll(p);
 	}
 	
 	public List<ComFilm> findByUser(User u) {

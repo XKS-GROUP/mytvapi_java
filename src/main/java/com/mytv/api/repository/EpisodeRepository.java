@@ -10,7 +10,7 @@ import com.mytv.api.model.gestMedia.Episode;
 @Repository
 public interface EpisodeRepository extends  JpaRepository<Episode, Long> {
 
-
+	List<Episode> findByIdSaison(Long idSaison);
 	List<Episode> findByNameContaining(String nom);
 
 }

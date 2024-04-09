@@ -2,11 +2,13 @@ package com.mytv.api.aws;
 
 import java.util.List;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface FileMetaRepository extends CrudRepository<FileMeta, Integer> {
+public interface FileMetaRepository extends JpaRepository<FileMeta, Integer> {
 
 	List<FileMeta> findByFileName(String name);
 
@@ -17,5 +19,7 @@ public interface FileMetaRepository extends CrudRepository<FileMeta, Integer> {
 	int deleteByFileName(String name);
 
 	void deleteByVersion(String version);
+
+	Page<FileMeta> findAll(Pageable p);
 
 }

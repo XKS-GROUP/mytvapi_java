@@ -91,28 +91,6 @@ public class SecurityConfiguration {
 		return httpSecurity.build();
 	}
 
-	/*
-	@Bean
-	public SecurityFilterChain securityFilterChainGlobalAdminAPI(HttpSecurity httpSecurity) throws Exception {
-		sharedSecurityConfiguration(httpSecurity);
-		httpSecurity.securityMatcher("admin/**").authorizeHttpRequests(auth -> {
-			auth.anyRequest()
-			.hasRole("ADMIN");
-		}).addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-
-		return httpSecurity.build();
-
-
-	@Bean
-	public SecurityFilterChain securityFilterChainGlobalUserProfileAPI(HttpSecurity httpSecurity) throws Exception {
-		sharedSecurityConfiguration(httpSecurity);
-		httpSecurity.securityMatcher("user/profile").authorizeHttpRequests(auth -> {
-			auth.anyRequest()
-			.hasRole("USER");
-		}).addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-
-		return httpSecurity.build();
-	}}*/
 	@Bean
 	public SecurityFilterChain securityFilterChainLoginAPI(HttpSecurity httpSecurity) throws Exception {
 		sharedSecurityConfiguration(httpSecurity);

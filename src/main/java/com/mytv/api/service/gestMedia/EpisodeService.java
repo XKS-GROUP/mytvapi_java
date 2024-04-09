@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.mytv.api.model.gestMedia.Episode;
@@ -31,6 +33,16 @@ public class EpisodeService {
 	public List<Episode> show() {
 
 		return rep.findAll();
+	}
+	
+	public List<Episode> showBySaison(Long idSaison) {
+
+		return rep.findByIdSaison(idSaison);
+	}
+	
+	public Page<Episode> showPage(Pageable p) {
+
+		return rep.findAll(p);
 	}
 
 	public List<Episode> showByNameContain(String name) {

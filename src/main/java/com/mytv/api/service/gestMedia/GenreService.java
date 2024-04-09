@@ -37,6 +37,11 @@ public class GenreService {
 
 		return genreRep.  findAll();
 	}
+	
+	public Page<Genre> showPage(Pageable p) {
+
+		return genreRep.findAll(p);
+	}
 
 	public Page<Genre> showByPages(Pageable p) {
 
