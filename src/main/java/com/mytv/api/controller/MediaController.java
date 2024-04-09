@@ -413,7 +413,7 @@ public class MediaController {
 	}
 	
 	@Tag(name = "Radio")
-	@GetMapping("radios/all/page")
+	@GetMapping("radios/all/withPaging")
 	public Page<Radio> showRadioPage(Pageable p){
 
 		return radioService.showPage(p);
@@ -479,7 +479,7 @@ public class MediaController {
 	}
 	
 	@Tag(name = "LiveTv")
-	@GetMapping("lives/all/page")
+	@GetMapping("lives/all/withPaging")
 	public Page<LiveTv> showLivePages(Pageable p){
 
 		return liveService.showPage(p);
@@ -530,7 +530,7 @@ public class MediaController {
 	}
 	
 	@Tag(name = "Podcast")
-	@GetMapping("podcasts/all/page")
+	@GetMapping("podcasts/all/withPaging")
 	public Page<Podcast> showPodcastByPage(Pageable p){
 
 		return podcastservice.showPage(p);
@@ -591,7 +591,7 @@ public class MediaController {
 	}
 	
 	@Tag(name = "Movie")
-	@GetMapping("movies/all/page")
+	@GetMapping("movies/all/withPaging")
 	public Page<Film> showMovieByPage(Pageable p){
 
 		return filmService.showPages(p);
@@ -649,7 +649,7 @@ public class MediaController {
 	}
 	
 	@Tag(name = "Serie")
-	@GetMapping("series/all/page")
+	@GetMapping("series/all/withPaging")
 	public Page<Serie> showSerieByPage(Pageable p){
 
 		return serieService.showPage(p);
