@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -284,6 +286,13 @@ public class FrontController {
 
 		return radioService.show();
 	}
+	
+	@Tag(name = "Radios")
+	@GetMapping("radios/all/withPaging")
+	public Page<Radio> showRadioPage(Pageable p){
+
+		return radioService.showPage(p);
+	}
 
 	@Tag(name = "Radios")
 	@GetMapping("radios/{id}")
@@ -404,6 +413,13 @@ public class FrontController {
 	public List<LiveTv> showL(){
 
 		return liveService.show();
+	}
+	
+	@Tag(name = "Lives")
+	@GetMapping("lives/all/withPaging")
+	public Page<LiveTv> showLivePage(Pageable p){
+
+		return liveService.showPage(p);
 	}
 
 	@Tag(name = "Lives")
@@ -531,6 +547,13 @@ public class FrontController {
 	public List<Podcast> showP(){
 
 		return podcastservice.show();
+	}
+	
+	@Tag(name = "Podcasts")
+	@GetMapping("podcasts/all/withPaging")
+	public Page<Podcast> showPage(Pageable p){
+
+		return podcastservice.showPage(p);
 	}
 
 	@Tag(name = "Podcasts")
@@ -705,6 +728,13 @@ public class FrontController {
 	public List<Film> showM(){
 
 		return filmService.show();
+	}
+	
+	@Tag(name = "Films")
+	@GetMapping("films/all/withPaging")
+	public Page<Film> showMovieWithPage(Pageable p){
+
+		return filmService.showPages(p);
 	}
 
 	@Tag(name = "Films")
@@ -887,6 +917,14 @@ public class FrontController {
 
 		return serieService.show();
 	}
+	
+	@Tag(name = "Series")
+	@GetMapping("series/all/withPaging")
+	public Page<Serie> showSeriePages(Pageable p){
+
+		return serieService.showPage(p);
+	}
+
 
 	@Tag(name = "Series")
 	@GetMapping("series/{id}")
@@ -950,7 +988,7 @@ public class FrontController {
 	
 	//LIKE
 	
-	//AFFICHE LIKE PAR FILM
+	//AFFICHE LIKE PAR SERIE
 	@Tag(name = "Series")
 	@GetMapping("series/likes/show/likebySerie/{idSerie}")
 	public List<LikeSerie> serieLikebyLive(@PathVariable Long idSerie){
@@ -1072,6 +1110,13 @@ public class FrontController {
     public List<Episode> showE(){
 
 		return episodeService.show();
+	}
+	
+	@Tag(name = "Episodes")
+	@GetMapping("episodes/all/withPagi")
+    public Page<Episode> showEpisodeWithPaging(Pageable p){
+
+		return episodeService.showPage(p);
 	}
 
 	@Tag(name = "Episodes")
@@ -1249,6 +1294,13 @@ public class FrontController {
 
 		return saisonService.show();
 	}
+	
+	@Tag(name = "Saison")
+	@GetMapping("saisons/all/whithPaging")
+    public Page<Saison> showSaisonWithPaging(Pageable p){
+
+		return saisonService.showPage(p);
+	}
 
 	@Tag(name = "Saison")
 	@GetMapping("saisons/show/{id}")
@@ -1415,9 +1467,10 @@ public class FrontController {
 	}
 	
 	
-	//Multie Media
+	//Multi Media
 	@Tag(name = "Profil Abonne")
 	@GetMapping("user/favories/all")
+	
 	public FavoriteAllResponse allFavorite(){
 		
 		List<FavFilm> film= favfilmService.findByUser(userService.findCurrentUser()); 

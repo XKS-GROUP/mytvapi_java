@@ -244,6 +244,13 @@ public class AdminAccessController {
 				subTypService.delete(id));
 	}
 
+	
+	@Tag(name = "User")
+	@PutMapping("user/update/{idUser}")
+	public ResponseEntity<Object> userUpdate(@PathVariable Long idUser,@Valid @RequestBody User u){
+		return EntityResponse.generateResponse("Suppression d un abonnement", HttpStatus.OK,
+				userService.updateByid(idUser, u));
+	}
 
 	//Configuration
 	@Tag(name = "Configuration")
