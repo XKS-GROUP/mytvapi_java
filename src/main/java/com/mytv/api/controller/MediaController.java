@@ -226,7 +226,7 @@ public class MediaController {
 		}
 		else {
 			
-		    g.setName(g.getName().toLowerCase());
+			g.getName().toUpperCase();
 		    return EntityResponse.generateResponse("Succes", HttpStatus.CREATED, genreService.create(g));
 		
 		}
@@ -271,7 +271,7 @@ public class MediaController {
 	@Tag(name = "Genre FILM SERIE")
 	@PutMapping("genres/update/{id}")
 	public Genre updateG(@PathVariable Long id, @RequestBody Genre g){
-
+		g.getName().toUpperCase();
 		return genreService.upadte(id, g);
 
 	}
