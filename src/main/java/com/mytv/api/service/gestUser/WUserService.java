@@ -100,6 +100,7 @@ public class WUserService implements UserDetailsService {
 				r.setName("ROLE_"+user.getRole());
 				
 				roleService.save(r);
+				addUserRole(user, roleService.findRoleByName("ROLE_ADMIN"));
 			}
 			else {
 				
@@ -144,6 +145,7 @@ public class WUserService implements UserDetailsService {
 							r.setName("ROLE_USER");
 							
 							roleService.save(r);
+							addUserRole(user, roleService.findRoleByName("ROLE_USER"));
 			}
 			else {
 				

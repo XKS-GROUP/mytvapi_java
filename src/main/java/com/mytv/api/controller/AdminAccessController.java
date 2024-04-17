@@ -130,9 +130,16 @@ public class AdminAccessController {
 		if(id <= 0) {
 			return EntityResponse.generateResponse("User SUPP ERREUR ", HttpStatus.BAD_REQUEST, " l'id utilisateur ne peut être vide ");
 		}
+		if(userService.findUserById(id).isEmpty()) {
+			return EntityResponse.generateResponse("User SUPP ERREUR ", HttpStatus.BAD_REQUEST, " AUCUN utilisateur avec cette id ");
+		}
+		if(userService.findUserById(id).isPresent()) {
+			
+			return EntityResponse.generateResponse("User Profile", HttpStatus.OK, userService.deleteUserFromId(id));
+		}
 		else {
 
-			return EntityResponse.generateResponse("User Profile", HttpStatus.OK, userService.deleteUserFromId(id));
+			return EntityResponse.generateResponse("User SUPP ERREUR", HttpStatus.BAD_REQUEST, "Echec Suppression d'un utilisateur");
 		}
 
 	}
