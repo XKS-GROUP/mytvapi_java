@@ -8,18 +8,22 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Builder
 @Entity
-@NoArgsConstructor
+@Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class SubscriptionType {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long idSubscriptionType;
 
-	@NotBlank(message = "un nom est requi")
+	@NotBlank(message = "un nom est requis")
 	@Column(nullable = false)
 	String name;
 
@@ -49,61 +53,4 @@ public class SubscriptionType {
 	@OneToMany(mappedBy = "id")
 	List<User> users;
 	*/
-
-	public Long getIdSubscriptionType() {
-		return idSubscriptionType;
-	}
-
-	public void setIdSubscriptionType(Long idSubscriptionType) {
-		this.idSubscriptionType = idSubscriptionType;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public float getPrice() {
-		return price;
-	}
-
-	public void setPrice(float price) {
-		this.price = price;
-	}
-
-	public int getDeviceLimit() {
-		return deviceLimit;
-	}
-
-	public void setDeviceLimit(int deviceLimit) {
-		this.deviceLimit = deviceLimit;
-	}
-
-	public boolean isAds() {
-		return Ads;
-	}
-
-	public void setAds(boolean ads) {
-		Ads = ads;
-	}
-
-	public boolean isStatus() {
-		return Status;
-	}
-
-	public void setStatus(boolean status) {
-		Status = status;
-	}
-
-	public int getNbMonth() {
-		return nbMonth;
-	}
-
-	public void setNbMonth(int nbMonth) {
-		this.nbMonth = nbMonth;
-	}
-
 }

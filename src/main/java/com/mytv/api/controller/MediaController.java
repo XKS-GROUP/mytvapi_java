@@ -241,7 +241,7 @@ public class MediaController {
 			
 		if(!genreService.findByNameContain(g.getName()).isEmpty()) {
 			
-			return EntityResponse.generateResponse("ATTENTION", HttpStatus.CONFLICT, "Ce genre existe déja");
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Ce genre existe déja");
 		}
 		
 		else {
@@ -316,7 +316,7 @@ public class MediaController {
 		
 		if(catlrRep.findByName(u.getName()) != null) {
 			
-			return EntityResponse.generateResponse("ATTENTION", HttpStatus.CONFLICT, "Cette categorie existe déja");
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Cette categorie existe déja");
 		}
 		else {
 			
@@ -385,7 +385,7 @@ public class MediaController {
 		
 		if(catPodRep.findByName(u.getName()) != null) {
 			
-			return EntityResponse.generateResponse("ATTENTION", HttpStatus.CONFLICT, "Cette categorie de podcast existe déja");
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Cette categorie de podcast existe déja");
 		}
 		else {
 			

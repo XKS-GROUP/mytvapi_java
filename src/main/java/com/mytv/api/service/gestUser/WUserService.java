@@ -91,13 +91,13 @@ public class WUserService implements UserDetailsService {
 		try {
 			User user = (User) dtoMapperRequestDtoToUser(request);
 			
-			user.setRole("ROLE_ADMIN");
+			user.setRole("ADMIN");
 			user = userRepository.save(user);
 			
-			if (roleService.findRoleByName(user.getRole()) == null ) {
+			if (roleService.findRoleByName("ROLE_"+user.getRole()) == null ) {
 				
 				Role r = new Role();
-				r.setName(user.getRole());
+				r.setName("ROLE_"+user.getRole());
 				
 				roleService.save(r);
 			}
@@ -135,12 +135,13 @@ public class WUserService implements UserDetailsService {
 		try {
 			User user = (User) dtoMapperRequestDtoToUser(request);
 
+			user.setRole("ABONNE");
 			user = userRepository.save(user);
 			
-			if (roleService.findRoleByName(user.getRole()) == null ) {
+			if (roleService.findRoleByName("ROLE_USER") == null ) {
 							
 							Role r = new Role();
-							r.setName(user.getRole());
+							r.setName("ROLE_USER");
 							
 							roleService.save(r);
 			}

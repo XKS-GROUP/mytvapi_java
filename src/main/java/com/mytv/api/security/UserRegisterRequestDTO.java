@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,15 +29,16 @@ public class UserRegisterRequestDTO {
 	@NotBlank(message = "ce champ ne peut pas etre vide et doit etre unique")
 	private String username;
 
-	@Size(min = 4)
-	@NotBlank(message = "ce champ ne peut pas etre vide, un mot de passe est obligatoire")
+	@Pattern(regexp = "^(?=.*\\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\\w\\d\\s:])([^\\s]){8,16}$", 
+	         message = "le mot de passe doit contenir au moins 8"
+			+ " caractères et doit contenir au Moins une lette Majiscule, un chiffre et un caractère spécial")
 	private String password;
 
 	@Email(message = "Ce champ doit etre une adresse mail valide")
 	@NotBlank(message = "ce champ ne peut pas etre vide et doit etre unique")
 	private String email;
 
-	@NotBlank(message = "ce champ ne peut pas etre vide et doit etre unique")
+	@Pattern(regexp = "^\\+?[1-9]\\d{1,14}$", message = "Format numéro invalide, il doit commencé par le code pays")
 	@Column(nullable = false, unique = true)
 	String phone;
 

@@ -3,6 +3,7 @@ package com.mytv.api.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -151,8 +152,16 @@ public class AdminAccessController {
 	@Operation(summary = "Get All Users", description = "Returne la liste de tous les utilisateurs")
 	@GetMapping("users/all")
 	public ResponseEntity<Object> getAllUserList(){
-		return EntityResponse.generateResponse("Liste de tous les utilisateur confondu", HttpStatus.OK,
+		return EntityResponse.generateResponse("Liste de tous les utilisateurs", HttpStatus.OK,
 				userService.retrieveAllUserList());
+	}
+
+	@Tag(name = "User")
+	@Operation(summary = "Get All Users", description = "Returne la liste de tous les utilisateurs")
+	@GetMapping("users/all/withPaging")
+	public ResponseEntity<Object> getAllPaging (Pageable p){
+		return EntityResponse.generateResponse("Liste de tous les utilisateurs", HttpStatus.OK,
+				userService.retrieveAllUserListPages(p));
 	}
 
 	//List des utilisateur non valide

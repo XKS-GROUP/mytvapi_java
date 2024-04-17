@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,11 +23,11 @@ public class UserRole implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;
 
-	@ManyToOne( cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "user_id", insertable = true, updatable = true)
 	private User user;
 
-	@ManyToOne( cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "role_id", insertable = true, updatable = true)
 	private Role role;
 

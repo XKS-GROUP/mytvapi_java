@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mytv.api.model.gestMedia.Saison;
 import com.mytv.api.model.gestUser.User;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -40,11 +39,11 @@ public class LikeSaison {
 	Date dateMaj;
 	
 	@JsonIgnore
-	@ManyToOne( cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "user_id", insertable = true, updatable = true)
 	private User user;
 
-	@ManyToOne( cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "idSaison", insertable = true, updatable = true)
 	private Saison saison;
 }

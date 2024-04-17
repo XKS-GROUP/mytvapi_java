@@ -18,6 +18,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -39,8 +40,7 @@ public class User implements Serializable, UserDetails{
 	String username;
 	
 	@JsonIgnore
-	@NotBlank(message = "ce champ ne peut pas etre vide, un mot de passe est obligatoire")
-	@Column(name = "password")
+	@Column(name = "password" ,nullable = false)
 	String password;
 
 	@Email(message = "Ce champ doit etre une adresse mail valide")
@@ -48,12 +48,10 @@ public class User implements Serializable, UserDetails{
 	@Column(nullable = false, unique = true)
 	String email;
 
-	@NotBlank(message = "ce champ ne peut pas etre vide et doit etre unique")
+	
 	@Column(nullable = false, unique = true)
 	String phone;
 	
-	@NotBlank(message = "ce champ ne peut pas etre vide, un rôle est requis")
-	@Column(nullable = false)
 	String role;
 
 	@Column(columnDefinition = "TEXT" )

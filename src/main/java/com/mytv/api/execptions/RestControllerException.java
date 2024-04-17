@@ -1,5 +1,6 @@
 package com.mytv.api.execptions;
 
+import java.net.UnknownHostException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -8,6 +9,7 @@ import java.util.Map;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailSendException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -58,7 +60,7 @@ public class RestControllerException {
     @ExceptionHandler(ExpiredJwtException.class)
     public ResponseEntity<Object> ExpiredJwtException(ExpiredJwtException ex) {
 
-        	return EntityResponse.generateResponse("Authentication", HttpStatus.OK, "Votre session a expiré");
+        	return EntityResponse.generateResponse("Authentication", HttpStatus.BAD_REQUEST, "Votre session a expiré");
     }
     @ExceptionHandler(java.util.NoSuchElementException.class)
     public ResponseEntity<Object> NoSuchElementException(java.util.NoSuchElementException ex) {
@@ -105,8 +107,14 @@ public class RestControllerException {
             errors.put(fieldName, errorMessage);
         });
         
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+        return EntityResponse.generateResponse( "Champ(s) invalide(s)", HttpStatus.BAD_REQUEST, errors);
     }
     
+    //Envoi de mail, probleme avec l hote configuer ou 
+    @ExceptionHandler(MailSendException .class)
+    public ResponseEntity<Object> signatureExceptionS(MailSendException ex) {
+
+        return EntityResponse.generateResponse("Envoi de mail", HttpStatus.BAD_REQUEST, "Envoi de mail impossible, l'hote configuré est non joingnable");
+    }
     
 }

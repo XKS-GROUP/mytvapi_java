@@ -8,7 +8,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 import com.mytv.api.model.gestMedia.Episode;
 import com.mytv.api.model.gestUser.User;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -45,11 +44,11 @@ public class ComEpisode {
 	@UpdateTimestamp
 	Date dateMaj;
 	
-	@ManyToOne( cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "user_id", insertable = true, updatable = true)
 	private User user;
 
-	@ManyToOne( cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "idEpisode", insertable = true, updatable = true)
 	private Episode episode;
 }

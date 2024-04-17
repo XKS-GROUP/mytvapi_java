@@ -11,10 +11,17 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
-
+@Builder
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "Role")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Role implements Serializable{
@@ -28,22 +35,5 @@ public class Role implements Serializable{
 	@NotBlank(message = "ce champ ne peut etre vide, un role doit obligatoirement avoir un nom et doit etre unique")
 	@Column(name = "name", nullable = false, unique = true)
 	private String name;
-
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
 
 }

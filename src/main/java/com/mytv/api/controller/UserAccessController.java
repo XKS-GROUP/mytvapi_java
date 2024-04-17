@@ -119,7 +119,7 @@ public class UserAccessController {
 
 	}
 
-	//Fonction auth
+	//Fonction authentiication
 	private void authenticate(String username, String password) throws Exception {
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
@@ -146,20 +146,20 @@ public class UserAccessController {
 
 		if(userService.findByUsername(request.getUsername()) != null){
 
-			return EntityResponse.generateResponse("Ce nom existe deja existe deja "+request.getUsername(), HttpStatus.CONFLICT, "");
+			return EntityResponse.generateResponse("le nom "+request.getUsername()+" existe deja ", HttpStatus.BAD_REQUEST, "username : ce nom existe déja ");
 		}
 		else if (userService.findByUserEmail(request.getEmail()) !=null) {
 
-			return EntityResponse.generateResponse("Cette adresse email existe deja "+request.getEmail(), HttpStatus.CONFLICT, "");
+			return EntityResponse.generateResponse("Cette adresse email "+request.getEmail()+"existe deja ", HttpStatus.BAD_REQUEST, "email : cette adresse email existe déja");
 		}
 		else if (userService.findByUserPhone(request.getPhone()) !=null) {
 
-			return EntityResponse.generateResponse("Ce numéro de telephone existe deja "+request.getEmail(), HttpStatus.CONFLICT, "");
+			return EntityResponse.generateResponse("Ce numéro de telephone "+request.getPhone()+" existe deja ", HttpStatus.BAD_REQUEST, " phone : ce numéro de téléphone existe déja");
 		}
 		else {
 
 			request.setPassword(passwordEncoder.encode(request.getPassword()));
-			return EntityResponse.generateResponse("Utilisateur enregistre  ", HttpStatus.OK, userService.createUser(request));
+			return EntityResponse.generateResponse("Admin enregistre avec succès  ", HttpStatus.CREATED, userService.createUser(request));
 		}
 
 
@@ -171,21 +171,21 @@ public class UserAccessController {
 
 		if(userService.findByUsername(request.getUsername()) != null){
 
-			return EntityResponse.generateResponse("Ce nom existe deja existe deja "+request.getUsername(), HttpStatus.CONFLICT, "");
+			return EntityResponse.generateResponse("le nom "+request.getUsername()+" existe deja ", HttpStatus.BAD_REQUEST, "username : ce nom existe déja ");
 		}
 		else if (userService.findByUserEmail(request.getEmail()) !=null) {
 
-			return EntityResponse.generateResponse("Cette adresse email existe deja "+request.getEmail(), HttpStatus.CONFLICT, "");
+			return EntityResponse.generateResponse("Cette adresse email "+request.getEmail()+"existe deja ", HttpStatus.BAD_REQUEST, "email : cette adresse email existe déja");
 		}
 		else if (userService.findByUserPhone(request.getPhone()) !=null) {
 
-			return EntityResponse.generateResponse("Ce numéro de telephone existe deja "+request.getEmail(), HttpStatus.CONFLICT, "");
+			return EntityResponse.generateResponse("Ce numéro de telephone "+request.getPhone()+" existe deja ", HttpStatus.BAD_REQUEST, " phone : ce numéro de téléphone existe déja");
 		}
 
 		else {
 
 			request.setPassword(passwordEncoder.encode(request.getPassword()));
-			return EntityResponse.generateResponse("Utilisateur enregistre en tant que "+request.getRoleList(), HttpStatus.OK, userService.createAbonne(request));
+			return EntityResponse.generateResponse("Abonée enregistre avec succès", HttpStatus.CREATED, userService.createAbonne(request));
 		}
 
 
@@ -430,7 +430,7 @@ public class UserAccessController {
 
 	//Se deconnecter
 	@SecurityRequirement(name = "bearerAuth")
-	@GetMapping("logout")
+	@PostMapping("logout")
 	@Transactional
 	public ResponseEntity<Object> logout() {
 
@@ -449,7 +449,7 @@ public class UserAccessController {
 
 	//Se deconnecter de tous les periphériques
 	@SecurityRequirement(name = "bearerAuth")
-	@GetMapping("logoutAllDevice")
+	@PostMapping("logoutAllDevice")
 	@Transactional
 	public ResponseEntity<Object> logoutAll() {
 
@@ -462,7 +462,6 @@ public class UserAccessController {
 		}
 
 			 jwtRep.deleteAll();
-			 System.out.println("Supp ");
 			 return EntityResponse.generateResponse("Deconexion", HttpStatus.OK, usr.getUsername()+" à été deconnecter avec succès" );
 	    }
 

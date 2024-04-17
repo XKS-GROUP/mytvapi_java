@@ -30,6 +30,7 @@ public class LangueService {
 		return langRep.findAll();
 	}
 	
+	
 	public Page<Language> showPage(Pageable p) {
 		return langRep.findAll(p);
 	}
