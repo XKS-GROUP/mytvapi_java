@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.services.accessanalyzer.model.ResourceNotFoundException;
+import com.amazonaws.services.s3.model.S3Object;
 import com.mytv.api.aws.AmazonS3ServiceImpl;
 import com.mytv.api.aws.FileMeta;
 import com.mytv.api.aws.FileMetaRepository;
@@ -852,6 +853,14 @@ public class MediaController {
 
     	return metadataService.list();
     }
+	
+	@Tag(name = "R2-CLOUDFLARE")
+    @GetMapping("r2/download/{idFile}")
+    public S3Object download( @PathVariable int idFile) {
+
+    	return metadataService.download(idFile);
+    }
+	
 
 	@Tag(name = "R2-CLOUDFLARE")
     @GetMapping("r2/search/byId/{idFile}")
