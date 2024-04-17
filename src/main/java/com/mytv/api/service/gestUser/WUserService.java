@@ -90,19 +90,33 @@ public class WUserService implements UserDetailsService {
 	public String createUser(UserRegisterRequestDTO request) {
 		try {
 			User user = (User) dtoMapperRequestDtoToUser(request);
-
+			
+			user.setRole("ROLE_ADMIN");
 			user = userRepository.save(user);
-			if (!request.getRoleList().isEmpty()) {
-				for (String role : request.getRoleList()) {
-					Role existingRole = roleService.findRoleByName("ROLE_" + role.toUpperCase());
-					if(existingRole != null) {
-						addUserRole(user, existingRole);
-					}
-				}
-			} else {
-				addUserRole(user, roleService.findRoleByName("ROLE_ADMIN"));
+			
+			if (roleService.findRoleByName(user.getRole()) == null ) {
+				
+				Role r = new Role();
+				r.setName(user.getRole());
+				
+				roleService.save(r);
 			}
-
+			else {
+				
+				if (!request.getRoleList().isEmpty()) {
+					
+					for (String role : request.getRoleList()) {
+						
+						Role existingRole = roleService.findRoleByName("ROLE_" + role.toUpperCase());
+						
+						if(existingRole != null) {
+							addUserRole(user, existingRole);
+						}
+					}
+				} else {
+					addUserRole(user, roleService.findRoleByName("ROLE_ADMIN"));
+				}
+			}
 			//Envoi du mail pour la validation de son compte
 			validationService.enregistrer(user);
 
@@ -122,15 +136,26 @@ public class WUserService implements UserDetailsService {
 			User user = (User) dtoMapperRequestDtoToUser(request);
 
 			user = userRepository.save(user);
-			if (!request.getRoleList().isEmpty()) {
-				for (String role : request.getRoleList()) {
-					Role existingRole = roleService.findRoleByName("ROLE_" + role.toUpperCase());
-					if(existingRole != null) {
-						addUserRole(user, existingRole);
+			
+			if (roleService.findRoleByName(user.getRole()) == null ) {
+							
+							Role r = new Role();
+							r.setName(user.getRole());
+							
+							roleService.save(r);
+			}
+			else {
+				
+				if (!request.getRoleList().isEmpty()) {
+					for (String role : request.getRoleList()) {
+						Role existingRole = roleService.findRoleByName("ROLE_" + role.toUpperCase());
+						if(existingRole != null) {
+							addUserRole(user, existingRole);
+						}
 					}
+				} else {
+					addUserRole(user, roleService.findRoleByName("ROLE_USER"));
 				}
-			} else {
-				addUserRole(user, roleService.findRoleByName("ROLE_USER"));
 			}
 			//Envoi du mail pour la validation de son compte
 			
@@ -138,7 +163,6 @@ public class WUserService implements UserDetailsService {
 			pro.setProfilName(user.getUsername());
 			pro.setUtilisateur(user);
 			pro.setImg_path("defaulf.png");
-			System.out.println(" creation d'un profil par defaut Emma");
 			proRep.save(pro);
 			validationService.enregistrer(user);
 			return "Un nouvel utilisateur , un mail a été envoyer a l adresse mail "+user.getEmail().toString();
@@ -190,9 +214,6 @@ public class WUserService implements UserDetailsService {
 
 		old.setRemember_token(jwt);
 
-		//old.setIdLang(id);
-
-		//return langRep.save(old);
 		user = userRepository.save(user);
 
 		addUserRole(user, roleService.findRoleByName("ROLE_ADMIN"));
@@ -215,7 +236,7 @@ public class WUserService implements UserDetailsService {
 		User user = (User) dtoMapperRequestDtoToUser(userRequestDTO);
 
 		user = userRepository.save(user);
-		addUserRole(user, roleService.findRoleByName("ROLE_ADMIN"));
+		addUserRole(user, roleService.findRoleByName("ROLE_USER"));
 
 		return user;
 	}
@@ -268,14 +289,13 @@ public class WUserService implements UserDetailsService {
 	//Ajouter un role a un utilisateur
 	public void addUserRole(User user, Role role) {
 
-		UserRole userRole = new UserRole();
-
-		userRole.setUser(user);
-
 		if (role == null) {
 			role = roleService.findDefaultRole();
 		}
-
+		
+		UserRole userRole = new UserRole();
+		
+		userRole.setUser(user);
 		userRole.setRole(role);
 		userRoleRepository.save(userRole);
 	}
@@ -288,6 +308,7 @@ public class WUserService implements UserDetailsService {
 		target.setPassword(source.getPassword());
 		target.setEmail(source.getEmail());
 		target.setPhone(source.getPhone());
+		
 		return target;
 	}
 

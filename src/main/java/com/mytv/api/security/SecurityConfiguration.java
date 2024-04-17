@@ -58,16 +58,6 @@ public class SecurityConfiguration {
 				});
 	}
 
-	@Bean
-	public SecurityFilterChain securityFilterChainGlobalAPI(HttpSecurity httpSecurity) throws Exception {
-		sharedSecurityConfiguration(httpSecurity);
-		httpSecurity.securityMatcher("user", "admin", "api/v1/admin").authorizeHttpRequests(auth -> {
-			auth.anyRequest().authenticated();
-		}).addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-
-		return httpSecurity.build();
-
-	}
 
 	@Bean
 	public SecurityFilterChain securityFilterChainGlobalAdminAPIv1(HttpSecurity httpSecurity) throws Exception {
@@ -92,20 +82,11 @@ public class SecurityConfiguration {
 	}
 
 	@Bean
-	public SecurityFilterChain securityFilterChainLoginAPI(HttpSecurity httpSecurity) throws Exception {
-		sharedSecurityConfiguration(httpSecurity);
-		httpSecurity.securityMatcher("/user/authenticate").authorizeHttpRequests(auth -> {
-			auth.anyRequest().permitAll();
-		}).addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-
-		return httpSecurity.build();
-	}
-
-	@Bean
 	public SecurityFilterChain securityFilterChainRegisterAPI(HttpSecurity httpSecurity) throws Exception {
 		sharedSecurityConfiguration(httpSecurity);
-		httpSecurity.securityMatcher("/user/register").authorizeHttpRequests(auth -> {
+		httpSecurity.securityMatcher("api/v1/auth/**").authorizeHttpRequests(auth -> {
 			auth.anyRequest().permitAll();
+			
 		}).addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return httpSecurity.build();
@@ -113,6 +94,7 @@ public class SecurityConfiguration {
 
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
+		
 		final CorsConfiguration configuration = new CorsConfiguration();
 
 		configuration.setAllowedOrigins(Collections.singletonList("*"));
@@ -123,6 +105,7 @@ public class SecurityConfiguration {
 		configuration.addAllowedHeader("*");
 		configuration.addAllowedMethod("*");
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		
 		source.registerCorsConfiguration("/**", configuration);
 
 		return source;

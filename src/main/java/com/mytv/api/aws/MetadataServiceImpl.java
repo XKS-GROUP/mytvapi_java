@@ -166,7 +166,8 @@ public class MetadataServiceImpl implements MetadataService {
     public void uploadUserIMG(MultipartFile file) throws IOException{
 
     	this.uploadR3(file, pathUserImg);
-
+    	
+    	
     }
 
     public void deleteByName(String nom) {

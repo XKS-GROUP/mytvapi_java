@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.mytv.api.model.gestMedia.CategoryRL;
@@ -30,6 +32,11 @@ public class CategoryLrService {
 	public List<CategoryRL> show() {
 
 		return rep.findAll();
+	}
+	
+	public Page<CategoryRL> showPaging(Pageable p) {
+
+		return rep.findAll(p);
 	}
 
 	public CategoryRL upadte(final Long id, CategoryRL u) {

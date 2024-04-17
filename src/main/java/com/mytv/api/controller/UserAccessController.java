@@ -152,7 +152,7 @@ public class UserAccessController {
 
 			return EntityResponse.generateResponse("Cette adresse email existe deja "+request.getEmail(), HttpStatus.CONFLICT, "");
 		}
-		else if (userService.findByUserPhone(request.getEmail()) !=null) {
+		else if (userService.findByUserPhone(request.getPhone()) !=null) {
 
 			return EntityResponse.generateResponse("Ce numéro de telephone existe deja "+request.getEmail(), HttpStatus.CONFLICT, "");
 		}
@@ -177,7 +177,7 @@ public class UserAccessController {
 
 			return EntityResponse.generateResponse("Cette adresse email existe deja "+request.getEmail(), HttpStatus.CONFLICT, "");
 		}
-		else if (userService.findByUserPhone(request.getEmail()) !=null) {
+		else if (userService.findByUserPhone(request.getPhone()) !=null) {
 
 			return EntityResponse.generateResponse("Ce numéro de telephone existe deja "+request.getEmail(), HttpStatus.CONFLICT, "");
 		}

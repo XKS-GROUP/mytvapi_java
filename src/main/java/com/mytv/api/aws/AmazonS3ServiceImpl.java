@@ -1,6 +1,7 @@
 package com.mytv.api.aws;
 
 import java.io.InputStream;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -49,11 +50,23 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
 
     @Override
 	public S3Object download(String path, String fileName) {
+    	
+    	
         return amazonS3.getObject(path, fileName);
     }
 
     public List<Bucket> allFolder() {
-
+    	
+    	
     	return amazonS3.listBuckets();
     }
+    
+    public URL urlFichier(String path, String fileName) {
+    	
+    	return amazonS3.getUrl(path, fileName);
+    }
+    
+    //GENERER DES URLS PRESIGNES
+    
+    
 }

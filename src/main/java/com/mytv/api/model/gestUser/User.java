@@ -52,10 +52,13 @@ public class User implements Serializable, UserDetails{
 	@Column(nullable = false, unique = true)
 	String phone;
 	
+	@NotBlank(message = "ce champ ne peut pas etre vide, un rôle est requis")
+	@Column(nullable = false)
+	String role;
 
 	@Column(columnDefinition = "TEXT" )
 	String remember_token;
-
+	
 	String imageUrl;
 
 	@Column(columnDefinition = "boolean default false")
@@ -178,7 +181,13 @@ public class User implements Serializable, UserDetails{
 		this.imageUrl = imageUrl;
 	}
 
+	public String getRole() {
+		return role;
+	}
 
+	public void setRole(String role) {
+		this.role = role;
+	}
 
 
 }

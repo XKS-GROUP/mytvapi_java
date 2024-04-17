@@ -1,10 +1,8 @@
 package com.mytv.api.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,13 +33,10 @@ import com.mytv.api.model.LikePodcast;
 import com.mytv.api.model.LikeRadio;
 import com.mytv.api.model.LikeSaison;
 import com.mytv.api.model.LikeSerie;
-import com.mytv.api.model.gestMedia.CatPodcast;
 import com.mytv.api.model.gestMedia.CategoryRL;
 import com.mytv.api.model.gestMedia.Episode;
 import com.mytv.api.model.gestMedia.Film;
-import com.mytv.api.model.gestMedia.Genre;
 import com.mytv.api.model.gestMedia.LiveTv;
-import com.mytv.api.model.gestMedia.Pays;
 import com.mytv.api.model.gestMedia.Podcast;
 import com.mytv.api.model.gestMedia.Radio;
 import com.mytv.api.model.gestMedia.Saison;
@@ -211,19 +206,21 @@ public class FrontController {
 	@Autowired
 	WUserService userService;
 	
+
+	
 	//Pays
 	@Tag(name = "Pays")
 	@GetMapping("pays")
-	public List<Pays> showPays(){
+	public ResponseEntity<Object> showPays(){
 
-		return paysService.show();
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, paysService.show());
 	}
 
 	@Tag(name = "Pays")
 	@GetMapping("pays/{id}")
-	public Optional<Pays> showbyIdPays(@PathVariable Long id){
+	public ResponseEntity<Object> showbyIdPays(@PathVariable Long id){
 
-		return paysService.showById(id);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, paysService.showById(id));
 	}
 
 
@@ -231,16 +228,16 @@ public class FrontController {
 
 	@Tag(name = "Genres")
 	@GetMapping("genres")
-	public List<Genre> showG(){
+	public ResponseEntity<Object> showG(){
 
-		return genreService.show();
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.show());
 	}
 
 	@Tag(name = "Genres")
 	@GetMapping("genres/{id}")
-	public Optional<Genre> showbyIdG(@PathVariable Long id){
+	public ResponseEntity<Object> showbyIdG(@PathVariable Long id){
 
-		return genreService.showById(id);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.showById(id));
 	}
 
 
@@ -254,9 +251,9 @@ public class FrontController {
 	
 	@Tag(name = "Categorie Radio et LiveTv")
 	@GetMapping("catrl/{id}")
-	public Optional<CategoryRL> showbyIdCRL(@PathVariable Long id){
+	public ResponseEntity<Object> showbyIdCRL(@PathVariable Long id){
 
-		return catLrService.showById(id);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catLrService.showById(id));
 	}
 
 
@@ -264,15 +261,16 @@ public class FrontController {
 
 	@Tag(name = "Categorie Podcast")
 	@GetMapping("catpod")
-	public List<CatPodcast> showCP(){
+	public ResponseEntity<Object> showCP(){
 
-		return catpodService.show();
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catpodService.show());
 	}
+	
 	@Tag(name = "Categorie Podcast")
 	@GetMapping("catpod/{idCat}")
-	public CatPodcast showbyIdCat(Long idCat){
+	public ResponseEntity<Object> showbyIdCat(Long idCat){
 
-		return catpodService.showById(idCat).get();
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catpodService.showById(idCat).get());
 	}
 
 	
@@ -282,29 +280,29 @@ public class FrontController {
 	//Radio
 	@Tag(name = "Radios")
 	@GetMapping("radios")
-	public List<Radio> showR(){
+	public ResponseEntity<Object> showR(){
 
-		return radioService.show();
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.show());
 	}
 	
 	@Tag(name = "Radios")
 	@GetMapping("radios/all/withPaging")
-	public Page<Radio> showRadioPage(Pageable p){
+	public ResponseEntity<Object> showRadioPage(Pageable p){
 
-		return radioService.showPage(p);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.showPage(p));
 	}
 
 	@Tag(name = "Radios")
 	@GetMapping("radios/{id}")
-	public Optional<Radio> showbyIdR(@PathVariable Long id){
+	public ResponseEntity<Object> showbyIdR(@PathVariable Long id){
 
-		return radioService.showById(id);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.showById(id));
 	}
 	@Tag(name = "Radios")
 	@GetMapping("radios/search/contain/{name}")
-	public List<Radio> showbyNameContain(@PathVariable String nom){
+	public ResponseEntity<Object> showbyNameContain(@PathVariable String nom){
 
-		return radioService.showByNameContaining(nom);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.showByNameContaining(nom));
 	}
 	
 	//LIKE
@@ -312,11 +310,11 @@ public class FrontController {
 	//AFFICHE LIKE PAR RADIO
 	@Tag(name = "Radios")
 	@GetMapping("radios/likes/show/likebyRadio/{idRadio}")
-	public List<LikeRadio> radioLikebyRadio(@PathVariable Long idRadio){
+	public ResponseEntity<Object> radioLikebyRadio(@PathVariable Long idRadio){
 		
 		Radio r = radioService.showById(idRadio).get();
 		
-		return likeradioService.findByUser(r);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, likeradioService.findByUser(r));
 	}
 	
 	//AFFICHE NOMBRE LIKE PAR RADIO
@@ -410,30 +408,30 @@ public class FrontController {
 	//ROUTES LiveTV
 	@Tag(name = "Lives")
 	@GetMapping("lives")
-	public List<LiveTv> showL(){
+	public ResponseEntity<Object> showL(){
 
-		return liveService.show();
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.show());
 	}
 	
 	@Tag(name = "Lives")
 	@GetMapping("lives/all/withPaging")
-	public Page<LiveTv> showLivePage(Pageable p){
+	public ResponseEntity<Object> showLivePage(Pageable p){
 
-		return liveService.showPage(p);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showPage(p));
 	}
 
 	@Tag(name = "Lives")
 	@GetMapping("lives/{id}")
-	public Optional<LiveTv> showbyIdL(@PathVariable Long id){
+	public ResponseEntity<Object> showbyIdL(@PathVariable Long id){
 
-		return liveService.showById(id);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showById(id));
 	}
     
 	@Tag(name = "Lives")
 	@GetMapping("lives/search/contain/{nom}")
-	public List<LiveTv> showLbyNameContainL(@PathVariable String nom){
+	public ResponseEntity<Object> showLbyNameContainL(@PathVariable String nom){
 
-		return liveService.showByNameContaining(nom);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showByNameContaining(nom));
 	}
 			
 			//LIKE
@@ -441,19 +439,20 @@ public class FrontController {
 			//AFFICHE LIKE PAR RADIO
 			@Tag(name = "Lives")
 			@GetMapping("lives/likes/show/byLive/{idLive}")
-			public List<LikeLivetv> liveLikebyLive(@PathVariable Long idLive){
+			public ResponseEntity<Object> liveLikebyLive(@PathVariable Long idLive){
 				
 				LiveTv l = liveService.showById(idLive).get();
 				
-				return likeliveService.findByLivetv(l);
+				return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, likeliveService.findByLivetv(l));
 			}
 			
 			//AFFICHE NOMBRE LIKE PAR LIVE TV
 			@Tag(name = "Lives")
 			@GetMapping("lives/all/nblikebyLiveTv/{idLivetv}")
-			public Long liveNbLike(@PathVariable Long idLivetv){
+			public ResponseEntity<Object> liveNbLike(@PathVariable Long idLivetv){
 				
-				return likeliveService.nbretotalLike(liveService.showById(idLivetv).get());
+				return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+						likeliveService.nbretotalLike(liveService.showById(idLivetv).get()));
 			}
 			
 			//ADD LIKE
@@ -544,54 +543,55 @@ public class FrontController {
 	//Podcast
 	@Tag(name = "Podcasts")
 	@GetMapping("podcasts")
-	public List<Podcast> showP(){
+	public ResponseEntity<Object> showP(){
 
-		return podcastservice.show();
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.show());
 	}
 	
 	@Tag(name = "Podcasts")
 	@GetMapping("podcasts/all/withPaging")
-	public Page<Podcast> showPage(Pageable p){
+	public ResponseEntity<Object> showPage(Pageable p){
 
-		return podcastservice.showPage(p);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.showPage(p));
 	}
 
 	@Tag(name = "Podcasts")
 	@GetMapping("podcasts/{id}")
-	public Optional<Podcast> showbyIdP(@PathVariable Long id){
+	public ResponseEntity<Object> showbyIdP(@PathVariable Long id){
 
-		return podcastservice.showById(id);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.showById(id));
 	}
 	
 	@Tag(name = "Podcasts")
 	@GetMapping("podcasts/search/contain/{name}")
-	public List<Podcast> showbyIdP(@PathVariable String name){
+	public ResponseEntity<Object> showbyIdP(@PathVariable String name){
 
-		return podcastservice.showByNameContaining(name);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.showByNameContaining(name));
 	}
 	//COM
 	//AFFICHE TOUS LES COMMENTAIRES
 	@Tag(name = "Podcasts")
 	@GetMapping("podcasts/comments/all")
-	public List<ComPodcast> podcastShowAllComment(){
+	public ResponseEntity<Object> podcastShowAllComment(){
 
-		return compodService.show() ;
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, compodService.show() );
 		
 	}
 	
 	//AFFICHE COMMENTAIRE D UN PODCAST
 	@Tag(name = "Podcasts")
 	@GetMapping("podcasts/comments/byId/{idPod}")
-	public List<ComPodcast> podcastShowCommentById(@PathVariable Long idPod){
+	public ResponseEntity<Object> podcastShowCommentById(@PathVariable Long idPod){
 		
-		return compodService.findByPodcast(podcastservice.showById(idPod).get()) ;
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+				compodService.findByPodcast(podcastservice.showById(idPod).get())) ;
 		
 	}
 	
 	//ADD COMMENT
 	@Tag(name = "Podcasts")
 	@PostMapping("podcasts/comments/add/{idPod}")
-	public ComPodcast LiveAddComment(@PathVariable Long idPod, @RequestBody String com){
+	public ResponseEntity<Object> LiveAddComment(@PathVariable Long idPod, @RequestBody String com){
 		
 		Podcast l = podcastservice.showById(idPod).get();
 		User u = userService.findCurrentUser();
@@ -599,7 +599,8 @@ public class FrontController {
 		comp.setUser(u);
 		comp.setPodcast(l);
 		comp.setContenu(com);
-		return compodService.addCom(comp);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+				compodService.addCom(comp));
 		
 	}
 	
@@ -617,19 +618,21 @@ public class FrontController {
 	//AFFICHE LIKE PAR PODCAST
 	@Tag(name = "Podcasts")
 	@GetMapping("podcasts/likes/byPodcast/{idPod}")
-	public List<LikePodcast> podcastLikebyLive(@PathVariable Long idPod){
+	public ResponseEntity<Object> podcastLikebyLive(@PathVariable Long idPod){
 		
 		Podcast l = podcastservice.showById(idPod).get();
 		
-		return likepodService.findByPodcast(l);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+					likepodService.findByPodcast(l));
 	}
 	
 	//AFFICHE NOMBRE LIKE PAR PODCAST
 	@Tag(name = "Podcasts")
 	@GetMapping("podcasts/likes/nblikebyPodcast/{idPodcast}")
-	public Long podcastNbLike(@PathVariable Long idPodcast){
+	public ResponseEntity<Object> podcastNbLike(@PathVariable Long idPodcast){
 		
-		return likepodService.nbretotalLike(podcastservice.showById(idPodcast).get());
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+				likepodService.nbretotalLike(podcastservice.showById(idPodcast).get()));
 	}
 	
 	//ADD LIKE
@@ -660,9 +663,10 @@ public class FrontController {
 	//DELETE LIKE
 	@Tag(name = "Podcasts")
 	@DeleteMapping("podcasts/likes/delete/{idLike}")
-	public void podcastDelLike(@PathVariable Long id){
+	public ResponseEntity<Object> podcastDelLike(@PathVariable Long id){
 		
-		likepodService.removeLike(id);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
+				likepodService.removeLike(id));
 		 
 	}
 	
@@ -706,9 +710,10 @@ public class FrontController {
 	
 	@Tag(name = "Podcasts")
 	@DeleteMapping("podcasts/favories/all/{idFavorie}")
-	public boolean podcastDelFavorie(@PathVariable Long idFav){
+	public ResponseEntity<Object> podcastDelFavorie(@PathVariable Long idFav){
 
-		return favpodService.remove(idFav);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+				favpodService.remove(idFav));
 		
 	}
 
@@ -725,30 +730,34 @@ public class FrontController {
 	//Films
 	@Tag(name = "Films")
 	@GetMapping("films")
-	public List<Film> showM(){
+	public ResponseEntity<Object> showM(){
 
-		return filmService.show();
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+					filmService.show());
 	}
 	
 	@Tag(name = "Films")
 	@GetMapping("films/all/withPaging")
-	public Page<Film> showMovieWithPage(Pageable p){
+	public ResponseEntity<Object> showMovieWithPage(Pageable p){
 
-		return filmService.showPages(p);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+				filmService.showPages(p));
 	}
 
 	@Tag(name = "Films")
 	@GetMapping("films/{id}")
-	public Optional<Film> showbyIdM(@PathVariable Long id){
+	public ResponseEntity<Object> showbyIdM(@PathVariable Long id){
 
-		return filmService.showById(id);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+				filmService.showById(id));
 	}
     
 	@Tag(name = "Films")
 	@GetMapping("films/search/contain/{id}")
-	public List<Film> showbyIdM(@PathVariable String name){
+	public ResponseEntity<Object> showbyIdM(@PathVariable String name){
 
-		return filmService.showByNameContaining(name);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+				filmService.showByNameContaining(name));
 	}
 	
 ////////////////////////////////////////////////////////////////////////
@@ -759,25 +768,27 @@ public class FrontController {
 		//AFFICHE TOUS LES COMMENTAIRES
 		@Tag(name = "Films")
 		@GetMapping("films/comments/all")
-		public List<ComFilm> filmShowAllComment(){
+		public ResponseEntity<Object> filmShowAllComment(){
 
-			return comfilmService.show() ;
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+						comfilmService.show() );
 			
 		}
 		
 		//AFFICHE COMMENTAIRE D UN FILM
 		@Tag(name = "Films")
 		@GetMapping("films/comments/show/byIdFilm/{idFilm}")
-		public List<ComFilm> filmShowCommentById(@PathVariable Long idFilm){
+		public ResponseEntity<Object> filmShowCommentById(@PathVariable Long idFilm){
 			
-			return comfilmService.findByFilm(filmService.showById(idFilm).get()) ;
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+					comfilmService.findByFilm(filmService.showById(idFilm).get()));
 			
 		}
 		
 		//ADD COMMENT
 		@Tag(name = "Films")
 		@PostMapping("films/comments/add/{idFilm}")
-		public ComFilm filmAddComment(@PathVariable Long idFilm, @RequestBody String com){
+		public ResponseEntity<Object> filmAddComment(@PathVariable Long idFilm, @RequestBody String com){
 			
 			Film f = filmService.showById(idFilm).get();
 			User u = userService.findCurrentUser();
@@ -785,7 +796,8 @@ public class FrontController {
 			comp.setUser(u);
 			comp.setFilm(f);
 			comp.setContenu(com);
-			return comfilmService.addCom(comp);
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+					comfilmService.addCom(comp));
 			
 		}
 		
@@ -803,20 +815,22 @@ public class FrontController {
 		//AFFICHE LIKE PAR FILM
 		@Tag(name = "Films")
 		@GetMapping("films/likes/show/byfilm/{idfilm}")
-		public List<LikeFilm> filmLikebyLive(@PathVariable Long idfilm){
+		public ResponseEntity<Object> filmLikebyLive(@PathVariable Long idfilm){
 			
 			Film l = filmService.showById(idfilm).get();
 			
-			return likefilmService.findByFilm(l);
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+					likefilmService.findByFilm(l));
 			
 		}
 		
 		//AFFICHE NOMBRE LIKE PAR PODCAST
 		@Tag(name = "Films")
 		@GetMapping("films/likes/nblikebyFilm/{idfilm}")
-		public Long filmNbLike(@PathVariable Long idfilm){
+		public ResponseEntity<Object> filmNbLike(@PathVariable Long idfilm){
 			
-			return likepodService.nbretotalLike(podcastservice.showById(idfilm).get());
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+					likepodService.nbretotalLike(podcastservice.showById(idfilm).get()));
 		}
 		
 		//ADD LIKE
@@ -847,9 +861,10 @@ public class FrontController {
 		//DELETE LIKE
 		@Tag(name = "Films")
 		@DeleteMapping("films/likes/delete/{idLike}")
-		public void filmDelLike(@PathVariable Long id){
+		public ResponseEntity<Object> filmDelLike(@PathVariable Long id){
 			
-			likefilmService.removeLike(id);
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+					likefilmService.removeLike(id));
 			 
 		}
 		
@@ -913,30 +928,33 @@ public class FrontController {
 	//Series
 	@Tag(name = "Series")
 	@GetMapping("series")
-	public List<Serie> showS(){
+	public ResponseEntity<Object> showS(){
 
-		return serieService.show();
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.show());
 	}
 	
 	@Tag(name = "Series")
 	@GetMapping("series/all/withPaging")
-	public Page<Serie> showSeriePages(Pageable p){
+	public ResponseEntity<Object> showSeriePages(Pageable p){
 
-		return serieService.showPage(p);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+				serieService.showPage(p));
 	}
 
 
 	@Tag(name = "Series")
 	@GetMapping("series/{id}")
-	public Optional<Serie> showbyIdS(@PathVariable Long id){
+	public ResponseEntity<Object> showbyIdS(@PathVariable Long id){
 
-		return serieService.showById(id);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+				serieService.showById(id));
 	}
 	@Tag(name = "Series")
 	@GetMapping("series/search/contain/{name}")
-	public List<Serie> showbyIdS(@PathVariable String name){
+	public ResponseEntity<Object> showbyIdS(@PathVariable String name){
 
-		return serieService.showbyNameContaining(name);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+					serieService.showbyNameContaining(name));
 	}
 	
 	////////////////////////////////////////////////////////////////////////
@@ -947,25 +965,27 @@ public class FrontController {
 	//AFFICHE TOUS LES COMMENTAIRES
 	@Tag(name = "Series")
 	@GetMapping("serie/comments/all")
-	public List<ComSerie> serieShowAllComment(){
+	public ResponseEntity<Object> serieShowAllComment(){
 	
-	return comserieService.show();
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+				comserieService.show());
 	
 	}
 	
 	//AFFICHE COMMENTAIRE D UNE SERIE
 	@Tag(name = "Series")
 	@GetMapping("series/comments/show/byId/{idSerie}")
-	public List<ComSerie> serieShowCommentById(@PathVariable Long idSerie){
+	public ResponseEntity<Object> serieShowCommentById(@PathVariable Long idSerie){
 	
-	return comserieService.findBySerie(serieService.showById(idSerie).get()) ;
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+				comserieService.findBySerie(serieService.showById(idSerie).get())) ;
 	
 	}
 	
 	//ADD COMMENT
 	@Tag(name = "Series")
 	@PostMapping("series/comment/all/{idSerie}")
-	public ComSerie serieAddComment(@PathVariable Long idSerie, @RequestBody String com){
+	public ResponseEntity<Object> serieAddComment(@PathVariable Long idSerie, @RequestBody String com){
 	
 	Serie f = serieService.showById(idSerie).get();
 	User u = userService.findCurrentUser();
@@ -973,7 +993,8 @@ public class FrontController {
 	comp.setUser(u);
 	comp.setSerie(f);
 	comp.setContenu(com);
-	return comserieService.addCom(comp);
+	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+				comserieService.addCom(comp));
 	
 	}
 	
@@ -991,20 +1012,22 @@ public class FrontController {
 	//AFFICHE LIKE PAR SERIE
 	@Tag(name = "Series")
 	@GetMapping("series/likes/show/likebySerie/{idSerie}")
-	public List<LikeSerie> serieLikebyLive(@PathVariable Long idSerie){
+	public ResponseEntity<Object> serieLikebyLive(@PathVariable Long idSerie){
 	
 	Serie l = serieService.showById(idSerie).get();
 	
-	return likeserieService.findBySerie(l);
+	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+				likeserieService.findBySerie(l));
 	
 	}
 	
 	//AFFICHE NOMBRE LIKE PAR PODCAST
 	@Tag(name = "Series")
 	@GetMapping("series/likes/show/nblikebySerie/{idSerie}")
-	public Long serieNbLike(@PathVariable Long idSerie){
+	public ResponseEntity<Object> serieNbLike(@PathVariable Long idSerie){
 	
-	return likeserieService.nbretotalLike(serieService.showById(idSerie).get());
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+				likeserieService.nbretotalLike(serieService.showById(idSerie).get()));
 	}
 	
 	//ADD LIKE
@@ -1028,16 +1051,16 @@ public class FrontController {
 	ls.setUser(u);
 	
 	return EntityResponse.generateResponse("VOUS VENEZ DE LIKEZ", HttpStatus.OK, 
-	likeserieService.addLike(ls));
+	   likeserieService.addLike(ls));
 	}
 	}
 	
 	//DELETE LIKE
 	@Tag(name = "Series")
 	@DeleteMapping("series/likes/delete/{idLike}")
-	public void serieDelLike(@PathVariable Long idLike){
+	public ResponseEntity<Object> serieDelLike(@PathVariable Long idLike){
 	
-	likeserieService.removeLike(idLike);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, likeserieService.removeLike(idLike));
 	
 	}
 	
@@ -1081,9 +1104,9 @@ public class FrontController {
 	
 	@Tag(name = "Series")
 	@DeleteMapping("series/favories/delete/{idFavorie}")
-	public boolean serieDelFavorie(@PathVariable Long idFav){
+	public ResponseEntity<Object> serieDelFavorie(@PathVariable Long idFav){
 	
-	return favserieService.remove(idFav);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, favserieService.remove(idFav));
 	
 	}
 	
@@ -1107,30 +1130,30 @@ public class FrontController {
 	//Episodes
 	@Tag(name = "Episodes")
 	@GetMapping("episodes")
-    public List<Episode> showE(){
+    public ResponseEntity<Object> showE(){
 
-		return episodeService.show();
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.show());
 	}
 	
 	@Tag(name = "Episodes")
 	@GetMapping("episodes/all/withPagi")
-    public Page<Episode> showEpisodeWithPaging(Pageable p){
+    public ResponseEntity<Object> showEpisodeWithPaging(Pageable p){
 
-		return episodeService.showPage(p);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showPage(p));
 	}
 
 	@Tag(name = "Episodes")
 	@GetMapping("episodes/{id}")
-	public Optional<Episode> showbyIdE(@PathVariable Long id){
+	public ResponseEntity<Object> showbyIdE(@PathVariable Long id){
 
-		return episodeService.showById(id);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showById(id));
 	}
 	
 	@Tag(name = "Episodes")
 	@GetMapping("episodes/search/contain/{name}")
-	public List<Episode> showbyIdE(@PathVariable String name){
+	public ResponseEntity<Object> showbyIdE(@PathVariable String name){
 
-		return episodeService.showByNameContain(name);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showByNameContain(name));
 	}
 	
 	////////////////////////////////////////////////////////////////////////
@@ -1141,25 +1164,26 @@ public class FrontController {
 	//AFFICHE TOUS LES COMMENTAIRES
 	@Tag(name = "Episodes")
 	@GetMapping("episodes/comments/All")
-	public List<ComEpisode> episodeShowAllComment(){
+	public ResponseEntity<Object> episodeShowAllComment(){
 	
-	return comepisodeService.show();
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, comepisodeService.show());
 	
 	}
 	
 	//AFFICHE COMMENTAIRE D UN EPISODE
 	@Tag(name = "Episodes")
 	@GetMapping("episodes/comments/show/byId/{idEpisode}")
-	public List<ComEpisode> episodeShowCommentById(@PathVariable Long idEpisode){
+	public ResponseEntity<Object> episodeShowCommentById(@PathVariable Long idEpisode){
 	
-	return comepisodeService.findByEpisode(episodeService.showById(idEpisode).get()) ;
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+				comepisodeService.findByEpisode(episodeService.showById(idEpisode).get()));
 	
 	}
 	
 	//ADD COMMENT
 	@Tag(name = "Episodes")
 	@PostMapping("episodes/comments/add/{idEpisode}")
-	public ComEpisode episodeAddComment(@PathVariable Long idEpisode, @RequestBody String com){
+	public ResponseEntity<Object> episodeAddComment(@PathVariable Long idEpisode, @RequestBody String com){
 	
 	Episode f = episodeService.showById(idEpisode).get();
 	User u = userService.findCurrentUser();
@@ -1168,7 +1192,9 @@ public class FrontController {
 	comp.setUser(u);
 	comp.setEpisode(f);
 	comp.setContenu(com);
-	return comepisodeService.addCom(comp);
+	
+	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
+			 comepisodeService.addCom(comp));
 	
 	}
 	
@@ -1186,20 +1212,21 @@ public class FrontController {
 	//AFFICHE LIKE PAR EPISODE
 	@Tag(name = "Episodes")
 	@GetMapping("episodes/likes/show/byEpisode/{idEpisode}")
-	public List<LikeEpisode> episodeLikebyLive(@PathVariable Long idEpisode){
+	public ResponseEntity<Object> episodeLikebyLive(@PathVariable Long idEpisode){
 	
 	Episode l = episodeService.showById(idEpisode).get();
 	
-	return likeepisodeService.findByEpisode(l);
+	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, likeepisodeService.findByEpisode(l));
 	
 	}
 	
 	//AFFICHE NOMBRE LIKE PAR EPISODE
 	@Tag(name = "Episodes")
 	@GetMapping("episodes/likes/show/nblikebyEpisode/{idEpisode}")
-	public Long episodeNbLike(@PathVariable Long idEpisode){
+	public ResponseEntity<Object> episodeNbLike(@PathVariable Long idEpisode){
 	
-	return likeepisodeService.nbretotalLike(episodeService.showById(idEpisode).get());
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+				likeepisodeService.nbretotalLike(episodeService.showById(idEpisode).get()));
 	}
 	
 	//ADD LIKE
@@ -1230,9 +1257,10 @@ public class FrontController {
 	//DELETE LIKE
 	@Tag(name = "Episodes")
 	@DeleteMapping("episodes/likes/delete/{idEpisode}")
-	public void episodeDelLike(@PathVariable Long idEpisode){
+	public ResponseEntity<Object> episodeDelLike(@PathVariable Long idEpisode){
 	
-	likeepisodeService.removeLike(idEpisode);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+				likeepisodeService.removeLike(idEpisode));
 	
 	}
 	
@@ -1276,9 +1304,10 @@ public class FrontController {
 	
 	@Tag(name = "Episodes")
 	@DeleteMapping("episodes/favories/delete/{idFavorie}")
-	public boolean episodeDelFavorie(@PathVariable Long idFav){
+	public ResponseEntity<Object> episodeDelFavorie(@PathVariable Long idFav){
 	
-	return favepisodeService.remove(idFav);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+				favepisodeService.remove(idFav));
 	
 	}
 	
@@ -1290,30 +1319,34 @@ public class FrontController {
 	//SAISON
 	@Tag(name = "Saison")
 	@GetMapping("saisons/all")
-    public List<Saison> showSaison(){
+    public ResponseEntity<Object> showSaison(){
 
-		return saisonService.show();
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+				saisonService.show());
 	}
 	
 	@Tag(name = "Saison")
 	@GetMapping("saisons/all/whithPaging")
-    public Page<Saison> showSaisonWithPaging(Pageable p){
+    public ResponseEntity<Object> showSaisonWithPaging(Pageable p){
 
-		return saisonService.showPage(p);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+				saisonService.showPage(p));
 	}
 
 	@Tag(name = "Saison")
 	@GetMapping("saisons/show/{id}")
-	public Saison showbyId(@PathVariable Long id){
+	public ResponseEntity<Object> showbyId(@PathVariable Long id){
 
-		return saisonService.showById(id);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+					saisonService.showById(id));
 	}
 	
 	@Tag(name = "Saison")
 	@GetMapping("saisons/search/contain/{name}")
-	public List<Saison> showbyIdSaison(@PathVariable String name){
+	public ResponseEntity<Object> showbyIdSaison(@PathVariable String name){
 
-		return saisonService.showByNameContaining(name);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+				saisonService.showByNameContaining(name));
 	}
 	
 	////////////////////////////////////////////////////////////////////////
@@ -1324,25 +1357,27 @@ public class FrontController {
 	//AFFICHE TOUS LES COMMENTAIRES
 	@Tag(name = "Saison")
 	@GetMapping("saisons/comments/all")
-	public List<ComSaison> saisonShowAllComment(){
+	public ResponseEntity<Object> saisonShowAllComment(){
 	
-	return comsaisonService.show();
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+				comsaisonService.show());
 	
 	}
 	
 	//AFFICHE COMMENTAIRE D UNE SAISON
 	@Tag(name = "Saison")
 	@GetMapping("saisons/comments/show/byId/{idSaison}")
-	public List<ComSaison> saisonShowCommentById(@PathVariable Long idSaison){
+	public ResponseEntity<Object> saisonShowCommentById(@PathVariable Long idSaison){
 	
-	return comsaisonService.findBySaison(saisonService.showById(idSaison));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+				comsaisonService.findBySaison(saisonService.showById(idSaison)));
 	
 	}
 	
 	//ADD COMMENT
 	@Tag(name = "Saison")
 	@PostMapping("saisons/comments/add/{idSaison}")
-	public ComSaison saisonAddComment(@PathVariable Long idSaison, @RequestBody String com){
+	public ResponseEntity<Object> saisonAddComment(@PathVariable Long idSaison, @RequestBody String com){
 	
 	Saison s = saisonService.showById(idSaison);
 	User u = userService.findCurrentUser();
@@ -1351,7 +1386,8 @@ public class FrontController {
 	comp.setUser(u);
 	comp.setSaison(s);
 	comp.setContenu(com);
-	return comsaisonService.addCom(comp);
+	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+			comsaisonService.addCom(comp));
 	
 	}
 	
@@ -1369,20 +1405,22 @@ public class FrontController {
 	//AFFICHE LIKE PAR SAISON
 	@Tag(name = "Saison")
 	@GetMapping("saisons/likes/show/bySaison/{idSaison}")
-	public List<LikeSaison> saisonLikebySaison(@PathVariable Long idSaison){
+	public ResponseEntity<Object> saisonLikebySaison(@PathVariable Long idSaison){
 	
 	Saison s = saisonService.showById(idSaison);
 	
-	return likesaisonService.findBySaison(s);
+	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+			likesaisonService.findBySaison(s));
 	
 	}
 	
 	//AFFICHE NOMBRE LIKE PAR SAISON
 	@Tag(name = "Saison")
 	@GetMapping("saisons/likes/nblikebySaison/{idSaison}")
-	public Long saisonNbLike(@PathVariable Long idSaison){
+	public ResponseEntity<Object> saisonNbLike(@PathVariable Long idSaison){
 	
-	return likesaisonService.nbretotalLike(saisonService.showById(idSaison));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+				likesaisonService.nbretotalLike(saisonService.showById(idSaison)));
 	
 	}
 	
@@ -1414,9 +1452,10 @@ public class FrontController {
 	//DELETE LIKE
 	@Tag(name = "Saison")
 	@DeleteMapping("saisons/likes/delete/{idSaison}")
-	public void saisonDelLike(@PathVariable Long idSaison){
+	public ResponseEntity<Object> saisonDelLike(@PathVariable Long idSaison){
 	
-	likeepisodeService.removeLike(idSaison);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+				likeepisodeService.removeLike(idSaison));
 	
 	}
 	
@@ -1460,9 +1499,10 @@ public class FrontController {
 	
 	@Tag(name = "Saison")
 	@DeleteMapping("saisons/favories/delete/{idFavorie}")
-	public boolean saisonDelFavorie(@PathVariable Long idFav){
+	public ResponseEntity<Object> saisonDelFavorie(@PathVariable Long idFav){
 	
-	return favsaisonService.remove(idFav);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+				favsaisonService.remove(idFav));
 	
 	}
 	
@@ -1471,7 +1511,7 @@ public class FrontController {
 	@Tag(name = "Profil Abonne")
 	@GetMapping("user/favories/all")
 	
-	public FavoriteAllResponse allFavorite(){
+	public ResponseEntity<Object> allFavorite(){
 		
 		List<FavFilm> film= favfilmService.findByUser(userService.findCurrentUser()); 
 		
@@ -1485,6 +1525,6 @@ public class FrontController {
 		
 		FavoriteAllResponse fav = new FavoriteAllResponse(film, serie, radio, podcast, livetv );
 		
-		return fav;
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, fav);
 	}
 }

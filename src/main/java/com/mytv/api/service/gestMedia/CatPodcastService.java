@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.mytv.api.model.gestMedia.CatPodcast;
@@ -30,6 +32,11 @@ public class CatPodcastService {
 	public List<CatPodcast> show() {
 
 		return rep.findAll();
+	}
+	
+	public Page<CatPodcast> showPaging(Pageable p) {
+
+		return rep.findAll(p);
 	}
 
 	public CatPodcast upadte(final Long id, CatPodcast u) {

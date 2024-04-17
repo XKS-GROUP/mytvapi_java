@@ -1,11 +1,9 @@
 package com.mytv.api.controller;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.services.accessanalyzer.model.ResourceNotFoundException;
-import com.amazonaws.services.s3.model.S3Object;
 import com.mytv.api.aws.AmazonS3ServiceImpl;
 import com.mytv.api.aws.FileMeta;
 import com.mytv.api.aws.FileMetaRepository;
@@ -112,77 +109,96 @@ public class MediaController {
 
 	@Tag(name = "Langue")
 	@GetMapping("langs")
-	public List<Language> showLang(){
+	public ResponseEntity<Object> showLang(){
 
-		return langService.show();
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, langService.show());
+	}
+	
+	@Tag(name = "Langue")
+	@GetMapping("langs/all/withPaging")
+	public ResponseEntity<Object> showLangPaging(Pageable p){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
+				
+				langService.showPage(p)); 
+		
 	}
 
 	@Tag(name = "Langue")
 	@GetMapping("langs/{id}")
-	public Optional<Language> showLangById(@PathVariable Long id){
+	public ResponseEntity<Object> showLangById(@PathVariable Long id){
 
-		return langService.showById(id);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, langService.showById(id));
 	}
 
 	@Tag(name = "Langue")
 	@PutMapping("lang/update/{id}")
-	public Language updateLang(@PathVariable Long id, @RequestBody Language u){
+	public ResponseEntity<Object> updateLang(@PathVariable Long id, @RequestBody Language u){
 
-		return langService.upadte(id, u);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, langService.upadte(id, u));
 
 	}
 
 	@Tag(name = "Langue")
 	@PostMapping(path="lang/create")
-	public Language createLang(@RequestBody Language u) {
+	public ResponseEntity<Object> createLang(@RequestBody Language u) {
 
-		return langService.create(u);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.CREATED , langService.create(u));
 	}
 
 	@Tag(name = "Langue")
 	@DeleteMapping(path="langs/delete/{id}")
-	public Boolean delete (@PathVariable Long id) {
+	public ResponseEntity<Object> delete (@PathVariable Long id) {
 
 		langService.delete(id);
 
-		return true;
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, true);
 	}
 
 	@Tag(name = "Langue")
 	@GetMapping("langs/search/byname/{name}")
-	public Language showLangByName(@Valid @PathVariable String name){
+	public ResponseEntity<Object> showLangByName(@Valid @PathVariable String name){
 
-		return langService.showByName(name);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, langService.showByName(name));
 	}
 
 	//Pays
 	@Tag(name = "Pays")
 	@PostMapping("pays/create")
 
-	public Pays createPays(@Valid @RequestBody Pays u) {
+	public ResponseEntity<Object> createPays(@Valid @RequestBody Pays u) {
 
-		return paysService.create(u);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.CREATED, paysService.create(u));
 	}
 
 	@Tag(name = "Pays")
 	@GetMapping("pays")
-	public List<Pays> showPays(){
+	public ResponseEntity<Object> showPays(){
 
-		return paysService.show();
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, paysService.show());
 	}
+	
+	@Tag(name = "Pays")
+	@GetMapping("pays/all/withPaging")
+	public ResponseEntity<Object> showPaysPaging(Pageable p){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
+				paysService.showPage(p));
+	}
+
 
 	@Tag(name = "Pays")
 	@GetMapping("pays/{id}")
-	public Optional<Pays> showbyIdPays(@PathVariable Long id){
+	public ResponseEntity<Object> showbyIdPays(@PathVariable Long id){
 
-		return paysService.showById(id);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, paysService.showById(id));
 	}
 
 	@Tag(name = "Pays")
 	@PutMapping("pays/update/{id}")
-	public Pays updatePays(@PathVariable Long id, @RequestBody Pays u){
+	public ResponseEntity<Object> updatePays(@PathVariable Long id, @RequestBody Pays u){
 
-		return paysService.upadte(id, u);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, paysService.upadte(id, u));
 
 	}
 
@@ -215,6 +231,8 @@ public class MediaController {
 
 		return genreService.create(g);
 	}*/
+	
+	
 	@Tag(name = "Genre FILM SERIE")
 	@PostMapping(path="genres/create")
 
@@ -225,6 +243,7 @@ public class MediaController {
 			
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.CONFLICT, "Ce genre existe déja");
 		}
+		
 		else {
 			
 			g.getName().toUpperCase();
@@ -235,55 +254,56 @@ public class MediaController {
 
 	@Tag(name = "Genre FILM SERIE")
 	@GetMapping("genres")
-	public List<Genre> showG(){
+	public ResponseEntity<Object> showG(){
 
-		return genreService.show();
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.show());
 	}
 
 	@Tag(name = "Genre FILM SERIE")
-	@GetMapping("genres/all/whith-pages")
-	public Page<Genre> showPage(Pageable p){
+	@GetMapping("genres/all/withPaging")
+	public ResponseEntity<Object> showPage(Pageable p){
 
-		return genreService.showByPages(p);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.showByPages(p));
 	}
 
 	@Tag(name = "Genre FILM SERIE")
 	@GetMapping("genres/search/byName/{name}")
-	public Genre showByName(@Valid @PathVariable String name){
+	public ResponseEntity<Object> showByName(@Valid @PathVariable String name){
 
-		return genreService.showByName(name);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.showByName(name));
 	}
 
 	@Tag(name = "Genre FILM SERIE")
 	@GetMapping("genres/search/contain/{name}")
-	public List<Genre> showByNameContain(@Valid @PathVariable String name){
+	public ResponseEntity<Object> showByNameContain(@Valid @PathVariable String name){
 
-		return genreService.findByNameContain(name);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.findByNameContain(name));
+		
 	}
 
 
 	@Tag(name = "Genre FILM SERIE")
 	@GetMapping("genres/{id}")
-	public Genre showbyIdG(@PathVariable Long id){
+	public ResponseEntity<Object> showbyIdG(@PathVariable Long id){
 
-		return genreService.showById(id).orElseThrow(() -> new ResourceNotFoundException("aucune donne avec id= " + id));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.showById(id).orElseThrow(() -> new ResourceNotFoundException("aucune donne avec id= " + id)));
 	}
 
 	@Tag(name = "Genre FILM SERIE")
 	@PutMapping("genres/update/{id}")
-	public Genre updateG(@PathVariable Long id, @RequestBody Genre g){
+	public ResponseEntity<Object> updateG(@PathVariable Long id, @RequestBody Genre g){
 		g.getName().toUpperCase();
-		return genreService.upadte(id, g);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.upadte(id, g));
 
 	}
 
 	@Tag(name = "Genre FILM SERIE")
 	@DeleteMapping(path="genres/delete/{id}")
-	public Boolean deleteG (@PathVariable Long id) {
+	public ResponseEntity<Object> deleteG (@PathVariable Long id) {
 
 		genreService.delete(id);
 
-		return true;
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, true);
 	}
 
 
@@ -309,39 +329,46 @@ public class MediaController {
 
 	@Tag(name = "Categorie RADIO LIVE ")
 	@GetMapping("catrl")
-	public List<CategoryRL> showCRL(){
+	public ResponseEntity<Object> showCRL(){
 
-		return catLrService.show();
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catLrService.show());
 	}
 
+	@Tag(name = "Categorie RADIO LIVE ")
+	@GetMapping("catrl/all/withPaging")
+	public ResponseEntity<Object> showCRLPaging(Pageable p){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
+				catLrService.showPaging(p));
+	}
 
 	@Tag(name = "Categorie RADIO LIVE ")
 	@GetMapping("catrl/{id}")
-	public Optional<CategoryRL> showbyIdCRL(@PathVariable Long id){
+	public ResponseEntity<Object> showbyIdCRL(@PathVariable Long id){
 
-		return catLrService.showById(id);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catLrService.showById(id));
 	}
 
 
 	@Tag(name = "Categorie RADIO LIVE ")
 	@PutMapping(path="catrl/update/{id}")
-	public CategoryRL updateCRL(
+	public ResponseEntity<Object> updateCRL(
 			@PathVariable Long id,
 			@RequestBody CategoryRL u) {
 
-		return catLrService.upadte(id, u);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catLrService.upadte(id, u));
 
 	}
 
 
 	@Tag(name = "Categorie RADIO LIVE ")
 	@DeleteMapping(path="catrl/delete/{id}")
-	public Boolean deleteCRL (@PathVariable Long id) {
+	public ResponseEntity<Object> deleteCRL (@PathVariable Long id) {
 
 		catLrService.delete(id);
 
 
-		return true;
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, true);
 	}
 
 
@@ -371,53 +398,61 @@ public class MediaController {
 
 	@Tag(name = "Categorie PODCAST")
 	@GetMapping("catpod")
-	public List<CatPodcast> showCP(){
+	public ResponseEntity<Object> showCP(){
 
-		return catpodService.show();
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catpodService.show());
+	}
+	
+	@Tag(name = "Categorie PODCAST")
+	@GetMapping("catpod/all/withPaging")
+	public ResponseEntity<Object> showCP(Pageable p){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
+				catpodService.showPaging(p) );
 	}
 
 
 	@Tag(name = "Categorie PODCAST")
 	@GetMapping("catpod/{id}")
-	public Optional<CatPodcast> showbyIdCP(@PathVariable Long id){
+	public ResponseEntity<Object> showbyIdCP(@PathVariable Long id){
 
-		return catpodService.showById(id);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catpodService.showById(id));
 	}
 
 	@Tag(name = "Categorie PODCAST")
 	@PutMapping(path="catpod/update/{id}")
-	public CatPodcast updateCP(
+	public ResponseEntity<Object> updateCP(
 
 			@PathVariable Long id,
 			@RequestBody CatPodcast u){
 
-		return catpodService.upadte(id, u);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catpodService.upadte(id, u));
 
 	}
 
 	@Tag(name = "Categorie PODCAST")
 	@DeleteMapping(path="catpod/delete/{id}")
-	public Boolean deleteCP (@PathVariable Long id) {
+	public ResponseEntity<Object> deleteCP (@PathVariable Long id) {
 
 		catpodService.delete(id);
 
-		return true;
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, true);
 	}
 
 
 	//Radio
 	@Tag(name = "Radio")
 	@GetMapping("radios")
-	public List<Radio> showR(){
+	public ResponseEntity<Object> showR(){
 
-		return radioService.show();
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.show());
 	}
 	
 	@Tag(name = "Radio")
 	@GetMapping("radios/all/withPaging")
-	public Page<Radio> showRadioPage(Pageable p){
+	public ResponseEntity<Object> showRadioPage(Pageable p){
 
-		return radioService.showPage(p);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.showPage(p));
 	}
 
 	@Tag(name = "Radio")
@@ -425,22 +460,21 @@ public class MediaController {
 	public  ResponseEntity<Object> createR(@Valid
 			@RequestBody Radio r ){
 
-
 			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, radioService.create(r));
 	}
 
 	@Tag(name = "Radio")
 	@GetMapping("radios/{id}")
-	public Optional<Radio> showbyIdR(@PathVariable Long id){
+	public ResponseEntity<Object> showbyIdR(@PathVariable Long id){
 
-		return radioService.showById(id);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.showById(id));
 	}
 
 	@Tag(name = "Radio")
 	@GetMapping("radios/search/byName/{name}")
-	public List<Radio> showbyNameContain(@PathVariable String nom){
+	public ResponseEntity<Object> showbyNameContain(@PathVariable String nom){
 
-		return radioService.showByNameContaining(nom);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.showByNameContaining(nom));
 	}
 
 	@Tag(name = "Radio")
@@ -474,30 +508,30 @@ public class MediaController {
 
 	@Tag(name = "LiveTv")
 	@GetMapping("lives")
-	public List<LiveTv> showL(){
+	public ResponseEntity<Object> showL(){
 
-		return liveService.show();
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.show());
 	}
 	
 	@Tag(name = "LiveTv")
 	@GetMapping("lives/all/withPaging")
-	public Page<LiveTv> showLivePages(Pageable p){
+	public ResponseEntity<Object> showLivePages(Pageable p){
 
-		return liveService.showPage(p);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showPage(p));
 	}
 	
 	@Tag(name = "LiveTv")
 	@GetMapping("lives/search/byName/{nom}")
-	public List<LiveTv> showLbyNameContainL(@PathVariable String nom){
+	public ResponseEntity<Object> showLbyNameContainL(@PathVariable String nom){
 
-		return liveService.showByNameContaining(nom);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showByNameContaining(nom));
 	}
 
 	@Tag(name = "LiveTv")
 	@GetMapping("lives/{id}")
-	public Optional<LiveTv> showbyIdL(@PathVariable Long id){
+	public ResponseEntity<Object> showbyIdL(@PathVariable Long id){
 
-		return liveService.showById(id);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showById(id));
 	}
 
 	@Tag(name = "LiveTv")
@@ -506,9 +540,7 @@ public class MediaController {
 			@PathVariable Long id,
 			@Valid @RequestBody LiveTv lt) {
 
-
 		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, liveService.create(lt));
-
 
 	}
 
@@ -525,16 +557,16 @@ public class MediaController {
 
 	@Tag(name = "Podcast")
 	@GetMapping("podcasts")
-	public List<Podcast> showP(){
+	public ResponseEntity<Object> showP(){
 
-		return podcastservice.show();
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.show());
 	}
 	
 	@Tag(name = "Podcast")
 	@GetMapping("podcasts/all/withPaging")
-	public Page<Podcast> showPodcastByPage(Pageable p){
+	public ResponseEntity<Object> showPodcastByPage(Pageable p){
 
-		return podcastservice.showPage(p);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.showPage(p));
 	}
 
 	@Tag(name = "Podcast")
@@ -549,16 +581,16 @@ public class MediaController {
 
 	@Tag(name = "Podcast")
 	@GetMapping("podcasts/{id}")
-	public Optional<Podcast> showbyIdP(@PathVariable Long id){
+	public ResponseEntity<Object> showbyIdP(@PathVariable Long id){
 
-		return podcastservice.showById(id);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.showById(id));
 	}
 
 	@Tag(name = "Podcast")
 	@GetMapping("podcasts/search/byName/{name}")
-	public List<Podcast> showbyIdP(@PathVariable String name){
+	public ResponseEntity<Object> showbyIdP(@PathVariable String name){
 
-		return podcastservice.showByNameContaining(name);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.showByNameContaining(name));
 	}
 
 	@Tag(name = "Podcast")
@@ -586,16 +618,16 @@ public class MediaController {
 
 	@Tag(name = "Movie")
 	@GetMapping("movies")
-	public List<Film> showM(){
+	public ResponseEntity<Object> showM(){
 
-		return filmService.show();
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.show());
 	}
 	
 	@Tag(name = "Movie")
 	@GetMapping("movies/all/withPaging")
-	public Page<Film> showMovieByPage(Pageable p){
+	public ResponseEntity<Object> showMovieByPage(Pageable p){
 
-		return filmService.showPages(p);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.showPages(p));
 	}
 
 	@Tag(name = "Movie")
@@ -611,16 +643,16 @@ public class MediaController {
 
 	@Tag(name = "Movie")
 	@GetMapping("movies/{id}")
-	public Optional<Film> showbyIdM(@PathVariable Long id){
+	public ResponseEntity<Object> showbyIdM(@PathVariable Long id){
 
-		return filmService.showById(id);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.showById(id));
 	}
 
 	@Tag(name = "Movie")
 	@GetMapping("movies/search/byName/{id}")
-	public List<Film> showbyIdM(@PathVariable String name){
+	public ResponseEntity<Object> showbyIdM(@PathVariable String name){
 
-		return filmService.showByNameContaining(name);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.showByNameContaining(name));
 	}
 
 	@Tag(name = "Movie")
@@ -644,16 +676,16 @@ public class MediaController {
 
 	@Tag(name = "Serie")
 	@GetMapping("series")
-	public List<Serie> showS(){
+	public ResponseEntity<Object> showS(){
 
-		return serieService.show();
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.show());
 	}
 	
 	@Tag(name = "Serie")
 	@GetMapping("series/all/withPaging")
-	public Page<Serie> showSerieByPage(Pageable p){
+	public ResponseEntity<Object> showSerieByPage(Pageable p){
 
-		return serieService.showPage(p);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.showPage(p));
 	}
 	
 
@@ -670,16 +702,16 @@ public class MediaController {
 
 	@Tag(name = "Serie")
 	@GetMapping("series/{id}")
-	public Optional<Serie> showbyIdS(@PathVariable Long id){
+	public ResponseEntity<Object> showbyIdS(@PathVariable Long id){
 
-		return serieService.showById(id);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.showById(id));
 	}
 
 	@Tag(name = "Serie")
 	@GetMapping("series/search/byName/{name}")
-	public List<Serie> showbyIdS(@PathVariable String name){
+	public ResponseEntity<Object> showbyIdS(@PathVariable String name){
 
-		return serieService.showbyNameContaining(name);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.showbyNameContaining(name));
 	}
 
 	@Tag(name = "Serie")
@@ -708,23 +740,23 @@ public class MediaController {
 	
 	@Tag(name = "Saison")
 	@GetMapping("Saisons")
-	public List<Saison> showSaison(){
+	public ResponseEntity<Object> showSaison(){
 
-		return saisonService.show();
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, saisonService.show());
 	}
 	
 	@Tag(name = "Saison")
-	@GetMapping("Saisons/show/page")
-	public Page<Saison> showSaisonPage(Pageable p){
+	@GetMapping("Saisons/all/withPaging")
+	public ResponseEntity<Object> showSaisonPage(Pageable p){
 
-		return saisonService.showPage(p);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, saisonService.showPage(p));
 	}
 	
 	@Tag(name = "Saison")
 	@GetMapping("Saisons/show/bySerie/{idSerie}")
-	public List<Saison> showSaisonBySerie(@PathVariable Long idSerie){
+	public ResponseEntity<Object> showSaisonBySerie(@PathVariable Long idSerie){
 
-		return saisonService.showBySerie(idSerie);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, saisonService.showBySerie(idSerie));
 	}
 
 	@Tag(name = "Saison")
@@ -740,16 +772,16 @@ public class MediaController {
 
 	@Tag(name = "Saison")
 	@GetMapping("saison/{id}")
-	public Saison showbyIdSaison(@PathVariable Long id){
+	public ResponseEntity<Object> showbyIdSaison(@PathVariable Long id){
 
-		return saisonService.showById(id);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, saisonService.showById(id));
 	}
 
 	@Tag(name = "Saison")
 	@GetMapping("saison/search/byName/{name}")
-	public List<Saison> showbyNameC(@PathVariable String name){
+	public ResponseEntity<Object> showbyNameC(@PathVariable String name){
 
-		return saisonService.showByNameContaining(name);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, saisonService.showByNameContaining(name));
 		
 	}
 
@@ -782,37 +814,37 @@ public class MediaController {
 	//Episodes
 	@Tag(name = "Episode")
 	@GetMapping("episodes")
-    public List<Episode> showE(){
+    public ResponseEntity<Object> showE(){
 
-		return episodeService.show();
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.show());
 	}
 	
 	@Tag(name = "Episode")
-	@GetMapping("episodes/show/page")
-    public Page<Episode> showE(Pageable p){
+	@GetMapping("episodes/all/withPaging")
+    public ResponseEntity<Object> showE(Pageable p){
 
-		return episodeService.showPage(p);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showPage(p));
 	}
 	
 	@Tag(name = "Episode")
 	@GetMapping("episodes/show/bySaison/{idSaison}")
-    public List<Episode> showE(@PathVariable Long idSaison){
+    public ResponseEntity<Object> showE(@PathVariable Long idSaison){
 
-		return episodeService.showBySaison(idSaison);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showBySaison(idSaison));
 	}
 	
     @Tag(name = "Episode")
 	@GetMapping("episodes/{id}")
-	public Optional<Episode> showbyIdE(@PathVariable Long id){
+	public ResponseEntity<Object> showbyIdE(@PathVariable Long id){
 
-		return episodeService.showById(id);
+    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showById(id));
 	}
 
     @Tag(name = "Episode")
 	@GetMapping("episodes/search/byName/{name}")
-	public List<Episode> showbyIdE(@PathVariable String name){
+	public ResponseEntity<Object> showbyIdE(@PathVariable String name){
 
-		return episodeService.showByNameContain(name);
+    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showByNameContain(name));
 	}
 
     @Tag(name = "Episode")
@@ -849,39 +881,39 @@ public class MediaController {
 
 	@Tag(name = "R2-CLOUDFLARE")
     @GetMapping("r2/findall")
-    public List<FileMeta> all() {
+    public ResponseEntity<Object> all() {
 
-    	return metadataService.list();
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, metadataService.list());
     }
 	
 	@Tag(name = "R2-CLOUDFLARE")
     @GetMapping("r2/download/{idFile}")
-    public S3Object download( @PathVariable int idFile) {
+    public ResponseEntity<Object> download( @PathVariable int idFile) {
 
-    	return metadataService.download(idFile);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, metadataService.download(idFile));
     }
 	
 
 	@Tag(name = "R2-CLOUDFLARE")
     @GetMapping("r2/search/byId/{idFile}")
-    public Optional<FileMeta> findbyid(@PathVariable int idFile) {
+    public ResponseEntity<Object> findbyid(@PathVariable int idFile) {
 
-		return fileMetaRep.findById(idFile);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, fileMetaRep.findById(idFile));
     }
 
 	@Tag(name = "R2-CLOUDFLARE")
     @GetMapping("r2/search/byName/{name}")
-    public List<FileMeta> findbyname(@PathVariable String name) {
+    public ResponseEntity<Object> findbyname(@PathVariable String name) {
 
-		return fileMetaRep.findByFileNameContaining(name);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, fileMetaRep.findByFileNameContaining(name));
     }
 
 	@Tag(name = "R2-CLOUDFLARE")
     @PostMapping(path="r2/uploadfile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 
-    public FileMeta upload(@RequestParam("file") MultipartFile file) throws IOException {
+    public ResponseEntity<Object> upload(@RequestParam("file") MultipartFile file) throws IOException {
 
-		return metadataService.uploadR3(file, "");
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, metadataService.uploadR3(file, ""));
 
     }
 
