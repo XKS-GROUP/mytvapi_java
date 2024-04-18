@@ -10,10 +10,17 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-
+@Data
+@Builder
 @Entity
 @Table(name = "FILE_META")
+@AllArgsConstructor
+@NoArgsConstructor
 public class FileMeta {
     private static final long serialVersionUID = 1L;
 
@@ -30,83 +37,28 @@ public class FileMeta {
     @Column(name = "VERSION")
     private String version;
     
+    @Column(columnDefinition = "TEXT" )
+    private String urlPresign;
+    
     String format;
     
     @CreationTimestamp
     Date addDate;
     
-    
-
     private Long Size;
 
-    public Long getSize() {
-		return Size;
-	}
-
-	public void setSize(Long size) {
-		Size = size;
-	}
-
-	public FileMeta(String fileName, String filePath, String version) {
+	public FileMeta(String fileName, String filePath, String version ) {
         this.fileName = fileName;
         this.filePath = filePath;
         this.version = version;
     }
 
-	public FileMeta() {
-		super();
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getFileName() {
-		return fileName;
-	}
-
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
-
-	public String getFilePath() {
-		return filePath;
-	}
-
-	public void setFilePath(String filePath) {
-		this.filePath = filePath;
-	}
-
-	public String getVersion() {
-		return version;
-	}
-
-	public void setVersion(String version) {
-		this.version = version;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-	public Date getAddDate() {
-		return addDate;
-	}
-
-	public void setAddDate(Date addDate) {
-		this.addDate = addDate;
-	}
-
-	public String getFormat() {
-		return format;
-	}
-
-	public void setFormat(String format) {
-		this.format = format;
-	}
+	
+	public FileMeta(String fileName, String filePath, String version, String urlPresign ) {
+        this.fileName = fileName;
+        this.filePath = filePath;
+        this.version = version;
+        this.urlPresign = urlPresign;
+    }
 
 }

@@ -28,6 +28,11 @@ public class MetadataServiceImpl implements MetadataService {
     @Autowired
     private AmazonS3Service amazonS3Service;
 
+    
+    
+    @Autowired
+    private AmazonS3ServiceImpl awsImp;
+    
     @Autowired
     private FileMetaRepository fileMetaRepository;
 
@@ -68,15 +73,17 @@ public class MetadataServiceImpl implements MetadataService {
                 path, fileName.replaceAll("\\s+", ""), Optional.of(metadata), file.getInputStream());
 
         // Enregistrement de la trace dans la db
-
-        fileMetaRepository.save(new FileMeta(fileName.replaceAll("\\s+", ""), path, putObjectResult.getMetadata().getVersionId()));
+       
+        String presign = awsImp.generatePresignedUrl(bucketName, fileName, 100).toString();
+        
+        fileMetaRepository.save(new FileMeta(fileName.replaceAll("\\s+", ""), path, putObjectResult.getMetadata().getVersionId(), presign));
 
     }
 
     @Override
     public FileMeta uploadR3(MultipartFile file, String dossier) throws IOException {
 
-    	file.getSize();
+    	
     	if(dossier.isEmpty()) {
 
     		dossier="SansNom";
@@ -92,7 +99,8 @@ public class MetadataServiceImpl implements MetadataService {
         metadata.put("Content-Type", file.getContentType());
         metadata.put("Content-Length", String.valueOf(file.getSize()));
 
-        String path = String.format("%s/%s", bucketName+"/"+dossier, UUID.randomUUID());
+        String pathFile = String.format("%s/%s",dossier, UUID.randomUUID());
+        String path =  bucketName+"/"+ pathFile;
         String fileName = String.format("%s", file.getOriginalFilename());
 
         // upload du fichier dans R2
@@ -100,7 +108,10 @@ public class MetadataServiceImpl implements MetadataService {
                 path, fileName.replaceAll("\\s+", "-"), Optional.of(metadata), file.getInputStream());
 
         // Enregistrement de la trace dans la db
-        FileMeta dataMeta = new FileMeta(fileName.replaceAll("\\s+", "-"), path, putObjectResult.getMetadata().getVersionId());
+        
+        String presign = awsImp.generatePresignedUrl(bucketName, pathFile+"/"+fileName, 100).toString();
+        
+        FileMeta dataMeta = new FileMeta(fileName.replaceAll("\\s+", "-"), path, putObjectResult.getMetadata().getVersionId(), presign);
 
         dataMeta.setSize(file.getSize());
         dataMeta.setFormat(file.getContentType());
@@ -110,6 +121,7 @@ public class MetadataServiceImpl implements MetadataService {
 
         return dataMeta;
 
+        
     }
 
     @Override

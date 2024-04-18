@@ -271,6 +271,7 @@ public class AdminAccessController {
 	@Tag(name = "subscriptionType")
 	@PutMapping("subscriptionTypes/update/{id}")
 	public ResponseEntity<Object> updateSubscriptionTypeById(@PathVariable Long id, @Valid @RequestBody SubscriptionType sub){
+		
 		return EntityResponse.generateResponse("MAJ Sub Type by id ...", HttpStatus.OK,
 				subTypService.upadte(id , sub));
 	}
