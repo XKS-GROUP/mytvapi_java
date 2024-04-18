@@ -28,13 +28,25 @@ public class SubscriptionTypeServiceImplement implements SubscriptionTypeService
 
 		return sbRep.findAll();
 	}
+	
+	public SubscriptionType showById(Long id) {
+
+		return sbRep.findById(id).get();
+	}
+
+	public SubscriptionType findByName(String nom) {
+		
+		return sbRep.findByName(nom);
+	}
 
 	@Override
 	public SubscriptionType upadte(Long id, SubscriptionType p) {
 
-		return null;
+		p.setIdSubscriptionType(id);
+		return sbRep.save(p);
 	}
 
+	
 	@Override
 	public Boolean delete(Long id) {
 
@@ -42,6 +54,5 @@ public class SubscriptionTypeServiceImplement implements SubscriptionTypeService
 
 		return true;
 	}
-
 
 }

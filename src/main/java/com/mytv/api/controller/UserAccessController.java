@@ -145,15 +145,15 @@ public class UserAccessController {
 
 		if(userService.findByUsername(request.getUsername()) != null){
 
-			return EntityResponse.generateResponse("le nom "+request.getUsername()+" existe deja ", HttpStatus.BAD_REQUEST, "username : ce nom existe déja ");
+			return EntityResponse.generateResponse("le nom "+request.getUsername()+" existe deja ", HttpStatus.CONFLICT, "username : ce nom existe déja ");
 		}
 		else if (userService.findByUserEmail(request.getEmail()) !=null) {
 
-			return EntityResponse.generateResponse("Cette adresse email "+request.getEmail()+"existe deja ", HttpStatus.BAD_REQUEST, "email : cette adresse email existe déja");
+			return EntityResponse.generateResponse("Cette adresse email "+request.getEmail()+"existe deja ", HttpStatus.CONFLICT, "email : cette adresse email existe déja");
 		}
 		else if (userService.findByUserPhone(request.getPhone()) !=null) {
 
-			return EntityResponse.generateResponse("Ce numéro de telephone "+request.getPhone()+" existe deja ", HttpStatus.BAD_REQUEST, " phone : ce numéro de téléphone existe déja");
+			return EntityResponse.generateResponse("Ce numéro de telephone "+request.getPhone()+" existe deja ", HttpStatus.CONFLICT, " phone : ce numéro de téléphone existe déja");
 		}
 		else {
 

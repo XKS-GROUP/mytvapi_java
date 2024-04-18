@@ -22,11 +22,13 @@ public class LangueService {
 
 
 	public Language create(Language u) {
-		return langRep.save(u);
+		
+		return langRep.save(u) ;
 	}
 
 
 	public List<Language> show() {
+		
 		return langRep.findAll();
 	}
 	

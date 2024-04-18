@@ -234,9 +234,9 @@ public class AdminAccessController {
 	
 	@Tag(name = "subscriptionType")
 	@GetMapping("subscriptionTypes/{id}")
-	ResponseEntity<Object> subscriptionTypeById(){
+	ResponseEntity<Object> subscriptionTypeById(@PathVariable Long id){
 
-		return EntityResponse.generateResponse("Liste subscription ", HttpStatus.OK, subTypService.show());
+		return EntityResponse.generateResponse("Liste subscriptions ", HttpStatus.OK, subTypService.showById(id));
 
 	}
 
@@ -252,8 +252,17 @@ public class AdminAccessController {
 	@Tag(name = "subscriptionType")
 	@PostMapping("subscriptionTypes/create")
 	public ResponseEntity<Object> createSubscriptionType(@Valid @RequestBody SubscriptionType sub){
-
-		return EntityResponse.generateResponse("creation d'un nouveau type d abonnement", HttpStatus.CREATED, subTypService.create(sub));
+		
+		if(subTypService.findByName(sub.getName()) != null) {
+			
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.CONFLICT , "Ce nom existe déja");
+			
+		}
+		else {
+			
+			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, subTypService.create(sub));
+		}
+		
 
 	}
 

@@ -121,7 +121,6 @@ public class MediaController {
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
 				
 				langService.showPage(p)); 
-		
 	}
 
 	@Tag(name = "Langue")
@@ -142,10 +141,20 @@ public class MediaController {
 	@Tag(name = "Langue")
 	@PostMapping(path="lang/create")
 	public ResponseEntity<Object> createLang(@RequestBody Language u) {
-
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.CREATED , langService.create(u));
+		
+		if( langService.showByName(u.getName()) != null ) {
+			
+			System.out.println(" Ce nom existe déja");
+			
+			return EntityResponse.generateResponse("Existe ", HttpStatus.BAD_REQUEST , "Ce genre existe déja");
+		}
+		else {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.CREATED , langService.create(u));
+		}
 	}
 
+	
 	@Tag(name = "Langue")
 	@DeleteMapping(path="langs/delete/{id}")
 	public ResponseEntity<Object> delete (@PathVariable Long id) {
@@ -540,7 +549,7 @@ public class MediaController {
 			@PathVariable Long id,
 			@Valid @RequestBody LiveTv lt) {
 
-		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, liveService.create(lt));
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, liveService.create(lt));
 
 	}
 
@@ -695,7 +704,7 @@ public class MediaController {
 			@Valid @RequestBody Serie serie){
 
 			//Save du tout
-			return EntityResponse.generateResponse("Type de media non supporter", HttpStatus.CREATED , serieService.create(serie));
+			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED , serieService.create(serie));
 
 
 	}
@@ -765,7 +774,7 @@ public class MediaController {
 			@Valid @RequestBody Saison saison){
 
 			//Save du tout
-			return EntityResponse.generateResponse("Enregistré avec succès", HttpStatus.CREATED , saisonService.create(saison));
+			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED , saisonService.create(saison));
 
 
 	}
