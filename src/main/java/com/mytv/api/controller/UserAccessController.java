@@ -15,7 +15,6 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -422,11 +421,11 @@ public class UserAccessController {
 
 
 	//Affiche l utilisateur actuelle et ses info profile
-	@SecurityRequirement(name = "bearerAuth")
+	/*@SecurityRequirement(name = "bearerAuth")
 	@GetMapping("profile")
 	public ResponseEntity<Object> retrieveUserProfile(){
 		return EntityResponse.generateResponse("User Profile", HttpStatus.OK, userService.findCurrentUser());
-	}
+	}*/
 
 	//Se deconnecter
 	@SecurityRequirement(name = "bearerAuth")
