@@ -1,7 +1,5 @@
 package com.mytv.api.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -26,7 +24,6 @@ import com.mytv.api.service.gestUser.SubscriptionTypeServiceImplement;
 import com.mytv.api.service.gestUser.WRoleService;
 import com.mytv.api.service.gestUser.WUserService;
 
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -114,7 +111,7 @@ public class AdminAccessController {
 	@Tag(name = "User")
 	@PostMapping("user/createAccount/admin")
 	public ResponseEntity<Object> createAdmin(@Valid @RequestBody UserRegisterRequestDTO u){
-		return EntityResponse.generateResponse("Creation d'un nouvel admin : "+ userService.findCurrentUser().getUsername(), HttpStatus.OK, 
+		return EntityResponse.generateResponse("Creation d'un nouvel admin : "+ userService.findCurrentUser().getUsername(), HttpStatus.CREATED, 
 				userService.createUser(u));
 		
 	}
@@ -147,7 +144,7 @@ public class AdminAccessController {
 
 	//Supp by id
 	@Tag(name = "User")
-	@DeleteMapping("user/deleteAcountById/{id}")
+	@DeleteMapping("user/deleteAcount/{id}")
 	public ResponseEntity<Object> deleteProfileById(@PathVariable Long id){
 
 
@@ -156,19 +153,32 @@ public class AdminAccessController {
 
 	//List User
 	@Tag(name = "User")
-	@Operation(summary = "Get All Users", description = "Returne la liste de tous les utilisateurs")
 	@GetMapping("users/all")
 	public ResponseEntity<Object> getAllUserList(){
 		return EntityResponse.generateResponse("Liste de tous les utilisateurs", HttpStatus.OK,
 				userService.retrieveAllUserList());
 	}
+	
+	@Tag(name = "User")
+	@GetMapping("users/{idUser}")
+	public ResponseEntity<Object> getAllUserById(@PathVariable Long idUser){
+		return EntityResponse.generateResponse("Liste de tous les utilisateurs", HttpStatus.OK,
+				userService.findById(idUser));
+	}
 
 	@Tag(name = "User")
-	@Operation(summary = "Get All Users", description = "Returne la liste de tous les utilisateurs")
 	@GetMapping("users/all/withPaging")
 	public ResponseEntity<Object> getAllPaging (Pageable p){
 		return EntityResponse.generateResponse("Liste de tous les utilisateurs", HttpStatus.OK,
 				userService.retrieveAllUserListPages(p));
+	}
+
+
+	@Tag(name = "User")
+	@PutMapping("user/update/{idUser}")
+	public ResponseEntity<Object> userUpdate(@PathVariable Long idUser,@Valid @RequestBody User u){
+		return EntityResponse.generateResponse("Suppression d un abonnement", HttpStatus.OK,
+				userService.updateByid(idUser, u));
 	}
 
 	//List des utilisateur non valide
@@ -189,7 +199,6 @@ public class AdminAccessController {
 
 	//Role
 	@Tag(name = "Role")
-	@Operation(summary = "Get All Rols", description = "Returne la liste de tous les Roles")
 	@GetMapping("role/role-list")
 	public ResponseEntity<Object> getAllRoleList(){
 		return EntityResponse.generateResponse("Liste des roles disponible", HttpStatus.OK,
@@ -198,17 +207,15 @@ public class AdminAccessController {
 
 	//Creer un nouveau role
 	@Tag(name = "Role")
-	@Operation(summary = "Creer un role", description = "Returne la liste de tous les Roles")
 	@PostMapping("user/role/create")
 	public ResponseEntity<Object> createRole(@Valid @RequestBody Role role){
 
-		return EntityResponse.generateResponse("Creation d'un nouveau Role", HttpStatus.OK,
+		return EntityResponse.generateResponse("Creation d'un nouveau Role", HttpStatus.CREATED,
 				roleService.save(role));
 	}
 
 	//Supp un role
 	@Tag(name = "Role")
-	@Operation(summary = "supp role", description = "Returne la liste de tous les Roles")
 	@DeleteMapping("user/role/delete/{id}")
 	public ResponseEntity<Object> deleteRole(@PathVariable Long id){
 		return EntityResponse.generateResponse("role supp...........", HttpStatus.OK,
@@ -218,28 +225,35 @@ public class AdminAccessController {
 
 	//Liste Abonnement et type d'abonnement
 	@Tag(name = "subscriptionType")
-	@GetMapping("subscriptionType")
-	@Operation(summary = "Get All Subscription", description = "Returne la liste de tous les abonnements")
-	List<SubscriptionType> subscriptionTypeAll(){
+	@GetMapping("subscriptionTypes")
+	ResponseEntity<Object> subscriptionTypeAll(){
 
-		return subTypService.show();
+		return EntityResponse.generateResponse("Liste subscription ", HttpStatus.OK, subTypService.show());
+
+	}
+	
+	@Tag(name = "subscriptionType")
+	@GetMapping("subscriptionTypes/{id}")
+	ResponseEntity<Object> subscriptionTypeById(){
+
+		return EntityResponse.generateResponse("Liste subscription ", HttpStatus.OK, subTypService.show());
 
 	}
 
 	@Tag(name = "subscriptionType")
-	@GetMapping("subscriptionTypeAllGroupByName")
-	List<SubscriptionType> subscriptionAllGroupByName(){
+	@GetMapping("subscriptionTypes/all/GroupByName")
+	ResponseEntity<Object> subscriptionAllGroupByName(){
 
-		return subTypService.show();
+		return EntityResponse.generateResponse("subscription ", HttpStatus.OK, subTypService.show());
 
 	}
 
 	//Creer un Abonnement
 	@Tag(name = "subscriptionType")
-	@PostMapping("subscriptionType/create")
+	@PostMapping("subscriptionTypes/create")
 	public ResponseEntity<Object> createSubscriptionType(@Valid @RequestBody SubscriptionType sub){
 
-		return EntityResponse.generateResponse("creation d'un nouveau type d abonnement", HttpStatus.OK, subTypService.create(sub));
+		return EntityResponse.generateResponse("creation d'un nouveau type d abonnement", HttpStatus.CREATED, subTypService.create(sub));
 
 	}
 
@@ -260,13 +274,6 @@ public class AdminAccessController {
 				subTypService.delete(id));
 	}
 
-	
-	@Tag(name = "User")
-	@PutMapping("user/update/{idUser}")
-	public ResponseEntity<Object> userUpdate(@PathVariable Long idUser,@Valid @RequestBody User u){
-		return EntityResponse.generateResponse("Suppression d un abonnement", HttpStatus.OK,
-				userService.updateByid(idUser, u));
-	}
 
 	//Configuration
 	@Tag(name = "Configuration")
