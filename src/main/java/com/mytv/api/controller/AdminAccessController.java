@@ -54,14 +54,14 @@ public class AdminAccessController {
 	//Gestion du profil admin
 
 	@Tag(name = "ADMIN Profil")
-	@GetMapping("profile/info")
+	@GetMapping("profil/info")
 	public ResponseEntity<Object> retrieveUserProfile(){
 		return EntityResponse.generateResponse("Admin Profil Info : "+userService.findCurrentUser().getUsername(), HttpStatus.OK, userService.findCurrentUser());
 	}
 
 	//Affiche by id
 	@Tag(name = "ADMIN Profil")
-	@GetMapping("profile/byId/{id}")
+	@GetMapping("profil/byId/{id}")
 	public ResponseEntity<Object> retrieveUserProfilebyId(@PathVariable Long id){
 		if(id <= 0) {
 			return EntityResponse.generateResponse("User ERREUR ", HttpStatus.BAD_REQUEST, " l'id utilisateur ne peut être vide ");
@@ -109,7 +109,7 @@ public class AdminAccessController {
 
 	
 	@Tag(name = "User")
-	@PostMapping("user/createAccount/admin")
+	@PostMapping("users/createAccount/admin")
 	public ResponseEntity<Object> createAdmin(@Valid @RequestBody UserRegisterRequestDTO u){
 		return EntityResponse.generateResponse("Creation d'un nouvel admin : "+ userService.findCurrentUser().getUsername(), HttpStatus.CREATED, 
 				userService.createUser(u));
@@ -117,10 +117,10 @@ public class AdminAccessController {
 	}
 	
 	
-	//USER ABONNE 
+	//USER
 
 	//Supp by id
-	@Tag(name = "ADMIN Profil")
+	@Tag(name = "User")
 	@DeleteMapping("users/delete/ById/{id}")
 	public ResponseEntity<Object> delCurrentProfileByid(@PathVariable Long id){
 
@@ -144,7 +144,7 @@ public class AdminAccessController {
 
 	//Supp by id
 	@Tag(name = "User")
-	@DeleteMapping("user/deleteAcount/{id}")
+	@DeleteMapping("users/delete/{id}")
 	public ResponseEntity<Object> deleteProfileById(@PathVariable Long id){
 
 
@@ -175,7 +175,7 @@ public class AdminAccessController {
 
 
 	@Tag(name = "User")
-	@PutMapping("user/update/{idUser}")
+	@PutMapping("users/update/{idUser}")
 	public ResponseEntity<Object> userUpdate(@PathVariable Long idUser,@Valid @RequestBody User u){
 		return EntityResponse.generateResponse("Suppression d un abonnement", HttpStatus.OK,
 				userService.updateByid(idUser, u));
@@ -207,7 +207,7 @@ public class AdminAccessController {
 
 	//Creer un nouveau role
 	@Tag(name = "Role")
-	@PostMapping("user/role/create")
+	@PostMapping("users/role/create")
 	public ResponseEntity<Object> createRole(@Valid @RequestBody Role role){
 
 		return EntityResponse.generateResponse("Creation d'un nouveau Role", HttpStatus.CREATED,
@@ -216,7 +216,7 @@ public class AdminAccessController {
 
 	//Supp un role
 	@Tag(name = "Role")
-	@DeleteMapping("user/role/delete/{id}")
+	@DeleteMapping("users/role/delete/{id}")
 	public ResponseEntity<Object> deleteRole(@PathVariable Long id){
 		return EntityResponse.generateResponse("role supp...........", HttpStatus.OK,
 				roleService.delete(id));
@@ -260,7 +260,7 @@ public class AdminAccessController {
 
 	//Maj Abbonement
 	@Tag(name = "subscriptionType")
-	@PutMapping("subscriptionType/update/{id}")
+	@PutMapping("subscriptionTypes/update/{id}")
 	public ResponseEntity<Object> updateSubscriptionTypeById(@PathVariable Long id, @Valid @RequestBody SubscriptionType sub){
 		return EntityResponse.generateResponse("MAJ Sub Type by id ...", HttpStatus.OK,
 				subTypService.upadte(id , sub));
@@ -268,7 +268,7 @@ public class AdminAccessController {
 
 	//Supp Abonnement
 	@Tag(name = "subscriptionType")
-	@DeleteMapping("subcriptionType/delete/{id}")
+	@DeleteMapping("subscriptionTypes/delete/{id}")
 	public ResponseEntity<Object> deleteSubscriptionType(@PathVariable Long id){
 		return EntityResponse.generateResponse("Suppression d un abonnement", HttpStatus.OK,
 				subTypService.delete(id));

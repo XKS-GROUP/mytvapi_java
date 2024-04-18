@@ -964,7 +964,7 @@ public class FrontController {
 	//COM
 	//AFFICHE TOUS LES COMMENTAIRES
 	@Tag(name = "Series")
-	@GetMapping("serie/comments/all")
+	@GetMapping("series/comments/all")
 	public ResponseEntity<Object> serieShowAllComment(){
 	
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,

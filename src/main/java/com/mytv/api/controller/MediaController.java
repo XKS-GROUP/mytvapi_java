@@ -739,28 +739,28 @@ public class MediaController {
 	 */
 	
 	@Tag(name = "Saison")
-	@GetMapping("Saisons")
+	@GetMapping("saisons")
 	public ResponseEntity<Object> showSaison(){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, saisonService.show());
 	}
 	
 	@Tag(name = "Saison")
-	@GetMapping("Saisons/all/withPaging")
+	@GetMapping("saisons/all/withPaging")
 	public ResponseEntity<Object> showSaisonPage(Pageable p){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, saisonService.showPage(p));
 	}
 	
 	@Tag(name = "Saison")
-	@GetMapping("Saisons/show/bySerie/{idSerie}")
+	@GetMapping("saisons/show/bySerie/{idSerie}")
 	public ResponseEntity<Object> showSaisonBySerie(@PathVariable Long idSerie){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, saisonService.showBySerie(idSerie));
 	}
 
 	@Tag(name = "Saison")
-	@PostMapping(path="saison/create" )
+	@PostMapping(path="saisons/create" )
 	public ResponseEntity<Object> createS(
 			@Valid @RequestBody Saison saison){
 
@@ -771,14 +771,14 @@ public class MediaController {
 	}
 
 	@Tag(name = "Saison")
-	@GetMapping("saison/{id}")
+	@GetMapping("saisons/{id}")
 	public ResponseEntity<Object> showbyIdSaison(@PathVariable Long id){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, saisonService.showById(id));
 	}
 
 	@Tag(name = "Saison")
-	@GetMapping("saison/search/byName/{name}")
+	@GetMapping("saisons/search/byName/{name}")
 	public ResponseEntity<Object> showbyNameC(@PathVariable String name){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, saisonService.showByNameContaining(name));
@@ -786,7 +786,7 @@ public class MediaController {
 	}
 
 	@Tag(name = "Saison")
-	@PutMapping(path="saison/update/{id}")
+	@PutMapping(path="saisons/update/{id}")
 	public ResponseEntity<Object> updateSaison(
 			@PathVariable Long id,
 			@RequestBody Saison saison){
@@ -796,7 +796,7 @@ public class MediaController {
 	}
 
 	@Tag(name = "Saison")
-	@DeleteMapping(path="saison/delete/{id}")
+	@DeleteMapping(path="saisons/delete/{id}")
 	public ResponseEntity<Object> deleteSaison (@PathVariable Long id) {
 
 		saisonService.delete(id);
