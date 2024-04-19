@@ -27,7 +27,8 @@ public class Kid {
 	@NotBlank(message = "ce champ ne peut etre vide, un profil doit avoir au moin un nom ")
 	@Column(nullable = false)
 	String profilName;
-
+	
+	@Column(columnDefinition = "TEXT")
 	String img_path;
 
 	String lang;

@@ -11,11 +11,20 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
-
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
+@Data
 public class ColPodcast {
 
 	@Id
@@ -31,52 +40,11 @@ public class ColPodcast {
 	String overView;
 
 	@NotBlank(message = "Une image est requise")
-	@Column(nullable = false)
-
+	@Column(nullable = false, columnDefinition = "TEXT")
 	private String cover;
 
 	@NotNull(message = "un satus par defaut doit etre attribuer")
 	@Column(nullable = false, columnDefinition = "boolean default true")
 	boolean status;
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getOverView() {
-		return overView;
-	}
-
-	public void setOverView(String overView) {
-		this.overView = overView;
-	}
-
-	public String getCover() {
-		return cover;
-	}
-
-	public void setCover(String cover) {
-		this.cover = cover;
-	}
-
-	public boolean isStatus() {
-		return status;
-	}
-
-	public void setStatus(boolean status) {
-		this.status = status;
-	}
-
-	public Long getIdColPd() {
-		return idColPd;
-	}
-
-	public void setIdColPd(Long idColPd) {
-		this.idColPd = idColPd;
-	}
 
 }

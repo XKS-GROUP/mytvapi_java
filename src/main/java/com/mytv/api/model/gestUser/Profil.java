@@ -32,6 +32,7 @@ public class Profil {
 	@Column(nullable = false)
 	String profilName;
 
+	@Column(columnDefinition = "TEXT")
 	String img_path;
 
 	String lang;

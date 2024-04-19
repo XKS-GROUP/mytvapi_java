@@ -57,6 +57,7 @@ public class User implements Serializable, UserDetails{
 	@Column(columnDefinition = "TEXT" )
 	String remember_token;
 	
+	@Column(columnDefinition = "TEXT")
 	String imageUrl;
 
 	@Column(columnDefinition = "boolean default false")

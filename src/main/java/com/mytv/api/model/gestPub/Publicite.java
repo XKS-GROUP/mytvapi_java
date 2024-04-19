@@ -22,10 +22,13 @@ public class Publicite {
 	@Column(nullable = false)
 	String name;
 
+	@Column(columnDefinition = "TEXT")
 	String bannerUrl;
 
+	@Column(columnDefinition = "TEXT")
 	String movieUrl;
 
+	@Column(columnDefinition = "TEXT")
 	String pageTarget;
 
 	public Long getIdPublicite() {

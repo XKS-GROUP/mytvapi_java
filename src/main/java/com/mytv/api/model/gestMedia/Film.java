@@ -16,7 +16,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 @AllArgsConstructor
@@ -24,6 +26,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @Entity
 @Data
+@Getter
+@Setter
 public class Film {
 
 
@@ -72,7 +76,7 @@ public class Film {
 	@Column(columnDefinition = "TEXT")
 	String poster;
 
-	String Langue;
+	List<Long> Langue = new ArrayList<Long>();
 
 	String popularity;
 
@@ -114,11 +118,10 @@ public class Film {
 	@Column(nullable = false, columnDefinition = "boolean default false")
 	Boolean adult;
 
+	List <Long> acteurList = new ArrayList<>();
 
-	List <String> acteurList = new ArrayList<>();
+	List <Long> directorList = new ArrayList<>();
 
-	List <String> directorList = new ArrayList<>();
-
-	List<String> genreList = new ArrayList<>();
+	List<Long> genreList = new ArrayList<>();
 
 }

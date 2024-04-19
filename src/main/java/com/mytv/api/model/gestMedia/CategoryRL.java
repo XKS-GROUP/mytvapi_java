@@ -7,12 +7,21 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 @Entity
 @NoArgsConstructor
-
+@AllArgsConstructor
+@Data
+@Builder
+@Getter
+@Setter
 public class CategoryRL {
 
 	@Id
@@ -26,45 +35,8 @@ public class CategoryRL {
 	@Column(nullable = false, columnDefinition = "boolean default false")
 	private boolean status;
 
-	@NotBlank(message = "Une image est requise")
-	@Column(nullable = false)
+	@Column(columnDefinition = "TEXT")
 	private String img_path;
 
-	public Long getIdcat() {
-		return idcat;
-	}
-
-
-	public void setIdcat(Long idcat) {
-		this.idcat = idcat;
-	}
-
-
-	public String getName() {
-		return name;
-	}
-
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public boolean isStatus() {
-		return status;
-	}
-
-	public void setStatus(boolean status) {
-		this.status = status;
-	}
-
-
-	public String getImg_path() {
-		return img_path;
-	}
-
-
-	public void setImg_path(String img_path) {
-		this.img_path = img_path;
-	}
-
+	
 }

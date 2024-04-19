@@ -70,7 +70,7 @@ public class Serie {
 	@Column(columnDefinition = "TEXT")
 	String poster_path;
 
-	String Langue;
+	List<Long> Langue;
 
 	String popularity;
 
@@ -87,10 +87,10 @@ public class Serie {
 	Boolean adult;
 
 
-	List <String> acteurList = new ArrayList<>();
+	List <Long> acteurList = new ArrayList<>();
 
-	List <String> directorList = new ArrayList<>();
+	List <Long> directorList = new ArrayList<>();
 
-	List<String> genreList = new ArrayList<>();
+	List<Long> genreList = new ArrayList<>();
 
 }

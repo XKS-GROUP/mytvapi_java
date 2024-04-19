@@ -2,6 +2,9 @@ package com.mytv.api.model.gestMedia;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,7 +24,6 @@ import lombok.NoArgsConstructor;
 @Data
 public class Podcast {
 
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idPodcast")
@@ -31,6 +33,12 @@ public class Podcast {
 	@Column(nullable = false)
 	String name ;
 
+	@NotBlank(message = "ce champ ne peut etre vide, un podcast doit forcement avoir un autheur")
+	@Column(nullable = false)
+	String autheur ;
+	
+	Long idCollection;
+	
 	@NotBlank(message="ce champ ne peut etre vide, un podcast doit forcement avoir une description")
 	String overview;
 
@@ -42,12 +50,12 @@ public class Podcast {
 	String poster_path;
 
 	@NotNull(message="Un podcast doit forcement avoir une categori")
-	Long category;
+	List <Long> categories = new ArrayList<>();
 
 	@Column(nullable = false, columnDefinition = "boolean default true")
 	boolean status;
 	
-	@Column(nullable = false, columnDefinition = "boolean default false")
+	@Column(nullable = false, columnDefinition = "boolean default true")
 	Boolean accessFree;
 
 	@Column(columnDefinition = "TEXT")

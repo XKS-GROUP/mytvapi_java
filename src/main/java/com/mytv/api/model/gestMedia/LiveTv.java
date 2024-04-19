@@ -1,5 +1,8 @@
 package com.mytv.api.model.gestMedia;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -39,7 +42,7 @@ public class LiveTv {
 
 	@NotNull(message="ce champ ne peut pas etre vide, un live tv doit avoir une categorie")
 	@Column(nullable = false)
-	Long idcategory;
+	List <Long>  idcategories= new ArrayList<>();
 
 	@NotNull(message="ce champ ne peut pas etre vide, un live tv doit avoir un status qui permet de le rendre visible ou pas")
 	@Column(nullable = false, columnDefinition = "boolean default false")
@@ -62,7 +65,7 @@ public class LiveTv {
 
 	@NotNull(message="Ce champ ne peut pas etre vide")
 	@Column(nullable = false)
-	Long country;
+	List<Long>  country = new ArrayList<>();
 	
 	
 }

@@ -44,10 +44,10 @@ public class ServiceFilm {
 
 			if (!g.getGenreList().isEmpty()){
 
-
-				for (String gr : g.getGenreList()) {
-
-						Genre existingGenre = genreRep.findByName(gr);
+				for (Long gr : g.getGenreList()) {
+						
+					
+						Genre existingGenre = genreRep.findById(gr).get();
 
 					if(existingGenre != null) {
 
@@ -57,11 +57,16 @@ public class ServiceFilm {
 					else {
 
 						Genre ngr = new Genre();
-						ngr.setName(gr);
-						genreRep.save(ngr);
-						addFilmGenre(g, ngr);
-
-
+						ngr.setName("AUCUN");
+						if(genreRep.findByName(ngr.getName()) != null ) {
+							
+							addFilmGenre(g, genreRep.findByName(ngr.getName()));
+						}
+						else {
+							genreRep.save(ngr);
+							addFilmGenre(g, ngr);
+						}
+						
 
 					}/**/
 
@@ -70,6 +75,17 @@ public class ServiceFilm {
 			}
 
 			else {
+				
+				Genre ngr = new Genre();
+				ngr.setName("AUCUN");
+				if(genreRep.findByName(ngr.getName()) != null ) {
+					
+					addFilmGenre(g, genreRep.findByName(ngr.getName()));
+				}
+				else {
+					genreRep.save(ngr);
+					addFilmGenre(g, ngr);
+				}
 				addFilmGenre(g, genreRep.findByName("AUCUN"));
 			}
 
@@ -85,11 +101,6 @@ public class ServiceFilm {
 
 		filmGenre.setFilm(film);
 
-		//userRole.setUser(user);
-
-		/*if (role == null) {
-			role = roleService.findDefaultRole();
-		}*/
 		filmGenre.setGenre(genre);
 
 		filmGenreRep.save(filmGenre);

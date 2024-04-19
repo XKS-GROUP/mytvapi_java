@@ -24,8 +24,11 @@ import com.mytv.api.aws.AmazonS3ServiceImpl;
 import com.mytv.api.aws.FileMeta;
 import com.mytv.api.aws.FileMetaRepository;
 import com.mytv.api.aws.MetadataService;
+import com.mytv.api.model.gestMedia.Actor;
 import com.mytv.api.model.gestMedia.CatPodcast;
 import com.mytv.api.model.gestMedia.CategoryRL;
+import com.mytv.api.model.gestMedia.ColPodcast;
+import com.mytv.api.model.gestMedia.Director;
 import com.mytv.api.model.gestMedia.Episode;
 import com.mytv.api.model.gestMedia.Film;
 import com.mytv.api.model.gestMedia.Genre;
@@ -36,8 +39,11 @@ import com.mytv.api.model.gestMedia.Podcast;
 import com.mytv.api.model.gestMedia.Radio;
 import com.mytv.api.model.gestMedia.Saison;
 import com.mytv.api.model.gestMedia.Serie;
+import com.mytv.api.repository.ActorRepository;
 import com.mytv.api.repository.CatPodcastRepository;
 import com.mytv.api.repository.CategoryLrRepository;
+import com.mytv.api.repository.CollectionPodcastRepository;
+import com.mytv.api.repository.DirectorRepository;
 import com.mytv.api.security.EntityResponse;
 import com.mytv.api.service.gestMedia.CatPodcastService;
 import com.mytv.api.service.gestMedia.CategoryLrService;
@@ -101,7 +107,172 @@ public class MediaController {
     private CatPodcastRepository catPodRep;
     @Autowired
     private SaisonService saisonService;
-   
+    
+    @Autowired
+    private ActorRepository actorRep;
+    
+    @Autowired
+    private DirectorRepository directorsRep;
+    
+    @Autowired
+    private CollectionPodcastRepository colPodRep;
+    
+    
+    
+    /*
+     * Collection Podcast
+     * 
+     * */
+    
+    //CRUD Podcast Collections
+    @Tag(name = "Podcast Collection")
+	@GetMapping("podcast/collections")
+	public ResponseEntity<Object> showCollection(){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, colPodRep.findAll());
+	}
+    
+    @Tag(name = "Podcast Collection")
+	@GetMapping("podcast/collections/all/withPaging")
+	public ResponseEntity<Object> showCollPaging(Pageable p){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, colPodRep.findAll(p));
+	}
+    
+    @Tag(name = "Podcast Collection")
+	@GetMapping("podcast/collections/show/{id}")
+	public ResponseEntity<Object> showCollectionById(@PathVariable long id){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, colPodRep.findById(id));
+	}
+    
+    @Tag(name = "Podcast Collection")
+	@PostMapping("podcast/collections/create")
+	public ResponseEntity<Object> createCollection(@Valid @RequestBody ColPodcast a){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.CREATED, colPodRep.save(a));
+	}
+    
+    @Tag(name = "Podcast Collection")
+	@PutMapping("podcast/collections/update/{id}")
+	public ResponseEntity<Object> updateCollection(@PathVariable Long id, @Valid @RequestBody ColPodcast a){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, colPodRep.save(a));
+		
+	}
+    
+    
+    @Tag(name = "Podcast Collection")
+	@PutMapping("podcast/collections/delete/{id}")
+	public ResponseEntity<Object> deleteCollection(@PathVariable Long id){
+    	actorRep.deleteById(id);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, " ");
+		
+	}
+    
+    
+    /*
+     * 
+     * CRUD acteurs
+     * 
+     */
+    //
+    @Tag(name = "Acteur")
+	@GetMapping("acteurs")
+	public ResponseEntity<Object> showActor(){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, actorRep.findAll());
+	}
+    
+    @Tag(name = "Acteur")
+	@GetMapping("acteurs/all/withPaging")
+	public ResponseEntity<Object> showActorPaging(Pageable p){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, actorRep.findAll(p));
+	}
+    
+    @Tag(name = "Acteur")
+	@GetMapping("acteurs/show/{id}")
+	public ResponseEntity<Object> showActorById(@PathVariable long id){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, actorRep.findById(id));
+	}
+    
+    @Tag(name = "Acteur")
+	@PostMapping("acteurs/create")
+	public ResponseEntity<Object> createActor(@Valid @RequestBody Actor a){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.CREATED, actorRep.save(a));
+	}
+    
+    @Tag(name = "Acteur")
+	@PutMapping("acteurs/update/{id}")
+	public ResponseEntity<Object> updateActor(@PathVariable Long id, @Valid @RequestBody Actor a){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, actorRep.save(a));
+		
+	}
+    
+    
+    @Tag(name = "Acteur")
+	@PutMapping("acteurs/delete/{id}")
+	public ResponseEntity<Object> deleteActor(@PathVariable Long id){
+    	actorRep.deleteById(id);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, " ");
+		
+	}
+    
+    //
+    
+    //CRUD Directors
+    
+    @Tag(name = "Directeur")
+	@GetMapping("directeurs")
+	public ResponseEntity<Object> showDir(){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, directorsRep.findAll());
+	}
+    
+    @Tag(name = "Directeur")
+	@GetMapping("directeurs/all/withPaging")
+	public ResponseEntity<Object> showDirPaging(Pageable p){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, directorsRep.findAll(p));
+	}
+    
+    @Tag(name = "Directeur")
+	@GetMapping("directeurs/show/{id}")
+	public ResponseEntity<Object> showDirById(@PathVariable long id){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, directorsRep.findById(id));
+	}
+    
+    @Tag(name = "Directeur")
+	@PostMapping("directeurs/create")
+	public ResponseEntity<Object> createDir(@Valid @RequestBody Director a){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.CREATED, directorsRep.save(a));
+	}
+    
+    @Tag(name = "Directeur")
+	@PutMapping("directeurs/update/{id}")
+	public ResponseEntity<Object> updateActor(@PathVariable Long id, @Valid @RequestBody Director a){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, directorsRep.save(a));
+		
+	}
+    
+    
+    @Tag(name = "Directeur")
+	@PutMapping("directeurs/delete/{id}")
+	public ResponseEntity<Object> deleteDir(@PathVariable Long id){
+    	actorRep.deleteById(id);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, " ");
+		
+	}
+    
+    
+    
     
 	//private final String asset ="/RESSOURCES/IMG/";
 
@@ -146,7 +317,7 @@ public class MediaController {
 			
 			System.out.println(" Ce nom existe déja");
 			
-			return EntityResponse.generateResponse("Existe ", HttpStatus.BAD_REQUEST , "Ce genre existe déja");
+			return EntityResponse.generateResponse("ATTENTION ", HttpStatus.BAD_REQUEST , "Ce genre existe déja");
 		}
 		else {
 			
@@ -221,26 +392,12 @@ public class MediaController {
 	}
 
 
-	//Genre
-
-	/*@Tag(name = "genre")
-	@PostMapping(path="genres/create")
-
-	public Genre createG(
-			@Valid @RequestBody Genre g,
-			@RequestParam("img_file") MultipartFile file) throws IOException{
-
-		//Enregistrement du fichier img
-		String pathImg = metadataService.uploadR3(file, this.asset);
-
-		if (file.isEmpty())
-            throw new IllegalStateException("Vous n'avez charger aucune image");
-
-		g.setImg(pathImg);
-
-		return genreService.create(g);
-	}*/
 	
+	/*
+	 * 
+	 * GENRE DE FILMs ET SERIES
+	 * 
+	 */
 	
 	@Tag(name = "Genre FILM SERIE")
 	@PostMapping(path="genres/create")
@@ -250,7 +407,7 @@ public class MediaController {
 			
 		if(!genreService.findByNameContain(g.getName()).isEmpty()) {
 			
-			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Ce genre existe déja");
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.CONFLICT, "Ce genre existe déja");
 		}
 		
 		else {
@@ -549,7 +706,7 @@ public class MediaController {
 			@PathVariable Long id,
 			@Valid @RequestBody LiveTv lt) {
 
-		return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, liveService.create(lt));
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, liveService.update(id, lt));
 
 	}
 
@@ -678,7 +835,7 @@ public class MediaController {
 
 		filmService.delete(id);
 
-		return EntityResponse.generateResponse("SUCCES", HttpStatus.NO_CONTENT, true);
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, true);
 	}
 
 	//Series
@@ -739,7 +896,7 @@ public class MediaController {
 
 		serieService.delete(id);
 
-		return EntityResponse.generateResponse("SUCCES", HttpStatus.NO_CONTENT, true);
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, true);
 	}
 
 	//SAISON
@@ -954,7 +1111,7 @@ public class MediaController {
 
 		if (fileMetaRep.findById(id)==null) {
 
-			return EntityResponse.generateResponse("Erreur", HttpStatus.CREATED, "Vous tentez de supprimez un objet qui n'existe pas ");
+			return EntityResponse.generateResponse("Erreur suppresion", HttpStatus.BAD_REQUEST, "Vous tentez de supprimez un objet qui n'existe pas ");
 
 		}
 		else {
@@ -970,7 +1127,7 @@ public class MediaController {
 
 			fileMetaRep.deleteById(id);
 
-			return EntityResponse.generateResponse("Succes", HttpStatus.NO_CONTENT, "Supprimé");
+			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, "fichier Supprimé");
 		}
 
 	}

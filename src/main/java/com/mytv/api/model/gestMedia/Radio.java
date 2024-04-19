@@ -1,5 +1,8 @@
 package com.mytv.api.model.gestMedia;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,9 +35,9 @@ public class Radio {
 	@NotBlank(message = "ce champ ne peut etre vide, une radio doit obligatoirement avoir un nom")
 	@Column(nullable = false)
 	String name ;
-
+	
 	@Column(nullable = false)
-	Long category;
+	List <Long> categories = new ArrayList<>();
 
 	@NotBlank(message = "ce champ ne peut etre vide, une description est requise pour une radio")
 	@Column(columnDefinition = "TEXT", nullable = false)
@@ -59,10 +62,8 @@ public class Radio {
 	@Column(nullable = false, columnDefinition = "TEXT")
 	String streamLink;
 	
-
 	@NotNull(message = "ce champ ne peut etre vide, une radio doit etre représenter par un pays")
 	@Column(nullable = false)
-	Long country;
+	List<Long>  country = new ArrayList<>();
 	
-
 }

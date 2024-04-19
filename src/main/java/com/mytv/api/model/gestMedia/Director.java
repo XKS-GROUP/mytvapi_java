@@ -8,9 +8,16 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Data
+@Getter
+@Setter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,93 +36,16 @@ public class Director {
 	String lastName;
 
 	Date dob;
-
+	
+	@Column(columnDefinition = "TEXT")
 	String imageUrl;
 
 	@NotBlank(message = "Ce champ ne peut etre vide")
 	@Column(nullable = false)
 	String biography;
 
-	@NotBlank(message = "Ce champ ne peut etre vide")
+	@NotNull(message = "Ce champ ne peut etre vide")
 	@Column(nullable = false)
 	Long pays;
-
-	@NotBlank(message = "Ce champ ne peut etre vide")
-	@Column(nullable = false)
-	Long idTypecontt;
-
-	public String getFistName() {
-		return fistName;
-	}
-
-	public void setFistName(String fistName) {
-		this.fistName = fistName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public Date getDob() {
-		return dob;
-	}
-
-	public void setDob(Date dob) {
-		this.dob = dob;
-	}
-
-	public String getImageUrl() {
-		return imageUrl;
-	}
-
-	public void setImageUrl(String imageUrl) {
-		this.imageUrl = imageUrl;
-	}
-
-	public String getBiography() {
-		return biography;
-	}
-
-	public void setBiography(String biography) {
-		this.biography = biography;
-	}
-
-	public Long getNationality() {
-		return pays;
-	}
-
-	public void setNationality(Long nationality) {
-		this.pays = nationality;
-	}
-
-	public Long getIdTypecontt() {
-		return idTypecontt;
-	}
-
-	public void setIdTypecontt(Long idTypecontt) {
-		this.idTypecontt = idTypecontt;
-	}
-
-	public Long getPays() {
-		return pays;
-	}
-
-	public void setPays(Long pays) {
-		this.pays = pays;
-	}
-
-	public Long getIdDirector() {
-		return idDirector;
-	}
-
-	public void setIdDirector(Long idDirector) {
-		this.idDirector = idDirector;
-	}
-
-
 
 }

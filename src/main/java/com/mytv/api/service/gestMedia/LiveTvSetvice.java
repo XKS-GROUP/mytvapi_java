@@ -44,7 +44,7 @@ public class LiveTvSetvice {
 		return rep.findByNameContaining(name);
 	}
 
-	public LiveTv upadte(final Long id, LiveTv u) {
+	public LiveTv update(final Long id, LiveTv u) {
 
 		LiveTv old = rep.findById(id).get();
 
