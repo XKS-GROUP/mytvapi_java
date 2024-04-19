@@ -4,6 +4,7 @@ import java.sql.Date;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,7 +14,9 @@ import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 @Builder
@@ -21,6 +24,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class Subscription {
 
 	@Id
@@ -36,6 +41,9 @@ public class Subscription {
 
 	@CreationTimestamp
 	Date dateEnd;
+	
+	@Column(columnDefinition = "boolean default false")
+	boolean ads;
 
 	@ManyToOne
 	@JoinColumn(name = "user_id", insertable = true, updatable = true)

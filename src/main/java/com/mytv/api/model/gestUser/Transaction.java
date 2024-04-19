@@ -1,19 +1,20 @@
 package com.mytv.api.model.gestUser;
 
 
-import jakarta.persistence.Column;
+import java.util.Date;
+
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 
 @Builder
 @Entity
@@ -22,18 +23,20 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Kid {
-
+public class Transaction {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long idProfil;
-
-	@NotBlank(message = "ce champ ne peut etre vide, un profil doit avoir au moin un nom ")
-	@Column(nullable = false)
-	String profilName;
+	Long id;
 	
-	@Column(columnDefinition = "TEXT")
-	String img_path;
-
-	String lang;
+	Long idSubscription;
+	
+	Long idUser;
+	
+	Long idPaymentMode;
+	
+	@CreationTimestamp
+	Date transaction_date;
+	
+	
 }

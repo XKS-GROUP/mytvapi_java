@@ -1,10 +1,15 @@
 package com.mytv.api.model.gestUser;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -48,9 +53,8 @@ public class SubscriptionType {
 	@Column(columnDefinition = "boolean default false")
 	boolean Status;
 
-	/*
 	@JsonIgnoreProperties
 	@OneToMany(mappedBy = "id")
-	List<User> users;
-	*/
+	List<Transaction> transaction;
+	
 }

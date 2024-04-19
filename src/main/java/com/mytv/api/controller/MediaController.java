@@ -119,6 +119,16 @@ public class MediaController {
     
     
     
+    
+    /*
+     * 
+     * SOUS TITRE
+     * 
+     * 
+     */
+    
+    
+    
     /*
      * Collection Podcast
      * 
@@ -413,7 +423,7 @@ public class MediaController {
 		else {
 			
 			g.getName().toUpperCase();
-		    return EntityResponse.generateResponse("Succes", HttpStatus.CREATED, genreService.create(g));
+		    return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, genreService.create(g));
 		
 		}
 	}
@@ -556,7 +566,7 @@ public class MediaController {
 		else {
 			
 		
-		    return EntityResponse.generateResponse("Succes", HttpStatus.CREATED, catpodService.create(u));
+		    return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, catpodService.create(u));
 		
 		}
 	}
@@ -802,7 +812,7 @@ public class MediaController {
 			@RequestBody Film film) {
 
 			//Save du tout
-			return EntityResponse.generateResponse("Succes", HttpStatus.CREATED, filmService.create(film));
+			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, filmService.create(film));
 
 
 	}
@@ -825,7 +835,7 @@ public class MediaController {
 	@PutMapping(path="movies/update/{id}")
 	public ResponseEntity<Object> updateM(@PathVariable Long id,
 			@RequestBody Film film)  {
-		return EntityResponse.generateResponse("Succes", HttpStatus.CREATED, filmService.upadte(id, film));
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, filmService.upadte(id, film));
 
 	}
 
@@ -957,7 +967,7 @@ public class MediaController {
 			@PathVariable Long id,
 			@RequestBody Saison saison){
 
-			return EntityResponse.generateResponse("Saison creer avec succès", HttpStatus.OK , saisonService.upadte(id, saison));
+			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK , saisonService.upadte(id, saison));
 
 	}
 
@@ -970,13 +980,16 @@ public class MediaController {
 		return EntityResponse.generateResponse("SUCCES", HttpStatus.NO_CONTENT, true);
 	}
 	
-	
-	
-	
-	
-	
 	//FIN SAISON
 
+	
+	/*
+	 * 
+	 * EPISODES
+	 * 
+	 * 
+	 */
+	
 	//Episodes
 	@Tag(name = "Episode")
 	@GetMapping("episodes")
@@ -1018,7 +1031,7 @@ public class MediaController {
 	public ResponseEntity<Object> createE(
 			@Valid @RequestBody Episode episode) {
 
-		return EntityResponse.generateResponse("Succes", HttpStatus.CREATED, episodeService.create(episode));
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, episodeService.create(episode));
 
 
 	}
@@ -1030,7 +1043,7 @@ public class MediaController {
 			@Valid @RequestBody Episode episode){
 
 		//Save du tout
-		return EntityResponse.generateResponse("Succes", HttpStatus.CREATED, episodeService.upadte(id, episode));
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, episodeService.upadte(id, episode));
 
 	}
 
@@ -1042,6 +1055,16 @@ public class MediaController {
 
 		return EntityResponse.generateResponse("SUCCES", HttpStatus.NO_CONTENT, true);
 	}
+    //FIN EPISODE
+    
+    /*
+     * 
+     *CLOUDFLARE R2 CRUD 
+     * 
+     * 
+     */
+    
+    
 
     /* AWS R2 FILE CRUD  */
 
@@ -1100,7 +1123,7 @@ public class MediaController {
 		}
 		else {
 
-			return EntityResponse.generateResponse("Succes", HttpStatus.CREATED, metadataService.uploadR3(file, newFolder));
+			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, metadataService.uploadR3(file, newFolder));
 		 }
     }
 

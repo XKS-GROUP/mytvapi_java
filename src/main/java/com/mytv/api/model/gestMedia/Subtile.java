@@ -1,39 +1,34 @@
-package com.mytv.api.model.gestUser;
-
+package com.mytv.api.model.gestMedia;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
-@Builder
 @Entity
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 @Getter
 @Setter
-public class Kid {
-
+public class Subtile {
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long idProfil;
-
-	@NotBlank(message = "ce champ ne peut etre vide, un profil doit avoir au moin un nom ")
-	@Column(nullable = false)
-	String profilName;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+	
+	String name;
 	
 	@Column(columnDefinition = "TEXT")
-	String img_path;
-
-	String lang;
+	String subtile_path;
+	
+	@Column(columnDefinition = "TEXT")
+	String subtile_uri;
+	
 }
