@@ -31,7 +31,8 @@ public class Genre {
 	boolean status;
 
 	@NotBlank(message = "Une image est requise")
-	@Column(nullable = false)
+	
+	@Column(nullable = false, columnDefinition = "TEXT")
 	private String img_path;
 
 }

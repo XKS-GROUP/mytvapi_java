@@ -23,7 +23,8 @@ public class Language {
 	@NotBlank(message = "ce champ ne peut pas etre vide")
 	@Column(length = 50, nullable = false)
 	String name;
-
+	
+	@Column(columnDefinition = "TEXT")
 	String flag_file;
 
 	@NotBlank(message = "ce champ ne peut pas etre vide et doit etre unique, ce champ represente le code unique d'une langue")

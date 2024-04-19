@@ -31,9 +31,10 @@ public class LiveTv {
 	String name ;
 
 	@NotBlank(message="ce champ ne peut pas etre vide")
-	@Column(nullable = false)
+	@Column(nullable = false, columnDefinition = "TEXT")
 	String overview;
 
+	@Column(columnDefinition = "TEXT")
 	String tvLogo_path;
 
 	@NotNull(message="ce champ ne peut pas etre vide, un live tv doit avoir une categorie")
@@ -47,12 +48,16 @@ public class LiveTv {
 	@Column(nullable = false, columnDefinition = "boolean default false")
 	Boolean accessFree;
 
+	@Column(columnDefinition = "TEXT")
 	String svr1_url;
 
+	@Column(columnDefinition = "TEXT")
 	String svr2_url;
 
+	@Column(columnDefinition = "TEXT")
 	String svr3_url;
 
+	@Column(columnDefinition = "TEXT")
 	String tvEmbedCode;
 
 	@NotNull(message="Ce champ ne peut pas etre vide")

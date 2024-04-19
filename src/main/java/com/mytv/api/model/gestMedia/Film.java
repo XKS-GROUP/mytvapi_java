@@ -35,11 +35,11 @@ public class Film {
 	Long IMDbId;
 
 	@NotBlank(message = "ce champ ne peut etre vide, un film doit forcement posseder un nom")
-	@Column(nullable = false)
+	@Column(nullable = false, columnDefinition = "TEXT")
 	String name;
 
 	@NotBlank(message = "ce champ ne peut etre vide, une description est requise pour un film")
-	@Column(nullable = false)
+	@Column(nullable = false, columnDefinition = "TEXT")
 	String overview;
 
 	@Column(nullable = false, columnDefinition = "boolean default false")
@@ -56,16 +56,20 @@ public class Film {
 
 	float budget;
 
-
+	@Column(columnDefinition = "TEXT")
 	String trailerUrl;
+	
+	@Column(columnDefinition = "TEXT")
 	String trailer;
 
 	@Column(nullable = false, columnDefinition = "boolean default false")
 	Boolean movieAccessFree;
 
 	@NotNull(message = "une image miniature est requise pour un film")
+	@Column(columnDefinition = "TEXT")
 	String backdrop_path;
-
+	
+	@Column(columnDefinition = "TEXT")
 	String poster;
 
 	String Langue;
@@ -77,15 +81,25 @@ public class Film {
 	String vote_count;
 
 	//@NotNull(message = "un fichier video initial est requis pour un film")
+	@Column(columnDefinition = "TEXT")
 	String videoFile;
 
+	@Column(columnDefinition = "TEXT")
 	String videoFile480pLocal;
+	
+	@Column(columnDefinition = "TEXT")
 	String videoFile480pUrl;
 
+	@Column(columnDefinition = "TEXT")
 	String videoFile720pLocal;
+	
+	@Column(columnDefinition = "TEXT")
 	String videoFile720pUrl;
-
+	
+	@Column(columnDefinition = "TEXT")
 	String videoFile1080pLocal;
+	
+	@Column(columnDefinition = "TEXT")
 	String videoFile1080pUrl;
 
 	@Column(nullable = false, columnDefinition = "boolean default true")
@@ -94,6 +108,7 @@ public class Film {
 	@Column(nullable = false, columnDefinition = "boolean default false")
 	boolean download;
 
+	@Column(columnDefinition = "TEXT")
 	String  downloadURL;
 
 	@Column(nullable = false, columnDefinition = "boolean default false")

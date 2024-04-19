@@ -41,9 +41,11 @@ public class Radio {
 	String overview;
 	
 	@NotNull(message = "un logo est requis pour une radio")
+	@Column(columnDefinition = "TEXT")
 	String logo_path;
 
 	@NotNull(message = "une image miniature est requise pour une radio")
+	@Column(columnDefinition = "TEXT")
 	String backdrop_path;
 
 	@NotNull(message = "ce champ ne peut etre vide, une valeur par defaut doit etre attribuer")
@@ -54,7 +56,7 @@ public class Radio {
 	Boolean accessFree;
 
 	@NotBlank(message = "ce champ ne peut etre vide, une radio doit avoir une source")
-	@Column(nullable = false)
+	@Column(nullable = false, columnDefinition = "TEXT")
 	String streamLink;
 	
 

@@ -31,10 +31,10 @@ public class Serie {
 	Long idSerie;
 
 	@NotBlank(message = "une serie doit forcement avoir un nom ")
-	@Column(nullable = false)
+	@Column(nullable = false, columnDefinition = "TEXT")
 	String name;
 
-	@Column(nullable = false)
+	@Column(nullable = false, columnDefinition = "TEXT")
 	String overview;
 
 	
@@ -54,16 +54,20 @@ public class Serie {
 
 	Long budget;
 
-
+	@Column(columnDefinition = "TEXT")
 	String trailerUrl;
+	
+	@Column(columnDefinition = "TEXT")
 	String trailer;
 
 	@Column(nullable = false, columnDefinition = "boolean default false")
 	Boolean AccessFree;
 
 	@NotNull(message = "une image miniature est requise pour une serie")
+	@Column(columnDefinition = "TEXT")
 	String backdrop_path;
 
+	@Column(columnDefinition = "TEXT")
 	String poster_path;
 
 	String Langue;

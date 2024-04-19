@@ -35,8 +35,10 @@ public class Podcast {
 	String overview;
 
 	@NotNull(message = "une image miniature est requise pour un podcast")
+	@Column(columnDefinition = "TEXT")
 	String backdrop_path;
-
+	
+	@Column(columnDefinition = "TEXT")
 	String poster_path;
 
 	@NotNull(message="Un podcast doit forcement avoir une categori")
@@ -48,8 +50,10 @@ public class Podcast {
 	@Column(nullable = false, columnDefinition = "boolean default false")
 	Boolean accessFree;
 
+	@Column(columnDefinition = "TEXT")
 	String fileLink;
-
+	
+	@Column(columnDefinition = "TEXT")
 	String streamlink;
 
 }

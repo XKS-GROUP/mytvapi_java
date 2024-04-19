@@ -33,7 +33,7 @@ public class Episode {
 	String name;
 
 	@NotBlank(message = "Ce champ ne peut etre vide")
-	@Column(nullable = false)
+	@Column(nullable = false, columnDefinition = "TEXT")
 	String overView;
 
 	@NotBlank(message = "Ce champ ne peut etre vide, un episode doit forcement faire reference a une serie")
@@ -62,26 +62,40 @@ public class Episode {
 	Boolean accessFree;
 
 	@NotNull(message = "une image miniature est requise pour un episode")
+	@Column(columnDefinition = "TEXT")
 	String backdrop_path;
 
+	@Column(columnDefinition = "TEXT")
 	String posterUrl;
-
+	
+	@Column(columnDefinition = "TEXT")
 	String trailer;
 
 	@NotNull(message = "un fichier fideo initial est requis pour un episode")
+	@Column(columnDefinition = "TEXT")
 	String videoFile;
-
+    
+	@Column(columnDefinition = "TEXT")
 	String videoFile480pLocal;
+	
+	@Column(columnDefinition = "TEXT")
 	String videoFile480pUrl;
-
+	
+	@Column(columnDefinition = "TEXT")
 	String videoFile720pLocal;
+	
+	@Column(columnDefinition = "TEXT")
 	String videoFile720pUrl;
 
+	@Column(columnDefinition = "TEXT")
 	String videoFile1080pLocal;
+	
+	@Column(columnDefinition = "TEXT")
 	String videoFile1080pUrl;
 
 	@Column(nullable = false, columnDefinition = "boolean default false")
 	boolean download;
 
+	@Column(columnDefinition = "TEXT")
 	String  downloadURL;
 }

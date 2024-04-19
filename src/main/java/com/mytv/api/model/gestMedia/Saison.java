@@ -35,7 +35,7 @@ public class Saison {
 	String name;
 
 	@NotBlank(message = "ce champs ne peut pas etre null")
-	@Column(nullable = false)
+	@Column(nullable = false, columnDefinition = "TEXT")
 	String overview;
 
 	@NotNull(message ="Ce champs ne peut pas etre null ou vide, une saison doit forcement faire reference a une serie")
@@ -43,11 +43,16 @@ public class Saison {
 	Long idSerie;
 
 	@NotNull(message = "une image miniature est requise pour une serie")
+	@Column(columnDefinition = "TEXT")
 	String backdrop_path;
 
+	@Column(columnDefinition = "TEXT")
 	String poster_path;
 
+	@Column(columnDefinition = "TEXT")
 	String trailerURL;
+	
+	@Column(columnDefinition = "TEXT")
 	String trailerFile;
 
 	@Column(nullable = false, columnDefinition = "boolean default false")
