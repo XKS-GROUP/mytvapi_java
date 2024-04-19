@@ -66,7 +66,7 @@ public class MetadataServiceImpl implements MetadataService {
         metadata.put("Content-Length", String.valueOf(file.getSize()));
 
         String path = String.format("%s/%s", bucketName, UUID.randomUUID());
-        String fileName = String.format("%s", file.getOriginalFilename()).replaceAll(" ", "_");
+        String fileName = String.format("%s", file.getOriginalFilename()).replaceAll("[^a-zA-Z0-9]", "");
 
         // upload du fichier dans R2
         PutObjectResult putObjectResult = amazonS3Service.upload(
@@ -74,7 +74,7 @@ public class MetadataServiceImpl implements MetadataService {
 
         // Enregistrement de la trace dans la db
        
-        String presign = awsImp.generatePresignedUrl(bucketName, fileName, 100).toString();
+        String presign = awsImp.generatePresignedUrl(bucketName, fileName, 10080).toString();
         
         fileMetaRepository.save(new FileMeta(fileName.replaceAll("\\s+", ""), path, putObjectResult.getMetadata().getVersionId(), presign));
 
@@ -105,11 +105,11 @@ public class MetadataServiceImpl implements MetadataService {
 
         // upload du fichier dans R2
         PutObjectResult putObjectResult = amazonS3Service.upload(
-                path, fileName.replaceAll("\\s+", "-"), Optional.of(metadata), file.getInputStream());
+                path, fileName.replaceAll("[^a-zA-Z0-9.]", ""), Optional.of(metadata), file.getInputStream());
 
         // Enregistrement de la trace dans la db
         
-        String presign = awsImp.generatePresignedUrl(bucketName, pathFile+"/"+fileName, 100).toString();
+        String presign = awsImp.generatePresignedUrl(bucketName, pathFile+"/"+fileName.replaceAll("[^a-zA-Z0-9.]", ""), 10080).toString();
         
         FileMeta dataMeta = new FileMeta(fileName.replaceAll("\\s+", "-"), path, putObjectResult.getMetadata().getVersionId(), presign);
 
@@ -117,7 +117,7 @@ public class MetadataServiceImpl implements MetadataService {
         dataMeta.setFormat(file.getContentType());
         fileMetaRepository.save(dataMeta);
 
-        filepath = dataMeta.getFilePath().replaceAll("\\s+", "-")+"/"+dataMeta.getFileName();
+        filepath = dataMeta.getFilePath()+"/"+dataMeta.getFileName();
 
         return dataMeta;
 

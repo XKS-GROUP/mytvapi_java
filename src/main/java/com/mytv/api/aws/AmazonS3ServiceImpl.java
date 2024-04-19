@@ -79,7 +79,7 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
         
         
         //Expire en 2038
-        expTimeMillis = new Date().getTime() + (1000L * 60 * 60 * 24 * 365 * 20);//Commenter cette ligne si vous vouler que le paramettre expirationInMinutes soit pris en compte
+        //expTimeMillis = new Date().getTime() + (1000L * 60 * 60 * 24 * 365 * 20);//Commenter cette ligne si vous vouler que le paramettre expirationInMinutes soit pris en compte
         
         expiration.setTime(expTimeMillis);
 
