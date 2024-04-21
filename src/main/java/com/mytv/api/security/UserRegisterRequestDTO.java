@@ -25,7 +25,7 @@ import lombok.ToString;
 @ToString
 public class UserRegisterRequestDTO {
 
-	@Size(min = 4)
+	@Size(min = 7, message = "le mot de passe doit contenir au moins 7 caractère" )
 	@NotBlank(message = "ce champ ne peut pas etre vide et doit etre unique")
 	private String username;
 

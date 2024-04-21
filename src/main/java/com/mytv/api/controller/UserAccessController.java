@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mytv.api.dto.NewPwdDTO;
 import com.mytv.api.dto.PwdResetPwdDTO;
 import com.mytv.api.model.gestUser.Jwt;
 import com.mytv.api.model.gestUser.User;
@@ -243,7 +244,12 @@ public class UserAccessController {
 		validationRepository.deleteById(id) ;
 	}
 
-	//Renvoi du code d'activation après expiration
+
+	/*
+	 * 
+	 * 	Renvoi du code d'activation après expiration
+	 * 
+	 */
 	@PostMapping("newcode/{email}")
 	@Transactional
     public ResponseEntity<Object> newcode(@PathVariable String email) {
@@ -317,82 +323,24 @@ public class UserAccessController {
     }
 
 	//Mot de passe oublié
-	//Envoi du code
-	@PostMapping("pwdLostSendCode/{email}")
-    public ResponseEntity<Object> pwdnewcode(@PathVariable String email) {
-
-
-		    if(email.isEmpty()) {
-
-		    	return EntityResponse.generateResponse("Champ email vide", HttpStatus.BAD_REQUEST, "le champ email ne puis être vide");
-		    }
-
-
-		    else if(userService.findByUserEmail(email) ==null ) {
-
-		    	return EntityResponse.generateResponse("Utilisateur Introuvable", HttpStatus.BAD_REQUEST, "Aucun utilisateur enregistré sous "+email.toString());
-
-		    }
-
-		    else {
-
-
-		    	    User user = userService.findByUserEmail(email);
-
-				    Validation validation = new Validation();
-
-			        validation.setUtilisateur(user);
-
-			        Instant creation = Instant.now();
-			        validation.setCreation(creation);
-			        Instant expiration = creation.plus(10, MINUTES);
-			        validation.setExpiration(expiration);
-			        Random random = new Random();
-			        int randomInteger = random.nextInt(999999);
-			        String code = String.format("%06d", randomInteger);
-
-			        validation.setCode(code);
-			        if(validationRepository.findByUtilisateurId(user.getId()) != null ){
-
-
-			        	//String cd = validationRepository.findByUtilisateurId(user.getId()).getCode();
-
-			        	//validationRepository.delete(validationRepository.findByUtilisateurId(user.getId()));
-			        	//validationRepository.deleteById(validationRepository.findByUtilisateurId(user.getId()).getId());
-			        	
-			        	//suppValidation(validationRepository.findByUtilisateurId(user.getId()).getId());
-			        	validationService.updateByid(validationRepository.findByUtilisateurId(user.getId()).getId(), validation);
-			        	notificationService.envoyer(validation);
-			        	return EntityResponse.generateResponse("User Profile", HttpStatus.OK, "Nouveau Code Renvoyer a l'adresse "+user.getEmail());
-			        }
-			        validationRepository.save(validation);
-			        
-			        notificationService.envoyerPour(validation, "Reinitialisation du mot de passe");
-
-			        return EntityResponse.generateResponse("Mot de passe oublié", HttpStatus.OK, "Un code Renvoyer a l'adresse "+user.getEmail());
-		    }
-
-    }
-
+	
 	
 	/*
-	 * Envoi de code de reinitialisation du mod de passe 
+	 * Envoi du code de reinitialisation du mod de passe 
 	 * 
 	 */
 	
-	@PostMapping("pwdLostSendCode")
+	@PostMapping("password/send/resetcode")
     public ResponseEntity<Object> sendResetPawd(@Valid @RequestBody PwdResetPwdDTO email) {
-
 
 
 		    if(userService.findByUserEmail(email.getEmail()) == null ) {
 
-		    	return EntityResponse.generateResponse("Utilisateur Introuvable", HttpStatus.BAD_REQUEST, "Aucun utilisateur enregistré sous "+email.toString());
+		    	return EntityResponse.generateResponse("Utilisateur Introuvable", HttpStatus.CONFLICT, "Aucun utilisateur enregistré sous "+email.getEmail());
 
 		    }
 
 		    else {
-
 
 		    	    User user = userService.findByUserEmail(email.getEmail());
 
@@ -412,32 +360,34 @@ public class UserAccessController {
 			        if(validationRepository.findByUtilisateurId(user.getId()) != null ){
 
 			        	validationService.updateByid(validationRepository.findByUtilisateurId(user.getId()).getId(), validation);
-			        	notificationService.envoyer(validation);
 			        	
-			        	return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, "Nouveau Code Renvoyer a l'adresse "+user.getEmail());
+			        	notificationService.envoyerPour(validation, "Code de validation");
+			        	
+			        	return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, "Un code à été envoyer à l'adresse "+user.getEmail());
 			        }
 			        validationRepository.save(validation);
 			        
-			        notificationService.sendUriResetPWD(validation, "Reinitialisation du mot de passe" , "https://api.mytelevision.fr");
+			        notificationService.envoyerPour(validation, "Code de validation");
 
-			        return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, "Un code Renvoyer a l'adresse "+user.getEmail());
+			        return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, "Un code à été envoyer à l'adresse "+user.getEmail());
 		    }
 
     }
 	
 	
+	/*
+	 * 
+	 * Mot de passe perdu, utiliser une fois que l utilisateur aura cliqué sur le lien envoyer par mail
+	 * 
+	 */
 	//MAJ du password
-	@PostMapping("resetpassword/{code}")
-    public ResponseEntity<Object> resetpwd(@RequestBody String pwd, @PathVariable Map<String, String> code) {
+	@PostMapping("password/reset/{code}")
+    public ResponseEntity<Object> resetpwd(@Valid @RequestBody NewPwdDTO pwd, @PathVariable Map<String, String> code) {
 
-			if(code.isEmpty()) {
-				System.out.println("je sui dedans biwware,ent 888");
+			if(code.isEmpty()) { 
+				
 				return EntityResponse.generateResponse("Code vide", HttpStatus.BAD_REQUEST, "le code ne puis être vide, il represente le code envoyer par email");
 			}
-			else if(pwd.isEmpty()) {
-				System.out.println("je sui dedans biwware,ent 999");
-		    	return EntityResponse.generateResponse("Champ mot de passe vide", HttpStatus.BAD_REQUEST, "le nouveau mot de passe ne puis être vide");
-		    }
 		    else {
 		    	
 		    		
@@ -449,23 +399,26 @@ public class UserAccessController {
 		    	    //test si l user existe vraiment
 		    	    if(userService.findByUserEmail(email) ==null ) {
 
-				    	return EntityResponse.generateResponse("Utilisateur Introuvable", HttpStatus.BAD_REQUEST, "Aucun utilisateur enregistré sous "+email.toString());
+				    	return EntityResponse.generateResponse("Utilisateur Introuvable", HttpStatus.CONFLICT, "Aucun utilisateur enregistré sous "+email.toString());
 
 				    }
 		    	    else if(Instant.now().isAfter(validation.getExpiration())){
 			        	
-			        	return EntityResponse.generateResponse("Utilisateur Valide", HttpStatus.BAD_REQUEST, "Ce code a expiré, veuillez faire une nouvelle demande d envoi ");
+			        	return EntityResponse.generateResponse("Utilisateur Valide", HttpStatus.CONFLICT, "Ce code a expiré, veuillez faire une nouvelle demande d envoi ");
 			        }
 		    	    else  {
+		    	    	
 			    	    User user = userService.findByUserEmail(email);
 
-			    	    user.setPassword(passwordEncoder.encode(pwd));
+			    	    
+			    	    user.setPassword(passwordEncoder.encode(pwd.getMdp()));
 
 			    	    userService.updateByid(user.getId(), user);
 
-				        //notificationService.envoyerPour(validation, "Demande de changement de mot de passe");
-
-				        return EntityResponse.generateResponse("User password", HttpStatus.OK, "Le mot de passe a été changé avec succès pour " +user.getEmail());
+			    	    
+				        return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, "Le mot de passe a été changé avec succès pour " 
+				                              +user.getEmail()+notificationService.sendConfirmationMdpSucces(validation, "Modification de votre mot de passe"));
+				        
 
 		    	    }
 		    	 }
@@ -473,12 +426,6 @@ public class UserAccessController {
     }
 
 
-	//Affiche l utilisateur actuelle et ses info profile
-	/*@SecurityRequirement(name = "bearerAuth")
-	@GetMapping("profile")
-	public ResponseEntity<Object> retrieveUserProfile(){
-		return EntityResponse.generateResponse("User Profile", HttpStatus.OK, userService.findCurrentUser());
-	}*/
 
 	//Se deconnecter
 	@SecurityRequirement(name = "bearerAuth")

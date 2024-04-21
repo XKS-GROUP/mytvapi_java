@@ -51,6 +51,25 @@ public class NotificationService {
         javaMailSender.send(message);
     }
     
+    public String sendConfirmationMdpSucces(Validation validation, String obj) {
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("test@smeth-dev.site");
+        message.setTo(validation.getUtilisateur().getEmail());
+        message.setSubject(obj.toString());
+
+        String texte = String.format(
+                "Bonjour %s, Votre mot de passe à été modifié avec succès",
+                validation.getUtilisateur().getUsername()
+                
+                );
+
+        message.setText(texte);
+
+        javaMailSender.send(message);
+        return "";
+    }
+    
     
     //Pour renvoyer l'adresse de reinitialisation de mot de passe
     public void sendUriResetPWD(Validation validation, String obj, String url) {
