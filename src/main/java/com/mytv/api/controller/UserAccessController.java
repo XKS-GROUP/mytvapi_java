@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mytv.api.dto.PwdResetPwdDTO;
 import com.mytv.api.model.gestUser.Jwt;
 import com.mytv.api.model.gestUser.User;
 import com.mytv.api.model.gestUser.Validation;
@@ -373,6 +374,58 @@ public class UserAccessController {
 
     }
 
+	
+	/*
+	 * Envoi de code de reinitialisation du mod de passe 
+	 * 
+	 */
+	
+	@PostMapping("pwdLostSendCode")
+    public ResponseEntity<Object> sendResetPawd(@Valid @RequestBody PwdResetPwdDTO email) {
+
+
+
+		    if(userService.findByUserEmail(email.getEmail()) == null ) {
+
+		    	return EntityResponse.generateResponse("Utilisateur Introuvable", HttpStatus.BAD_REQUEST, "Aucun utilisateur enregistré sous "+email.toString());
+
+		    }
+
+		    else {
+
+
+		    	    User user = userService.findByUserEmail(email.getEmail());
+
+				    Validation validation = new Validation();
+
+			        validation.setUtilisateur(user);
+
+			        Instant creation = Instant.now();
+			        validation.setCreation(creation);
+			        Instant expiration = creation.plus(10, MINUTES);
+			        validation.setExpiration(expiration);
+			        Random random = new Random();
+			        int randomInteger = random.nextInt(999999);
+			        String code = String.format("%06d", randomInteger);
+
+			        validation.setCode(code);
+			        if(validationRepository.findByUtilisateurId(user.getId()) != null ){
+
+			        	validationService.updateByid(validationRepository.findByUtilisateurId(user.getId()).getId(), validation);
+			        	notificationService.envoyer(validation);
+			        	
+			        	return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, "Nouveau Code Renvoyer a l'adresse "+user.getEmail());
+			        }
+			        validationRepository.save(validation);
+			        
+			        notificationService.sendUriResetPWD(validation, "Reinitialisation du mot de passe" , "https://api.mytelevision.fr");
+
+			        return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, "Un code Renvoyer a l'adresse "+user.getEmail());
+		    }
+
+    }
+	
+	
 	//MAJ du password
 	@PostMapping("resetpassword/{code}")
     public ResponseEntity<Object> resetpwd(@RequestBody String pwd, @PathVariable Map<String, String> code) {

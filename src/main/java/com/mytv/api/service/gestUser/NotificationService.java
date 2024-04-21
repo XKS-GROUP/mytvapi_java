@@ -50,4 +50,26 @@ public class NotificationService {
 
         javaMailSender.send(message);
     }
+    
+    
+    //Pour renvoyer l'adresse de reinitialisation de mot de passe
+    public void sendUriResetPWD(Validation validation, String obj, String url) {
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("test@smeth-dev.site");
+        message.setTo(validation.getUtilisateur().getEmail());
+        message.setSubject(obj.toString());
+
+        String ad = url+"/"+validation.getCode();
+        String texte = String.format(
+                "Bonjour %s, votre adresse unique de réinitialisation de mot de passe est  %s; celle-ci expirera dans 10 minute",
+                validation.getUtilisateur().getUsername(),
+                ad
+
+                );
+
+        message.setText(texte);
+
+        javaMailSender.send(message);
+    }
 }
