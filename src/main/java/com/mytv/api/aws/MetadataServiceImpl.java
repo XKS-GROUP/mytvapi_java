@@ -28,6 +28,8 @@ public class MetadataServiceImpl implements MetadataService {
     @Autowired
     private AmazonS3Service amazonS3Service;
 
+    @Autowired
+    private FileMetaRepository fmRep;
     
     
     @Autowired

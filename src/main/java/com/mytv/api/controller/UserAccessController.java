@@ -448,7 +448,7 @@ public class UserAccessController {
 
 	//Se deconnecter de tous les periphériques
 	@SecurityRequirement(name = "bearerAuth")
-	@PostMapping("logoutAllDevice")
+	@PostMapping("logout/allDevice")
 	@Transactional
 	public ResponseEntity<Object> logoutAll() {
 

@@ -13,7 +13,6 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +20,6 @@ import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Entity
 @Data
 @Getter
@@ -67,5 +65,9 @@ public class Podcast {
 	
 	@Column(columnDefinition = "TEXT")
 	String streamlink;
+	
+	@NotNull(message = "ce champ ne peut etre vide, au moins une langue est requise")
+	@Column(nullable = false)
+	List<Long>  langue = new ArrayList<>();
 
 }

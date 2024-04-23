@@ -14,7 +14,6 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,13 +22,11 @@ import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Entity
 @Data
 @Getter
 @Setter
 public class Film {
-
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

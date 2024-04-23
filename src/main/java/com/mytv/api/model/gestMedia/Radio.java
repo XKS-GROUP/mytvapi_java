@@ -11,7 +11,6 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +23,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Data
-@Builder
 public class Radio {
 
 	@Id
@@ -65,5 +63,9 @@ public class Radio {
 	@NotNull(message = "ce champ ne peut etre vide, une radio doit etre représenter par un pays")
 	@Column(nullable = false)
 	List<Long>  country = new ArrayList<>();
+	
+	@NotNull(message = "ce champ ne peut etre vide, une radio doit avoir au moins une langue")
+	@Column(nullable = false)
+	List<Long>  langue = new ArrayList<>();
 	
 }

@@ -44,8 +44,12 @@ public class JWTRequestFilter extends OncePerRequestFilter {
 		final String requestTokenHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 		
 		if (requestTokenHeader == null || requestTokenHeader == "" || requestTokenHeader.isBlank() || requestTokenHeader.isEmpty() || !requestTokenHeader.startsWith("Bearer ")) {
+			
+			
 			chain.doFilter(request, response);
-			System.out.println("Votre token n'est pas valide   ");
+			
+			System.out.println("Je suis appeler   ");
+			
 			return;
 		}
 		

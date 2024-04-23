@@ -1076,6 +1076,13 @@ public class MediaController {
     }
 	
 	@Tag(name = "R2-CLOUDFLARE")
+    @GetMapping("r2/find/all/whithPaging")
+    public ResponseEntity<Object> allWithPaging(Pageable p) {
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, metadataService.listWithPage(p));
+    }
+	
+	@Tag(name = "R2-CLOUDFLARE")
     @GetMapping("r2/download/{idFile}")
     public ResponseEntity<Object> download( @PathVariable int idFile) {
 

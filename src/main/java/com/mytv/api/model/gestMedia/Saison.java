@@ -1,5 +1,6 @@
 package com.mytv.api.model.gestMedia;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,11 +16,9 @@ import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Builder
 @Entity
 @Data
 @NoArgsConstructor
@@ -68,5 +67,9 @@ public class Saison {
 
 	@OneToMany(mappedBy = "idEpisode",cascade = CascadeType.REMOVE)
 	List<Episode> episode;
+	
+	@NotNull(message = "ce champ ne peut etre vide, au moins une langue est requise")
+	@Column(nullable = false)
+	List<Long>  langue = new ArrayList<>();
 
 }

@@ -1,6 +1,5 @@
 package com.mytv.api.execptions;
 
-import java.net.UnknownHostException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Collections;
 import java.util.HashMap;
