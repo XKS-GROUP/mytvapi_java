@@ -31,6 +31,9 @@ public class CatPodcast {
 	@NotBlank(message="ce champ ne peut etre vide")
 	@Column(nullable = false)
 	String name;
+	
+	@Column(nullable = false, columnDefinition = "boolean default false")
+	boolean status;
 
 	@NotBlank(message = "Une image est requise")
 	@Column(columnDefinition = "TEXT")

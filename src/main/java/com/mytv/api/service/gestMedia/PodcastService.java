@@ -46,14 +46,10 @@ public class PodcastService {
 
 	public Podcast upadte(final Long id, Podcast u) {
 
-		Podcast old = rep.findById(id).get();
 
-		old = u;
+		u.setIdPodcast(id);
 
-
-		old.setIdPodcast(id);
-
-		return rep.save(old);
+		return rep.save(u);
 	}
 
 
@@ -62,7 +58,7 @@ public class PodcastService {
 
 		rep.deleteById(id);
 
-		return null;
+		return true;
 
 	}
 
