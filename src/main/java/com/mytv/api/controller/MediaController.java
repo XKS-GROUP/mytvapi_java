@@ -784,9 +784,9 @@ public class MediaController {
 	@DeleteMapping(path="podcasts/delete/{id}")
 	public ResponseEntity<Object> deleteP (@PathVariable Long id) {
 
-		liveService.delete(id);
+		podcastservice.delete(id);
 
-		return EntityResponse.generateResponse("SUCCES", HttpStatus.NO_CONTENT, true );
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, true );
 	}
 
 
