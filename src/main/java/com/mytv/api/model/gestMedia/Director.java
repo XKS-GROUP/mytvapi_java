@@ -1,6 +1,8 @@
 package com.mytv.api.model.gestMedia;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -46,6 +48,6 @@ public class Director {
 
 	@NotNull(message = "Ce champ ne peut etre vide")
 	@Column(nullable = false)
-	Long pays;
+	List <Long> pays = new ArrayList<>();
 
 }
