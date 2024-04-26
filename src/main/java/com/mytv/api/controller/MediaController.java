@@ -166,14 +166,14 @@ public class MediaController {
     @Tag(name = "Podcast Collection")
 	@PutMapping("podcast/collections/update/{id}")
 	public ResponseEntity<Object> updateCollection(@PathVariable Long id, @Valid @RequestBody ColPodcast a){
-
+    	a.setIdColPd(id);
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, colPodRep.save(a));
 		
 	}
     
     
     @Tag(name = "Podcast Collection")
-	@PutMapping("podcast/collections/delete/{id}")
+	@DeleteMapping("podcast/collections/delete/{id}")
 	public ResponseEntity<Object> deleteCollection(@PathVariable Long id){
     	actorRep.deleteById(id);
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, " ");
