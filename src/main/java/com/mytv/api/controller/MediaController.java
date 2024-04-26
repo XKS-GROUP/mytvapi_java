@@ -398,7 +398,7 @@ public class MediaController {
 
 		paysService.delete(id);
 
-		return EntityResponse.generateResponse("SUCCES", HttpStatus.NO_CONTENT , true);
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK , true);
 	}
 
 
@@ -659,7 +659,7 @@ public class MediaController {
 			@RequestBody Radio r) {
 
 		//Save du tout
-		return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, radioService.upadte(id, r));
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, radioService.upadte(id, r));
 
 	}
 
@@ -669,7 +669,7 @@ public class MediaController {
 
 		radioService.delete(id);
 
-		return EntityResponse.generateResponse("SUCCES", HttpStatus.NO_CONTENT, true);
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, true);
 	}
 
 	//ROUTES LiveTV
@@ -726,7 +726,7 @@ public class MediaController {
 
 		liveService.delete(id);
 
-		return EntityResponse.generateResponse("SUCCES", HttpStatus.NO_CONTENT, true);
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, true);
 	}
 
 	//Podcast
@@ -776,7 +776,7 @@ public class MediaController {
 			@RequestBody Podcast p) {
 
 			//Save du tout
-			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, podcastservice.upadte(id, p) );
+			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, podcastservice.upadte(id, p) );
 
 	}
 
@@ -835,7 +835,7 @@ public class MediaController {
 	@PutMapping(path="movies/update/{id}")
 	public ResponseEntity<Object> updateM(@PathVariable Long id,
 			@RequestBody Film film)  {
-		return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, filmService.upadte(id, film));
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, filmService.upadte(id, film));
 
 	}
 
@@ -896,7 +896,7 @@ public class MediaController {
 			@PathVariable Long id,
 			@RequestBody Serie serie){
 
-			return EntityResponse.generateResponse("Type de media non supporter", HttpStatus.CREATED , serieService.upadte(id, serie));
+			return EntityResponse.generateResponse("Type de media non supporter", HttpStatus.OK , serieService.upadte(id, serie));
 
 	}
 
@@ -977,7 +977,7 @@ public class MediaController {
 
 		saisonService.delete(id);
 
-		return EntityResponse.generateResponse("SUCCES", HttpStatus.NO_CONTENT, true);
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, true);
 	}
 	
 	//FIN SAISON
@@ -1043,7 +1043,7 @@ public class MediaController {
 			@Valid @RequestBody Episode episode){
 
 		//Save du tout
-		return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, episodeService.upadte(id, episode));
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, episodeService.upadte(id, episode));
 
 	}
 
@@ -1053,7 +1053,7 @@ public class MediaController {
 
 		episodeService.delete(id);
 
-		return EntityResponse.generateResponse("SUCCES", HttpStatus.NO_CONTENT, true);
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, true);
 	}
     //FIN EPISODE
     
