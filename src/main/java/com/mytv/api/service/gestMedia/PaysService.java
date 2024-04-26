@@ -38,15 +38,11 @@ public class PaysService {
 		return rep.findAll(p);
 	}
 
-	public Pays upadte(final Long id, Pays u) {
+	public Pays upadte(Long id, Pays u) {
 
-		Pays old = rep.findById(id).get();
+		u.setIdPays(id);
 
-		old = u;
-
-		old.setIdPays(id);
-
-		return rep.save(old);
+		return rep.save(u);
 	}
 
 	public Boolean delete(Long id) {

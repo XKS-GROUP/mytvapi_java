@@ -150,7 +150,7 @@ public class MediaController {
 	}
     
     @Tag(name = "Podcast Collection")
-	@GetMapping("podcast/collections/show/{id}")
+	@GetMapping("podcast/collections/{id}")
 	public ResponseEntity<Object> showCollectionById(@PathVariable long id){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, colPodRep.findById(id));
@@ -202,7 +202,7 @@ public class MediaController {
 	}
     
     @Tag(name = "Acteur")
-	@GetMapping("acteurs/show/{id}")
+	@GetMapping("acteurs/{id}")
 	public ResponseEntity<Object> showActorById(@PathVariable long id){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, actorRep.findById(id));
@@ -225,7 +225,7 @@ public class MediaController {
     
     
     @Tag(name = "Acteur")
-	@PutMapping("acteurs/delete/{id}")
+	@DeleteMapping("acteurs/delete/{id}")
 	public ResponseEntity<Object> deleteActor(@PathVariable Long id){
     	actorRep.deleteById(id);
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, " ");
@@ -251,7 +251,7 @@ public class MediaController {
 	}
     
     @Tag(name = "Directeur")
-	@GetMapping("directeurs/show/{id}")
+	@GetMapping("directeurs/{id}")
 	public ResponseEntity<Object> showDirById(@PathVariable long id){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, directorsRep.findById(id));
@@ -929,7 +929,7 @@ public class MediaController {
 	}
 	
 	@Tag(name = "Saison")
-	@GetMapping("saisons/show/bySerie/{idSerie}")
+	@GetMapping("saisons/bySerie/{idSerie}")
 	public ResponseEntity<Object> showSaisonBySerie(@PathVariable Long idSerie){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, saisonService.showBySerie(idSerie));
@@ -1006,7 +1006,7 @@ public class MediaController {
 	}
 	
 	@Tag(name = "Episode")
-	@GetMapping("episodes/show/bySaison/{idSaison}")
+	@GetMapping("episodes/bySaison/{idSaison}")
     public ResponseEntity<Object> showE(@PathVariable Long idSaison){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showBySaison(idSaison));
