@@ -34,5 +34,11 @@ public class Pays {
 
 	@NotBlank(message="ce champ ne peut etre vide et doit etre unique, ce champ represente le code unique d'un pays ")
 	@Column(nullable = false)
-	String slug ;
+	String isoCode;
+	
+	@NotBlank(message="ce champ ne peut etre vide et doit etre unique, ce champ represente l indicatif téléphonique d'un pays ")
+	@Column(nullable = false)
+	String countryCode;
+	
+	String countryFlag;
 }
