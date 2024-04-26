@@ -82,6 +82,15 @@ public class AdminAccessController {
 				userService.updateUser(user) );
 	}
 	
+	//Update Current profil
+	@Tag(name = "ADMIN Profil")
+	@PutMapping("profil/update/{id}")
+	public ResponseEntity<Object> updateProfileId(@PathVariable Long id, @Valid @RequestBody User user){
+
+		return EntityResponse.generateResponse("User "+user.getUsername()+" a été mis a jour ", HttpStatus.OK, 
+				userService.updateByid(id, user) );
+	}
+	
 	//Sup compte actuel
 	@Tag(name = "ADMIN Profil")
 	@DeleteMapping("profil/delete/currentAcount")

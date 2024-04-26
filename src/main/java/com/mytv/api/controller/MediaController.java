@@ -313,7 +313,7 @@ public class MediaController {
 
 	@Tag(name = "Langue")
 	@PutMapping("lang/update/{id}")
-	public ResponseEntity<Object> updateLang(@PathVariable Long id, @RequestBody Language u){
+	public ResponseEntity<Object> updateLang(@PathVariable Long id,@Valid @RequestBody Language u){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, langService.upadte(id, u));
 
@@ -321,7 +321,7 @@ public class MediaController {
 
 	@Tag(name = "Langue")
 	@PostMapping(path="lang/create")
-	public ResponseEntity<Object> createLang(@RequestBody Language u) {
+	public ResponseEntity<Object> createLang(@Valid @RequestBody Language u) {
 		
 		if( langService.showByName(u.getName()) != null ) {
 			
@@ -347,7 +347,7 @@ public class MediaController {
 
 	@Tag(name = "Langue")
 	@GetMapping("langs/search/byname/{name}")
-	public ResponseEntity<Object> showLangByName(@Valid @PathVariable String name){
+	public ResponseEntity<Object> showLangByName( @PathVariable String name){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, langService.showByName(name));
 	}
@@ -386,7 +386,7 @@ public class MediaController {
 
 	@Tag(name = "Pays")
 	@PutMapping("pays/update/{id}")
-	public ResponseEntity<Object> updatePays(@PathVariable Long id, @RequestBody Pays u){
+	public ResponseEntity<Object> updatePays(@PathVariable Long id,@Valid @RequestBody Pays u){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, paysService.upadte(id, u));
 
@@ -444,14 +444,14 @@ public class MediaController {
 
 	@Tag(name = "Genre FILM SERIE")
 	@GetMapping("genres/search/byName/{name}")
-	public ResponseEntity<Object> showByName(@Valid @PathVariable String name){
+	public ResponseEntity<Object> showByName(@PathVariable String name){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.showByName(name));
 	}
 
 	@Tag(name = "Genre FILM SERIE")
 	@GetMapping("genres/search/contain/{name}")
-	public ResponseEntity<Object> showByNameContain(@Valid @PathVariable String name){
+	public ResponseEntity<Object> showByNameContain(@PathVariable String name){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.findByNameContain(name));
 		
@@ -467,7 +467,7 @@ public class MediaController {
 
 	@Tag(name = "Genre FILM SERIE")
 	@PutMapping("genres/update/{id}")
-	public ResponseEntity<Object> updateG(@PathVariable Long id, @RequestBody Genre g){
+	public ResponseEntity<Object> updateG(@PathVariable Long id,@Valid @RequestBody Genre g){
 		g.getName().toUpperCase();
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.upadte(id, g));
 
@@ -530,7 +530,7 @@ public class MediaController {
 	@PutMapping(path="catrl/update/{id}")
 	public ResponseEntity<Object> updateCRL(
 			@PathVariable Long id,
-			@RequestBody CategoryRL u) {
+			@Valid @RequestBody CategoryRL u) {
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catLrService.upadte(id, u));
 
@@ -600,7 +600,7 @@ public class MediaController {
 	public ResponseEntity<Object> updateCP(
 
 			@PathVariable Long id,
-			@RequestBody CatPodcast u){
+			@Valid @RequestBody CatPodcast u){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catpodService.upadte(id, u));
 
@@ -633,7 +633,8 @@ public class MediaController {
 
 	@Tag(name = "Radio")
 	@PostMapping(path="radios/create")
-	public  ResponseEntity<Object> createR(@Valid
+	public  ResponseEntity<Object> createR(
+			@Valid
 			@RequestBody Radio r ){
 
 			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, radioService.create(r));
@@ -656,7 +657,7 @@ public class MediaController {
 	@Tag(name = "Radio")
 	@PutMapping(path="radios/update/{id}")
 	public ResponseEntity<Object> updateR(@PathVariable Long id,
-			@RequestBody Radio r) {
+			@Valid @RequestBody Radio r) {
 
 		//Save du tout
 		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, radioService.upadte(id, r));
@@ -748,7 +749,7 @@ public class MediaController {
 	@Tag(name = "Podcast")
 	@PostMapping(path="podcasts/create")
 	public ResponseEntity<Object> createP(
-			@RequestBody Podcast p){
+			@Valid @RequestBody Podcast p){
 
 			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, podcastservice.create(p) );
 
@@ -773,7 +774,7 @@ public class MediaController {
 	@PutMapping(path="podcasts/update/{id}")
 	public ResponseEntity<Object> updateP(
 			@PathVariable Long id,
-			@RequestBody Podcast p) {
+			@Valid @RequestBody Podcast p) {
 
 			//Save du tout
 			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, podcastservice.upadte(id, p) );
@@ -834,7 +835,7 @@ public class MediaController {
 	@Tag(name = "Movie")
 	@PutMapping(path="movies/update/{id}")
 	public ResponseEntity<Object> updateM(@PathVariable Long id,
-			@RequestBody Film film)  {
+			@Valid @RequestBody Film film)  {
 		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, filmService.upadte(id, film));
 
 	}
@@ -894,7 +895,7 @@ public class MediaController {
 	@PutMapping(path="series/update/{id}")
 	public ResponseEntity<Object> updateS(
 			@PathVariable Long id,
-			@RequestBody Serie serie){
+			@Valid @RequestBody Serie serie){
 
 			return EntityResponse.generateResponse("Type de media non supporter", HttpStatus.OK , serieService.upadte(id, serie));
 
@@ -965,7 +966,7 @@ public class MediaController {
 	@PutMapping(path="saisons/update/{id}")
 	public ResponseEntity<Object> updateSaison(
 			@PathVariable Long id,
-			@RequestBody Saison saison){
+			@Valid @RequestBody Saison saison){
 
 			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK , saisonService.upadte(id, saison));
 
