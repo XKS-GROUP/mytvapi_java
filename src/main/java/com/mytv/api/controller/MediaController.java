@@ -276,19 +276,18 @@ public class MediaController {
     
     @Tag(name = "Directeur")
 	@PutMapping("directeurs/update/{id}")
-	public ResponseEntity<Object> updateActor(@PathVariable Long id, @Valid @RequestBody Director a){
+	public ResponseEntity<Object> updateDirecteur(@PathVariable Long id, @Valid @RequestBody Director a){
     	
     	a.setIdDirector(id);
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, directorsRep.save(a));
 		
 	}
     
-    
     @Tag(name = "Directeur")
-	@PutMapping("directeurs/delete/{id}")
+	@DeleteMapping("directeurs/delete/{id}")
 	public ResponseEntity<Object> deleteDir(@PathVariable Long id){
-    	actorRep.deleteById(id);
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, " ");
+    	directorsRep.deleteById(id);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, "");
 		
 	}
     
