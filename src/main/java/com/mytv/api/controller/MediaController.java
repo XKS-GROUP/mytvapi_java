@@ -122,10 +122,18 @@ public class MediaController {
     
     /*
      * 
-     * SOUS TITRE
+     * RESSOURCES
      * 
      * 
      */
+    
+    @Tag(name = "ressources")
+	@GetMapping("all")
+	public ResponseEntity<Object> showRessource(){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, colPodRep.findAll());
+	}
+    
     
     
     
@@ -211,6 +219,7 @@ public class MediaController {
     @Tag(name = "Acteur")
 	@PostMapping("acteurs/create")
 	public ResponseEntity<Object> createActor(@Valid @RequestBody Actor a){
+    	
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.CREATED, actorRep.save(a));
 	}
@@ -219,6 +228,7 @@ public class MediaController {
 	@PutMapping("acteurs/update/{id}")
 	public ResponseEntity<Object> updateActor(@PathVariable Long id, @Valid @RequestBody Actor a){
 
+    	a.setIdActor(id);
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, actorRep.save(a));
 		
 	}
