@@ -40,5 +40,7 @@ public class Pays {
 	@Column(nullable = false)
 	String countryCode;
 	
+	
+	@Column(columnDefinition = "TEXT")
 	String countryFlag;
 }

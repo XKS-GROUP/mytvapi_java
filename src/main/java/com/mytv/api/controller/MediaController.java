@@ -175,8 +175,8 @@ public class MediaController {
     @Tag(name = "Podcast Collection")
 	@DeleteMapping("podcast/collections/delete/{id}")
 	public ResponseEntity<Object> deleteCollection(@PathVariable Long id){
-    	actorRep.deleteById(id);
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, " ");
+    	colPodRep.deleteById(id);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, "");
 		
 	}
     

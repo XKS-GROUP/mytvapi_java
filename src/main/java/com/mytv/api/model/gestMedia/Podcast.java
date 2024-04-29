@@ -64,7 +64,7 @@ public class Podcast {
 	String fileLink;
 	
 	@Column(columnDefinition = "TEXT")
-	String streamlink;
+	String streamLink;
 	
 	@NotNull(message = "ce champ ne peut etre vide, au moins une langue est requise")
 	@Column(nullable = false)
