@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -85,18 +87,21 @@ public class Film {
 	@Column(columnDefinition = "TEXT")
 	String videoFile;
 
+	@JsonIgnore
 	@Column(columnDefinition = "TEXT")
 	String videoFile480pLocal;
 	
 	@Column(columnDefinition = "TEXT")
 	String videoFile480pUrl;
-
+	
+	@JsonIgnore
 	@Column(columnDefinition = "TEXT")
 	String videoFile720pLocal;
 	
 	@Column(columnDefinition = "TEXT")
 	String videoFile720pUrl;
 	
+	@JsonIgnore
 	@Column(columnDefinition = "TEXT")
 	String videoFile1080pLocal;
 	

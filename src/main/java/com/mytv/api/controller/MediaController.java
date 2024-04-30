@@ -1,6 +1,7 @@
 package com.mytv.api.controller;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,12 @@ import com.mytv.api.aws.AmazonS3ServiceImpl;
 import com.mytv.api.aws.FileMeta;
 import com.mytv.api.aws.FileMetaRepository;
 import com.mytv.api.aws.MetadataService;
+import com.mytv.api.dto.RessourceDTO;
+import com.mytv.api.model.FavFilm;
+import com.mytv.api.model.FavLiveTv;
+import com.mytv.api.model.FavPodcast;
+import com.mytv.api.model.FavRadio;
+import com.mytv.api.model.FavSerie;
 import com.mytv.api.model.gestMedia.Actor;
 import com.mytv.api.model.gestMedia.CatPodcast;
 import com.mytv.api.model.gestMedia.CategoryRL;
@@ -44,6 +51,7 @@ import com.mytv.api.repository.CatPodcastRepository;
 import com.mytv.api.repository.CategoryLrRepository;
 import com.mytv.api.repository.CollectionPodcastRepository;
 import com.mytv.api.repository.DirectorRepository;
+import com.mytv.api.response.FavoriteAllResponse;
 import com.mytv.api.security.EntityResponse;
 import com.mytv.api.service.gestMedia.CatPodcastService;
 import com.mytv.api.service.gestMedia.CategoryLrService;
@@ -131,10 +139,21 @@ public class MediaController {
 	@GetMapping("all")
 	public ResponseEntity<Object> showRessource(){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, colPodRep.findAll());
+		
+        List<Pays> pays = paysService.show();
+    	
+    	List<Language> Lang = langService.show();
+    	
+    	List<CategoryRL> CatRL = catLrService.show();
+    	
+    	List<Genre> genre = genreService.show();
+
+    	List<CatPodcast> CatPodcast = catpodService.show();
+		
+		RessourceDTO RDTO = new RessourceDTO(pays, Lang, CatRL, genre, CatPodcast );
+		
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, RDTO);
 	}
-    
-    
     
     
     /*
@@ -195,6 +214,7 @@ public class MediaController {
      * 
      */
     //
+    
     @Tag(name = "Acteur")
 	@GetMapping("acteurs")
 	public ResponseEntity<Object> showActor(){
