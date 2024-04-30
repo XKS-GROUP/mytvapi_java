@@ -26,11 +26,6 @@ import com.mytv.api.aws.FileMeta;
 import com.mytv.api.aws.FileMetaRepository;
 import com.mytv.api.aws.MetadataService;
 import com.mytv.api.dto.RessourceDTO;
-import com.mytv.api.model.FavFilm;
-import com.mytv.api.model.FavLiveTv;
-import com.mytv.api.model.FavPodcast;
-import com.mytv.api.model.FavRadio;
-import com.mytv.api.model.FavSerie;
 import com.mytv.api.model.gestMedia.Actor;
 import com.mytv.api.model.gestMedia.CatPodcast;
 import com.mytv.api.model.gestMedia.CategoryRL;
@@ -51,7 +46,6 @@ import com.mytv.api.repository.CatPodcastRepository;
 import com.mytv.api.repository.CategoryLrRepository;
 import com.mytv.api.repository.CollectionPodcastRepository;
 import com.mytv.api.repository.DirectorRepository;
-import com.mytv.api.response.FavoriteAllResponse;
 import com.mytv.api.security.EntityResponse;
 import com.mytv.api.service.gestMedia.CatPodcastService;
 import com.mytv.api.service.gestMedia.CategoryLrService;
@@ -70,6 +64,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -135,8 +130,6 @@ public class MediaController {
      * 
      */
     
-    @Tag(name = "ressources")
-	@GetMapping("all")
 	public ResponseEntity<Object> showRessource(){
 
 		
@@ -149,11 +142,64 @@ public class MediaController {
     	List<Genre> genre = genreService.show();
 
     	List<CatPodcast> CatPodcast = catpodService.show();
+    	
+    	
 		
 		RessourceDTO RDTO = new RessourceDTO(pays, Langues, CatRL, genre, CatPodcast );
 		
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, RDTO);
 	}
+    
+    
+  
+    
+    @Tag(name = "ressources")
+    @GetMapping("/all")
+    public <R> Object getRessources(@RequestParam(required = false) List<String> resource) {
+    	
+    	List<Pays> pays = paysService.show();
+    	
+    	List<Language> Langues = langService.show();
+    	
+    	List<CategoryRL> CatRL = catLrService.show();
+    	
+    	List<Genre> genre = genreService.show();
+
+    	List<CatPodcast> CatPodcast = catpodService.show();
+    	
+    	List <Actor> acteurs = actorRep.findAll();
+    	
+    	List<Director> directeurs = directorsRep.findAll();
+    	
+        if (resource == null || resource.isEmpty()) {
+        	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
+        			
+        			Map.of( "pays ",pays,"langues", Langues, "cat_radio_live", CatRL, "genres", 
+        					genre, "catPodcast", CatPodcast, "acteurs", acteurs, "directeurs", directeurs));
+        }
+        
+        return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, resource.stream().map(res -> {
+            switch (res.toLowerCase()) {
+                case "pays":
+                    return Map.of("pays",pays);
+                case "langues":
+                    return Map.of("langues", Langues);
+                case "cat_radio_live":
+                	return Map.of("cat_radio_live", CatRL);
+                case "genres":
+                	return Map.of("genres", genre);
+                case "CatPodcast":
+                	return Map.of("catPodcast", CatPodcast);
+                case "acteurs":
+                	return Map.of("acteurs", acteurs);
+                case "directeurs":
+                	return Map.of("directeurs", directeurs);
+                default:
+                	return Map.of("erreurs", "Ressource inconnue: " + res);
+            }
+        }).toArray());
+    }
+    
     
     
     /*
@@ -705,7 +751,7 @@ public class MediaController {
 
 	//ROUTES LiveTV
 
-	@Tag(name = "LiveTv")
+	@Tag(name = "TV SHOW")
 	@PostMapping(path="lives/create")
 	public ResponseEntity<Object> createL(
 			@Valid @RequestBody LiveTv lt) {
@@ -713,35 +759,35 @@ public class MediaController {
 		return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, liveService.create(lt));
 	}
 
-	@Tag(name = "LiveTv")
+	@Tag(name = "TV SHOW")
 	@GetMapping("lives")
 	public ResponseEntity<Object> showL(){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.show());
 	}
 	
-	@Tag(name = "LiveTv")
+	@Tag(name = "TV SHOW")
 	@GetMapping("lives/all/withPaging")
 	public ResponseEntity<Object> showLivePages(Pageable p){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showPage(p));
 	}
 	
-	@Tag(name = "LiveTv")
+	@Tag(name = "TV SHOW")
 	@GetMapping("lives/search/byName/{nom}")
 	public ResponseEntity<Object> showLbyNameContainL(@PathVariable String nom){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showByNameContaining(nom));
 	}
 
-	@Tag(name = "LiveTv")
+	@Tag(name = "TV SHOW")
 	@GetMapping("lives/{id}")
 	public ResponseEntity<Object> showbyIdL(@PathVariable Long id){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showById(id));
 	}
 
-	@Tag(name = "LiveTv")
+	@Tag(name = "TV SHOW")
 	@PutMapping(path="lives/update/{id}")
 	public  ResponseEntity<Object> updateL(
 			@PathVariable Long id,
@@ -751,7 +797,7 @@ public class MediaController {
 
 	}
 
-	@Tag(name = "LiveTv")
+	@Tag(name = "TV SHOW")
 	@DeleteMapping(path="lives/delete/{id}")
 	public ResponseEntity<Object> deleteL (@PathVariable Long id) {
 
