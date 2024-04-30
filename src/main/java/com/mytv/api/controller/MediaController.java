@@ -142,7 +142,7 @@ public class MediaController {
 		
         List<Pays> pays = paysService.show();
     	
-    	List<Language> Lang = langService.show();
+    	List<Language> Langues = langService.show();
     	
     	List<CategoryRL> CatRL = catLrService.show();
     	
@@ -150,7 +150,7 @@ public class MediaController {
 
     	List<CatPodcast> CatPodcast = catpodService.show();
 		
-		RessourceDTO RDTO = new RessourceDTO(pays, Lang, CatRL, genre, CatPodcast );
+		RessourceDTO RDTO = new RessourceDTO(pays, Langues, CatRL, genre, CatPodcast );
 		
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, RDTO);
 	}

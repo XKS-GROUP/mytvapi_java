@@ -24,26 +24,24 @@ public class RessourceDTO implements Serializable{
 
 	private List<Pays> pays;
 	
-	private List<Language> Lang;
+	private List<Language> Langues;
 	
-	private List<CategoryRL> CatRL;
+	private List<CategoryRL> Categs_Radio_Livetv;
 	
-	private List<Genre> genre;
+	private List<Genre> genres_film_serie;
 
-	private List<CatPodcast> CatPodcast;
+	private List<CatPodcast> Categs_Podcast;
 
-	public RessourceDTO(List<Pays> pays, List<Language> lang, List<CategoryRL> catRL, List<Genre> genre,
-			List<com.mytv.api.model.gestMedia.CatPodcast> catPodcast) {
+	public RessourceDTO(List<Pays> pays, List<Language> langues, List<CategoryRL> categs_Radio_Livetv,
+			List<Genre> genres_film_serie, List<CatPodcast> categs_Podcast) {
 		super();
 		this.pays = pays;
-		Lang = lang;
-		CatRL = catRL;
-		this.genre = genre;
-		CatPodcast = catPodcast;
+		Langues = langues;
+		Categs_Radio_Livetv = categs_Radio_Livetv;
+		this.genres_film_serie = genres_film_serie;
+		Categs_Podcast = categs_Podcast;
 	}
 
-	
-	
 	
 	/*
 	public FavoriteAllResponse(List<FavFilm> film, List<FavSerie> serie, List<FavRadio> radio, List<FavPodcast> podcast,
