@@ -155,7 +155,7 @@ public class MediaController {
     
     @Tag(name = "ressources")
     @GetMapping("/all")
-    public <R> Object getRessources(@RequestParam(required = false) List<String> resource) {
+    public <R> Object getRessources(@RequestParam(required = false) List<String> resources) {
     	
     	List<Pays> pays = paysService.show();
     	
@@ -171,14 +171,14 @@ public class MediaController {
     	
     	List<Director> directeurs = directorsRep.findAll();
     	
-        if (resource == null || resource.isEmpty()) {
+        if (resources == null || resources.isEmpty()) {
         	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
         			
         			Map.of( "pays ",pays,"langues", Langues, "cat_radio_live", CatRL, "genres", 
-        					genre, "catPodcast", CatPodcast, "acteurs", acteurs, "directeurs", directeurs));
+        					genre, "catpodcast", CatPodcast, "acteurs", acteurs, "directeurs", directeurs));
         }
         
-        return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, resource.stream().map(res -> {
+        return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, resources.stream().map(res -> {
             switch (res.toLowerCase()) {
                 case "pays":
                     return Map.of("pays",pays);
@@ -188,8 +188,8 @@ public class MediaController {
                 	return Map.of("cat_radio_live", CatRL);
                 case "genres":
                 	return Map.of("genres", genre);
-                case "CatPodcast":
-                	return Map.of("catPodcast", CatPodcast);
+                case "Catpodcast":
+                	return Map.of("catpodcast", CatPodcast);
                 case "acteurs":
                 	return Map.of("acteurs", acteurs);
                 case "directeurs":
