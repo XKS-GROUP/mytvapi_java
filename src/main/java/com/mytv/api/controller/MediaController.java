@@ -63,6 +63,7 @@ import com.mytv.api.service.gestMedia.ServiceFilm;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
 import java.util.Map;
 
@@ -1120,7 +1121,7 @@ public class MediaController {
     @Tag(name = "Episode")
 	@PutMapping(path="episodes/update/{id}")
 	public ResponseEntity<Object> updateE(
-			Long id,
+			@PathVariable Long id,
 			@Valid @RequestBody Episode episode){
 
 		//Save du tout
