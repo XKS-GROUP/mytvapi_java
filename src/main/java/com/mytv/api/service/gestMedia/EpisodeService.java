@@ -52,13 +52,9 @@ public class EpisodeService {
 
 	public Episode upadte(final Long id, Episode u) {
 
-		Episode old = rep.findById(id).get();
+		u.setIdEpisode(id);
 
-		old = u;
-
-		old.setIdEpisode(id);
-
-		return rep.save(old);
+		return rep.save(u);
 	}
 
 
