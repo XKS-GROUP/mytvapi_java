@@ -48,7 +48,6 @@ public class SerieService {
 
 			}
 				
-
 		}
 
 		return serie;
@@ -83,8 +82,6 @@ public class SerieService {
 		return rep.save(old);
 	}
 
-
-
 	public Boolean delete(Long id) {
 
 		rep.deleteById(id);
@@ -100,36 +97,36 @@ public class SerieService {
 	}
 	
 	//Lier  Serie   genres
-		public void addSerieGenre(Serie serie, Genre genre) {
+	public void addSerieGenre(Serie serie, Genre genre) {
 
-			SerieGenre serieGenre = new SerieGenre();
+		SerieGenre serieGenre = new SerieGenre();
 
-			serieGenre.setSerie(serie);
+		serieGenre.setSerie(serie);
 
-			//userRole.setUser(user);
+		//userRole.setUser(user);
 
-			/*if (role == null) {
-				role = roleService.findDefaultRole();
-				
-			}*/
-			//serieGenre.setGenre(genre);
+		/*if (role == null) {
+			role = roleService.findDefaultRole();
+			
+		}*/
+		//serieGenre.setGenre(genre);
 
-			serieGenreRep.save(serieGenre);
-
-
-		}
-		
-		public void addSerieGenreId(Serie serie, Long genre) {
-
-			SerieGenre serieGenre = new SerieGenre();
-
-			serieGenre.setSerie(serie);
-
-			serieGenre.setGenre(genre);
-
-			serieGenreRep.save(serieGenre);
+		serieGenreRep.save(serieGenre);
 
 
-		}
+	}
+	
+	public void addSerieGenreId(Serie serie, Long genre) {
+
+		SerieGenre serieGenre = new SerieGenre();
+
+		serieGenre.setSerie(serie);
+
+		serieGenre.setGenre(genre);
+
+		serieGenreRep.save(serieGenre);
+
+
+	}
 
 }

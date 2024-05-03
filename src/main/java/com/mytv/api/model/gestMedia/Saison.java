@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -65,8 +67,11 @@ public class Saison {
 
 	Date releaseDate;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "idEpisode",cascade = CascadeType.REMOVE)
-	List<Episode> episode;
+	List<Episode> episode ;
+	
+	List<Long> idEpisodes = new ArrayList<>();;
 	
 	@NotNull(message = "ce champ ne peut etre vide, au moins une langue est requise")
 	@Column(nullable = false)

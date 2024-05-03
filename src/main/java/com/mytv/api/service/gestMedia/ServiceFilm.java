@@ -57,8 +57,6 @@ public class ServiceFilm {
 
 	}
 
-
-
 	public Film createFilm(Film g) {
 
 			//Recuperation de la liste des genres
@@ -115,7 +113,6 @@ public class ServiceFilm {
 			return film;
 
 	}
-
 
 	//Lier  films   genres
 	public void addFilmGenre(Film film, Genre genre) {

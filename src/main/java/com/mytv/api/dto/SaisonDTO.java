@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 
-
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -15,51 +15,29 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
+@Entity
 @Data
-@Getter
-@Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class SerieDTO {
+@AllArgsConstructor
+public class SaisonDTO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long idSerie;
+	Long idSaison;
 
-	@NotBlank(message = "une serie doit forcement avoir un nom ")
-	@Column(nullable = false, columnDefinition = "TEXT")
+	@NotBlank(message = "ce champs ne peut pas etre null")
+	@Column(nullable = false)
 	String name;
 
+	@NotBlank(message = "ce champs ne peut pas etre null")
 	@Column(nullable = false, columnDefinition = "TEXT")
 	String overview;
-	
-	List<Long> idSaison;
 
-	boolean Upcoming;
-
-	@CreatedDate
-	Date addDate;
-
-	Date releaseDate;
-
-	String IMDbRating;
-
-	String ContentRating;
-
-	Long budget;
-
-	@Column(columnDefinition = "TEXT")
-	String trailerUrl;
-	
-	@Column(columnDefinition = "TEXT")
-	String trailer;
-
-	@Column(nullable = false, columnDefinition = "boolean default false")
-	Boolean AccessFree;
+	@NotNull(message ="Ce champs ne peut pas etre null ou vide, une saison doit forcement faire reference a une serie")
+	@Column(nullable = false)
+	Long idSerie;
 
 	@NotNull(message = "une image miniature est requise pour une serie")
 	@Column(columnDefinition = "TEXT")
@@ -68,27 +46,25 @@ public class SerieDTO {
 	@Column(columnDefinition = "TEXT")
 	String poster_path;
 
-	List<Long> Langue;
-
-	String popularity;
-
-	String vote_average;
-
-	String vote_count;
-
-
-	@Column(nullable = false, columnDefinition = "boolean default true")
-	boolean status;
-
+	@Column(columnDefinition = "TEXT")
+	String trailerURL;
+	
+	@Column(columnDefinition = "TEXT")
+	String trailerFile;
 
 	@Column(nullable = false, columnDefinition = "boolean default false")
-	Boolean adult;
+	boolean status;
+	
+	@Column(nullable = false, columnDefinition = "boolean default false")
+	Boolean accessFree;
 
+	@CreatedDate
+	Date addDate;
 
-	List <Long> acteurList = new ArrayList<>();
-
-	List <Long> directorList = new ArrayList<>();
-
-	List<Long> genreList = new ArrayList<>();
+	Date releaseDate;
+	
+	@NotNull(message = "ce champ ne peut etre vide, au moins une langue est requise")
+	@Column(nullable = false)
+	List<Long>  langue = new ArrayList<>();
 
 }

@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -40,9 +42,12 @@ public class Serie {
 	String overview;
 
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "idSaison")
 	List<Saison> saison;
 
+	List<Long> idSaison;
+	
 	boolean Upcoming;
 
 	@CreatedDate
