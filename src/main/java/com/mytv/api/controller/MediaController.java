@@ -977,7 +977,7 @@ public class MediaController {
 			@PathVariable Long id,
 			@Valid @RequestBody Serie serie){
 
-			return EntityResponse.generateResponse("Type de media non supporter", HttpStatus.OK , serieService.upadte(id, serie));
+			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK , serieService.upadte(id, serie));
 
 	}
 
