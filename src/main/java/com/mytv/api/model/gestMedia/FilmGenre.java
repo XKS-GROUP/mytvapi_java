@@ -24,9 +24,9 @@ public class FilmGenre {
 	@JoinColumn(name = "idFilm", insertable = true, updatable = true)
 	private Film film;
 
-	@ManyToOne
-	@JoinColumn(name = "idGenre", insertable = true, updatable = true)
-	private Genre genre;
+	//@ManyToOne
+	//@JoinColumn(name = "idGenre", insertable = true, updatable = true)
+	private Long genre;
 
 }
 

@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.mytv.api.model.gestMedia.Language;
+import com.mytv.api.model.ressource.Language;
 import com.mytv.api.repository.LangRepository;
 
 import lombok.AllArgsConstructor;

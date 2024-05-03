@@ -46,6 +46,29 @@ public class ServiceFilm {
 
 				for (Long gr : g.getGenreList()) {
 						
+				
+						addFilmGenreId(g, gr);
+
+					}
+					
+				}
+
+			return film;
+
+	}
+
+
+
+	public Film createFilm(Film g) {
+
+			//Recuperation de la liste des genres
+			//Teste de chaque valeur, si il n existe pas ce genre sera creer
+			Film film = rep.save(g);
+
+			if (!g.getGenreList().isEmpty()){
+
+				for (Long gr : g.getGenreList()) {
+						
 					
 						Genre existingGenre = genreRep.findById(gr).get();
 
@@ -96,6 +119,19 @@ public class ServiceFilm {
 
 	//Lier  films   genres
 	public void addFilmGenre(Film film, Genre genre) {
+
+		FilmGenre filmGenre = new FilmGenre();
+
+		filmGenre.setFilm(film);
+
+		//filmGenre.setGenre(genre);
+
+		filmGenreRep.save(filmGenre);
+
+
+	}
+	
+	public void addFilmGenreId(Film film, Long genre) {
 
 		FilmGenre filmGenre = new FilmGenre();
 

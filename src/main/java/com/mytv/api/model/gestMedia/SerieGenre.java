@@ -26,8 +26,8 @@ public class SerieGenre {
 	@JoinColumn(name = "idSerie", insertable = true, updatable = true)
 	private Serie Serie;
 
-	@ManyToOne
-	@JoinColumn(name = "idGenre", insertable = true, updatable = true)
-	private Genre genre;
+	//@ManyToOne
+	//@JoinColumn(name = "idGenre", insertable = true, updatable = true)
+	private Long genre;
 
 }

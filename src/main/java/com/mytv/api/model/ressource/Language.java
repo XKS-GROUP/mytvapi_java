@@ -1,4 +1,4 @@
-package com.mytv.api.model.gestMedia;
+package com.mytv.api.model.ressource;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

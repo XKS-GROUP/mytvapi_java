@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mytv.api.model.gestMedia.Pays;
 import com.mytv.api.model.gestUser.Profil;
 import com.mytv.api.model.gestUser.User;
+import com.mytv.api.model.ressource.Pays;
 import com.mytv.api.repository.JwtRepository;
 import com.mytv.api.repository.ProfilRepository;
 import com.mytv.api.repository.UserRepository;

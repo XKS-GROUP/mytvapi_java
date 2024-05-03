@@ -1,7 +1,7 @@
-package com.mytv.api.model.gestMedia;
+package com.mytv.api.model.ressource;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -23,12 +23,11 @@ import lombok.Setter;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class Actor {
+public class Director {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long idActor;
+	Long idDirector;
 
 	@NotBlank(message = "Ce champ ne puis etre vide")
 	@Column(nullable = false)
@@ -39,7 +38,7 @@ public class Actor {
 	String lastName;
 
 	Date dob;
-
+	
 	@Column(columnDefinition = "TEXT")
 	String imageUrl;
 

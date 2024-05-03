@@ -6,8 +6,8 @@ import java.util.List;
 import com.mytv.api.model.gestMedia.CatPodcast;
 import com.mytv.api.model.gestMedia.CategoryRL;
 import com.mytv.api.model.gestMedia.Genre;
-import com.mytv.api.model.gestMedia.Language;
-import com.mytv.api.model.gestMedia.Pays;
+import com.mytv.api.model.ressource.Language;
+import com.mytv.api.model.ressource.Pays;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

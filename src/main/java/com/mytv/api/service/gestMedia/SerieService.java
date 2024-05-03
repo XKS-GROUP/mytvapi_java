@@ -43,51 +43,14 @@ public class SerieService {
 		if (!g.getGenreList().isEmpty()){
 
 			for (Long gr : g.getGenreList()) {
-					
 				
-					Genre existingGenre = genreRep.findById(gr).get();
-
-				if(existingGenre != null) {
-
-					addSerieGenre(g, existingGenre);
-
-				}
-				else {
-
-					Genre ngr = new Genre();
-					ngr.setName("AUCUN");
-					if(genreRep.findByName(ngr.getName()) != null ) {
-						
-						addSerieGenre(g, genreRep.findByName(ngr.getName()));
-					}
-					else {
-						genreRep.save(ngr);
-						addSerieGenre(g, ngr);
-					}
-					
-
-				}/**/
+					addSerieGenreId(g, gr);
 
 			}
+				
 
 		}
 
-		else {
-			
-			Genre ngr = new Genre();
-			ngr.setName("AUCUN");
-			if(genreRep.findByName(ngr.getName()) != null ) {
-				
-				addSerieGenre(g, genreRep.findByName(ngr.getName()));
-			}
-			else {
-				genreRep.save(ngr);
-				addSerieGenre(g, ngr);
-			}
-			addSerieGenre(g, genreRep.findByName("AUCUN"));
-		}
-
-		
 		return serie;
 
 	}
@@ -109,6 +72,7 @@ public class SerieService {
 
 	public Serie upadte(final Long id, Serie u) {
 
+		
 		Serie old = rep.findById(id).get();
 
 		old = u;
@@ -148,6 +112,19 @@ public class SerieService {
 				role = roleService.findDefaultRole();
 				
 			}*/
+			//serieGenre.setGenre(genre);
+
+			serieGenreRep.save(serieGenre);
+
+
+		}
+		
+		public void addSerieGenreId(Serie serie, Long genre) {
+
+			SerieGenre serieGenre = new SerieGenre();
+
+			serieGenre.setSerie(serie);
+
 			serieGenre.setGenre(genre);
 
 			serieGenreRep.save(serieGenre);

@@ -26,21 +26,21 @@ import com.mytv.api.aws.FileMeta;
 import com.mytv.api.aws.FileMetaRepository;
 import com.mytv.api.aws.MetadataService;
 import com.mytv.api.dto.RessourceDTO;
-import com.mytv.api.model.gestMedia.Actor;
 import com.mytv.api.model.gestMedia.CatPodcast;
 import com.mytv.api.model.gestMedia.CategoryRL;
 import com.mytv.api.model.gestMedia.ColPodcast;
-import com.mytv.api.model.gestMedia.Director;
 import com.mytv.api.model.gestMedia.Episode;
 import com.mytv.api.model.gestMedia.Film;
 import com.mytv.api.model.gestMedia.Genre;
-import com.mytv.api.model.gestMedia.Language;
 import com.mytv.api.model.gestMedia.LiveTv;
-import com.mytv.api.model.gestMedia.Pays;
 import com.mytv.api.model.gestMedia.Podcast;
 import com.mytv.api.model.gestMedia.Radio;
 import com.mytv.api.model.gestMedia.Saison;
 import com.mytv.api.model.gestMedia.Serie;
+import com.mytv.api.model.ressource.Actor;
+import com.mytv.api.model.ressource.Director;
+import com.mytv.api.model.ressource.Language;
+import com.mytv.api.model.ressource.Pays;
 import com.mytv.api.repository.ActorRepository;
 import com.mytv.api.repository.CatPodcastRepository;
 import com.mytv.api.repository.CategoryLrRepository;
@@ -155,7 +155,7 @@ public class MediaController {
     
     @Tag(name = "ressources")
     @GetMapping("/all")
-    public <R> Object getRessources(@RequestParam(required = false) List<String> resources) {
+    public <R> Object getRessources(@RequestParam (required = false) List<String> resources) {
     	
     	List<Pays> pays = paysService.show();
     	
@@ -867,7 +867,11 @@ public class MediaController {
 	}
 
 
-	//Films
+	/*
+	 * 
+	 * FILMS
+	 * 
+	 */
 
 	@Tag(name = "Movie")
 	@GetMapping("movies")
