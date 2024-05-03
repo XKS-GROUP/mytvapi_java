@@ -50,13 +50,12 @@ public class EpisodeService {
 		return rep.findByNameContaining(name);
 	}
 
-	public Episode upadte(final Long id, Episode u) {
+	public Episode upadte(Long id, Episode u) {
 
 		u.setIdEpisode(id);
 
 		return rep.save(u);
 	}
-
 
 
 	public Boolean delete(Long id) {
