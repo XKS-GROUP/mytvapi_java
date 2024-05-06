@@ -63,7 +63,6 @@ import com.mytv.api.service.gestMedia.ServiceFilm;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import jakarta.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
 import java.util.Map;
 
@@ -985,10 +984,20 @@ public class MediaController {
 	@Tag(name = "Serie")
 	@DeleteMapping(path="series/delete/{id}")
 	public ResponseEntity<Object> deleteS (@PathVariable Long id) {
-
+		
+		if(serieService.showById(id).isEmpty()) {
+			
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Vous tentez de supprimer une serie qui n'existe pas");
+		}
+		else {
+			
 		serieService.delete(id);
 
 		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, true);
+		
+		}
+			
+		
 	}
 
 	//SAISON
@@ -1014,6 +1023,8 @@ public class MediaController {
 	@GetMapping("saisons/bySerie/{idSerie}")
 	public ResponseEntity<Object> showSaisonBySerie(@PathVariable Long idSerie){
 
+		
+		
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, saisonService.showBySerie(idSerie));
 	}
 

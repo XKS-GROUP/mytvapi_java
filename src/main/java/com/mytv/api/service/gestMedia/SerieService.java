@@ -44,7 +44,7 @@ public class SerieService {
 
 			for (Long gr : g.getGenreList()) {
 				
-					addSerieGenreId(g, gr);
+					addSerieGenreId(g.getIdSerie(), gr);
 
 			}
 				
@@ -101,7 +101,7 @@ public class SerieService {
 
 		SerieGenre serieGenre = new SerieGenre();
 
-		serieGenre.setSerie(serie);
+		//serieGenre.setSerie(serie);
 
 		//userRole.setUser(user);
 
@@ -116,7 +116,7 @@ public class SerieService {
 
 	}
 	
-	public void addSerieGenreId(Serie serie, Long genre) {
+	public void addSerieGenreId(Long serie, Long genre) {
 
 		SerieGenre serieGenre = new SerieGenre();
 

@@ -1,6 +1,8 @@
 package com.mytv.api.model.gestMedia;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,10 +23,10 @@ public class SerieGenre {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long idSerieGenre;
 
-
-	@ManyToOne
-	@JoinColumn(name = "idSerie", insertable = true, updatable = true)
-	private Serie Serie;
+	/*
+	@ManyToOne(cascade=CascadeType.DETACH, fetch = FetchType.LAZY)
+	@JoinColumn(name = "idSerie") */
+	private Long Serie;
 
 	//@ManyToOne
 	//@JoinColumn(name = "idGenre", insertable = true, updatable = true)
