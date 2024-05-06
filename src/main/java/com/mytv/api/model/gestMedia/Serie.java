@@ -42,7 +42,6 @@ public class Serie {
 	String overview;
 
 	
-	@JsonIgnore
 	@OneToMany(mappedBy = "idSaison")
 	List<Saison> saison;
 

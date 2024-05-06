@@ -67,7 +67,7 @@ public class Saison {
 
 	Date releaseDate;
 
-	@JsonIgnore
+	
 	@OneToMany(mappedBy = "idEpisode",cascade = CascadeType.REMOVE)
 	List<Episode> episode ;
 	
