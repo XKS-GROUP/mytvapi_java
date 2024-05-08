@@ -4,16 +4,20 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -39,9 +43,11 @@ public class Saison {
 	@Column(nullable = false, columnDefinition = "TEXT")
 	String overview;
 
-	@NotNull(message ="Ce champs ne peut pas etre null ou vide, une saison doit forcement faire reference a une serie")
-	@Column(nullable = false)
-	Long idSerie;
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idSerie", nullable = true)
+	@JsonBackReference
+    //@OnDelete(action = OnDeleteAction.SET_NULL)
+	Serie serie;
 
 	@NotNull(message = "une image miniature est requise pour une serie")
 	@Column(columnDefinition = "TEXT")
@@ -68,10 +74,11 @@ public class Saison {
 	Date releaseDate;
 
 	
-	@OneToMany(mappedBy = "idEpisode",cascade = CascadeType.REMOVE)
-	List<Episode> episode ;
+	@OneToMany(mappedBy = "idSaison", fetch = FetchType.LAZY)
+	@OnDelete(action = OnDeleteAction.SET_NULL)
+	List<Episode> episodes = new ArrayList<>() ;
 	
-	List<Long> idEpisodes = new ArrayList<>();;
+	List<Long> idEpisodes = new ArrayList<>();
 	
 	@NotNull(message = "ce champ ne peut etre vide, au moins une langue est requise")
 	@Column(nullable = false)

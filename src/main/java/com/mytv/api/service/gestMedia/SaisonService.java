@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.mytv.api.model.gestMedia.Saison;
+import com.mytv.api.model.gestMedia.Serie;
 import com.mytv.api.repository.SeasonRepository;
 
 @Service
@@ -23,7 +24,6 @@ public class SaisonService{
 		
 	}
 
-
 	public List<Saison> show() {
 		return seasRep.findAll();
 	}
@@ -32,8 +32,8 @@ public class SaisonService{
 		return seasRep.findAll(p);
 	}
 	
-	public List<Saison> showBySerie(Long idSerie) {
-		return seasRep.findByIdSerie(idSerie);
+	public List<Saison> showBySerie(Serie idSerie) {
+		return seasRep.findBySerie(idSerie);
 	}
 	
 	public List<Saison> showByNameContaining(String n) {

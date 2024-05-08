@@ -12,6 +12,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -42,11 +44,9 @@ public class Episode {
 	@Column(nullable = false, columnDefinition = "TEXT")
 	String overView;
 
-	Long idSerie;
-
-	@NotNull(message = "Ce champ ne peut etre vide, un episode doit forcement faire reference a une saison")
-	@Column(nullable = false)
-	Long idSaison;
+	@ManyToOne
+	@JoinColumn(name = "idSerie", insertable = true, updatable = false)
+	Saison idSaison;
 
 	@CreatedDate
 	Date addDate;
@@ -75,9 +75,8 @@ public class Episode {
 	@Column(columnDefinition = "TEXT")
 	String trailer;
 
-	@NotNull(message = "un fichier fideo initial est requis pour un episode")
 	@Column(columnDefinition = "TEXT")
-	String videoFile;
+	String videoUrl;
     
 	@JsonIgnore
 	@Column(columnDefinition = "TEXT")

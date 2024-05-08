@@ -752,7 +752,7 @@ public class MediaController {
 	//ROUTES LiveTV
 
 	@Tag(name = "TV SHOW")
-	@PostMapping(path="lives/create")
+	@PostMapping(path="tv/create")
 	public ResponseEntity<Object> createL(
 			@Valid @RequestBody LiveTv lt) {
 
@@ -760,35 +760,35 @@ public class MediaController {
 	}
 
 	@Tag(name = "TV SHOW")
-	@GetMapping("lives")
+	@GetMapping("tv")
 	public ResponseEntity<Object> showL(){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.show());
 	}
 	
 	@Tag(name = "TV SHOW")
-	@GetMapping("lives/all/withPaging")
+	@GetMapping("tv/all/withPaging")
 	public ResponseEntity<Object> showLivePages(Pageable p){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showPage(p));
 	}
 	
 	@Tag(name = "TV SHOW")
-	@GetMapping("lives/search/byName/{nom}")
+	@GetMapping("tv/search/byName/{nom}")
 	public ResponseEntity<Object> showLbyNameContainL(@PathVariable String nom){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showByNameContaining(nom));
 	}
 
 	@Tag(name = "TV SHOW")
-	@GetMapping("lives/{id}")
+	@GetMapping("tv/{id}")
 	public ResponseEntity<Object> showbyIdL(@PathVariable Long id){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showById(id));
 	}
 
 	@Tag(name = "TV SHOW")
-	@PutMapping(path="lives/update/{id}")
+	@PutMapping(path="tv/update/{id}")
 	public  ResponseEntity<Object> updateL(
 			@PathVariable Long id,
 			@Valid @RequestBody LiveTv lt) {
@@ -798,7 +798,7 @@ public class MediaController {
 	}
 
 	@Tag(name = "TV SHOW")
-	@DeleteMapping(path="lives/delete/{id}")
+	@DeleteMapping(path="tv/delete/{id}")
 	public ResponseEntity<Object> deleteL (@PathVariable Long id) {
 
 		liveService.delete(id);
@@ -806,25 +806,30 @@ public class MediaController {
 		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, true);
 	}
 
-	//Podcast
+	/*
+	 * 
+	 * LES LIVES  
+	 * 
+	 * 
+	 */
 
-	@Tag(name = "Podcast")
-	@GetMapping("podcasts")
-	public ResponseEntity<Object> showP(){
+	@Tag(name = "Lives")
+	@GetMapping("lives")
+	public ResponseEntity<Object> showLives(){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.show());
 	}
 	
-	@Tag(name = "Podcast")
-	@GetMapping("podcasts/all/withPaging")
-	public ResponseEntity<Object> showPodcastByPage(Pageable p){
+	@Tag(name = "Lives")
+	@GetMapping("lives/all/withPaging")
+	public ResponseEntity<Object> showLivesByPage(Pageable p){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.showPage(p));
 	}
 
-	@Tag(name = "Podcast")
-	@PostMapping(path="podcasts/create")
-	public ResponseEntity<Object> createP(
+	@Tag(name = "Lives")
+	@PostMapping(path="lives/create")
+	public ResponseEntity<Object> createLives(
 			@Valid @RequestBody Podcast p){
 
 			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, podcastservice.create(p) );
@@ -832,23 +837,23 @@ public class MediaController {
 	}
 
 
-	@Tag(name = "Podcast")
-	@GetMapping("podcasts/{id}")
-	public ResponseEntity<Object> showbyIdP(@PathVariable Long id){
+	@Tag(name = "Lives")
+	@GetMapping("lives/{id}")
+	public ResponseEntity<Object> showbyIdLives(@PathVariable Long id){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.showById(id));
 	}
 
-	@Tag(name = "Podcast")
-	@GetMapping("podcasts/search/byName/{name}")
-	public ResponseEntity<Object> showbyIdP(@PathVariable String name){
+	@Tag(name = "Lives")
+	@GetMapping("lives/search/byName/{name}")
+	public ResponseEntity<Object> showbyIdLives(@PathVariable String name){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.showByNameContaining(name));
 	}
 
-	@Tag(name = "Podcast")
-	@PutMapping(path="podcasts/update/{id}")
-	public ResponseEntity<Object> updateP(
+	@Tag(name = "Lives")
+	@PutMapping(path="lives/update/{id}")
+	public ResponseEntity<Object> updateLives(
 			@PathVariable Long id,
 			@Valid @RequestBody Podcast p) {
 
@@ -857,16 +862,87 @@ public class MediaController {
 
 	}
 
-	@Tag(name = "Podcast")
-	@DeleteMapping(path="podcasts/delete/{id}")
-	public ResponseEntity<Object> deleteP (@PathVariable Long id) {
+	@Tag(name = "Lives")
+	@DeleteMapping(path="lives/delete/{id}")
+	public ResponseEntity<Object> deleteLives (@PathVariable Long id) {
 
 		podcastservice.delete(id);
 
 		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, true );
 	}
+	
+	
+	
+	
+
+	
+	//Podcast
+
+		@Tag(name = "Podcast")
+		@GetMapping("podcasts")
+		public ResponseEntity<Object> showP(){
+
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.show());
+		}
+		
+		@Tag(name = "Podcast")
+		@GetMapping("podcasts/all/withPaging")
+		public ResponseEntity<Object> showPodcastByPage(Pageable p){
+
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.showPage(p));
+		}
+
+		@Tag(name = "Podcast")
+		@PostMapping(path="podcasts/create")
+		public ResponseEntity<Object> createP(
+				@Valid @RequestBody Podcast p){
+
+				return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, podcastservice.create(p) );
+
+		}
 
 
+		@Tag(name = "Podcast")
+		@GetMapping("podcasts/{id}")
+		public ResponseEntity<Object> showbyIdP(@PathVariable Long id){
+
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.showById(id));
+		}
+
+		@Tag(name = "Podcast")
+		@GetMapping("podcasts/search/byName/{name}")
+		public ResponseEntity<Object> showbyIdP(@PathVariable String name){
+
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.showByNameContaining(name));
+		}
+
+		@Tag(name = "Podcast")
+		@PutMapping(path="podcasts/update/{id}")
+		public ResponseEntity<Object> updateP(
+				@PathVariable Long id,
+				@Valid @RequestBody Podcast p) {
+
+				//Save du tout
+				return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, podcastservice.upadte(id, p) );
+
+		}
+
+		@Tag(name = "Podcast")
+		@DeleteMapping(path="podcasts/delete/{id}")
+		public ResponseEntity<Object> deleteP (@PathVariable Long id) {
+
+			podcastservice.delete(id);
+
+			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, true );
+		}
+	
+	
+	
+	
+	
+	
+	
+	
 	/*
 	 * 
 	 * FILMS
@@ -1023,9 +1099,7 @@ public class MediaController {
 	@GetMapping("saisons/bySerie/{idSerie}")
 	public ResponseEntity<Object> showSaisonBySerie(@PathVariable Long idSerie){
 
-		
-		
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, saisonService.showBySerie(idSerie));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, saisonService.showBySerie(serieService.showById(idSerie).get()));
 	}
 
 	@Tag(name = "Saison")
@@ -1102,7 +1176,7 @@ public class MediaController {
 	@GetMapping("episodes/bySaison/{idSaison}")
     public ResponseEntity<Object> showE(@PathVariable Long idSaison){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showBySaison(idSaison));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showBySaison(saisonService.showById(idSaison)));
 	}
 	
     @Tag(name = "Episode")

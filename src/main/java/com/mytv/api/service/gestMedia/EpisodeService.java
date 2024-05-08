@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.mytv.api.model.gestMedia.Episode;
+import com.mytv.api.model.gestMedia.Saison;
 import com.mytv.api.repository.EpisodeRepository;
 
 import lombok.AllArgsConstructor;
@@ -35,7 +36,7 @@ public class EpisodeService {
 		return rep.findAll();
 	}
 	
-	public List<Episode> showBySaison(Long idSaison) {
+	public List<Episode> showBySaison(Saison idSaison) {
 
 		return rep.findByIdSaison(idSaison);
 	}

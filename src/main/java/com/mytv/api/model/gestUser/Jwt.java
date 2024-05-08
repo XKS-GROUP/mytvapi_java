@@ -4,6 +4,8 @@ package com.mytv.api.model.gestUser;
 import java.util.Date;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 
@@ -54,6 +56,7 @@ public class Jwt {
 
     @ManyToOne
     @JoinColumn(name = "idUser")
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private User user;
 
 
