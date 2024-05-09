@@ -1,10 +1,5 @@
 package com.mytv.api.model.gestMedia;
 
-import java.util.Date;
-import java.util.List;
-
-
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,31 +17,12 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class Live {
-	
+public class CategorieLive {
+
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idLive;
+    private Long id;
 	
-	@NotEmpty(message = "un nom est requis")
-	@Column(nullable = false)
+	@NotEmpty(message = "un nom est requis ")
 	private String name;
-	
-	@Column(columnDefinition = "TEXT")
-	@NotEmpty(message = "un nom est requis")
-	private String descrition;
-	
-	@Column(columnDefinition = "TEXT")
-	private String posterUrl;
-	
-	private String liveUrl;
-	
-	private List<Long> idCats;
-	
-	private String lieu;
-	
-	private Date dateDebut;
-	
-	private Date dateFin;
-
 }

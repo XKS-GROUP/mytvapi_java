@@ -28,4 +28,6 @@ public class CatLive {
 	
 	@NotEmpty(message = "un nom est requis ")
 	private String name;
+	
+	
 }

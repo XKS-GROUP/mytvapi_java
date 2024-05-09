@@ -27,11 +27,13 @@ import com.mytv.api.aws.FileMetaRepository;
 import com.mytv.api.aws.MetadataService;
 import com.mytv.api.dto.RessourceDTO;
 import com.mytv.api.model.gestMedia.CatPodcast;
+import com.mytv.api.model.gestMedia.CategorieLive;
 import com.mytv.api.model.gestMedia.CategoryRL;
 import com.mytv.api.model.gestMedia.ColPodcast;
 import com.mytv.api.model.gestMedia.Episode;
 import com.mytv.api.model.gestMedia.Film;
 import com.mytv.api.model.gestMedia.Genre;
+import com.mytv.api.model.gestMedia.Live;
 import com.mytv.api.model.gestMedia.LiveTv;
 import com.mytv.api.model.gestMedia.Podcast;
 import com.mytv.api.model.gestMedia.Radio;
@@ -43,15 +45,18 @@ import com.mytv.api.model.ressource.Language;
 import com.mytv.api.model.ressource.Pays;
 import com.mytv.api.repository.ActorRepository;
 import com.mytv.api.repository.CatPodcastRepository;
+import com.mytv.api.repository.CategorieLiveRepository;
 import com.mytv.api.repository.CategoryLrRepository;
 import com.mytv.api.repository.CollectionPodcastRepository;
 import com.mytv.api.repository.DirectorRepository;
 import com.mytv.api.security.EntityResponse;
 import com.mytv.api.service.gestMedia.CatPodcastService;
+import com.mytv.api.service.gestMedia.CategorieLiveService;
 import com.mytv.api.service.gestMedia.CategoryLrService;
 import com.mytv.api.service.gestMedia.EpisodeService;
 import com.mytv.api.service.gestMedia.GenreService;
 import com.mytv.api.service.gestMedia.LangueService;
+import com.mytv.api.service.gestMedia.LiveService;
 import com.mytv.api.service.gestMedia.LiveTvSetvice;
 import com.mytv.api.service.gestMedia.PaysService;
 import com.mytv.api.service.gestMedia.PodcastService;
@@ -84,8 +89,19 @@ public class MediaController {
 
 	@Autowired
 	private RadioService radioService;
+	
+	//Pour le lives tv
+	@Autowired
+	private CategorieLiveService categliveService;
+	
+	//Pour le lives tv
 	@Autowired
 	private LiveTvSetvice liveService;
+	
+	//Pour les lives evenement 
+	@Autowired
+	private LiveService lService;
+	
 	@Autowired
 	private PodcastService podcastservice;
 	@Autowired
@@ -108,6 +124,11 @@ public class MediaController {
 	private CategoryLrRepository catlrRep;
     @Autowired
     private CatPodcastRepository catPodRep;
+    
+    @Autowired
+    private CategorieLiveRepository catLiveRep;
+    
+    
     @Autowired
     private SaisonService saisonService;
     
@@ -188,7 +209,7 @@ public class MediaController {
                 	return Map.of("cat_radio_live", CatRL);
                 case "genres":
                 	return Map.of("genres", genre);
-                case "Catpodcast":
+                case "catpodcast":
                 	return Map.of("catpodcast", CatPodcast);
                 case "acteurs":
                 	return Map.of("acteurs", acteurs);
@@ -285,7 +306,6 @@ public class MediaController {
     @Tag(name = "Acteur")
 	@PostMapping("acteurs/create")
 	public ResponseEntity<Object> createActor(@Valid @RequestBody Actor a){
-    	
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.CREATED, actorRep.save(a));
 	}
@@ -624,7 +644,12 @@ public class MediaController {
 	}
 
 
-	//Categorie Podcast
+	/*
+	 * 
+	 * Categorie Podcast
+	 * 
+	 * 
+	 */
 
 
 	@Tag(name = "Categorie PODCAST")
@@ -805,6 +830,78 @@ public class MediaController {
 
 		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, true);
 	}
+	
+	/*
+	 * 
+	 * CATEGORIE DES LIVES 
+	 * 
+	 */
+	
+	
+	@Tag(name = "Categorie PODCAST")
+
+	@PostMapping(path="lives/categ/create")
+
+	public ResponseEntity<Object> createCP(
+			@Valid @RequestBody CategorieLive u) {
+		
+		if(catLiveRep.findByName(u.getName()) != null) {
+			
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Cette categorie de lıve existe déja");
+		}
+		else {
+			
+		
+		    return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, categliveService.create(u));
+		
+		}
+	}
+
+
+	@Tag(name = "Categorie Lives")
+	@GetMapping("lives/categs")
+	public ResponseEntity<Object> showCL(){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, categliveService.show());
+	}
+	
+	@Tag(name = "Categorie Lives")
+	@GetMapping("lives/categs/all/withPaging")
+	public ResponseEntity<Object> showCL(Pageable p){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
+				categliveService.showPaging(p) );
+	}
+
+
+	@Tag(name = "Categorie Lives")
+	@GetMapping("lives/categs/{id}")
+	public ResponseEntity<Object> showbyIdCL(@PathVariable Long id){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, categliveService.showById(id));
+	}
+
+	@Tag(name = "Categorie Lives")
+	@PutMapping(path="lives/categ/update/{id}")
+	public ResponseEntity<Object> updateCL(
+
+			@PathVariable Long id,
+			@Valid @RequestBody CategorieLive u){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, categliveService.upadte(id, u));
+
+	}
+
+	@Tag(name = "Categorie Lives")
+	@DeleteMapping(path="lives/categ/delete/{id}")
+	public ResponseEntity<Object> deleteCL(@PathVariable Long id) {
+
+		catpodService.delete(id);
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, true);
+	}
+
+
 
 	/*
 	 * 
@@ -817,22 +914,22 @@ public class MediaController {
 	@GetMapping("lives")
 	public ResponseEntity<Object> showLives(){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.show());
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, lService.show());
 	}
 	
 	@Tag(name = "Lives")
 	@GetMapping("lives/all/withPaging")
 	public ResponseEntity<Object> showLivesByPage(Pageable p){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.showPage(p));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, lService.showPage(p));
 	}
 
 	@Tag(name = "Lives")
 	@PostMapping(path="lives/create")
 	public ResponseEntity<Object> createLives(
-			@Valid @RequestBody Podcast p){
+			@Valid @RequestBody Live p){
 
-			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, podcastservice.create(p) );
+			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, lService.create(p) );
 
 	}
 
@@ -841,24 +938,24 @@ public class MediaController {
 	@GetMapping("lives/{id}")
 	public ResponseEntity<Object> showbyIdLives(@PathVariable Long id){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.showById(id));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, lService.showById(id));
 	}
 
 	@Tag(name = "Lives")
 	@GetMapping("lives/search/byName/{name}")
 	public ResponseEntity<Object> showbyIdLives(@PathVariable String name){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.showByNameContaining(name));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, lService.showByNameContaining(name));
 	}
 
 	@Tag(name = "Lives")
 	@PutMapping(path="lives/update/{id}")
 	public ResponseEntity<Object> updateLives(
 			@PathVariable Long id,
-			@Valid @RequestBody Podcast p) {
+			@Valid @RequestBody Live l) {
 
 			//Save du tout
-			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, podcastservice.upadte(id, p) );
+			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, lService.update(id, l) );
 
 	}
 
@@ -866,17 +963,17 @@ public class MediaController {
 	@DeleteMapping(path="lives/delete/{id}")
 	public ResponseEntity<Object> deleteLives (@PathVariable Long id) {
 
-		podcastservice.delete(id);
+		lService.delete(id);
 
 		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, true );
 	}
 	
 	
-	
-	
-
-	
-	//Podcast
+	/*
+	 * 
+	 * Podcast
+	 * 
+	 */
 
 		@Tag(name = "Podcast")
 		@GetMapping("podcasts")
