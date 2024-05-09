@@ -1,5 +1,7 @@
 package com.mytv.api.model.util;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,6 +31,13 @@ public class Slider {
 	@NotEmpty(message = "Une image est requise")
 	@Column(nullable = false  ,columnDefinition = "TEXT")
 	private String image_path;
+	
+	
+	@Column(nullable = false, columnDefinition = "boolean default false")
+	private boolean typeVideo;
+	
+	private List<Long> targetPage;
+	
 	
 	@Column(nullable = false, columnDefinition = "boolean default false")
 	private boolean status;

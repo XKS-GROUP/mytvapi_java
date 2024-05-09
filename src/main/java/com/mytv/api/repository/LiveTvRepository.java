@@ -12,5 +12,7 @@ public interface LiveTvRepository extends JpaRepository<LiveTv, Long>{
 
 	LiveTv findByName(String nom);
 	List<LiveTv> findByNameContaining(String val);
+	List<LiveTv> findByNameOrOverviewContaining(String n, String o);
+	
 
 }

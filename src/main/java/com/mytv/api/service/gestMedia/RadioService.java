@@ -39,9 +39,9 @@ public class RadioService {
 
 		return radioRep.findAll(p);
 	}
-	public List<Radio> showByNameContaining(String n) {
+	public List<Radio> search(String n) {
 
-		return radioRep.findByNameContaining(n);
+		return radioRep.findByNameOrOverviewContaining(n, n);
 	}
 
 	public Radio upadte(final Long id, Radio u) {

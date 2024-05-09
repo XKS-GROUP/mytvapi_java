@@ -39,9 +39,9 @@ public class PodcastService {
 
 		return rep.findAll(p);
 	}
-	public List<Podcast> showByNameContaining(String n) {
+	public List<Podcast> search(String n) {
 
-		return rep.findByNameContaining(n);
+		return rep.findByNameOrOverviewContaining(n, n);
 	}
 
 	public Podcast upadte(final Long id, Podcast u) {

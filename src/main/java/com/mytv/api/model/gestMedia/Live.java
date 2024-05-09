@@ -34,7 +34,7 @@ public class Live {
 	
 	@Column(columnDefinition = "TEXT")
 	@NotEmpty(message = "un nom est requis")
-	private String descrition;
+	private String overview;
 	
 	@Column(columnDefinition = "TEXT")
 	private String posterUrl;

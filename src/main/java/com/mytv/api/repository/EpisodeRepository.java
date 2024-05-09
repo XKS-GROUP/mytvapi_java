@@ -13,5 +13,6 @@ public interface EpisodeRepository extends  JpaRepository<Episode, Long> {
 
 	List<Episode> findByIdSaison(Saison idSaison);
 	List<Episode> findByNameContaining(String nom);
+	List<Episode> findByNameOrOverviewContaining(String nom, String desc);
 
 }

@@ -42,7 +42,7 @@ public class Episode {
 
 	@NotBlank(message = "Ce champ ne peut etre vide")
 	@Column(nullable = false, columnDefinition = "TEXT")
-	String overView;
+	String overview;
 
 	@ManyToOne
 	@JoinColumn(name = "idSerie", insertable = true, updatable = false)

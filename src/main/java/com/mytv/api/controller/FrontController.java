@@ -1,6 +1,7 @@
 package com.mytv.api.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -33,7 +34,6 @@ import com.mytv.api.model.LikePodcast;
 import com.mytv.api.model.LikeRadio;
 import com.mytv.api.model.LikeSaison;
 import com.mytv.api.model.LikeSerie;
-import com.mytv.api.model.gestMedia.CategoryRL;
 import com.mytv.api.model.gestMedia.Episode;
 import com.mytv.api.model.gestMedia.Film;
 import com.mytv.api.model.gestMedia.LiveTv;
@@ -244,9 +244,9 @@ public class FrontController {
 	//Categorie LiveTv ou Radio
 	@Tag(name = "Categorie Radio et LiveTv")
 	@GetMapping("catrl")
-	public List<CategoryRL> showCRL(){
+	public ResponseEntity<Object> showCRL(){
 
-		return catLrService.show();
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catLrService.show());
 	}
 	
 	@Tag(name = "Categorie Radio et LiveTv")
@@ -299,10 +299,10 @@ public class FrontController {
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.showById(id));
 	}
 	@Tag(name = "Radios")
-	@GetMapping("radios/search/contain/{name}")
-	public ResponseEntity<Object> showbyNameContain(@PathVariable String nom){
+	@GetMapping("radios/search/{val}")
+	public ResponseEntity<Object> showbyNameContain(@PathVariable String val){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.showByNameContaining(nom));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.search(val));
 	}
 	
 	//LIKE
@@ -320,9 +320,10 @@ public class FrontController {
 	//AFFICHE NOMBRE LIKE PAR RADIO
 	@Tag(name = "Radios")
 	@GetMapping("radios/like/show/nblikebyRadio/{idRadio}")
-	public Long radioNbLike(@PathVariable Long idRadio){
+	public ResponseEntity<Object> radioNbLike(@PathVariable Long idRadio){
 		
-		return likeradioService.nbretotalLike(radioService.showById(idRadio).get());
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, Map.of("nbLike",
+				likeradioService.nbretotalLike(radioService.showById(idRadio).get())));
 	}
 	
 	//ADD LIKE
@@ -352,9 +353,9 @@ public class FrontController {
 	//DELETE LIKE
 	@Tag(name = "Radios")
 	@DeleteMapping("radios/likes/delete/{idLike}")
-	public void radioDelLike(@PathVariable Long id){
+	public ResponseEntity<Object> radioDelLike(@PathVariable Long id){
 		
-		 likeradioService.removeLike(id);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, likeradioService.removeLike(id));
 		 
 	}
 	
@@ -428,10 +429,10 @@ public class FrontController {
 	}
     
 	@Tag(name = "Lives")
-	@GetMapping("lives/search/contain/{nom}")
-	public ResponseEntity<Object> showLbyNameContainL(@PathVariable String nom){
+	@GetMapping("lives/search/{val}")
+	public ResponseEntity<Object> showLbyNameContainL(@PathVariable String val){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showByNameContaining(nom));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.search(val));
 	}
 			
 			//LIKE
@@ -482,9 +483,9 @@ public class FrontController {
 			//DELETE LIKE
 			@Tag(name = "Lives")
 			@DeleteMapping("lives/likes/delete/{idLike}")
-			public void liveDelLike(@PathVariable Long id){
+			public ResponseEntity<Object> liveDelLike(@PathVariable Long id){
 				
-				 likeliveService.removeLike(id);
+				return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,  likeliveService.removeLike(id));
 				 
 			}
 			
@@ -563,10 +564,10 @@ public class FrontController {
 	}
 	
 	@Tag(name = "Podcasts")
-	@GetMapping("podcasts/search/contain/{name}")
-	public ResponseEntity<Object> showbyIdP(@PathVariable String name){
+	@GetMapping("podcasts/search/{val}")
+	public ResponseEntity<Object> showbyIdP(@PathVariable String val){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.showByNameContaining(name));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.search(val));
 	}
 	//COM
 	//AFFICHE TOUS LES COMMENTAIRES
@@ -950,11 +951,11 @@ public class FrontController {
 				serieService.showById(id));
 	}
 	@Tag(name = "Series")
-	@GetMapping("series/search/contain/{name}")
+	@GetMapping("series/search/{val}")
 	public ResponseEntity<Object> showbyIdS(@PathVariable String name){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-					serieService.showbyNameContaining(name));
+					serieService.search(name));
 	}
 	
 	////////////////////////////////////////////////////////////////////////
@@ -1342,11 +1343,11 @@ public class FrontController {
 	}
 	
 	@Tag(name = "Saison")
-	@GetMapping("saisons/search/contain/{name}")
-	public ResponseEntity<Object> showbyIdSaison(@PathVariable String name){
+	@GetMapping("saisons/search/{val}")
+	public ResponseEntity<Object> showbyIdSaison(@PathVariable String val){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-				saisonService.showByNameContaining(name));
+				saisonService.search(val));
 	}
 	
 	////////////////////////////////////////////////////////////////////////

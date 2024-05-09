@@ -13,5 +13,7 @@ public interface FilmRepository  extends JpaRepository<Film, Long>{
 
 	Film findByName(String nom);
 	List<Film> findByNameContaining(String val);
+	
+	List<Film> findByNameOrOverviewContaining(String nom, String desc);
 
 }

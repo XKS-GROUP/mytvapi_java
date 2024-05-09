@@ -37,9 +37,9 @@ public class LiveService {
 		return rep.findAll(p);
 	}
 
-	public List<Live> showByNameContaining(String name) {
+	public List<Live> search(String val) {
 
-		return rep.findByNameContaining(name);
+		return rep.findByNameOrOverviewContaining(val, val);
 	}
 
 	public Live update(final Long id, Live u) {

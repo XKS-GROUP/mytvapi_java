@@ -39,9 +39,9 @@ public class LiveTvSetvice {
 		return rep.findAll(p);
 	}
 
-	public List<LiveTv> showByNameContaining(String name) {
+	public List<LiveTv> search(String val) {
 
-		return rep.findByNameContaining(name);
+		return rep.findByNameOrOverviewContaining(val, val);
 	}
 
 	public LiveTv update(final Long id, LiveTv u) {

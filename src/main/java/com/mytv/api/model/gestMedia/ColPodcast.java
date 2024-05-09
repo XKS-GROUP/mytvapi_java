@@ -36,8 +36,8 @@ public class ColPodcast {
 	String name;
 
 	@NotBlank(message="ce champ ne peut etre nulle")
-	@Column(nullable = false)
-	String overView;
+	@Column(nullable = false, columnDefinition = "TEXT")
+	String overview;
 
 	@NotBlank(message = "Une image est requise")
 	@Column(nullable = false, columnDefinition = "TEXT")

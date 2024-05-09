@@ -64,9 +64,9 @@ public class SerieService {
 		return rep.findAll(p);
 	}
 	
-	public List<Serie> showbyNameContaining(String n) {
+	public List<Serie> search(String n) {
 
-		return rep.findByNameContaining(n);
+		return rep.findByNameOrOverviewContaining(n, n);
 	}
 
 	public Serie upadte(final Long id, Serie u) {

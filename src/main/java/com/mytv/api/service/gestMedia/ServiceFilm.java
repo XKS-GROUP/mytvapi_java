@@ -156,6 +156,11 @@ public class ServiceFilm {
 
 		return rep.findByNameContaining(n);
 	}
+	
+	public List<Film> search(String val) {
+
+		return rep.findByNameOrOverviewContaining(val, val);
+	}
 
 	public Film upadte(final Long id, Film u) {
 
