@@ -553,7 +553,7 @@ public class MediaController {
 	}
 
 	@Tag(name = "Langue")
-	@GetMapping("langs/search/byname/{name}")
+	@GetMapping("langs/search/{name}")
 	public ResponseEntity<Object> showLangByName( @PathVariable String name){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, langService.showByName(name));
@@ -650,7 +650,7 @@ public class MediaController {
 	}
 
 	@Tag(name = "Genre FILM SERIE")
-	@GetMapping("genres/search/byName/{name}")
+	@GetMapping("genres/search/{name}")
 	public ResponseEntity<Object> showByName(@PathVariable String name){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.showByName(name));
@@ -1395,10 +1395,10 @@ public class MediaController {
 	}
 
     @Tag(name = "Episode")
-	@GetMapping("episodes/search/byName/{name}")
-	public ResponseEntity<Object> showbyIdE(@PathVariable String name){
+	@GetMapping("episodes/search/{val}")
+	public ResponseEntity<Object> showbyIdE(@PathVariable String val){
 
-    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showByNameContain(name));
+    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.search(val));
 	}
 
     @Tag(name = "Episode")
@@ -1463,7 +1463,7 @@ public class MediaController {
   	}
 
       @Tag(name = "Slider")
-  	@GetMapping("slider/search/byName/{name}")
+  	@GetMapping("slider/search/{name}")
   	public ResponseEntity<Object> sliderByName(@PathVariable String name){
 
       	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, sliderService.showByName(name));
@@ -1550,7 +1550,7 @@ public class MediaController {
     }
 
 	@Tag(name = "R2-CLOUDFLARE")
-    @GetMapping("r2/search/byName/{name}")
+    @GetMapping("r2/search/{name}")
     public ResponseEntity<Object> findbyname(@PathVariable String name) {
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, fileMetaRep.findByFileNameContaining(name));

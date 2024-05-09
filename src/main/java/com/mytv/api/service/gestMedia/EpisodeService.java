@@ -46,9 +46,9 @@ public class EpisodeService {
 		return rep.findAll(p);
 	}
 
-	public List<Episode> showByNameContain(String name) {
+	public List<Episode> search(String val) {
 
-		return rep.findByNameContaining(name);
+		return rep.findByNameOrOverviewContaining(val, val);
 	}
 
 	public Episode upadte(Long id, Episode u) {

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mytv.api.model.ComEpisode;
@@ -34,14 +35,29 @@ import com.mytv.api.model.LikePodcast;
 import com.mytv.api.model.LikeRadio;
 import com.mytv.api.model.LikeSaison;
 import com.mytv.api.model.LikeSerie;
+import com.mytv.api.model.gestMedia.CatPodcast;
+import com.mytv.api.model.gestMedia.CategorieLive;
+import com.mytv.api.model.gestMedia.CategoryRL;
+import com.mytv.api.model.gestMedia.ColPodcast;
 import com.mytv.api.model.gestMedia.Episode;
 import com.mytv.api.model.gestMedia.Film;
+import com.mytv.api.model.gestMedia.Genre;
 import com.mytv.api.model.gestMedia.LiveTv;
 import com.mytv.api.model.gestMedia.Podcast;
 import com.mytv.api.model.gestMedia.Radio;
 import com.mytv.api.model.gestMedia.Saison;
 import com.mytv.api.model.gestMedia.Serie;
 import com.mytv.api.model.gestUser.User;
+import com.mytv.api.model.ressource.Actor;
+import com.mytv.api.model.ressource.Director;
+import com.mytv.api.model.ressource.Language;
+import com.mytv.api.model.ressource.Pays;
+import com.mytv.api.repository.ActorRepository;
+import com.mytv.api.repository.CatPodcastRepository;
+import com.mytv.api.repository.CategorieLiveRepository;
+import com.mytv.api.repository.CategoryLrRepository;
+import com.mytv.api.repository.CollectionPodcastRepository;
+import com.mytv.api.repository.DirectorRepository;
 import com.mytv.api.repository.FavEpisodeRepository;
 import com.mytv.api.repository.FavFilmRepository;
 import com.mytv.api.repository.FavLiveRepository;
@@ -78,9 +94,11 @@ import com.mytv.api.service.LikeRadioService;
 import com.mytv.api.service.LikeSaisonService;
 import com.mytv.api.service.LikeSerieService;
 import com.mytv.api.service.gestMedia.CatPodcastService;
+import com.mytv.api.service.gestMedia.CategorieLiveService;
 import com.mytv.api.service.gestMedia.CategoryLrService;
 import com.mytv.api.service.gestMedia.EpisodeService;
 import com.mytv.api.service.gestMedia.GenreService;
+import com.mytv.api.service.gestMedia.LangueService;
 import com.mytv.api.service.gestMedia.LiveTvSetvice;
 import com.mytv.api.service.gestMedia.PaysService;
 import com.mytv.api.service.gestMedia.PodcastService;
@@ -89,7 +107,6 @@ import com.mytv.api.service.gestMedia.SaisonService;
 import com.mytv.api.service.gestMedia.SerieService;
 import com.mytv.api.service.gestMedia.ServiceFilm;
 import com.mytv.api.service.gestUser.WUserService;
-
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
@@ -121,6 +138,27 @@ public class FrontController {
 	private CatPodcastService catpodService;
 	@Autowired
 	private PaysService paysService;
+	
+	@Autowired
+	private LangueService langService;
+    
+	//Pour le lives tv
+	@Autowired
+	private CategorieLiveService categliveService;
+    
+    @Autowired
+    private ActorRepository actorRep;
+    
+    @Autowired
+    private DirectorRepository directorsRep;
+    
+    @Autowired
+    private CollectionPodcastRepository colPodRep;
+    
+
+	
+	
+	
 	
 	//Radio FAV LIKE
 	@Autowired
@@ -208,70 +246,186 @@ public class FrontController {
 	
 
 	
-	//Pays
-	@Tag(name = "Pays")
-	@GetMapping("pays")
-	public ResponseEntity<Object> showPays(){
+	/*
+     * 
+     * RESSOURCES
+     * 
+     * 
+     * Renvoi l'ensemble des genres et categories des medias
+     * 
+     * 
+     */
+    
+    @Tag(name = "Ressource: genres, Categories, pays, langues")
+    @GetMapping("ressources/all")
+    public <R> Object getRessources(@RequestParam (required = false) List<String> resources) {
+    	
+    	List<Pays> pays = paysService.show();
+    	
+    	List<Language> Langues = langService.show();
+    	
+    	List<CategoryRL> CatRL = catLrService.show();
+    	
+    	List<Genre> genre = genreService.show();
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, paysService.show());
-	}
+    	List<CatPodcast> CatPodcast = catpodService.show();
+    	
+    	List <Actor> acteurs = actorRep.findAll();
+    	
+    	List<Director> directeurs = directorsRep.findAll();
+    	
+    	List<CategorieLive> categorieLive = categliveService.show();
 
-	@Tag(name = "Pays")
-	@GetMapping("pays/{id}")
-	public ResponseEntity<Object> showbyIdPays(@PathVariable Long id){
+    	
+        if (resources == null || resources.isEmpty()) {
+        	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
+        			
+        			Map.of( "pays ",pays,"langues", Langues, "cat_radio_livetv", CatRL, "categlives",categorieLive,"genres", 
+        					genre, "catpodcast", CatPodcast, "acteurs", acteurs, "directeurs", directeurs));
+        }
+        
+        return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, resources.stream().map(res -> {
+            switch (res.toLowerCase()) {
+                case "pays":
+                    return Map.of("pays",pays);
+                case "langues":
+                    return Map.of("langues", Langues);
+                case "cat_radio_live":
+                	return Map.of("cat_radio_live", CatRL);
+                case "genres":
+                	return Map.of("genres", genre);
+                case "catpodcast":
+                	return Map.of("catpodcast", CatPodcast);
+                case "acteurs":
+                	return Map.of("acteurs", acteurs);
+                case "directeurs":
+                	return Map.of("directeurs", directeurs);
+                case "categlives":
+                	return Map.of("categlives",categorieLive);
+                default:
+                	return Map.of("erreurs", "Ressource inconnue: " + res);
+            }
+        }).toArray());
+    }
+    
+    
+    /*
+     * 
+     * Renvoi l'ensemble des MEDIAS 
+     * 
+     * 
+     */
+    
+    @Tag(name = "Ressource")
+    @GetMapping("/medias/all")
+    public <R> Object getAllMedia(@RequestParam (required = false) List<String> media) {
+    	
+    	List<Film> films = filmService.show();
+    	
+    	List<Radio> radios = radioService.show();
+    	
+    	List<Podcast> podcasts = podcastservice.show();
+    	
+    	List<ColPodcast> colpodcasts = colPodRep.findAll();
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, paysService.showById(id));
-	}
+    	List<Serie> series = serieService.show();
+    	
+    	List <Saison> saisons = saisonService.show();
+    	
+    	List<Episode> episodes = episodeService.show();
+    	
 
+    	
+        if (media == null || media.isEmpty()) {
+        	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
+        			
+        			Map.of( "films ",films,"radios", radios, "podcasts", podcasts, "colpodcasts",colpodcasts,"series", 
+        					series, "saisons", saisons, "episodes", episodes));
+        }
+        
+        return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, media.stream().map(res -> {
+            
+        	
+        	switch (res.toLowerCase()) {
+                case "films":
+                    return Map.of("films",films);
+                case "radios":
+                    return Map.of("radios", radios);
+                case "podcasts":
+                	return Map.of("podcasts", podcasts);
+                case "colpodcasts":
+                	return Map.of("colpodcasts", colpodcasts);
+                case "series":
+                	return Map.of("series", series);
+                case "saisons":
+                	return Map.of("saisons", saisons);
+                case "episodes":
+                	return Map.of("episodes",episodes);
+                default:
+                	return Map.of("erreurs", "media inconnue: " + res);
+            }
+        }).toArray());
+    }
+    
+    
+    /*
+     * 
+     * Slider, publicite
+     * 
+     * 
+     * 
+     */
+    
+    @Tag(name = "Ressource")
+    @GetMapping("/utils/all")
+    public <R> Object getAllUtil(@RequestParam (required = false) List<String> media) {
+    	
+    	List<Film> films = filmService.show();
+    	
+    	List<Radio> radios = radioService.show();
+    	
+    	List<Podcast> podcasts = podcastservice.show();
+    	
+    	List<ColPodcast> colpodcasts = colPodRep.findAll();
 
-	//Genre
+    	List<Serie> series = serieService.show();
+    	
+    	List <Saison> saisons = saisonService.show();
+    	
+    	List<Episode> episodes = episodeService.show();
+    	
 
-	@Tag(name = "Genres")
-	@GetMapping("genres")
-	public ResponseEntity<Object> showG(){
-
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.show());
-	}
-
-	@Tag(name = "Genres")
-	@GetMapping("genres/{id}")
-	public ResponseEntity<Object> showbyIdG(@PathVariable Long id){
-
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.showById(id));
-	}
-
-
-	//Categorie LiveTv ou Radio
-	@Tag(name = "Categorie Radio et LiveTv")
-	@GetMapping("catrl")
-	public ResponseEntity<Object> showCRL(){
-
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catLrService.show());
-	}
-	
-	@Tag(name = "Categorie Radio et LiveTv")
-	@GetMapping("catrl/{id}")
-	public ResponseEntity<Object> showbyIdCRL(@PathVariable Long id){
-
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catLrService.showById(id));
-	}
-
-
-	//Categorie Podcast
-
-	@Tag(name = "Categorie Podcast")
-	@GetMapping("catpod")
-	public ResponseEntity<Object> showCP(){
-
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catpodService.show());
-	}
-	
-	@Tag(name = "Categorie Podcast")
-	@GetMapping("catpod/{idCat}")
-	public ResponseEntity<Object> showbyIdCat(Long idCat){
-
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catpodService.showById(idCat).get());
-	}
+    	
+        if (media == null || media.isEmpty()) {
+        	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
+        			
+        			Map.of( "films ",films,"radios", radios, "podcasts", podcasts, "colpodcasts",colpodcasts,"series", 
+        					series, "saisons", saisons, "episodes", episodes));
+        }
+        
+        return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, media.stream().map(res -> {
+            
+        	
+        	switch (res.toLowerCase()) {
+                case "films":
+                    return Map.of("films",films);
+                case "radios":
+                    return Map.of("radios", radios);
+                case "podcasts":
+                	return Map.of("podcasts", podcasts);
+                case "colpodcasts":
+                	return Map.of("colpodcasts", colpodcasts);
+                case "series":
+                	return Map.of("series", series);
+                case "saisons":
+                	return Map.of("saisons", saisons);
+                case "episodes":
+                	return Map.of("episodes",episodes);
+                default:
+                	return Map.of("erreurs", "media inconnue: " + res);
+            }
+        }).toArray());
+    }
 
 	
 	/*
@@ -1151,10 +1305,10 @@ public class FrontController {
 	}
 	
 	@Tag(name = "Episodes")
-	@GetMapping("episodes/search/contain/{name}")
-	public ResponseEntity<Object> showbyIdE(@PathVariable String name){
+	@GetMapping("episodes/search/{val}")
+	public ResponseEntity<Object> showbyIdE(@PathVariable String val){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showByNameContain(name));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.search(val));
 	}
 	
 	////////////////////////////////////////////////////////////////////////
