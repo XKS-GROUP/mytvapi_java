@@ -9,6 +9,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -76,6 +77,7 @@ public class Saison {
 	
 	@OneToMany(mappedBy = "idSaison", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.SET_NULL)
+	@JsonManagedReference
 	List<Episode> episodes = new ArrayList<>() ;
 	
 	List<Long> idEpisodes = new ArrayList<>();

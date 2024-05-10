@@ -5,6 +5,7 @@ import java.sql.Date;
 
 import org.springframework.data.annotation.CreatedDate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
@@ -46,6 +47,7 @@ public class Episode {
 
 	@ManyToOne
 	@JoinColumn(name = "idSerie", insertable = true, updatable = false)
+	@JsonBackReference
 	Saison idSaison;
 
 	@CreatedDate
