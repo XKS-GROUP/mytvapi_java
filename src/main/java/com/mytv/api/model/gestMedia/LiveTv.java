@@ -50,7 +50,7 @@ public class LiveTv {
 	@Column(nullable = false, columnDefinition = "boolean default false")
 	boolean status;
 
-	@Column(nullable = false, columnDefinition = "boolean default false")
+	@Column(columnDefinition = "boolean default false")
 	Boolean accessFree;
 
 	@Column(columnDefinition = "TEXT")

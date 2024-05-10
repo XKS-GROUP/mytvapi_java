@@ -41,6 +41,9 @@ public class Live {
 	
 	private String liveUrl;
 	
+	@Column(columnDefinition = "boolean default false")
+	Boolean accessFree;
+	
 	private List<Long> idCats;
 	
 	private String lieu;
