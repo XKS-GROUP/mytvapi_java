@@ -564,8 +564,15 @@ public class MediaController {
 	@PostMapping("pays/create")
 
 	public ResponseEntity<Object> createPays(@Valid @RequestBody Pays u) {
-
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.CREATED, paysService.create(u));
+		if(paysService.findByname(u.getName()) != null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.CONFLICT, "Ce nom de pays existe déja ");
+		}
+		else {
+			
+		 return EntityResponse.generateResponse("SUCCES ", HttpStatus.CREATED, paysService.create(u));
+		 
+		}
 	}
 
 	@Tag(name = "Pays")

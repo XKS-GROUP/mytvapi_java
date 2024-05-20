@@ -6,7 +6,9 @@ import java.sql.Date;
 import org.springframework.data.annotation.CreatedDate;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,6 +33,9 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
+@JsonIdentityInfo(
+	    generator = ObjectIdGenerators.PropertyGenerator.class,
+	    property = "idEpisode")
 public class Episode {
 
 	@Id
@@ -46,8 +51,7 @@ public class Episode {
 	String overview;
 
 	@ManyToOne
-	@JoinColumn(name = "idSerie", insertable = true, updatable = false)
-	@JsonBackReference
+	@JoinColumn(name = "idSaison")
 	Saison idSaison;
 
 	@CreatedDate
@@ -97,7 +101,6 @@ public class Episode {
 	@JsonIgnore
 	@Column(columnDefinition = "TEXT")
 	String videoFile1080pLocal;
-	
 	
 	@Column(columnDefinition = "TEXT")
 	String videoFile1080pUrl;

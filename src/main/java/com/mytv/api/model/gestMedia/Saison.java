@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,6 +28,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+
+@JsonIdentityInfo(
+	    generator = ObjectIdGenerators.PropertyGenerator.class,
+	    property = "idSaison")
 public class Saison {
 
 	@Id
@@ -44,13 +46,13 @@ public class Saison {
 	@Column(nullable = false, columnDefinition = "TEXT")
 	String overview;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idSerie", nullable = true)
-	@JsonBackReference
-    //@OnDelete(action = OnDeleteAction.SET_NULL)
-	Serie serie;
+	//@NotNull(message = "une serie est requise pour une saison")
+	//@Column(nullable = false)
+	@ManyToOne
+	@JoinColumn(name = "idSerie")
+	Serie idSerie;
 
-	@NotNull(message = "une image miniature est requise pour une serie")
+	@NotBlank(message = "une image miniature est requise pour une serie")
 	@Column(columnDefinition = "TEXT")
 	String backdrop_path;
 
@@ -73,17 +75,14 @@ public class Saison {
 	Date addDate;
 
 	Date releaseDate;
-
-	
-	@OneToMany(mappedBy = "idSaison", fetch = FetchType.LAZY)
-	@OnDelete(action = OnDeleteAction.SET_NULL)
-	@JsonManagedReference
-	List<Episode> episodes = new ArrayList<>() ;
 	
 	List<Long> idEpisodes = new ArrayList<>();
 	
 	@NotNull(message = "ce champ ne peut etre vide, au moins une langue est requise")
 	@Column(nullable = false)
 	List<Long>  langue = new ArrayList<>();
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idSaison")
+	List<Episode> episodes;
 
 }

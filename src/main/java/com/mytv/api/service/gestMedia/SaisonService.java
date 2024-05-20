@@ -33,7 +33,7 @@ public class SaisonService{
 	}
 	
 	public List<Saison> showBySerie(Serie idSerie) {
-		return seasRep.findBySerie(idSerie);
+		return seasRep.findByIdSerie(idSerie);
 	}
 	
 	public List<Saison> search(String n) {

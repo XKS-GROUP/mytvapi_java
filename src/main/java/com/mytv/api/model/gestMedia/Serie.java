@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,6 +30,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+
+@JsonIdentityInfo(
+	    generator = ObjectIdGenerators.PropertyGenerator.class,
+	    property = "idSerie")
 public class Serie {
 
 	@Id
@@ -43,13 +46,8 @@ public class Serie {
 
 	@Column(nullable = false, columnDefinition = "TEXT")
 	String overview;
-
-	@OneToMany(mappedBy = "serie", fetch = FetchType.LAZY)
-	@OnDelete(action = OnDeleteAction.SET_NULL)
-	@JsonManagedReference
-	List<Saison> saison = new ArrayList<>();
 	
-	List<Long> idSaison;
+	//List<Long> idSaison;
 	
 	boolean Upcoming;
 
@@ -102,5 +100,8 @@ public class Serie {
 	List <Long> directorList = new ArrayList<>();
 
 	List<Long> genreList = new ArrayList<>();
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idSerie")
+	List<Saison> idSaison;
 
 }

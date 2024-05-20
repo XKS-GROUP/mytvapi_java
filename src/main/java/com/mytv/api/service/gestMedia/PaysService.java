@@ -52,6 +52,10 @@ public class PaysService {
 		return null;
 
 	}
+	public Pays findByname(String name) {
+		
+		return rep.findByName(name);
+	}
 
 	public Optional<Pays> showById(final Long id) {
 

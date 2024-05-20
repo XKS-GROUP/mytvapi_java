@@ -84,11 +84,11 @@ public class SerieDTO {
 	@Column(nullable = false, columnDefinition = "boolean default false")
 	Boolean adult;
 
-
 	List <Long> acteurList = new ArrayList<>();
 
 	List <Long> directorList = new ArrayList<>();
 
 	List<Long> genreList = new ArrayList<>();
+	
 
 }
