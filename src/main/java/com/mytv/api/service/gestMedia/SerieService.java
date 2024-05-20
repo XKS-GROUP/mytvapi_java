@@ -129,4 +129,9 @@ public class SerieService {
 
 	}
 
+	public Serie findByName(String name) {
+		
+		return rep.findByName(name);
+	}
+
 }

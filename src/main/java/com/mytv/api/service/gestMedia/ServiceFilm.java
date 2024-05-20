@@ -186,4 +186,9 @@ public class ServiceFilm {
 
 	}
 
+	public Film findByName(String name) {
+		
+		return rep.findByName(name);
+	}
+
 }

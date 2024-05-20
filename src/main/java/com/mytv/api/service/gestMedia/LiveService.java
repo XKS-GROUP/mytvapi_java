@@ -65,4 +65,9 @@ public class LiveService {
 
 	}
 
+	public Live findByName(String name) {
+		
+		return rep.findByName(name);
+	}
+
 }

@@ -10,4 +10,6 @@ public interface SliderRepository extends JpaRepository<Slider, Long> {
 
 	List<Slider> findByNameContaining(String n);
 
+	Slider findByName(String name);
+
 }

@@ -61,5 +61,10 @@ public class SliderService {
 
 	}
 
+	public Slider findByName(String name) {
+		
+		return rep.findByName(name);
+	}
+
 	
 }

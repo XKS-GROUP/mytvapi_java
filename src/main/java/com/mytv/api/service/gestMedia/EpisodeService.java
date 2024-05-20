@@ -73,4 +73,9 @@ public class EpisodeService {
 
 	}
 
+	public Episode findByName(String name) {
+		
+		return rep.findByName(name);
+	}
+
 }

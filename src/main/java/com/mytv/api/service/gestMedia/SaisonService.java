@@ -60,4 +60,9 @@ public class SaisonService{
 		return null;
 	}
 
+	public Saison findByName(String name) {
+
+		return seasRep.findByName(name);
+	}
+
 }

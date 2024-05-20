@@ -71,4 +71,9 @@ public class LiveTvSetvice {
 
 	}
 
+	public LiveTv findByName(String name) {
+		
+		return rep.findByName(name);
+	}
+
 }

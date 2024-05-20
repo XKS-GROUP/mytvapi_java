@@ -68,4 +68,9 @@ public class PodcastService {
 
 	}
 
+	public Podcast findByName(String name) {
+
+		return rep.findByName(name);
+	}
+
 }

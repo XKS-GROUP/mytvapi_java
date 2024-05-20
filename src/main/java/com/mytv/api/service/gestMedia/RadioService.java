@@ -68,4 +68,10 @@ public class RadioService {
 
 	}
 
+	public Radio findByName(String name) {
+		
+		
+		return radioRep.findByName(name);
+	}
+
 }
