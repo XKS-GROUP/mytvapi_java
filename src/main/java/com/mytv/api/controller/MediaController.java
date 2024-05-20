@@ -348,7 +348,7 @@ public class MediaController {
 	}
     
     @Tag(name = "Podcast Collection")
-	@GetMapping("podcast/collections/all/withPaging")
+	@GetMapping("podcast/collections/all/")
 	public ResponseEntity<Object> showCollPaging(Pageable p){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, colPodRep.findAll(p));
@@ -401,7 +401,7 @@ public class MediaController {
 	}
     
     @Tag(name = "Acteur")
-	@GetMapping("acteurs/all/withPaging")
+	@GetMapping("acteurs/all/")
 	public ResponseEntity<Object> showActorPaging(Pageable p){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, actorRep.findAll(p));
@@ -451,7 +451,7 @@ public class MediaController {
 	}
     
     @Tag(name = "Directeur")
-	@GetMapping("directeurs/all/withPaging")
+	@GetMapping("directeurs/all/")
 	public ResponseEntity<Object> showDirPaging(Pageable p){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, directorsRep.findAll(p));
@@ -503,7 +503,7 @@ public class MediaController {
 	}
 	
 	@Tag(name = "Langue")
-	@GetMapping("langs/all/withPaging")
+	@GetMapping("langs/all/")
 	public ResponseEntity<Object> showLangPaging(Pageable p){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
@@ -583,7 +583,7 @@ public class MediaController {
 	}
 	
 	@Tag(name = "Pays")
-	@GetMapping("pays/all/withPaging")
+	@GetMapping("pays/all/")
 	public ResponseEntity<Object> showPaysPaging(Pageable p){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
@@ -650,7 +650,7 @@ public class MediaController {
 	}
 
 	@Tag(name = "Genre FILM SERIE")
-	@GetMapping("genres/all/withPaging")
+	@GetMapping("genres/all/")
 	public ResponseEntity<Object> showPage(Pageable p){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.showByPages(p));
@@ -725,7 +725,7 @@ public class MediaController {
 	}
 
 	@Tag(name = "Categorie RADIO LIVE ")
-	@GetMapping("catrl/all/withPaging")
+	@GetMapping("catrl/all/")
 	public ResponseEntity<Object> showCRLPaging(Pageable p){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
@@ -799,7 +799,7 @@ public class MediaController {
 	}
 	
 	@Tag(name = "Categorie PODCAST")
-	@GetMapping("catpod/all/withPaging")
+	@GetMapping("catpod/all/")
 	public ResponseEntity<Object> showCP(Pageable p){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
@@ -844,7 +844,7 @@ public class MediaController {
 	}
 	
 	@Tag(name = "Radio")
-	@GetMapping("radios/all/withPaging")
+	@GetMapping("radios/all/")
 	public ResponseEntity<Object> showRadioPage(Pageable p){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.showPage(p));
@@ -910,7 +910,7 @@ public class MediaController {
 	}
 	
 	@Tag(name = "TV SHOW")
-	@GetMapping("tv/all/withPaging")
+	@GetMapping("tv/all/")
 	public ResponseEntity<Object> showLivePages(Pageable p){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showPage(p));
@@ -984,7 +984,7 @@ public class MediaController {
 	}
 	
 	@Tag(name = "Categorie Lives")
-	@GetMapping("lives/categs/all/withPaging")
+	@GetMapping("lives/categs/all/")
 	public ResponseEntity<Object> showCL(Pageable p){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
@@ -1036,7 +1036,7 @@ public class MediaController {
 	}
 	
 	@Tag(name = "Lives")
-	@GetMapping("lives/all/withPaging")
+	@GetMapping("lives/all/")
 	public ResponseEntity<Object> showLivesByPage(Pageable p){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, lService.showPage(p));
@@ -1101,7 +1101,7 @@ public class MediaController {
 		}
 		
 		@Tag(name = "Podcast")
-		@GetMapping("podcasts/all/withPaging")
+		@GetMapping("podcasts/all/")
 		public ResponseEntity<Object> showPodcastByPage(Pageable p){
 
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.showPage(p));
@@ -1172,7 +1172,7 @@ public class MediaController {
 	}
 	
 	@Tag(name = "Movie")
-	@GetMapping("movies/all/withPaging")
+	@GetMapping("movies/all/")
 	public ResponseEntity<Object> showMovieByPage(Pageable p){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.showPages(p));
@@ -1230,7 +1230,7 @@ public class MediaController {
 	}
 	
 	@Tag(name = "Serie")
-	@GetMapping("series/all/withPaging")
+	@GetMapping("series/all/")
 	public ResponseEntity<Object> showSerieByPage(Pageable p){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.showPage(p));
@@ -1304,7 +1304,7 @@ public class MediaController {
 	}
 	
 	@Tag(name = "Saison")
-	@GetMapping("saisons/all/withPaging")
+	@GetMapping("saisons/all/")
 	public ResponseEntity<Object> showSaisonPage(Pageable p){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, saisonService.showPage(p));
@@ -1324,7 +1324,6 @@ public class MediaController {
 
 			//Save du tout
 			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED , saisonService.create(saison));
-
 
 	}
 
@@ -1381,7 +1380,7 @@ public class MediaController {
 	}
 	
 	@Tag(name = "Episode")
-	@GetMapping("episodes/all/withPaging")
+	@GetMapping("episodes/all/")
     public ResponseEntity<Object> showE(Pageable p){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showPage(p));
@@ -1455,7 +1454,7 @@ public class MediaController {
   	}
   	
   	@Tag(name = "Slider")
-  	@GetMapping("slider/all/withPaging")
+  	@GetMapping("slider/all/")
       public ResponseEntity<Object> showSliderPaging(Pageable p){
 
   		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, sliderService.showPage(p));
@@ -1536,7 +1535,7 @@ public class MediaController {
 	
 	@Tag(name = "R2-CLOUDFLARE")
     @GetMapping("r2/find/all/whithPaging")
-    public ResponseEntity<Object> allWithPaging(Pageable p) {
+    public ResponseEntity<Object> all(Pageable p) {
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, metadataService.listWithPage(p));
     }
