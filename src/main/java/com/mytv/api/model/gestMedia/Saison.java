@@ -9,6 +9,7 @@ import org.springframework.data.annotation.CreatedDate;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -47,7 +48,6 @@ public class Saison {
 	String overview;
 
 	//@NotNull(message = "une serie est requise pour une saison")
-	//@Column(nullable = false)
 	@ManyToOne
 	@JoinColumn(name = "idSerie")
 	Serie idSerie;
@@ -82,7 +82,7 @@ public class Saison {
 	@Column(nullable = false)
 	List<Long>  langue = new ArrayList<>();
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idSaison")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idSaison", cascade = CascadeType.DETACH)
 	List<Episode> episodes;
 
 }

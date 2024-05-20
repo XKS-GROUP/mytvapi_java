@@ -9,6 +9,7 @@ import org.springframework.data.annotation.CreatedDate;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -86,10 +87,8 @@ public class Serie {
 
 	String vote_count;
 
-
 	@Column(nullable = false, columnDefinition = "boolean default true")
 	boolean status;
-
 
 	@Column(nullable = false, columnDefinition = "boolean default false")
 	Boolean adult;
@@ -101,7 +100,7 @@ public class Serie {
 
 	List<Long> genreList = new ArrayList<>();
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idSerie")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idSerie", cascade = CascadeType.ALL)
 	List<Saison> idSaison;
 
 }
