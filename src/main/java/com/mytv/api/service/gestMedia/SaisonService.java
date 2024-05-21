@@ -36,8 +36,8 @@ public class SaisonService{
 		return seasRep.findByIdSerie(idSerie);
 	}
 	
-	public List<Saison> search(String n) {
-		return seasRep.findByNameOrOverviewContaining(n, n);
+	public List<Saison> search(String n, Pageable p) {
+		return seasRep.findByNameOrOverviewContaining(n, n, p);
 	}
 
 

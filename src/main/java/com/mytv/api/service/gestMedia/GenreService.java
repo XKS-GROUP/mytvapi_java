@@ -48,9 +48,9 @@ public class GenreService {
 		return genreRep.findAll(p);
 	}
 
-	public Genre showByName(String name) {
+	public Genre showByName(String name, Pageable p) {
 
-		return genreRep.findByName(name);
+		return genreRep.findByName(name, p);
 	}
 
 	public Genre upadte(final Long id, Genre u) {
@@ -72,6 +72,11 @@ public class GenreService {
 
 		return null;
 
+	}
+
+	public List<Genre> findByNameContain(String name, Pageable p){
+
+		return genreRep.findByNameContaining(name, p);
 	}
 
 	public List<Genre> findByNameContain(String name){

@@ -39,9 +39,9 @@ public class LiveTvSetvice {
 		return rep.findAll(p);
 	}
 
-	public List<LiveTv> search(String val) {
+	public List<LiveTv> search(String val, Pageable p) {
 
-		return rep.findByNameOrOverviewContaining(val, val);
+		return rep.findByNameOrOverviewContaining(val, val, p);
 	}
 
 	public LiveTv update(final Long id, LiveTv u) {

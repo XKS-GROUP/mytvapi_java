@@ -454,9 +454,9 @@ public class FrontController {
 	}
 	@Tag(name = "Radios")
 	@GetMapping("radios/search/{val}")
-	public ResponseEntity<Object> showbyNameContain(@PathVariable String val){
+	public ResponseEntity<Object> showbyNameContain(@PathVariable String val, Pageable p){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.search(val));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.search(val, p));
 	}
 	
 	//LIKE
@@ -1106,10 +1106,10 @@ public class FrontController {
 	}
 	@Tag(name = "Series")
 	@GetMapping("series/search/{val}")
-	public ResponseEntity<Object> showbyIdS(@PathVariable String name){
+	public ResponseEntity<Object> showbyIdS(@PathVariable String name, Pageable p){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-					serieService.search(name));
+					serieService.search(name, p));
 	}
 	
 	////////////////////////////////////////////////////////////////////////
@@ -1306,9 +1306,9 @@ public class FrontController {
 	
 	@Tag(name = "Episodes")
 	@GetMapping("episodes/search/{val}")
-	public ResponseEntity<Object> showbyIdE(@PathVariable String val){
+	public ResponseEntity<Object> showbyIdE(@PathVariable String val, Pageable p){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.search(val));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.search(val, p));
 	}
 	
 	////////////////////////////////////////////////////////////////////////
@@ -1498,10 +1498,10 @@ public class FrontController {
 	
 	@Tag(name = "Saison")
 	@GetMapping("saisons/search/{val}")
-	public ResponseEntity<Object> showbyIdSaison(@PathVariable String val){
+	public ResponseEntity<Object> showbyIdSaison(@PathVariable String val, Pageable p){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-				saisonService.search(val));
+				saisonService.search(val, p));
 	}
 	
 	////////////////////////////////////////////////////////////////////////

@@ -2,6 +2,7 @@ package com.mytv.api.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,6 +13,6 @@ public interface SerieRepository extends JpaRepository<Serie, Long> {
 
 	Serie findByName(String name);
 	List<Serie> findByNameContaining(String nom);
-	List<Serie> findByNameOrOverviewContaining(String nom, String desc);
+	List<Serie> findByNameOrOverviewContaining(String nom, String desc, Pageable p);
 
 }

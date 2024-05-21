@@ -562,9 +562,9 @@ public class MediaController {
 
 	@Tag(name = "Langue")
 	@GetMapping("langs/search/{name}")
-	public ResponseEntity<Object> showLangByName( @PathVariable String name){
+	public ResponseEntity<Object> showLangByName( @PathVariable String name, Pageable p){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, langService.showByName(name));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, langService.showByName(name, p));
 	}
 
 	//Pays
@@ -668,16 +668,16 @@ public class MediaController {
 
 	@Tag(name = "Genre FILM SERIE")
 	@GetMapping("genres/search/{name}")
-	public ResponseEntity<Object> showByName(@PathVariable String name){
+	public ResponseEntity<Object> showByName(@PathVariable String name, Pageable p){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.showByName(name));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.showByName(name, p));
 	}
 
 	@Tag(name = "Genre FILM SERIE")
 	@GetMapping("genres/search/contain/{name}")
-	public ResponseEntity<Object> showByNameContain(@PathVariable String name){
+	public ResponseEntity<Object> showByNameContain(@PathVariable String name, Pageable p){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.findByNameContain(name));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.findByNameContain(name, p));
 		
 	}
 
@@ -888,9 +888,9 @@ public class MediaController {
 
 	@Tag(name = "Radio")
 	@GetMapping("radios/search/{val}")
-	public ResponseEntity<Object> showbyNameContain(@PathVariable String val){
+	public ResponseEntity<Object> showbyNameContain(@PathVariable String val, Pageable p){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.search(val));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.search(val, p));
 	}
 
 	@Tag(name = "Radio")
@@ -946,9 +946,9 @@ public class MediaController {
 	
 	@Tag(name = "TV SHOW")
 	@GetMapping("tv/search/{val}")
-	public ResponseEntity<Object> showLbyNameContainL(@PathVariable String val){
+	public ResponseEntity<Object> showLbyNameContainL(@PathVariable String val, Pageable p){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.search(val));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.search(val, p));
 	}
 
 	@Tag(name = "TV SHOW")
@@ -1219,7 +1219,10 @@ public class MediaController {
 	
 	@Tag(name = "Movie")
 	@GetMapping("movies/all/")
-	public ResponseEntity<Object> showMovieByPage(Pageable p){
+	public ResponseEntity<Object> showMovieByPage(
+			Pageable p, 
+			@RequestParam (required = false) List<Long> genre,
+			@RequestParam (required = false) List<Long> langue){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.showPages(p));
 	}
@@ -1251,9 +1254,9 @@ public class MediaController {
 
 	@Tag(name = "Movie")
 	@GetMapping("movies/search/{val}")
-	public ResponseEntity<Object> showbyIdM(@PathVariable String val){
+	public ResponseEntity<Object> showbyIdM(@PathVariable String val, Pageable p){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.search(val));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.search(val, p));
 	}
 
 	@Tag(name = "Movie")
@@ -1319,9 +1322,9 @@ public class MediaController {
 
 	@Tag(name = "Serie")
 	@GetMapping("series/search/{val}")
-	public ResponseEntity<Object> showbyIdS(@PathVariable String val){
+	public ResponseEntity<Object> showbyIdS(@PathVariable String val, Pageable p){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.search(val));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.search(val, p));
 	}
 
 	@Tag(name = "Serie")
@@ -1406,9 +1409,9 @@ public class MediaController {
 
 	@Tag(name = "Saison")
 	@GetMapping("saisons/search/{val}")
-	public ResponseEntity<Object> showbyNameC(@PathVariable String val){
+	public ResponseEntity<Object> showbyNameC(@PathVariable String val, Pageable p){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, saisonService.search(val));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, saisonService.search(val, p));
 		
 	}
 
@@ -1473,9 +1476,9 @@ public class MediaController {
 
     @Tag(name = "Episode")
 	@GetMapping("episodes/search/{val}")
-	public ResponseEntity<Object> showbyIdE(@PathVariable String val){
+	public ResponseEntity<Object> showbyIdE(@PathVariable String val, Pageable p){
 
-    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.search(val));
+    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.search(val, p));
 	}
 
     @Tag(name = "Episode")
@@ -1549,9 +1552,9 @@ public class MediaController {
 
       @Tag(name = "Slider")
   	@GetMapping("slider/search/{name}")
-  	public ResponseEntity<Object> sliderByName(@PathVariable String name){
+  	public ResponseEntity<Object> sliderByName(@PathVariable String name, Pageable p){
 
-      	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, sliderService.showByName(name));
+      	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, sliderService.showByName(name, p));
   	}
 
       @Tag(name = "Slider")
@@ -1645,9 +1648,9 @@ public class MediaController {
 
 	@Tag(name = "R2-CLOUDFLARE")
     @GetMapping("r2/search/{name}")
-    public ResponseEntity<Object> findbyname(@PathVariable String name) {
+    public ResponseEntity<Object> findbyname(@PathVariable String name, Pageable p) {
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, fileMetaRep.findByFileNameContaining(name));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, fileMetaRep.findByFileNameContaining(name, p));
     }
 
 	@Tag(name = "R2-CLOUDFLARE")

@@ -64,9 +64,9 @@ public class SerieService {
 		return rep.findAll(p);
 	}
 	
-	public List<Serie> search(String n) {
+	public List<Serie> search(String n, Pageable p) {
 
-		return rep.findByNameOrOverviewContaining(n, n);
+		return rep.findByNameOrOverviewContaining(n, n, p);
 	}
 
 	public Serie upadte(final Long id, Serie u) {

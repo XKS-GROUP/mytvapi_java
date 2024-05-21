@@ -38,9 +38,9 @@ public class SliderService {
 
 		return rep.findAll(p);
 	}
-	public List<Slider> showByName(String n) {
+	public List<Slider> showByName(String n, Pageable p) {
 
-		return rep.findByNameContaining(n);
+		return rep.findByNameContaining(n, p);
 	}
 
 	public Slider upadte(final Long id, Slider s) {

@@ -46,9 +46,9 @@ public class EpisodeService {
 		return rep.findAll(p);
 	}
 
-	public List<Episode> search(String val) {
+	public List<Episode> search(String val, Pageable p) {
 
-		return rep.findByNameOrOverviewContaining(val, val);
+		return rep.findByNameOrOverviewContaining(val, val, p);
 	}
 
 	public Episode upadte(Long id, Episode u) {

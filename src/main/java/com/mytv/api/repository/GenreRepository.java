@@ -14,10 +14,12 @@ import com.mytv.api.model.gestMedia.Genre;
 @Repository
 public interface GenreRepository extends  PagingAndSortingRepository<Genre, Long>, JpaRepository<Genre, Long>{
 
+	List<Genre> findByName(String name, Pageable p);
 	Genre findByName(String name);
+	
 	@Override
 	Page<Genre> findAll(Pageable pageable);
+	List<Genre> findByNameContaining(String name, Pageable p);
 	List<Genre> findByNameContaining(String name);
-
 
 }

@@ -14,7 +14,7 @@ public interface FileMetaRepository extends JpaRepository<FileMeta, Integer> {
 
 	List<FileMeta> findByVersion(String name);
 
-	List<FileMeta> findByFileNameContaining(String fileName);
+	List<FileMeta> findByFileNameContaining(String fileName, Pageable p);
 
 	int deleteByFileName(String name);
 
