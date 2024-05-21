@@ -584,9 +584,9 @@ public class FrontController {
     
 	@Tag(name = "Lives")
 	@GetMapping("lives/search/{val}")
-	public ResponseEntity<Object> showLbyNameContainL(@PathVariable String val){
+	public ResponseEntity<Object> showLbyNameContainL(@PathVariable String val, Pageable p){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.search(val));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.search(val, p));
 	}
 			
 			//LIKE
