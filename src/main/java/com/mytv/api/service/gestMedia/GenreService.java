@@ -48,7 +48,7 @@ public class GenreService {
 		return genreRep.findAll(p);
 	}
 
-	public Genre showByName(String name, Pageable p) {
+	public List<Genre> showByName(String name, Pageable p) {
 
 		return genreRep.findByName(name, p);
 	}

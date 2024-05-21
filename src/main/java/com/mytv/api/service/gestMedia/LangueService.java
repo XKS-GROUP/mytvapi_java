@@ -37,7 +37,7 @@ public class LangueService {
 		return langRep.findAll(p);
 	}
 
-	public Language showByName(String name, Pageable p) {
+	public List<Language> showByName(String name, Pageable p) {
 
 		return langRep.findByName(name, p);
 
