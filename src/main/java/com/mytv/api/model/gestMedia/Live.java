@@ -59,5 +59,8 @@ public class Live {
 	private LocalTime heureDebut;
 	
 	private LocalTime heureFin;
+	
+	@Column(nullable = false, columnDefinition = "boolean default true")
+	boolean status;
 
 }
