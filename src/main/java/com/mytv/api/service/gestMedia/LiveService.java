@@ -2,6 +2,7 @@ package com.mytv.api.service.gestMedia;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -37,6 +38,15 @@ public class LiveService {
 		return rep.findAll(p);
 	}
 
+	
+	public List<Live> showByCategorie(Long id, Pageable p){
+		
+		return rep.findAll().stream()
+                     .filter(f -> f.getIdCats().contains(id))
+                     .collect(Collectors.toList());
+		
+	};
+	
 	public List<Live> search(String val) {
 
 		return rep.findByNameOrOverviewContaining(val, val);

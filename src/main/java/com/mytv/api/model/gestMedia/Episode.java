@@ -2,6 +2,7 @@ package com.mytv.api.model.gestMedia;
 
 import java.sql.Date;
 //import java.util.Set;
+import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 
@@ -110,4 +111,6 @@ public class Episode {
 
 	@Column(columnDefinition = "TEXT")
 	String  downloadURL;
+	
+	List<Long> langue;
 }

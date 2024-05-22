@@ -3,6 +3,7 @@ package com.mytv.api.service.gestMedia;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.mytv.api.model.gestMedia.Episode;
 import com.mytv.api.model.gestMedia.Saison;
 import com.mytv.api.repository.EpisodeRepository;
+import com.mytv.api.repository.SeasonRepository;
 
 import lombok.AllArgsConstructor;
 
@@ -24,6 +26,8 @@ public class EpisodeService {
 	@Autowired
 	private EpisodeRepository rep;
 
+	@Autowired
+	private SeasonRepository repS;
 
 	public Episode create(Episode g) {
 
@@ -45,6 +49,28 @@ public class EpisodeService {
 
 		return rep.findAll(p);
 	}
+	
+	public List<Episode> showByLangue(Long id, Pageable p){
+		
+		return rep.findAll().stream()
+                     .filter(f -> f.getLangue().contains(id))
+                     .collect(Collectors.toList());
+	};
+	
+	public List<Episode> showBySerie(Long id, Pageable p){
+		
+		return rep.findAll().stream()
+                     .filter(f -> f.getLangue().contains(id))
+                     .collect(Collectors.toList());
+	};
+	
+	public List<Episode> showBySaison(Long id, Pageable p){
+		
+		
+		return rep.findByIdSaison(repS.findById(id).get() , p);
+	};
+	
+	
 
 	public List<Episode> search(String val, Pageable p) {
 

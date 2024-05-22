@@ -3,12 +3,14 @@ package com.mytv.api.service.gestMedia;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.mytv.api.model.gestMedia.Film;
 import com.mytv.api.model.gestMedia.Radio;
 import com.mytv.api.repository.RadioRepository;
 
@@ -39,6 +41,25 @@ public class RadioService {
 
 		return radioRep.findAll(p);
 	}
+	
+	public List<Radio> showByLangue(Long id, Pageable p){
+		
+		return radioRep.findAll().stream()
+                     .filter(f -> f.getLangue().contains(id))
+                     .collect(Collectors.toList());
+		
+	};
+	
+	public List<Radio> showByCateg(Long id, Pageable p){
+		
+		return radioRep.findAll().stream()
+                     .filter(f -> f.getCategories().contains(id))
+                     .collect(Collectors.toList());
+		
+	};
+	
+	
+	
 	public List<Radio> search(String n, Pageable p) {
 
 		return radioRep.findByNameOrOverviewContaining(n, n, p);

@@ -3,6 +3,7 @@ package com.mytv.api.service.gestMedia;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -151,7 +152,31 @@ public class ServiceFilm {
 		return rep.findAll(p);
 	}
 
+	public List<Film> showByLangue(Long id, Pageable p){
+		
+		return rep.findAll().stream()
+                     .filter(f -> f.getLangue().contains(id))
+                     .collect(Collectors.toList());
+		
+	};
 	
+	public List<Film> showByGenre(Long id, Pageable p){
+		
+		return rep.findAll().stream()
+                     .filter(f -> f.getGenreList().contains(id))
+                     .collect(Collectors.toList());
+		
+	};
+	
+	public List<Film> showByGenreAndLang(Long g, Long l, Pageable p){
+		
+		return rep.findAll().stream()
+                     .filter(f -> f.getGenreList().contains(g))
+                     .collect(Collectors.toList());
+		
+	};
+	
+
 	public List<Film> showByNameContaining(String n) {
 
 		return rep.findByNameContaining(n);

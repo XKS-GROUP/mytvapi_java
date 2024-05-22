@@ -3,12 +3,14 @@ package com.mytv.api.service.gestMedia;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.mytv.api.model.gestMedia.Film;
 import com.mytv.api.model.gestMedia.Genre;
 import com.mytv.api.model.gestMedia.Serie;
 import com.mytv.api.model.gestMedia.SerieGenre;
@@ -63,6 +65,25 @@ public class SerieService {
 
 		return rep.findAll(p);
 	}
+	
+	
+	public List<Serie> showByLangue(Long id, Pageable p){
+		
+		return rep.findAll().stream()
+                     .filter(f -> f.getLangue().contains(id))
+                     .collect(Collectors.toList());
+		
+	};
+	
+	public List<Serie> showByGenre(Long id, Pageable p){
+		
+		return rep.findAll().stream()
+                     .filter(f -> f.getGenreList().contains(id))
+                     .collect(Collectors.toList());
+		
+	};
+	
+	
 	
 	public List<Serie> search(String n, Pageable p) {
 

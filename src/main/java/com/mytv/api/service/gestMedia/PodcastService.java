@@ -3,6 +3,7 @@ package com.mytv.api.service.gestMedia;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -39,6 +40,24 @@ public class PodcastService {
 
 		return rep.findAll(p);
 	}
+	
+	public List<Podcast> showByCateg(Long id, Pageable p){
+		
+		return rep.findAll().stream()
+                     .filter(f -> f.getCategories().contains(id))
+                     .collect(Collectors.toList());
+		
+	};
+	
+	public List<Podcast> showByLang(Long id, Pageable p){
+		
+		return rep.findAll().stream()
+                     .filter(f -> f.getLangue().contains(id))
+                     .collect(Collectors.toList());
+		
+	};
+	
+	
 	public List<Podcast> search(String n) {
 
 		return rep.findByNameOrOverviewContaining(n, n);

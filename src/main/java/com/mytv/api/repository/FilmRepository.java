@@ -13,6 +13,7 @@ import com.mytv.api.model.gestMedia.Film;
 public interface FilmRepository  extends JpaRepository<Film, Long>{
 
 	Film findByName(String nom);
+	
 	List<Film> findByNameContaining(String val);
 	List<Film> findByNameContaining(String val, Pageable p);
 	List<Film> findByNameOrOverviewContaining(String nom, String desc, Pageable p);

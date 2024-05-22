@@ -1,5 +1,6 @@
 package com.mytv.api.model.gestMedia;
 
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -48,8 +50,14 @@ public class Live {
 	
 	private String lieu;
 	
+	@NotNull(message = "une date de debut est requise")
 	private Date dateDebut;
 	
 	private Date dateFin;
+	
+	@NotNull(message = "une heurs de debut est requise")
+	private LocalTime heureDebut;
+	
+	private LocalTime heureFin;
 
 }

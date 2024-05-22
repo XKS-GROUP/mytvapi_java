@@ -2,6 +2,7 @@ package com.mytv.api.service.gestMedia;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -70,6 +71,22 @@ public class LiveTvSetvice {
 		return rep.findById(id);
 
 	}
+	
+	public List<LiveTv> showByLangue(Long id, Pageable p){
+		
+		return rep.findAll().stream()
+                     .filter(f -> f.getLangue().contains(id))
+                     .collect(Collectors.toList());
+		
+	};
+	
+	public List<LiveTv> showByGenre(Long id, Pageable p){
+		
+		return rep.findAll().stream()
+                     .filter(f -> f.getIdcategories().contains(id))
+                     .collect(Collectors.toList());
+		
+	};
 
 	public LiveTv findByName(String name) {
 		
