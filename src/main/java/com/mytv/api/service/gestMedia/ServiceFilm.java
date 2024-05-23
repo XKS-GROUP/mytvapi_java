@@ -167,7 +167,7 @@ public class ServiceFilm {
 	public Page<Film> showByGenre(Long id, Pageable p){
 		
 		PageImpl<Film> res = new PageImpl<Film>(rep.findAll().stream()
-				   .filter(f -> f.getLangue().contains(id)).toList() 
+				   .filter(f -> f.getGenreList().contains(id)).toList() 
 				   , p
 				   , rep.findAll().size());
 			
