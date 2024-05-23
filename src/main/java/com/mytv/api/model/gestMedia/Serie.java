@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -55,6 +56,7 @@ public class Serie {
 	@CreatedDate
 	Date addDate;
 
+	@JsonFormat(pattern="dd-MM-yyyy")
 	Date releaseDate;
 
 	String IMDbRating;
@@ -92,7 +94,6 @@ public class Serie {
 
 	@Column(nullable = false, columnDefinition = "boolean default false")
 	Boolean adult;
-
 
 	List <Long> acteurList = new ArrayList<>();
 

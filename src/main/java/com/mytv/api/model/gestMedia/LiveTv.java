@@ -1,7 +1,10 @@
 package com.mytv.api.model.gestMedia;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import org.springframework.data.annotation.CreatedDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -73,5 +76,7 @@ public class LiveTv {
 	@Column(nullable = false)
 	List<Long>  langue = new ArrayList<>();
 	
+	@CreatedDate
+	Date addDate;
 	
 }

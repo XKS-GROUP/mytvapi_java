@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -74,6 +75,7 @@ public class Saison {
 	@CreatedDate
 	Date addDate;
 
+	@JsonFormat(pattern="dd-MM-yyyy")
 	Date releaseDate;
 	
 	List<Long> idEpisodes = new ArrayList<>();

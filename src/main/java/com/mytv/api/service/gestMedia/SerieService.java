@@ -89,6 +89,21 @@ public class SerieService {
 
 		return rep.findByNameOrOverviewContaining(n, n, p);
 	}
+	
+	public List<Serie> searchByGenre(String n, Long genre, Pageable p) {
+
+		return rep.findByNameOrOverviewContaining(n, n, p).stream()
+                .filter(f -> f.getGenreList().contains(genre))
+                .collect(Collectors.toList());
+		
+	}
+	
+	public List<Serie> searchByLangue(String n, Long langue, Pageable p) {
+
+		return rep.findByNameOrOverviewContaining(n, n, p).stream()
+                .filter(f -> f.getLangue().contains(langue))
+                .collect(Collectors.toList());
+	}
 
 	public Serie upadte(final Long id, Serie u) {
 

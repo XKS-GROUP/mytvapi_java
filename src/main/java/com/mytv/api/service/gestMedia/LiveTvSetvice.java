@@ -88,6 +88,21 @@ public class LiveTvSetvice {
 		
 	};
 
+	public List<LiveTv> searchbyLangue(String val, Long langue, Pageable p) {
+
+		return rep.findByNameOrOverviewContaining(val, val, p).stream()
+                .filter(f -> f.getLangue().contains(langue))
+                .collect(Collectors.toList());
+	}
+	
+	public List<LiveTv> searchByGenre(String val,Long genre, Pageable p) {
+
+		return rep.findByNameOrOverviewContaining(val, val, p).stream()
+                .filter(f -> f.getIdcategories().contains(genre))
+                .collect(Collectors.toList());
+	}
+	
+	
 	public LiveTv findByName(String name) {
 		
 		return rep.findByName(name);

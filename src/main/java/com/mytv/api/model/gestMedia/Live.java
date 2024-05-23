@@ -1,9 +1,14 @@
 package com.mytv.api.model.gestMedia;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -51,8 +56,10 @@ public class Live {
 	private String lieu;
 	
 	@NotNull(message = "une date de debut est requise")
+	@JsonFormat(pattern="dd-MM-yyyy")
 	private Date dateDebut;
 	
+	@JsonFormat(pattern="dd-MM-yyyy")
 	private Date dateFin;
 	
 	@NotNull(message = "une heurs de debut est requise")
@@ -62,5 +69,8 @@ public class Live {
 	
 	@Column(nullable = false, columnDefinition = "boolean default true")
 	boolean status;
+	
+	@CreatedDate
+	Date addDate;
 
 }

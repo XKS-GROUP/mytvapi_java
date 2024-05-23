@@ -1,7 +1,10 @@
 package com.mytv.api.model.gestMedia;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import org.springframework.data.annotation.CreatedDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -67,5 +70,8 @@ public class Radio {
 	@NotNull(message = "ce champ ne peut etre vide, une radio doit avoir au moins une langue")
 	@Column(nullable = false)
 	List<Long>  langue = new ArrayList<>();
+	
+	@CreatedDate
+	Date addDate;
 	
 }

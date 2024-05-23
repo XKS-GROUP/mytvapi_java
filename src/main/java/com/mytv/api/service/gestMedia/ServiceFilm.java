@@ -175,7 +175,6 @@ public class ServiceFilm {
                      .collect(Collectors.toList());
 		
 	};
-	
 
 	public List<Film> showByNameContaining(String n) {
 
@@ -186,6 +185,21 @@ public class ServiceFilm {
 
 		return rep.findByNameOrOverviewContaining(val, val, p);
 	}
+	
+	public List<Film> searchByLangue(String val, Long genre, Pageable p ) {
+
+		return rep.findByNameOrOverviewContaining(val, val, p).stream()
+                .filter(f -> f.getGenreList().contains(genre))
+                .collect(Collectors.toList());
+	}
+
+	public List<Film> searchByGenre(String val,Long langue, Pageable p ) {
+
+		return rep.findByNameOrOverviewContaining(val, val, p).stream()
+                .filter(f -> f.getGenreList().contains(langue))
+                .collect(Collectors.toList());
+	}
+
 
 	public Film upadte(final Long id, Film u) {
 

@@ -49,6 +49,13 @@ public class SaisonService{
 	public List<Saison> search(String n, Pageable p) {
 		return seasRep.findByNameOrOverviewContaining(n, n, p);
 	}
+	
+	public List<Saison> searchByLangue(String n, Long langue, Pageable p) {
+		
+		return seasRep.findByNameOrOverviewContaining(n, n, p).stream()
+                .filter(f -> f.getLangue().contains(langue))
+                .collect(Collectors.toList());
+	}
 
 
 	public Saison showById(Long id) {

@@ -58,10 +58,24 @@ public class PodcastService {
 	};
 	
 	
-	public List<Podcast> search(String n) {
+	public List<Podcast> search(String n, Pageable p) {
 
-		return rep.findByNameOrOverviewContaining(n, n);
+		return rep.findByNameOrOverviewContaining(n, n, p);
 	}
+	
+	public List<Podcast> searchByCateg(String n, Long categ, Pageable p) {
+
+		return rep.findByNameOrOverviewContaining(n, n, p).stream()
+                .filter(f -> f.getCategories().contains(categ))
+                .collect(Collectors.toList());
+	}
+	public List<Podcast> searchByLang(String n,Long langue, Pageable p) {
+
+		return rep.findByNameOrOverviewContaining(n, n, p).stream()
+                .filter(f -> f.getLangue().contains(langue))
+                .collect(Collectors.toList());
+	}
+	
 
 	public Podcast upadte(final Long id, Podcast u) {
 

@@ -47,9 +47,16 @@ public class LiveService {
 		
 	};
 	
-	public List<Live> search(String val) {
+	public List<Live> search(String val, Pageable p) {
 
-		return rep.findByNameOrOverviewContaining(val, val);
+		return rep.findByNameOrOverviewContaining(val, val, p);
+	}
+	
+	public List<Live> searchByCateg(String val, Long categ, Pageable p) {
+
+		return rep.findByNameOrOverviewContaining(val, val, p).stream()
+                .filter(f -> f.getIdCats().contains(categ))
+                .collect(Collectors.toList());
 	}
 
 	public Live update(final Long id, Live u) {

@@ -901,9 +901,23 @@ public class MediaController {
 
 	@Tag(name = "Radio")
 	@GetMapping("radios/search/{val}")
-	public ResponseEntity<Object> showbyNameContain(@PathVariable String val, Pageable p){
+	public ResponseEntity<Object> showbyNameContain(@PathVariable String val, Pageable p,
+			@RequestParam (required = false) Long categ ,
+			@RequestParam (required = false) Long langue){
+		
+		if(categ != null ) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.searchByCateg(val, categ, p));
+		}
+		if(langue != null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.searchByLangue(val, langue, p));
+		}
+		else {
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.search(val, p));
+		
+		}
 	}
 
 	@Tag(name = "Radio")
@@ -972,9 +986,23 @@ public class MediaController {
 	
 	@Tag(name = "TV SHOW")
 	@GetMapping("tv/search/{val}")
-	public ResponseEntity<Object> showLbyNameContainL(@PathVariable String val, Pageable p){
+	public ResponseEntity<Object> showLbyNameContainL(@PathVariable String val, Pageable p,
+			@RequestParam (required = false) Long genre ,
+			@RequestParam (required = false) Long langue){
+		
+		if(genre != null ) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchByGenre(val, genre, p));
+		}
+		if(langue != null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchbyLangue(val, langue, p));
+		}
+		else {
+			
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.search(val, p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.search(val, p));
+		}
 	}
 
 	@Tag(name = "TV SHOW")
@@ -1131,9 +1159,19 @@ public class MediaController {
 
 	@Tag(name = "Lives")
 	@GetMapping("lives/search/{val}")
-	public ResponseEntity<Object> showbyIdLives(@PathVariable String val){
+	public ResponseEntity<Object> showbyIdLives(
+			@PathVariable String val,
+			Pageable p,
+			@RequestParam (required = false) Long categ ){
+	
+		if(categ != null ) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, lService.searchByCateg(val, categ, p));
+		}
+		else {
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, lService.search(val));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, lService.search(val, p));
+		}
 	}
 
 	@Tag(name = "Lives")
@@ -1217,9 +1255,24 @@ public class MediaController {
 
 		@Tag(name = "Podcast")
 		@GetMapping("podcasts/search/{val}")
-		public ResponseEntity<Object> showbyIdP(@PathVariable String val){
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.search(val));
+		public ResponseEntity<Object> showbyIdP(
+				@PathVariable String val,
+				Pageable p,
+				@RequestParam (required = false) Long categ ,
+				@RequestParam (required = false) Long langue){
+			
+			if(categ != null ) {
+				
+				return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.searchByCateg(val, categ, p));
+			}
+			if(langue != null) {
+				
+				return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.searchByLang(val, langue, p));
+			}
+			else {
+				
+				return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.search(val, p));
+			}
 		}
 
 		@Tag(name = "Podcast")
@@ -1315,12 +1368,26 @@ public class MediaController {
 
 	@Tag(name = "Movie")
 	@GetMapping("movies/search/{val}")
-	public ResponseEntity<Object> showbyIdM(@PathVariable String val, Pageable p,
+	public ResponseEntity<Object> search(@PathVariable String val, Pageable p,
 			
 			@RequestParam (required = false) Long genre ,
 			@RequestParam (required = false) Long langue){
 
+		if(langue != null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.searchByLangue(val,langue,p));
+			
+		}
+		else if(genre != null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.searchByGenre(val, genre, p));
+			
+		}
+		else {
+		
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.search(val, p));
+		
+		}
 	}
 
 	@Tag(name = "Movie")
@@ -1401,9 +1468,26 @@ public class MediaController {
 
 	@Tag(name = "Serie")
 	@GetMapping("series/search/{val}")
-	public ResponseEntity<Object> showbyIdS(@PathVariable String val, Pageable p){
+	public ResponseEntity<Object> showbyIdS(
+			@PathVariable String val, 
+			Pageable p,
+			@RequestParam (required = false) Long genre ,
+			@RequestParam (required = false) Long langue){
+		
+		if(genre != null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.searchByGenre(val, genre, p));
+			
+		}
+		else if (langue != null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.searchByLangue(val, langue, p));
+		}
+		else {
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.search(val, p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.search(val, p));
+			
+		}
 	}
 
 	@Tag(name = "Serie")
@@ -1497,9 +1581,19 @@ public class MediaController {
 
 	@Tag(name = "Saison")
 	@GetMapping("saisons/search/{val}")
-	public ResponseEntity<Object> showbyNameC(@PathVariable String val, Pageable p){
+	public ResponseEntity<Object> showbyNameC(
+			@PathVariable String val,
+			@RequestParam (required = false) Long langue,
+			Pageable p){
+		
+		if(langue != null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, saisonService.searchByLangue(val, langue, p));
+		}
+		else {
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, saisonService.search(val, p));
+		}
 		
 	}
 
@@ -1578,9 +1672,25 @@ public class MediaController {
 
     @Tag(name = "Episode")
 	@GetMapping("episodes/search/{val}")
-	public ResponseEntity<Object> showbyIdE(@PathVariable String val, Pageable p){
+	public ResponseEntity<Object> searchEp(
+			@PathVariable String val, 
+			Pageable p,
+			@RequestParam (required = false) Long serie,
+			@RequestParam (required = false) Long langue){
+		
+		if(langue != null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.searchByLangue(val, langue, p));
+		}
+		else if(serie != null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.searchBySerie(val, serie, p));
+		}
+		else {
 
-    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.search(val, p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.search(val, p));
+    	
+		}
 	}
 
     @Tag(name = "Episode")
