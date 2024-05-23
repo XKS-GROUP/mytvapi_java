@@ -6,9 +6,11 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.mytv.api.model.gestMedia.Episode;
 import com.mytv.api.model.gestMedia.Live;
 import com.mytv.api.repository.LiveRepository;
 
@@ -39,24 +41,36 @@ public class LiveService {
 	}
 
 	
-	public List<Live> showByCategorie(Long id, Pageable p){
+	public Page<Live> showByCategorie(Long id, Pageable p){
 		
-		return rep.findAll().stream()
-                     .filter(f -> f.getIdCats().contains(id))
-                     .collect(Collectors.toList());
+		 PageImpl<Live> res = new PageImpl<Live>(rep.findAll().stream()
+				   .filter(f -> f.getIdCats().contains(id)).toList() 
+				   , p
+				   , rep.findAll().size());
+			
+			return res;
 		
 	};
 	
-	public List<Live> search(String val, Pageable p) {
+	public Page<Live> search(String val, Pageable p) {
 
 		return rep.findByNameOrOverviewContaining(val, val, p);
 	}
 	
-	public List<Live> searchByCateg(String val, Long categ, Pageable p) {
+	public Page<Live> searchByCateg(String val, Long categ, Pageable p) {
 
-		return rep.findByNameOrOverviewContaining(val, val, p).stream()
+		
+		PageImpl<Live> res = new PageImpl<Live>( 
+				
+				rep.findByNameOrOverviewContaining(val, val).stream()
                 .filter(f -> f.getIdCats().contains(categ))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()) 
+				   , p
+				   , rep.findAll().size());
+			
+			return res;
+		
+		
 	}
 
 	public Live update(final Long id, Live u) {

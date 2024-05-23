@@ -30,17 +30,14 @@ public class Slider {
 	
 	@NotEmpty(message = "Une image est requise")
 	@Column(nullable = false  ,columnDefinition = "TEXT")
-	private String image_path;
-	
+	private String file_path;
 	
 	@Column(nullable = false, columnDefinition = "boolean default false")
 	private boolean typeVideo;
 	
 	private List<Long> targetPage;
 	
-	
 	@Column(nullable = false, columnDefinition = "boolean default false")
 	private boolean status;
-	
 
 }

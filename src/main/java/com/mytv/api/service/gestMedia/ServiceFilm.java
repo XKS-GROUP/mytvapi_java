@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -152,25 +153,31 @@ public class ServiceFilm {
 		return rep.findAll(p);
 	}
 
-	public List<Film> showByLangue(Long id, Pageable p){
+	public Page<Film> showByLangue(Long id, Pageable p){
 		
-		return rep.findAll().stream()
-                     .filter(f -> f.getLangue().contains(id))
-                     .collect(Collectors.toList());
+		PageImpl<Film> res = new PageImpl<Film>(rep.findAll().stream()
+				   .filter(f -> f.getLangue().contains(id)).toList() 
+				   , p
+				   , rep.findAll().size());
+			
+			return res;
 		
 	};
 	
-	public List<Film> showByGenre(Long id, Pageable p){
+	public Page<Film> showByGenre(Long id, Pageable p){
 		
-		return rep.findAll().stream()
-                     .filter(f -> f.getGenreList().contains(id))
-                     .collect(Collectors.toList());
+		PageImpl<Film> res = new PageImpl<Film>(rep.findAll().stream()
+				   .filter(f -> f.getLangue().contains(id)).toList() 
+				   , p
+				   , rep.findAll().size());
+			
+			return res;
 		
 	};
 	
 	public List<Film> showByGenreAndLang(Long g, Long l, Pageable p){
 		
-		return rep.findAll().stream()
+		return rep.findAll(p).stream()
                      .filter(f -> f.getGenreList().contains(g))
                      .collect(Collectors.toList());
 		
