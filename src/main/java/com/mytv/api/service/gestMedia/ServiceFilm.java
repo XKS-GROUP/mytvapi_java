@@ -178,7 +178,7 @@ public class ServiceFilm {
 	public List<Film> showByGenreAndLang(Long g, Long l, Pageable p){
 		
 		return rep.findAll(p).stream()
-                     .filter(f -> f.getGenreList().contains(g))
+                     .filter(f -> f.getGenreList().contains(g) )
                      .collect(Collectors.toList());
 		
 	};

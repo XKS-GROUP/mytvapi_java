@@ -355,8 +355,9 @@ public class MediaController {
 	}
     
     @Tag(name = "Podcast Collection")
-	@GetMapping("podcast/collections/search/{val}")
-	public ResponseEntity<Object> searchCollection(@PathVariable String val, Pageable p){
+	@GetMapping("podcast/collections/search/")
+	public ResponseEntity<Object> searchCollection(
+		@RequestParam String s, Pageable p){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, colPodRep.findAll(p));
 	}
@@ -907,22 +908,24 @@ public class MediaController {
 	}
 
 	@Tag(name = "Radio")
-	@GetMapping("radios/search/{val}")
-	public ResponseEntity<Object> showbyNameContain(@PathVariable String val, Pageable p,
+	@GetMapping("radios/search/")
+	public ResponseEntity<Object> showbyNameContain(
+			@RequestParam String s,
+			Pageable p,
 			@RequestParam (required = false) Long categ ,
 			@RequestParam (required = false) Long langue){
 		
 		if(categ != null ) {
 			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.searchByCateg(val, categ, p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.searchByCateg(s, categ, p));
 		}
-		if(langue != null) {
+		else if(langue != null) {
 			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.searchByLangue(val, langue, p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.searchByLangue(s, langue, p));
 		}
 		else {
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.search(val, p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.search(s, p));
 		
 		}
 	}
@@ -997,28 +1000,29 @@ public class MediaController {
 	}
 	
 	@Tag(name = "TV SHOW")
-	@GetMapping("tv/search/{val}")
-	public ResponseEntity<Object> showLbyNameContainL(@PathVariable String val, Pageable p,
+	@GetMapping("tv/search/")
+	public ResponseEntity<Object> showLbyNameContainL(
+			@RequestParam String s, Pageable p,
 			@RequestParam (required = false) Long genre ,
 			@RequestParam (required = false) Long langue,
 			@RequestParam (required = false) Long pays){
 			
 		if(genre != null ) {
 			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchByGenre(val, genre, p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchByGenre(s, genre, p));
 		}
 		else if(langue != null) {
 			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchbyLangue(val, langue, p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchbyLangue(s, langue, p));
 		}
 		else if(pays != null) {
 			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showByPays(pays, p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchByPays(s, pays, p));
 		}
 		else {
 			
 
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.search(val, p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.search(s, p));
 		}
 	}
 
@@ -1175,19 +1179,20 @@ public class MediaController {
 	}
 
 	@Tag(name = "Lives")
-	@GetMapping("lives/search/{val}")
+	@GetMapping("lives/search/")
 	public ResponseEntity<Object> showbyIdLives(
+			@RequestParam String s, 
 			@PathVariable String val,
 			Pageable p,
 			@RequestParam (required = false) Long categ ){
 	
 		if(categ != null ) {
 			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, lService.searchByCateg(val, categ, p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, lService.searchByCateg(s, categ, p));
 		}
 		else {
 
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, lService.search(val, p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, lService.search(s, p));
 		}
 	}
 
@@ -1271,8 +1276,9 @@ public class MediaController {
 		}
 
 		@Tag(name = "Podcast")
-		@GetMapping("podcasts/search/{val}")
+		@GetMapping("podcasts/search/")
 		public ResponseEntity<Object> showbyIdP(
+				@RequestParam String s, 
 				@PathVariable String val,
 				Pageable p,
 				@RequestParam (required = false) Long categ ,
@@ -1280,15 +1286,15 @@ public class MediaController {
 			
 			if(categ != null ) {
 				
-				return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.searchByCateg(val, categ, p));
+				return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.searchByCateg(s, categ, p));
 			}
 			if(langue != null) {
 				
-				return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.searchByLang(val, langue, p));
+				return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.searchByLang(s, langue, p));
 			}
 			else {
 				
-				return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.search(val, p));
+				return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.search(s, p));
 			}
 		}
 
@@ -1341,15 +1347,19 @@ public class MediaController {
 			@RequestParam (required = false) Long langue ){
 
 
-		if(langue != null) {
+		if(langue != null && genre == null) {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.showByLangue(langue,p));
 			
 		}
-		else if(genre != null) {
+		else if(genre != null && langue == null) {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.showByGenre(genre,p));
 			
+		}
+		else if(genre !=null && langue !=null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.showByGenre(genre,p));
 		}
 		else {
 			
@@ -1384,25 +1394,31 @@ public class MediaController {
 	}
 
 	@Tag(name = "Movie")
-	@GetMapping("movies/search/{val}")
-	public ResponseEntity<Object> search(@PathVariable String val, Pageable p,
-			
+	@GetMapping("movies/search/")
+	public ResponseEntity<Object> search(
+			@RequestParam String s, 
+			Pageable p,
 			@RequestParam (required = false) Long genre ,
 			@RequestParam (required = false) Long langue){
 
-		if(langue != null) {
+		if(langue != null && genre==null) {
 			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.searchByLangue(val,langue,p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.searchByLangue(s,langue,p));
 			
 		}
-		else if(genre != null) {
+		else if(genre != null && langue == null) {
 			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.searchByGenre(val, genre, p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.searchByGenre(s, genre, p));
+			
+		}
+		else if(genre != null && langue != null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.searchByGenre(s, genre, p));
 			
 		}
 		else {
 		
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.search(val, p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.search(s, p));
 		
 		}
 	}
@@ -1484,8 +1500,9 @@ public class MediaController {
 	}
 
 	@Tag(name = "Serie")
-	@GetMapping("series/search/{val}")
+	@GetMapping("series/search/")
 	public ResponseEntity<Object> showbyIdS(
+			@RequestParam String s, 
 			@PathVariable String val, 
 			Pageable p,
 			@RequestParam (required = false) Long genre ,
@@ -1493,16 +1510,16 @@ public class MediaController {
 		
 		if(genre != null) {
 			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.searchByGenre(val, genre, p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.searchByGenre(s, genre, p));
 			
 		}
 		else if (langue != null) {
 			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.searchByLangue(val, langue, p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.searchByLangue(s, langue, p));
 		}
 		else {
 
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.search(val, p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.search(s, p));
 			
 		}
 	}
@@ -1597,19 +1614,20 @@ public class MediaController {
 	}
 
 	@Tag(name = "Saison")
-	@GetMapping("saisons/search/{val}")
+	@GetMapping("saisons/search/")
 	public ResponseEntity<Object> showbyNameC(
+			@RequestParam String s, 
 			@PathVariable String val,
 			@RequestParam (required = false) Long langue,
 			Pageable p){
 		
 		if(langue != null) {
 			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, saisonService.searchByLangue(val, langue, p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, saisonService.searchByLangue(s, langue, p));
 		}
 		else {
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, saisonService.search(val, p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, saisonService.search(s, p));
 		}
 		
 	}
@@ -1688,8 +1706,9 @@ public class MediaController {
 	}
 
     @Tag(name = "Episode")
-	@GetMapping("episodes/search/{val}")
+	@GetMapping("episodes/search/")
 	public ResponseEntity<Object> searchEp(
+			@RequestParam String s, 
 			@PathVariable String val, 
 			Pageable p,
 			@RequestParam (required = false) Long serie,
@@ -1697,15 +1716,15 @@ public class MediaController {
 		
 		if(langue != null) {
 			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.searchByLangue(val, langue, p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.searchByLangue(s, langue, p));
 		}
 		else if(serie != null) {
 			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.searchBySerie(val, serie, p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.searchBySerie(s, serie, p));
 		}
 		else {
 
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.search(val, p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.search(s, p));
     	
 		}
 	}
@@ -1780,10 +1799,13 @@ public class MediaController {
   	}
 
       @Tag(name = "Slider")
-  	@GetMapping("slider/search/{name}")
-  	public ResponseEntity<Object> sliderByName(@PathVariable String name, Pageable p){
+  	@GetMapping("slider/search/")
+  	public ResponseEntity<Object> sliderByName(
+  			@RequestParam String s, 
+  			@PathVariable String name, 
+  			Pageable p){
 
-      	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, sliderService.showByName(name, p));
+      	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, sliderService.showByName(s, p));
   	}
 
       @Tag(name = "Slider")
@@ -1826,15 +1848,6 @@ public class MediaController {
   	}
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
     /*
      * 
      *CLOUDFLARE R2 CRUD 
@@ -1869,10 +1882,11 @@ public class MediaController {
 	
 
 	@Tag(name = "R2-CLOUDFLARE")
-    @GetMapping("r2/search/byId/{idFile}")
-    public ResponseEntity<Object> findbyid(@PathVariable int idFile) {
+    @GetMapping("r2/search/byId/")
+    public ResponseEntity<Object> findbyid(
+    		@RequestParam int id) {
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, fileMetaRep.findById(idFile));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, fileMetaRep.findById(id));
     }
 
 	@Tag(name = "R2-CLOUDFLARE")
