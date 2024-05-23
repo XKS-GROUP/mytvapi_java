@@ -357,7 +357,8 @@ public class MediaController {
     @Tag(name = "Podcast Collection")
 	@GetMapping("podcast/collections/search/")
 	public ResponseEntity<Object> searchCollection(
-		@RequestParam String s, Pageable p){
+		@RequestParam String s, 
+		Pageable p){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, colPodRep.findAll(p));
 	}
@@ -569,10 +570,11 @@ public class MediaController {
 	}
 
 	@Tag(name = "Langue")
-	@GetMapping("langs/search/{name}")
-	public ResponseEntity<Object> showLangByName( @PathVariable String name, Pageable p){
+	@GetMapping("langs/search/")
+	public ResponseEntity<Object> showLangByName( 
+			@RequestParam String s, Pageable p){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, langService.showByName(name, p));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, langService.showByName(s, p));
 	}
 
 	//Pays
@@ -675,17 +677,21 @@ public class MediaController {
 	}
 
 	@Tag(name = "Genre FILM SERIE")
-	@GetMapping("genres/search/{name}")
-	public ResponseEntity<Object> showByName(@PathVariable String name, Pageable p){
+	@GetMapping("genres/search/")
+	public ResponseEntity<Object> showByName(
+			@RequestParam String s, 
+			Pageable p){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.showByName(name, p));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.showByName(s, p));
 	}
 
 	@Tag(name = "Genre FILM SERIE")
-	@GetMapping("genres/search/contain/{name}")
-	public ResponseEntity<Object> showByNameContain(@PathVariable String name, Pageable p){
+	@GetMapping("genres/search/contain/")
+	public ResponseEntity<Object> showByNameContain(
+			@RequestParam String s, 
+			Pageable p){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.findByNameContain(name, p));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.findByNameContain(s, p));
 		
 	}
 
@@ -1181,8 +1187,7 @@ public class MediaController {
 	@Tag(name = "Lives")
 	@GetMapping("lives/search/")
 	public ResponseEntity<Object> showbyIdLives(
-			@RequestParam String s, 
-			@PathVariable String val,
+			@RequestParam String s,
 			Pageable p,
 			@RequestParam (required = false) Long categ ){
 	
@@ -1279,7 +1284,6 @@ public class MediaController {
 		@GetMapping("podcasts/search/")
 		public ResponseEntity<Object> showbyIdP(
 				@RequestParam String s, 
-				@PathVariable String val,
 				Pageable p,
 				@RequestParam (required = false) Long categ ,
 				@RequestParam (required = false) Long langue){
@@ -1503,7 +1507,6 @@ public class MediaController {
 	@GetMapping("series/search/")
 	public ResponseEntity<Object> showbyIdS(
 			@RequestParam String s, 
-			@PathVariable String val, 
 			Pageable p,
 			@RequestParam (required = false) Long genre ,
 			@RequestParam (required = false) Long langue){
@@ -1617,7 +1620,6 @@ public class MediaController {
 	@GetMapping("saisons/search/")
 	public ResponseEntity<Object> showbyNameC(
 			@RequestParam String s, 
-			@PathVariable String val,
 			@RequestParam (required = false) Long langue,
 			Pageable p){
 		
@@ -1709,7 +1711,6 @@ public class MediaController {
 	@GetMapping("episodes/search/")
 	public ResponseEntity<Object> searchEp(
 			@RequestParam String s, 
-			@PathVariable String val, 
 			Pageable p,
 			@RequestParam (required = false) Long serie,
 			@RequestParam (required = false) Long langue){
@@ -1849,6 +1850,7 @@ public class MediaController {
     
     
     /*
+     * 
      * 
      *CLOUDFLARE R2 CRUD 
      * 
