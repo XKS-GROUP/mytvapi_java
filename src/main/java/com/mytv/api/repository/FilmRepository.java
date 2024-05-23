@@ -2,6 +2,7 @@ package com.mytv.api.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -16,6 +17,7 @@ public interface FilmRepository  extends JpaRepository<Film, Long>{
 	
 	List<Film> findByNameContaining(String val);
 	List<Film> findByNameContaining(String val, Pageable p);
-	List<Film> findByNameOrOverviewContaining(String nom, String desc, Pageable p);
+	Page<Film> findByNameOrOverviewContaining(String nom, String desc, Pageable p);
+	List<Film> findByNameOrOverviewContaining(String nom, String desc);
 
 }

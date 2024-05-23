@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -41,41 +42,55 @@ public class RadioService {
 		return radioRep.findAll(p);
 	}
 	
-	public List<Radio> showByLangue(Long id, Pageable p){
+	public Page<Radio> showByLangue(Long id, Pageable p){
 		
-		return radioRep.findAll().stream()
-                     .filter(f -> f.getLangue().contains(id))
-                     .collect(Collectors.toList());
-		
-	};
-	
-	public List<Radio> showByCateg(Long id, Pageable p){
-		
-		return radioRep.findAll().stream()
-                     .filter(f -> f.getCategories().contains(id))
-                     .collect(Collectors.toList());
+		PageImpl<Radio> res = new PageImpl<Radio>(radioRep.findAll().stream()
+				   .filter(f -> f.getLangue().contains(id)).toList() 
+				   , p
+				   , radioRep.findAll().size());
+			
+			return res;
 		
 	};
 	
+	public Page<Radio> showByCateg(Long id, Pageable p){
+		
+		PageImpl<Radio> res = new PageImpl<Radio>(radioRep.findAll().stream()
+				   .filter(f -> f.getCategories().contains(id)).toList() 
+				   , p
+				   , radioRep.findAll().size());
+			
+			return res;
+		
+	};
 	
 	
-	public List<Radio> search(String n, Pageable p) {
+	
+	public Page<Radio> search(String n, Pageable p) {
 
 		return radioRep.findByNameOrOverviewContaining(n, n, p);
 	}
 	
-	public List<Radio> searchByLangue(String n, Long langue ,Pageable p) {
+	public Page<Radio> searchByLangue(String n, Long langue ,Pageable p) {
 
-		return radioRep.findByNameOrOverviewContaining(n, n, p).stream()
+		PageImpl<Radio> res = new PageImpl<Radio>(radioRep.findByNameOrOverviewContaining(n, n).stream()
                 .filter(f -> f.getLangue().contains(langue))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()) 
+				   , p
+				   , radioRep.findAll().size());
+			
+			return res;
 	}
 	
-	public List<Radio> searchByCateg(String n, Long categ, Pageable p) {
+	public Page<Radio> searchByCateg(String n, Long categ, Pageable p) {
 
-		return radioRep.findByNameOrOverviewContaining(n, n, p).stream()
+		PageImpl<Radio> res = new PageImpl<Radio>(radioRep.findByNameOrOverviewContaining(n, n).stream()
                 .filter(f -> f.getCategories().contains(categ))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()) 
+				   , p
+				   , radioRep.findAll().size());
+			
+			return res;
 	}
 
 	public Radio upadte(final Long id, Radio u) {

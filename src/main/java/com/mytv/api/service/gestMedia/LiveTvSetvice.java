@@ -6,9 +6,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import com.mytv.api.model.gestMedia.LiveTv;
 import com.mytv.api.repository.LiveTvRepository;
 
@@ -40,7 +40,7 @@ public class LiveTvSetvice {
 		return rep.findAll(p);
 	}
 
-	public List<LiveTv> search(String val, Pageable p) {
+	public Page<LiveTv> search(String val, Pageable p) {
 
 		return rep.findByNameOrOverviewContaining(val, val, p);
 	}
@@ -72,34 +72,72 @@ public class LiveTvSetvice {
 
 	}
 	
-	public List<LiveTv> showByLangue(Long id, Pageable p){
+	public Page<LiveTv> showByLangue(Long id, Pageable p){
 		
-		return rep.findAll().stream()
-                     .filter(f -> f.getLangue().contains(id))
-                     .collect(Collectors.toList());
+		 PageImpl<LiveTv> res = new PageImpl<LiveTv>(rep.findAll().stream()
+				   .filter(f -> f.getLangue().contains(id)).toList() 
+				   , p
+				   , rep.findAll().size());
+			
+			return res;
 		
 	};
 	
-	public List<LiveTv> showByGenre(Long id, Pageable p){
+	public Page<LiveTv> showByGenre(Long id, Pageable p){
 		
-		return rep.findAll().stream()
-                     .filter(f -> f.getIdcategories().contains(id))
-                     .collect(Collectors.toList());
+		 PageImpl<LiveTv> res = new PageImpl<LiveTv>(rep.findAll().stream()
+				   .filter(f -> f.getIdcategories().contains(id)).toList() 
+				   , p
+				   , rep.findAll().size());
+			
+			return res;
+		
+	};
+	
+	public Page<LiveTv> showByPays(Long id, Pageable p){
+		
+		 PageImpl<LiveTv> res = new PageImpl<LiveTv>(rep.findAll().stream()
+				   .filter(f -> f.getCountry().contains(id)).toList() 
+				   , p
+				   , rep.findAll().size());
+			
+			return res;
 		
 	};
 
-	public List<LiveTv> searchbyLangue(String val, Long langue, Pageable p) {
+	public Page<LiveTv> searchbyLangue(String val, Long langue, Pageable p) {
 
-		return rep.findByNameOrOverviewContaining(val, val, p).stream()
-                .filter(f -> f.getLangue().contains(langue))
-                .collect(Collectors.toList());
+		 PageImpl<LiveTv> res = new PageImpl<LiveTv>( rep.findByNameOrOverviewContaining(val, val).stream()
+	                .filter(f -> f.getLangue().contains(langue))
+	                .collect(Collectors.toList()) 
+				   , p
+				   , rep.findAll().size());
+			
+			return res;
 	}
 	
-	public List<LiveTv> searchByGenre(String val,Long genre, Pageable p) {
+	public Page<LiveTv> searchByGenre(String val,Long genre, Pageable p) {
 
-		return rep.findByNameOrOverviewContaining(val, val, p).stream()
+		PageImpl<LiveTv> res = new PageImpl<LiveTv>( rep.findByNameOrOverviewContaining(val, val).stream()
                 .filter(f -> f.getIdcategories().contains(genre))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()) 
+			   , p
+			   , rep.findAll().size());
+		
+		return res;
+		
+	}
+	
+	public Page<LiveTv> searchByPays(String val,Long pays, Pageable p) {
+
+		PageImpl<LiveTv> res = new PageImpl<LiveTv>( rep.findByNameOrOverviewContaining(val, val).stream()
+                .filter(f -> f.getCountry().contains(pays))
+                .collect(Collectors.toList()) 
+			   , p
+			   , rep.findAll().size());
+		
+		return res;
+		
 	}
 	
 	

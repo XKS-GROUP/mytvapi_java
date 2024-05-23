@@ -5,10 +5,10 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.mytv.api.model.gestMedia.Film;
 import com.mytv.api.model.gestMedia.Saison;
 import com.mytv.api.model.gestMedia.Serie;
 import com.mytv.api.repository.SeasonRepository;
@@ -34,27 +34,34 @@ public class SaisonService{
 		return seasRep.findAll(p);
 	}
 	
-	public List<Saison> showByLangue(Long id, Pageable p){
+	public Page<Saison> showByLangue(Long id, Pageable p){
 		
-		return seasRep.findAll().stream()
-                     .filter(f -> f.getLangue().contains(id))
-                     .collect(Collectors.toList());
+		PageImpl<Saison> res = new PageImpl<Saison>(seasRep.findAll().stream()
+				   .filter(f -> f.getLangue().contains(id)).toList() 
+				   , p
+				   ,seasRep.findAll().size());
+			
+			return res;
 	};
 	
 	
-	public List<Saison> showBySerie(Serie idSerie) {
-		return seasRep.findByIdSerie(idSerie);
+	public Page<Saison> showBySerie(Serie idSerie, Pageable p) {
+		return seasRep.findByIdSerie(idSerie, p);
 	}
 	
 	public List<Saison> search(String n, Pageable p) {
 		return seasRep.findByNameOrOverviewContaining(n, n, p);
 	}
 	
-	public List<Saison> searchByLangue(String n, Long langue, Pageable p) {
+	public Page<Saison> searchByLangue(String n, Long langue, Pageable p) {
 		
-		return seasRep.findByNameOrOverviewContaining(n, n, p).stream()
+		PageImpl<Saison> res = new PageImpl<Saison>(seasRep.findByNameOrOverviewContaining(n, n, p).stream()
                 .filter(f -> f.getLangue().contains(langue))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()) 
+				   , p
+				   ,seasRep.findAll().size());
+			
+			return res;
 	}
 
 

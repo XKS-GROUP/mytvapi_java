@@ -10,7 +10,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.mytv.api.model.gestMedia.Episode;
 import com.mytv.api.model.gestMedia.Live;
 import com.mytv.api.repository.LiveRepository;
 

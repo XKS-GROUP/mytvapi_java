@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -41,39 +42,56 @@ public class PodcastService {
 		return rep.findAll(p);
 	}
 	
-	public List<Podcast> showByCateg(Long id, Pageable p){
+	public Page<Podcast> showByCateg(Long id, Pageable p){
 		
-		return rep.findAll().stream()
-                     .filter(f -> f.getCategories().contains(id))
-                     .collect(Collectors.toList());
-		
-	};
-	
-	public List<Podcast> showByLang(Long id, Pageable p){
-		
-		return rep.findAll().stream()
-                     .filter(f -> f.getLangue().contains(id))
-                     .collect(Collectors.toList());
+		PageImpl<Podcast> res = new PageImpl<Podcast>(rep.findAll().stream()
+				   .filter(f -> f.getCategories().contains(id)).toList() 
+				   , p
+				   , rep.findAll().size());
+			
+			return res;
 		
 	};
 	
+	public Page<Podcast> showByLang(Long id, Pageable p){
+		
+		PageImpl<Podcast> res = new PageImpl<Podcast>(rep.findAll().stream()
+				   .filter(f -> f.getLangue().contains(id)).toList() 
+				   , p
+				   , rep.findAll().size());
+			
+			return res;
+		
+	};
 	
-	public List<Podcast> search(String n, Pageable p) {
+	
+	public Page<Podcast> search(String n, Pageable p) {
 
 		return rep.findByNameOrOverviewContaining(n, n, p);
 	}
 	
-	public List<Podcast> searchByCateg(String n, Long categ, Pageable p) {
+	public Page<Podcast> searchByCateg(String n, Long categ, Pageable p) {
 
-		return rep.findByNameOrOverviewContaining(n, n, p).stream()
+		PageImpl<Podcast> res = new PageImpl<Podcast>(
+				rep.findByNameOrOverviewContaining(n, n).stream()
                 .filter(f -> f.getCategories().contains(categ))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList())
+				   , p
+				   , rep.findAll().size());
+			
+			return res;
 	}
-	public List<Podcast> searchByLang(String n,Long langue, Pageable p) {
+	
+	public Page<Podcast> searchByLang(String n,Long langue, Pageable p) {
 
-		return rep.findByNameOrOverviewContaining(n, n, p).stream()
+		PageImpl<Podcast> res = new PageImpl<Podcast>(
+				rep.findByNameOrOverviewContaining(n, n).stream()
                 .filter(f -> f.getLangue().contains(langue))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList())
+				   , p
+				   , rep.findAll().size());
+			
+			return res;
 	}
 	
 

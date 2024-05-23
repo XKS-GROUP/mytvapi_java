@@ -7,10 +7,10 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.mytv.api.model.gestMedia.Film;
 import com.mytv.api.model.gestMedia.Genre;
 import com.mytv.api.model.gestMedia.Serie;
 import com.mytv.api.model.gestMedia.SerieGenre;
@@ -66,43 +66,63 @@ public class SerieService {
 		return rep.findAll(p);
 	}
 	
-	
-	public List<Serie> showByLangue(Long id, Pageable p){
+	public Page<Serie> showByLangue(Long id, Pageable p){
 		
-		return rep.findAll().stream()
-                     .filter(f -> f.getLangue().contains(id))
-                     .collect(Collectors.toList());
 		
-	};
-	
-	public List<Serie> showByGenre(Long id, Pageable p){
-		
-		return rep.findAll().stream()
-                     .filter(f -> f.getGenreList().contains(id))
-                     .collect(Collectors.toList());
+		PageImpl<Serie> res = new PageImpl<Serie>(
+				rep.findAll().stream()
+                .filter(f -> f.getLangue().contains(id))
+                .collect(Collectors.toList()) 
+				   , p
+				   , rep.findAll().size());
+			
+			return res;
 		
 	};
 	
+	public Page<Serie> showByGenre(Long id, Pageable p){
+		
+		PageImpl<Serie> res = new PageImpl<Serie>(
+				rep.findAll().stream()
+                .filter(f -> f.getGenreList().contains(id))
+                .collect(Collectors.toList()) 
+				   , p
+				   , rep.findAll().size());
+			
+			return res;
+		
+	};
 	
-	
-	public List<Serie> search(String n, Pageable p) {
+	public Page<Serie> search(String n, Pageable p) {
 
 		return rep.findByNameOrOverviewContaining(n, n, p);
 	}
 	
-	public List<Serie> searchByGenre(String n, Long genre, Pageable p) {
-
-		return rep.findByNameOrOverviewContaining(n, n, p).stream()
+	public Page<Serie> searchByGenre(String n, Long genre, Pageable p) {
+		
+		PageImpl<Serie> res = new PageImpl<Serie>(
+				rep.findByNameOrOverviewContaining(n, n)
+				.stream()
                 .filter(f -> f.getGenreList().contains(genre))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList())
+				   , p
+				   , rep.findAll().size());
+			
+			return res;
 		
 	}
 	
-	public List<Serie> searchByLangue(String n, Long langue, Pageable p) {
+	public Page<Serie> searchByLangue(String n, Long langue, Pageable p) {
 
-		return rep.findByNameOrOverviewContaining(n, n, p).stream()
+		PageImpl<Serie> res = new PageImpl<Serie>(
+				rep.findByNameOrOverviewContaining(n, n)
+				.stream()
                 .filter(f -> f.getLangue().contains(langue))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList())
+				   , p
+				   , rep.findAll().size());
+			
+			return res;
 	}
 
 	public Serie upadte(final Long id, Serie u) {

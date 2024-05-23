@@ -975,15 +975,20 @@ public class MediaController {
 	@GetMapping("tv/all/")
 	public ResponseEntity<Object> showLivePages(Pageable p,
 			@RequestParam (required = false) Long genre ,
-			@RequestParam (required = false) Long langue){
+			@RequestParam (required = false) Long langue,
+			@RequestParam (required = false) Long pays){
 		
 		if(genre != null ) {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showByGenre(genre, p));
 		}
-		if(langue != null) {
+		else if(langue != null) {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showByLangue(langue, p));
+		}
+		else if(pays != null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showByPays(pays, p));
 		}
 		else {
 			
@@ -995,15 +1000,20 @@ public class MediaController {
 	@GetMapping("tv/search/{val}")
 	public ResponseEntity<Object> showLbyNameContainL(@PathVariable String val, Pageable p,
 			@RequestParam (required = false) Long genre ,
-			@RequestParam (required = false) Long langue){
-		
+			@RequestParam (required = false) Long langue,
+			@RequestParam (required = false) Long pays){
+			
 		if(genre != null ) {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchByGenre(val, genre, p));
 		}
-		if(langue != null) {
+		else if(langue != null) {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchbyLangue(val, langue, p));
+		}
+		else if(pays != null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showByPays(pays, p));
 		}
 		else {
 			
@@ -1557,9 +1567,9 @@ public class MediaController {
 	
 	@Tag(name = "Saison")
 	@GetMapping("saisons/bySerie/{idSerie}")
-	public ResponseEntity<Object> showSaisonBySerie(@PathVariable Long idSerie){
+	public ResponseEntity<Object> showSaisonBySerie(@PathVariable Long idSerie, Pageable p){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, saisonService.showBySerie(serieService.showById(idSerie).get()));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, saisonService.showBySerie(serieService.showById(idSerie).get(), p));
 	}
 
 	@Tag(name = "Saison")
