@@ -53,9 +53,6 @@ import com.mytv.api.model.ressource.Director;
 import com.mytv.api.model.ressource.Language;
 import com.mytv.api.model.ressource.Pays;
 import com.mytv.api.repository.ActorRepository;
-import com.mytv.api.repository.CatPodcastRepository;
-import com.mytv.api.repository.CategorieLiveRepository;
-import com.mytv.api.repository.CategoryLrRepository;
 import com.mytv.api.repository.CollectionPodcastRepository;
 import com.mytv.api.repository.DirectorRepository;
 import com.mytv.api.repository.FavEpisodeRepository;
@@ -719,9 +716,9 @@ public class FrontController {
 	
 	@Tag(name = "Podcasts")
 	@GetMapping("podcasts/search/{val}")
-	public ResponseEntity<Object> showbyIdP(@PathVariable String val){
+	public ResponseEntity<Object> showbyIdP(@PathVariable String val, Pageable p){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.search(val));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.search(val, p));
 	}
 	//COM
 	//AFFICHE TOUS LES COMMENTAIRES

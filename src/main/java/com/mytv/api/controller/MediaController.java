@@ -355,6 +355,13 @@ public class MediaController {
 	}
     
     @Tag(name = "Podcast Collection")
+	@GetMapping("podcast/collections/search/{val}")
+	public ResponseEntity<Object> searchCollection(@PathVariable String val, Pageable p){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, colPodRep.findAll(p));
+	}
+    
+    @Tag(name = "Podcast Collection")
 	@GetMapping("podcast/collections/{id}")
 	public ResponseEntity<Object> showCollectionById(@PathVariable long id){
 
