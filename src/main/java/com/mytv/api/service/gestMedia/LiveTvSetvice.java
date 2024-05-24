@@ -104,6 +104,21 @@ public class LiveTvSetvice {
 			return res;
 		
 	};
+	
+	public Page<LiveTv> showByPays(Long categ, Long langue, Long pays, Pageable p){
+		
+		 PageImpl<LiveTv> res = new PageImpl<LiveTv>(rep.findAll().stream()
+				   .filter(f -> f.getIdcategories().contains(categ))
+				   .filter(f -> f.getLangue().contains(langue))
+				   .filter(f -> f.getCountry().contains(pays))
+				   .toList() 
+				   , p
+				   , rep.findAll().size());
+			
+			return res;
+		
+	};
+	
 
 	public Page<LiveTv> searchbyLangue(String val, Long langue, Pageable p) {
 

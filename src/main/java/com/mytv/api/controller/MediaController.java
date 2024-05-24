@@ -1363,7 +1363,7 @@ public class MediaController {
 		}
 		else if(genre !=null && langue !=null) {
 			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.showByGenre(genre,p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.showByGenreAndLang(genre, langue, p));
 		}
 		else {
 			
@@ -1417,7 +1417,7 @@ public class MediaController {
 		}
 		else if(genre != null && langue != null) {
 			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.searchByGenre(s, genre, p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.searchByGenreAndLang(s, genre, langue, p));
 			
 		}
 		else {

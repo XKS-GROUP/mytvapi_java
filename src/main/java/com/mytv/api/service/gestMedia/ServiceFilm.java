@@ -175,11 +175,18 @@ public class ServiceFilm {
 		
 	};
 	
-	public List<Film> showByGenreAndLang(Long g, Long l, Pageable p){
+	public Page<Film> showByGenreAndLang(Long g, Long l, Pageable p){
 		
-		return rep.findAll(p).stream()
-                     .filter(f -> f.getGenreList().contains(g) )
-                     .collect(Collectors.toList());
+		
+		PageImpl<Film> res = new PageImpl<Film>(
+				rep.findAll().stream()
+                .filter(f -> f.getGenreList().contains(g))
+                .filter(f -> f.getLangue().contains(l))
+                .collect(Collectors.toList())
+				   , p
+				   , rep.findAll().size());
+			
+			return res;
 		
 	};
 
@@ -217,6 +224,21 @@ public class ServiceFilm {
 			
 			return res;
 	}
+	
+	public Page<Film> searchByGenreAndLang(String val , Long g, Long l, Pageable p){
+		
+		
+		PageImpl<Film> res = new PageImpl<Film>(
+				rep.findByNameOrOverviewContaining(val, val).stream()
+                .filter(f -> f.getGenreList().contains(g))
+                .filter(f -> f.getLangue().contains(l))
+                .collect(Collectors.toList())
+				   , p
+				   , rep.findAll().size());
+			
+			return res;
+		
+	};
 
 
 	public Film upadte(final Long id, Film u) {
