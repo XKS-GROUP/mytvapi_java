@@ -64,6 +64,18 @@ public class RadioService {
 		
 	};
 	
+	public Page<Radio> showByCategAbdLang(Long categ, Long langue, Pageable p){
+		
+		PageImpl<Radio> res = new PageImpl<Radio>(radioRep.findAll().stream()
+				   .filter(f -> f.getLangue().contains(langue))
+				   .filter(f -> f.getCategories().contains(categ))
+				   .toList() 
+				   , p
+				   , radioRep.findAll().size());
+			
+			return res;
+		
+	};
 	
 	
 	public Page<Radio> search(String n, Pageable p) {
@@ -93,6 +105,20 @@ public class RadioService {
 			return res;
 	}
 
+	public Page<Radio> searchByCategAbdLang(String val, Long categ, Long langue, Pageable p){
+		
+		PageImpl<Radio> res = new PageImpl<Radio>(
+				    radioRep.findByNameOrOverviewContaining(val, val).stream()
+				   .filter(f -> f.getLangue().contains(langue))
+				   .filter(f -> f.getCategories().contains(categ))
+				   .toList() 
+				   , p
+				   , radioRep.findAll().size());
+			
+			return res;
+		
+	};
+	
 	public Radio upadte(final Long id, Radio u) {
 
 		Radio old = radioRep.findById(id).get();

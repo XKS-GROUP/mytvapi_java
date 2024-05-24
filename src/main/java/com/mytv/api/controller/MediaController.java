@@ -876,13 +876,17 @@ public class MediaController {
 			@RequestParam (required = false) Long categ ,
 			@RequestParam (required = false) Long langue){
 		
-		if(categ != null ) {
+		if(categ != null && langue == null) {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.showByCateg(categ, p));
 		}
-		if(langue != null) {
+		else if(langue != null && categ == null) {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.showByLangue(langue, p));
+		}
+		else if(langue != null && categ != null  ) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.showByCategAbdLang(categ, langue, p));
 		}
 		else {
 
@@ -921,13 +925,17 @@ public class MediaController {
 			@RequestParam (required = false) Long categ ,
 			@RequestParam (required = false) Long langue){
 		
-		if(categ != null ) {
+		if(categ != null && langue == null) {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.searchByCateg(s, categ, p));
 		}
-		else if(langue != null) {
+		else if(langue != null && categ == null  ) {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.searchByLangue(s, langue, p));
+		}
+		else if(langue != null && categ != null  ) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.searchByCategAbdLang(s, categ, langue, p));
 		}
 		else {
 
@@ -987,17 +995,21 @@ public class MediaController {
 			@RequestParam (required = false) Long langue,
 			@RequestParam (required = false) Long pays){
 		
-		if(genre != null ) {
+		if(genre != null && langue == null && pays == null  ) {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showByGenre(genre, p));
 		}
-		else if(langue != null) {
+		else if(langue != null && genre == null && pays == null) {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showByLangue(langue, p));
 		}
-		else if(pays != null) {
+		else if(pays == null && genre == null && pays == null) {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showByPays(pays, p));
+		}
+		else if(pays != null && langue != null && genre != null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showByPaysGenreLangue(genre, langue, pays, p));
 		}
 		else {
 			
@@ -1013,21 +1025,24 @@ public class MediaController {
 			@RequestParam (required = false) Long langue,
 			@RequestParam (required = false) Long pays){
 			
-		if(genre != null ) {
+		if(genre != null && langue == null && pays == null ) {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchByGenre(s, genre, p));
 		}
-		else if(langue != null) {
+		else if(langue != null && genre == null && pays == null) {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchbyLangue(s, langue, p));
 		}
-		else if(pays != null) {
+		else if( pays == null && genre == null && pays == null) {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchByPays(s, pays, p));
 		}
+		else if(pays != null && langue != null && genre != null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchByPaysGenreLangue(s, genre, langue, pays, p));
+		}
 		else {
 			
-
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.search(s, p));
 		}
 	}
@@ -1242,13 +1257,17 @@ public class MediaController {
 				@RequestParam (required = false) Long categ ,
 				@RequestParam (required = false) Long langue){
 			
-			if(categ != null ) {
+			if(categ != null && langue == null) {
 				
 				return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.showByCateg(categ, p));
 			}
-			if(langue != null) {
+			else if(langue != null && categ == null) {
 				
 				return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.showByLang(langue, p));
+			}
+			else if(langue != null && categ != null) {
+				
+				return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.showByGenreAndLang(categ, langue, p));
 			}
 			else {
 
@@ -1288,13 +1307,17 @@ public class MediaController {
 				@RequestParam (required = false) Long categ ,
 				@RequestParam (required = false) Long langue){
 			
-			if(categ != null ) {
+			if(categ != null && langue == null ) {
 				
 				return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.searchByCateg(s, categ, p));
 			}
-			if(langue != null) {
+			if(langue != null && categ == null) {
 				
 				return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.searchByLang(s, langue, p));
+			}
+			else if(langue != null && categ != null) {
+				
+				return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.searchByGenreAndLang(s, categ, langue, p));
 			}
 			else {
 				

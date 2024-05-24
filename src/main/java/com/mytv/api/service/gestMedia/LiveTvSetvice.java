@@ -105,7 +105,7 @@ public class LiveTvSetvice {
 		
 	};
 	
-	public Page<LiveTv> showByPays(Long categ, Long langue, Long pays, Pageable p){
+	public Page<LiveTv> showByPaysGenreLangue(Long categ, Long langue, Long pays, Pageable p){
 		
 		 PageImpl<LiveTv> res = new PageImpl<LiveTv>(rep.findAll().stream()
 				   .filter(f -> f.getIdcategories().contains(categ))
@@ -150,11 +150,23 @@ public class LiveTvSetvice {
                 .collect(Collectors.toList()) 
 			   , p
 			   , rep.findAll().size());
-		
 		return res;
 		
 	}
 	
+	public Page<LiveTv> searchByPaysGenreLangue(String val, Long categ, Long langue, Long pays, Pageable p){
+		
+		 PageImpl<LiveTv> res = new PageImpl<LiveTv>(rep.findByNameOrOverviewContaining(val, val).stream()
+				   .filter(f -> f.getIdcategories().contains(categ))
+				   .filter(f -> f.getLangue().contains(langue))
+				   .filter(f -> f.getCountry().contains(pays))
+				   .toList() 
+				   ,p
+				   ,rep.findAll().size());
+			
+			return res;
+		
+	};
 	
 	public LiveTv findByName(String name) {
 		

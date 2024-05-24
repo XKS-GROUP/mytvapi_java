@@ -64,6 +64,22 @@ public class PodcastService {
 		
 	};
 	
+	public Page<Podcast> showByGenreAndLang(Long genre , Long langue, Pageable p){
+		
+		PageImpl<Podcast> res = new PageImpl<Podcast>(rep.findAll().stream()
+				   .filter(f -> f.getCategories().contains(genre))
+				   .filter(f -> f.getLangue().contains(langue))
+				   .toList() 
+				   , p
+				   , rep.findAll().size());
+			
+			return res;
+		
+	};
+	
+	
+	
+	
 	
 	public Page<Podcast> search(String n, Pageable p) {
 
@@ -94,6 +110,19 @@ public class PodcastService {
 			return res;
 	}
 	
+	public Page<Podcast> searchByGenreAndLang(String val, Long genre , Long langue, Pageable p){
+		
+		PageImpl<Podcast> res = new PageImpl<Podcast>(
+				    rep.findByNameOrOverviewContaining(val, val).stream()
+				   .filter(f -> f.getCategories().contains(genre))
+				   .filter(f -> f.getLangue().contains(langue))
+				   .toList() 
+				   , p
+				   , rep.findAll().size());
+			
+			return res;
+		
+	};
 
 	public Podcast upadte(final Long id, Podcast u) {
 
