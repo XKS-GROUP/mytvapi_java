@@ -48,7 +48,7 @@ public class SerieService {
 				
 					addSerieGenreId(g.getIdSerie(), gr);
 
-			}
+			 }
 				
 		}
 

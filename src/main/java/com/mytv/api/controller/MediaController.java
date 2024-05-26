@@ -1594,7 +1594,8 @@ public class MediaController {
 	
 	@Tag(name = "Saison")
 	@GetMapping("saisons/all/")
-	public ResponseEntity<Object> showSaisonPage(Pageable p,
+	public ResponseEntity<Object> showSaisonPage(
+			Pageable p,
 			@RequestParam (required = false) Long langue){
 		
 		if(langue != null) {

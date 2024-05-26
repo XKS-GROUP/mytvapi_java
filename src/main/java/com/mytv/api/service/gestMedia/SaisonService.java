@@ -39,6 +39,7 @@ public class SaisonService{
 		PageImpl<Saison> res = new PageImpl<Saison>(seasRep.findAll().stream()
 				   .filter(f -> f.getLangue().contains(id)).toList() 
 				   , p
+				   
 				   ,seasRep.findAll().size());
 			
 			return res;
