@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
@@ -50,11 +49,10 @@ public class Episode {
 
 	@ManyToOne(cascade = CascadeType.DETACH)
 	@JoinColumn(name = "idSaison")
-	//@JsonBackReference
 	@JsonIgnore
 	Saison idSaison;
 	
-	Long saison;
+	long saisonRef;
 	
 	@CreatedDate
 	Date addDate;

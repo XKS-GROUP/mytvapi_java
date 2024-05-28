@@ -32,6 +32,7 @@ public class EpisodeService {
 
 	public Episode create(Episode g) {
 
+		g.setSaisonRef(g.getIdSaison().getIdSaison());
 		return rep.save(g);
 
 	}
@@ -98,6 +99,7 @@ public class EpisodeService {
 	public Episode upadte(Long id, Episode u) {
 
 		u.setIdEpisode(id);
+		u.setSaisonRef(u.getIdSaison().getIdSaison());
 
 		return rep.save(u);
 	}
