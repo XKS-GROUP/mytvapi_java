@@ -26,9 +26,10 @@ public class Slider {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
+	@NotEmpty(message = "un nom est requis pour le slider")
 	private String name;
 	
-	@Column(nullable = false, columnDefinition = "boolean default false")
+	@Column(nullable = true  ,columnDefinition = "TEXT")
 	private String overview;
 	
 	@NotEmpty(message = "Une image est requise")
