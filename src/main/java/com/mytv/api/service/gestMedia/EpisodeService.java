@@ -89,11 +89,9 @@ public class EpisodeService {
                 .collect(Collectors.toList());
 	}
 	
-	public List<Episode> searchBySerie(String val, Long serie, Pageable p) {
+	public Page<Episode> searchBySerie(String val, Long serie, Pageable p) {
 
-		return rep.findByNameOrOverviewContaining(val, val, p).stream()
-                .filter(f -> f.getLangue().contains(serie))
-                .collect(Collectors.toList());
+		return rep.findBySaisonRef(serie, p);
 	}
 
 	public Episode upadte(Long id, Episode u) {

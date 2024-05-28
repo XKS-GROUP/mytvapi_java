@@ -1850,7 +1850,7 @@ public class MediaController {
   			@PathVariable Long id,
   			@Valid @RequestBody Slider slider){
 
-    	 slider.setName(slider.getName().toLowerCase());
+    	//slider.setName(slider.getName().toLowerCase());
   		//Save du tout
   		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, sliderService.upadte(id, slider));
 

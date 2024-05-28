@@ -6,8 +6,10 @@ import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -45,9 +47,9 @@ public class Saison {
 	@Column(nullable = false, columnDefinition = "TEXT")
 	String overview;
 
-	@ManyToOne(cascade = CascadeType.DETACH)
+	@ManyToOne
 	@JoinColumn(name = "idSerie")
-	@JsonIgnore
+	@JsonBackReference
 	Serie idSerie;
 
 	Long serieRef;
@@ -84,6 +86,7 @@ public class Saison {
 	List<Long>  langue = new ArrayList<>();
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idSaison", cascade = CascadeType.DETACH)
+	@JsonManagedReference
 	List<Episode> episodes;
 	
 }
