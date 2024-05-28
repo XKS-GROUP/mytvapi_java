@@ -6,9 +6,8 @@ import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -34,9 +33,7 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-@JsonIdentityInfo(
-	    generator = ObjectIdGenerators.PropertyGenerator.class,
-	    property = "idEpisode")
+
 public class Episode {
 
 	@Id
@@ -53,8 +50,12 @@ public class Episode {
 
 	@ManyToOne(cascade = CascadeType.DETACH)
 	@JoinColumn(name = "idSaison")
+	//@JsonBackReference
+	@JsonIgnore
 	Saison idSaison;
-
+	
+	Long saison;
+	
 	@CreatedDate
 	Date addDate;
 

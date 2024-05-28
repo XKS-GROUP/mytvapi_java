@@ -28,14 +28,24 @@ public class Slider {
 	
 	private String name;
 	
+	@Column(nullable = false, columnDefinition = "boolean default false")
+	private String overview;
+	
 	@NotEmpty(message = "Une image est requise")
 	@Column(nullable = false  ,columnDefinition = "TEXT")
-	private String file_path;
+	private String backdrop_path;
 	
 	@Column(nullable = false, columnDefinition = "boolean default false")
 	private boolean typeVideo;
 	
+	@Column(nullable = true  ,columnDefinition = "TEXT")
+	private String video_path;
+	
+	private Long position;
+	
 	private List<Long> targetPage;
+	
+	private Long idMediaref;
 	
 	@Column(nullable = false, columnDefinition = "boolean default false")
 	private boolean status;

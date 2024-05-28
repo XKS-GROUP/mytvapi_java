@@ -6,9 +6,9 @@ import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -31,9 +31,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 
-@JsonIdentityInfo(
-	    generator = ObjectIdGenerators.PropertyGenerator.class,
-	    property = "idSaison")
+
 public class Saison {
 
 	@Id
@@ -51,8 +49,11 @@ public class Saison {
 	//@NotNull(message = "une serie est requise pour une saison")
 	@ManyToOne
 	@JoinColumn(name = "idSerie")
+	@JsonBackReference
 	Serie idSerie;
 
+	Long serie;
+	
 	@NotBlank(message = "une image miniature est requise pour une serie")
 	@Column(columnDefinition = "TEXT")
 	String backdrop_path;
@@ -85,6 +86,8 @@ public class Saison {
 	List<Long>  langue = new ArrayList<>();
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idSaison", cascade = CascadeType.DETACH)
+	//@JsonManagedReference
 	List<Episode> episodes;
-
+	
+	//private Serie refSerie;
 }
