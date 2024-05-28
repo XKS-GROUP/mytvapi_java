@@ -77,7 +77,7 @@ public class EpisodeService {
 	
 	
 
-	public List<Episode> search(String val, Pageable p) {
+	public Page<Episode> search(String val, Pageable p) {
 
 		return rep.findByNameOrOverviewContaining(val, val, p);
 	}

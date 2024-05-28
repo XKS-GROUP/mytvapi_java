@@ -47,12 +47,11 @@ public class SaisonService{
 			return res;
 	};
 	
-	
 	public Page<Saison> showBySerie(Serie idSerie, Pageable p) {
 		return seasRep.findByIdSerie(idSerie, p);
 	}
 	
-	public List<Saison> search(String n, Pageable p) {
+	public Page<Saison> search(String n, Pageable p) {
 		return seasRep.findByNameOrOverviewContaining(n, n, p);
 	}
 	
@@ -66,7 +65,6 @@ public class SaisonService{
 			
 			return res;
 	}
-
 
 	public Saison showById(Long id) {
 		
