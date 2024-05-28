@@ -96,7 +96,6 @@ public class Serie {
 	List<Long> genreList = new ArrayList<>();
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idSerie", cascade = CascadeType.ALL)
-	//@JsonManagedReference
 	List<Saison> idSaison;
 
 }

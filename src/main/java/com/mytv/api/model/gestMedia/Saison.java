@@ -45,7 +45,7 @@ public class Saison {
 	@Column(nullable = false, columnDefinition = "TEXT")
 	String overview;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.DETACH)
 	@JoinColumn(name = "idSerie")
 	@JsonIgnore
 	Serie idSerie;

@@ -333,7 +333,6 @@ public class MediaController {
     
     
     
-    
     /*
      * Collection Podcast
      * 
@@ -1592,6 +1591,7 @@ public class MediaController {
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, saisonService.show());
 	}
 	
+	
 	@Tag(name = "Saison")
 	@GetMapping("saisons/all/")
 	public ResponseEntity<Object> showSaisonPage(
@@ -1622,14 +1622,10 @@ public class MediaController {
 			@Valid @RequestBody Saison saison){
 
 		saison.setName(saison.getName().toLowerCase());
-		if(saisonService.findByName(saison.getName()) != null) {
-			
-			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Cette saison existe déja");
-		}
-		else {
-			//Save du tout
-			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED , saisonService.create(saison));
-		}
+		
+		
+		//Save du tout
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED , saisonService.create(saison));
 
 	}
 
@@ -1760,13 +1756,10 @@ public class MediaController {
 			@Valid @RequestBody Episode episode) {
 
     	episode.setName(episode.getName().toLowerCase());
-		if(episodeService.findByName(episode.getName()) != null) {
 			
-			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Cette episode existe déja");
-		}
-		else {
-			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, episodeService.create(episode));
-		}
+		
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, episodeService.create(episode));
+		
 
 
 	}
@@ -1838,7 +1831,7 @@ public class MediaController {
   	public ResponseEntity<Object> createSlider(
   			@Valid @RequestBody Slider slider) {
 
-    	  slider.setName(slider.getName().toLowerCase());
+    	slider.setName(slider.getName().toLowerCase());
   		if(sliderService.findByName(slider.getName()) != null) {
   			
   			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Ce slider existe déja");
@@ -1851,7 +1844,7 @@ public class MediaController {
 
   	}
 
-      @Tag(name = "Slider")
+    @Tag(name = "Slider")
   	@PutMapping(path="slider/update/{id}")
   	public ResponseEntity<Object> sliderUpdate(
   			@PathVariable Long id,
@@ -1863,7 +1856,7 @@ public class MediaController {
 
   	}
 
-      @Tag(name = "Slider")
+    @Tag(name = "Slider")
   	@DeleteMapping(path="slider/delete/{id}")
   	public ResponseEntity<Object> sliderDelete (@PathVariable Long id) {
 

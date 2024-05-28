@@ -19,10 +19,10 @@ public class SaisonService{
 	@Autowired
 	private SeasonRepository seasRep;
 
-
 	public Saison create(Saison u) {
 		
-		u.setSerieRef(u.getIdSerie().getIdSerie());
+		
+		//u.setSerieRef(u.getIdSerie().getIdSerie());
 		
 		return seasRep.save(u);
 		
@@ -71,15 +71,13 @@ public class SaisonService{
 		return seasRep.findById(id).get();
 	}
 
-
 	public Saison upadte(Long id, Saison p) {
 
 		p.setIdSaison(id);
-	    p.setSerieRef(p.getIdSerie().getIdSerie());
+	   // p.setSerieRef(p.getIdSerie().getIdSerie());
 		return seasRep.save(p);
 		
 	}
-
 
 	public Boolean delete(Long id) {
 		seasRep.deleteById(id);
