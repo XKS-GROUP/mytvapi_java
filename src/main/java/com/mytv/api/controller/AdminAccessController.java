@@ -176,7 +176,7 @@ public class AdminAccessController {
 	}
 
 	@Tag(name = "User")
-	@GetMapping("users/all/withPaging")
+	@GetMapping("users/all/")
 	public ResponseEntity<Object> getAllPaging (Pageable p){
 		return EntityResponse.generateResponse("Liste de tous les utilisateurs", HttpStatus.OK,
 				userService.retrieveAllUserListPages(p));

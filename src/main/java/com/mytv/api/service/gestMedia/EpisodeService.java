@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import com.mytv.api.model.gestMedia.Episode;
 import com.mytv.api.model.gestMedia.Saison;
 import com.mytv.api.repository.EpisodeRepository;
-import com.mytv.api.repository.SeasonRepository;
 
 import lombok.AllArgsConstructor;
 
@@ -27,8 +26,8 @@ public class EpisodeService {
 	@Autowired
 	private EpisodeRepository rep;
 
-	@Autowired
-	private SeasonRepository repS;
+	//@Autowired
+	//private SeasonRepository repS;
 
 	public Episode create(Episode g) {
 
@@ -62,17 +61,15 @@ public class EpisodeService {
 			return res;
 	};
 	
-	public List<Episode> showBySerie(Long id, Pageable p){
+	public Page<Episode> showBySerie(Long id, Pageable p){
 		
-		return rep.findAll().stream()
-                     .filter(f -> f.getLangue().contains(id))
-                     .collect(Collectors.toList());
+		return null; // rep.findB;
 	};
 	
-	public List<Episode> showBySaison(Long id, Pageable p){
+	public Page<Episode> showBySaison(Long id, Pageable p){
 		
 		
-		return rep.findByIdSaison(repS.findById(id).get() , p);
+		return rep.findBySaisonRef(id , p);
 	};
 	
 	
@@ -82,11 +79,17 @@ public class EpisodeService {
 		return rep.findByNameOrOverviewContaining(val, val, p);
 	}
 	
-	public List<Episode> searchByLangue(String val, Long langue, Pageable p) {
+	public Page<Episode> searchByLangue(String val, Long langue, Pageable p) {
 
-		return rep.findByNameOrOverviewContaining(val, val, p).stream()
+		
+		PageImpl<Episode> res = new PageImpl<Episode>(
+				rep.findByNameOrOverviewContaining(val, val, p).stream()
                 .filter(f -> f.getLangue().contains(langue))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList())
+				   , p
+				   , rep.findAll().size());
+			
+			return res;
 	}
 	
 	public Page<Episode> searchBySerie(String val, Long serie, Pageable p) {
@@ -94,6 +97,19 @@ public class EpisodeService {
 		return rep.findBySaisonRef(serie, p);
 	}
 
+	public Page<Episode> searchBySaisonAndLangue(String val, Long saison, long langue, Pageable p) {
+
+		PageImpl<Episode> res = new PageImpl<Episode>(rep.findAll().stream()
+				   .filter(f -> f.getLangue().contains(langue))
+				   .filter(f -> f.getSaisonRef()==saison )
+				   .toList() 
+				   , p
+				   , rep.findAll().size());
+			
+			return res;
+	}
+	
+	
 	public Episode upadte(Long id, Episode u) {
 
 		u.setIdEpisode(id);

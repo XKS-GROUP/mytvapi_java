@@ -38,7 +38,7 @@ public class SliderService {
 
 		return rep.findAll(p);
 	}
-	public List<Slider> showByName(String n, Pageable p) {
+	public Page<Slider> showByName(String n, Pageable p) {
 
 		return rep.findByNameContaining(n, p);
 	}

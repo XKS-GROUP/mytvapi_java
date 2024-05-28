@@ -69,4 +69,8 @@ public class Setting {
 	@Column(columnDefinition = "TEXT")
 	String twitter_uri;
 	
+	@Column(columnDefinition = "TEXT")
+	String firebase_fnc_server;
+	
+	
 }
