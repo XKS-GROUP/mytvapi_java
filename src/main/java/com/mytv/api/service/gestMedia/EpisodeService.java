@@ -92,12 +92,11 @@ public class EpisodeService {
 			return res;
 	}
 	
-	public Page<Episode> searchBySerie(String val, Long serie, Pageable p) {
+	public Page<Episode> searchBySaison(String val, Long saison, Pageable p) {
 
-		return rep.findBySaisonRef(serie, p);
+		return rep.findBySaisonRef(saison, p);
 	}
 	
-
 	
 	public Page<Episode> searchBySaisonAndLangue(String val, Long saison, long langue, Pageable p) {
 

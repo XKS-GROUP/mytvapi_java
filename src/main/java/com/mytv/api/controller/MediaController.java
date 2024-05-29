@@ -1697,15 +1697,20 @@ public class MediaController {
     public ResponseEntity<Object> showE(
     		Pageable p,
     		@RequestParam (required = false) Long serie,
+    		@RequestParam (required = false) Long saison,
 			@RequestParam (required = false) Long langue){
 		
-		if(langue != null) {
+		if(langue != null && serie == null) {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showByLangue(langue, p));
 		}
-		else if(serie != null) {
+		else if(saison != null && langue == null) {
 			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showBySerie(serie, p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showBySaison(saison, p));
+		}
+		else if(serie != null && langue == null && saison == null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showBySerie(saison, p));
 		}
 		else {
 
@@ -1733,15 +1738,18 @@ public class MediaController {
 			@RequestParam String s, 
 			Pageable p,
 			@RequestParam (required = false) Long serie,
+			@RequestParam (required = false) Long saison,
 			@RequestParam (required = false) Long langue){
 		
-		if(langue != null) {
+		if(langue != null && saison == null && serie == null) {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.searchByLangue(s, langue, p));
-		}
-		else if(serie != null) {
 			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.searchBySerie(s, serie, p));
+		}
+		else if(saison != null && langue == null && serie == null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.searchBySaison(s, serie, p));
+			
 		}
 		else {
 
