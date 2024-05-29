@@ -56,6 +56,8 @@ public class Episode {
 	
 	long saisonRef;
 	
+	long idSerie;
+	
 	@CreatedDate
 	Date addDate;
 

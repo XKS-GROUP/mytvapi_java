@@ -1710,7 +1710,11 @@ public class MediaController {
 		}
 		else if(serie != null && langue == null && saison == null) {
 			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showBySerie(saison, p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showBySerie(serie, p));
+		}
+		else if(serie != null && langue != null && saison != null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showBySaisonAndLangueAndSerie(serie, langue, saison, p));
 		}
 		else {
 
@@ -1743,14 +1747,30 @@ public class MediaController {
 		
 		if(langue != null && saison == null && serie == null) {
 			
+			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.searchByLangue(s, langue, p));
 			
 		}
 		else if(saison != null && langue == null && serie == null) {
 			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.searchBySaison(s, serie, p));
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.searchBySaison(s, saison, p));
 			
 		}
+		
+		else if(serie != null && langue == null && saison == null) {
+			
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.searchBySerie(s, serie, p));
+			
+		}
+		
+		else if(serie != null && langue != null && saison != null) {
+			
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.searchBySaisonAndLangueAndSerie(s, serie, langue, saison, p)); 
+		}
+		
 		else {
 
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.search(s, p));

@@ -63,7 +63,8 @@ public class EpisodeService {
 	
 	public Page<Episode> showBySerie(Long id, Pageable p){
 		
-		return null; // rep.findB;
+		return rep.findByIdSerie(id, p);
+		
 	};
 	
 	public Page<Episode> showBySaison(Long id, Pageable p){
@@ -72,6 +73,19 @@ public class EpisodeService {
 		return rep.findBySaisonRef(id , p);
 	};
 	
+	
+	public Page<Episode> showBySaisonAndLangueAndSerie(Long saison, long langue, long serie ,  Pageable p) {
+
+		PageImpl<Episode> res = new PageImpl<Episode>(rep.findAll().stream()
+				   .filter(f -> f.getLangue().contains(langue))
+				   .filter(f -> f.getSaisonRef()== saison )
+				   .filter(f -> f.getIdSerie() ==  serie )
+				   .toList() 
+				   , p
+				   , rep.findAll().size());
+			
+			return res;
+	}
 	
 
 	public Page<Episode> search(String val, Pageable p) {
@@ -94,7 +108,26 @@ public class EpisodeService {
 	
 	public Page<Episode> searchBySaison(String val, Long saison, Pageable p) {
 
-		return rep.findBySaisonRef(saison, p);
+		PageImpl<Episode> res = new PageImpl<Episode>(
+				rep.findByNameOrOverviewContaining(val, val, p).stream()
+                .filter(f -> f.getSaisonRef() == saison)
+                .collect(Collectors.toList())
+				   , p
+				   , rep.findAll().size());
+			
+			return res;
+	}
+	
+	public Page<Episode> searchBySerie(String val, Long serie, Pageable p) {
+
+		PageImpl<Episode> res = new PageImpl<Episode>(
+				rep.findByNameOrOverviewContaining(val, val, p).stream()
+                .filter(f -> f.getIdSerie() == serie)
+                .collect(Collectors.toList())
+				   , p
+				   , rep.findAll().size());
+			
+			return res;
 	}
 	
 	
@@ -110,6 +143,20 @@ public class EpisodeService {
 			return res;
 	}
 	
+	public Page<Episode> searchBySaisonAndLangueAndSerie(String val, Long saison, long langue, long serie ,  Pageable p) {
+
+		PageImpl<Episode> res = new PageImpl<Episode>(
+				
+				rep.findByNameOrOverviewContaining(val, val).stream()
+				   .filter(f -> f.getLangue().contains(langue))
+				   .filter(f -> f.getSaisonRef()== saison )
+				   .filter(f -> f.getIdSerie() ==  serie )
+				   .toList() 
+				   , p
+				   , rep.findAll().size());
+			
+			return res;
+	}
 	
 	public Episode upadte(Long id, Episode u) {
 
@@ -118,7 +165,6 @@ public class EpisodeService {
 
 		return rep.save(u);
 	}
-
 
 	public Boolean delete(Long id) {
 
