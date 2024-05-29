@@ -89,6 +89,21 @@ public class WUserService implements UserDetailsService {
 		return userRepository.findByPhone(email);
 	}
 	
+	public User updatePassword(Long id, String password) {
+
+		User u = userRepository.findById(id).get();
+		u.setPassword(password);
+		userRepository.save(u);
+		return u; //
+	}
+	
+	public User findByIdAndPassword(Long id, String password) {
+
+		return userRepository.findByIdAndPassword(id, password);
+		
+	}
+	
+	
 	//Creation d'un admin
 	public String createUser(UserRegisterRequestDTO request) {
 		try {

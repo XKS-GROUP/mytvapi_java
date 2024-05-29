@@ -87,6 +87,18 @@ public class EpisodeService {
 			return res;
 	}
 	
+	public Page<Episode> showBySaisonAndSerie(Long saison, long serie ,  Pageable p) {
+
+		PageImpl<Episode> res = new PageImpl<Episode>(rep.findAll().stream()
+				   .filter(f -> f.getSaisonRef()== saison )
+				   .filter(f -> f.getIdSerie() ==  serie )
+				   .toList() 
+				   , p
+				   , rep.findAll().size());
+			
+			return res;
+	}
+	
 
 	public Page<Episode> search(String val, Pageable p) {
 
@@ -143,12 +155,27 @@ public class EpisodeService {
 			return res;
 	}
 	
+	
 	public Page<Episode> searchBySaisonAndLangueAndSerie(String val, Long saison, long langue, long serie ,  Pageable p) {
 
 		PageImpl<Episode> res = new PageImpl<Episode>(
 				
 				rep.findByNameOrOverviewContaining(val, val).stream()
 				   .filter(f -> f.getLangue().contains(langue))
+				   .filter(f -> f.getSaisonRef()== saison )
+				   .filter(f -> f.getIdSerie() ==  serie )
+				   .toList() 
+				   , p
+				   , rep.findAll().size());
+			
+			return res;
+	}
+	
+	public Page<Episode> searchBySaisonAndSerie(String val, Long saison, long serie ,  Pageable p) {
+
+		PageImpl<Episode> res = new PageImpl<Episode>(
+				
+				rep.findByNameOrOverviewContaining(val, val).stream()
 				   .filter(f -> f.getSaisonRef()== saison )
 				   .filter(f -> f.getIdSerie() ==  serie )
 				   .toList() 

@@ -17,12 +17,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mytv.api.dto.NewPwdDTO;
+import com.mytv.api.dto.PasswordDTO;
 import com.mytv.api.dto.PwdResetPwdDTO;
 import com.mytv.api.model.gestUser.Jwt;
 import com.mytv.api.model.gestUser.User;
@@ -165,7 +167,8 @@ public class UserAccessController {
 
 
 	}
-
+	
+	
 	//Route Ajout Abonné
 	@PostMapping("abonne-register")
 	public ResponseEntity<Object> registerA(@Valid @RequestBody UserRegisterRequestDTO request){

@@ -1712,6 +1712,10 @@ public class MediaController {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showBySerie(serie, p));
 		}
+		else if(serie != null && saison != null && langue == null ) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showBySaisonAndSerie(serie, saison, p));
+		}
 		else if(serie != null && langue != null && saison != null) {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showBySaisonAndLangueAndSerie(serie, langue, saison, p));
@@ -1763,6 +1767,11 @@ public class MediaController {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.searchBySerie(s, serie, p));
 			
+		}
+		
+		else if(serie != null && saison != null && langue == null ) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.searchBySaisonAndSerie(s, serie, saison, p));
 		}
 		
 		else if(serie != null && langue != null && saison != null) {

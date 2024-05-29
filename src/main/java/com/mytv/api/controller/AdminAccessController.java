@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mytv.api.dto.PasswordDTO;
 import com.mytv.api.model.gestUser.Role;
 import com.mytv.api.model.gestUser.SubscriptionType;
 import com.mytv.api.model.gestUser.User;
@@ -49,6 +51,9 @@ public class AdminAccessController {
 
 	@Autowired
 	private JwtRepository jwtRep;
+	
+	@Autowired
+	PasswordEncoder passwordEncoder;
 
 
 	//Gestion du profil admin
@@ -59,6 +64,41 @@ public class AdminAccessController {
 		return EntityResponse.generateResponse("Admin Profil Info : "+userService.findCurrentUser().getUsername(), HttpStatus.OK, userService.findCurrentUser());
 	}
 
+	
+	/*
+	 * 
+	 * fonction pour updater seulement le mot de passe
+	 * 
+	 */
+	@Tag(name = "ADMIN Profil")
+	@PutMapping("profil/password/update/{id}")
+	public ResponseEntity<Object> updatePassword(
+			
+			@PathVariable Long id,
+			@Valid @RequestBody PasswordDTO request){
+
+		String pwd = passwordEncoder.encode(request.getPassword());
+		if(userService.findById(id) == null ){
+
+			return EntityResponse.generateResponse("ATTENTION ", HttpStatus.CONFLICT, "Cet utilisateur n'existe pas ");
+			
+		}
+		else if(userService.findByIdAndPassword(id, pwd) == null ){
+
+			return EntityResponse.generateResponse("ATTENTION ", HttpStatus.CONFLICT, "Ce mot de passe ne correspond pas ");
+			
+		}
+		
+		else {
+			
+			request.setPassword(pwd);
+			
+			return EntityResponse.generateResponse("SUCESS  ", HttpStatus.OK, userService.updatePassword(id, request.getPassword()));
+		}
+
+
+	}
+	
 	//Affiche by id
 	@Tag(name = "ADMIN Profil")
 	@GetMapping("profil/byId/{id}")
