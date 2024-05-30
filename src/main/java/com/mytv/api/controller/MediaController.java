@@ -1857,7 +1857,6 @@ public class MediaController {
   	@GetMapping("slider/search/")
   	public ResponseEntity<Object> sliderByName(
   			@RequestParam String s, 
-  			@PathVariable String name, 
   			Pageable p){
 
       	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, sliderService.showByName(s, p));
