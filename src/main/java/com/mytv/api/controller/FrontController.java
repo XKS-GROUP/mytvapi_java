@@ -436,11 +436,55 @@ public class FrontController {
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.show());
 	}
 	
-	@Tag(name = "Radios")
-	@GetMapping("radios/all/withPaging")
-	public ResponseEntity<Object> showRadioPage(Pageable p){
+	@Tag(name = "Radio")
+	@GetMapping("radios/all/")
+	public ResponseEntity<Object> showRadioPage(Pageable p,
+			@RequestParam (required = false) Long categ ,
+			@RequestParam (required = false) Long langue){
+		
+		if(categ != null && langue == null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.showByCateg(categ, p));
+		}
+		else if(langue != null && categ == null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.showByLangue(langue, p));
+		}
+		else if(langue != null && categ != null  ) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.showByCategAbdLang(categ, langue, p));
+		}
+		else {
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.showPage(p));
+		    return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.showPage(p));
+		}
+	}
+	
+	@Tag(name = "Radio")
+	@GetMapping("radios/search/")
+	public ResponseEntity<Object> showbyNameContain(
+			@RequestParam String s,
+			Pageable p,
+			@RequestParam (required = false) Long categ ,
+			@RequestParam (required = false) Long langue){
+		
+		if(categ != null && langue == null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.searchByCateg(s, categ, p));
+		}
+		else if(langue != null && categ == null  ) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.searchByLangue(s, langue, p));
+		}
+		else if(langue != null && categ != null  ) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.searchByCategAbdLang(s, categ, langue, p));
+		}
+		else {
+
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.search(s, p));
+		
+		}
 	}
 
 	@Tag(name = "Radios")
@@ -448,12 +492,6 @@ public class FrontController {
 	public ResponseEntity<Object> showbyIdR(@PathVariable Long id){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.showById(id));
-	}
-	@Tag(name = "Radios")
-	@GetMapping("radios/search/{val}")
-	public ResponseEntity<Object> showbyNameContain(@PathVariable String val, Pageable p){
-
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.search(val, p));
 	}
 	
 	//LIKE
@@ -564,13 +602,6 @@ public class FrontController {
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.show());
 	}
-	
-	@Tag(name = "Lives")
-	@GetMapping("lives/all/withPaging")
-	public ResponseEntity<Object> showLivePage(Pageable p){
-
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showPage(p));
-	}
 
 	@Tag(name = "Lives")
 	@GetMapping("lives/{id}")
@@ -579,11 +610,63 @@ public class FrontController {
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showById(id));
 	}
     
-	@Tag(name = "Lives")
-	@GetMapping("lives/search/{val}")
-	public ResponseEntity<Object> showLbyNameContainL(@PathVariable String val, Pageable p){
-
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.search(val, p));
+	@Tag(name = "TV SHOW")
+	@GetMapping("tv/all/")
+	public ResponseEntity<Object> showLivePages(Pageable p,
+			@RequestParam (required = false) Long genre ,
+			@RequestParam (required = false) Long langue,
+			@RequestParam (required = false) Long pays){
+		
+		if(genre != null && langue == null && pays == null  ) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showByGenre(genre, p));
+		}
+		else if(langue != null && genre == null && pays == null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showByLangue(langue, p));
+		}
+		else if(pays == null && genre == null && pays == null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showByPays(pays, p));
+		}
+		else if(pays != null && langue != null && genre != null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showByPaysGenreLangue(genre, langue, pays, p));
+		}
+		else {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showPage(p));
+		}
+	}
+	
+	@Tag(name = "TV SHOW")
+	@GetMapping("tv/search/")
+	public ResponseEntity<Object> showLbyNameContainL(
+			@RequestParam String s, Pageable p,
+			@RequestParam (required = false) Long genre ,
+			@RequestParam (required = false) Long langue,
+			@RequestParam (required = false) Long pays){
+			
+		if(genre != null && langue == null && pays == null ) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchByGenre(s, genre, p));
+		}
+		else if(langue != null && genre == null && pays == null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchbyLangue(s, langue, p));
+		}
+		else if( pays == null && genre == null && pays == null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchByPays(s, pays, p));
+		}
+		else if(pays != null && langue != null && genre != null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchByPaysGenreLangue(s, genre, langue, pays, p));
+		}
+		else {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.search(s, p));
+		}
 	}
 			
 			//LIKE
@@ -699,12 +782,29 @@ public class FrontController {
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.show());
 	}
-	
-	@Tag(name = "Podcasts")
-	@GetMapping("podcasts/all/withPaging")
-	public ResponseEntity<Object> showPage(Pageable p){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.showPage(p));
+	@Tag(name = "Podcasts")
+	@GetMapping("podcasts/all/")
+	public ResponseEntity<Object> showPodcastByPage(Pageable p,
+			@RequestParam (required = false) Long categ ,
+			@RequestParam (required = false) Long langue){
+		
+		if(categ != null && langue == null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.showByCateg(categ, p));
+		}
+		else if(langue != null && categ == null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.showByLang(langue, p));
+		}
+		else if(langue != null && categ != null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.showByGenreAndLang(categ, langue, p));
+		}
+		else {
+
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.showPage(p));
+		}
 	}
 
 	@Tag(name = "Podcasts")
@@ -715,11 +815,31 @@ public class FrontController {
 	}
 	
 	@Tag(name = "Podcasts")
-	@GetMapping("podcasts/search/{val}")
-	public ResponseEntity<Object> showbyIdP(@PathVariable String val, Pageable p){
-
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.search(val, p));
+	@GetMapping("podcasts/search/")
+	public ResponseEntity<Object> showbyIdP(
+			@RequestParam String s, 
+			Pageable p,
+			@RequestParam (required = false) Long categ ,
+			@RequestParam (required = false) Long langue){
+		
+		if(categ != null && langue == null ) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.searchByCateg(s, categ, p));
+		}
+		if(langue != null && categ == null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.searchByLang(s, langue, p));
+		}
+		else if(langue != null && categ != null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.searchByGenreAndLang(s, categ, langue, p));
+		}
+		else {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.search(s, p));
+		}
 	}
+
 	//COM
 	//AFFICHE TOUS LES COMMENTAIRES
 	@Tag(name = "Podcasts")
@@ -888,13 +1008,36 @@ public class FrontController {
 					filmService.show());
 	}
 	
+	
 	@Tag(name = "Films")
-	@GetMapping("films/all/withPaging")
-	public ResponseEntity<Object> showMovieWithPage(Pageable p){
+	@GetMapping("films/all/")
+	public ResponseEntity<Object> showMovieByPage(
+			Pageable p, 
+			@RequestParam (required = false) Long genre ,
+			@RequestParam (required = false) Long langue ){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-				filmService.showPages(p));
+
+		if(langue != null && genre == null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.showByLangue(langue,p));
+			
+		}
+		else if(genre != null && langue == null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.showByGenre(genre,p));
+			
+		}
+		else if(genre !=null && langue !=null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.showByGenreAndLang(genre, langue, p));
+		}
+		else {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.showPages(p));
+		}
+
 	}
+	
 
 	@Tag(name = "Films")
 	@GetMapping("films/{id}")
@@ -905,11 +1048,33 @@ public class FrontController {
 	}
     
 	@Tag(name = "Films")
-	@GetMapping("films/search/contain/{id}")
-	public ResponseEntity<Object> showbyIdM(@PathVariable String name){
+	@GetMapping("films/search/")
+	public ResponseEntity<Object> search(
+			@RequestParam String s, 
+			Pageable p,
+			@RequestParam (required = false) Long genre ,
+			@RequestParam (required = false) Long langue){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-				filmService.showByNameContaining(name));
+		if(langue != null && genre==null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.searchByLangue(s,langue,p));
+			
+		}
+		else if(genre != null && langue == null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.searchByGenre(s, genre, p));
+			
+		}
+		else if(genre != null && langue != null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.searchByGenreAndLang(s, genre, langue, p));
+			
+		}
+		else {
+		
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.search(s, p));
+		
+		}
 	}
 	
 ////////////////////////////////////////////////////////////////////////
@@ -1086,13 +1251,26 @@ public class FrontController {
 	}
 	
 	@Tag(name = "Series")
-	@GetMapping("series/all/withPaging")
-	public ResponseEntity<Object> showSeriePages(Pageable p){
+	@GetMapping("series/all/")
+	public ResponseEntity<Object> showSerieByPage(Pageable p,
+			@RequestParam (required = false) Long genre ,
+			@RequestParam (required = false) Long langue){
+		
+		if(genre != null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.showByGenre(genre, p));
+			
+		}
+		else if (langue != null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.showByLangue(langue, p));
+		}
+		else {
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-				serieService.showPage(p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.showPage(p));
+			
+		}
 	}
-
 
 	@Tag(name = "Series")
 	@GetMapping("series/{id}")
@@ -1102,13 +1280,28 @@ public class FrontController {
 				serieService.showById(id));
 	}
 	@Tag(name = "Series")
-	@GetMapping("series/search/{val}")
-	public ResponseEntity<Object> showbyIdS(@PathVariable String name, Pageable p){
+	@GetMapping("series/search/")
+	public ResponseEntity<Object> showbyIdS(
+			@RequestParam String s, 
+			Pageable p,
+			@RequestParam (required = false) Long genre ,
+			@RequestParam (required = false) Long langue){
+		
+		if(genre != null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.searchByGenre(s, genre, p));
+			
+		}
+		else if (langue != null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.searchByLangue(s, langue, p));
+		}
+		else {
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-					serieService.search(name, p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.search(s, p));
+			
+		}
 	}
-	
 	////////////////////////////////////////////////////////////////////////
 	/*
 	* DEBUT DU MODUL
@@ -1288,12 +1481,39 @@ public class FrontController {
 	}
 	
 	@Tag(name = "Episodes")
-	@GetMapping("episodes/all/withPagi")
-    public ResponseEntity<Object> showEpisodeWithPaging(Pageable p){
+	@GetMapping("episodes/all/")
+    public ResponseEntity<Object> showE(
+    		Pageable p,
+    		@RequestParam (required = false) Long serie,
+    		@RequestParam (required = false) Long saison,
+			@RequestParam (required = false) Long langue){
+		
+		if(langue != null && serie == null && saison == null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showByLangue(langue, p));
+		}
+		else if(saison != null && langue == null && serie==null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showBySaison(saison, p));
+		}
+		else if(serie != null && langue == null && saison == null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showBySerie(serie, p));
+		}
+		else if(serie != null && saison != null && langue == null ) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showBySaisonAndSerie(serie, saison, p));
+		}
+		else if(serie != null && langue != null && saison != null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showBySaisonAndLangueAndSerie(serie, langue, saison, p));
+		}
+		else {
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showPage(p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showPage(p));
+		}
 	}
-
+	
 	@Tag(name = "Episodes")
 	@GetMapping("episodes/{id}")
 	public ResponseEntity<Object> showbyIdE(@PathVariable Long id){
@@ -1302,11 +1522,52 @@ public class FrontController {
 	}
 	
 	@Tag(name = "Episodes")
-	@GetMapping("episodes/search/{val}")
-	public ResponseEntity<Object> showbyIdE(@PathVariable String val, Pageable p){
+	@GetMapping("episodes/search/")
+	public ResponseEntity<Object> searchEp(
+			@RequestParam String s, 
+			Pageable p,
+			@RequestParam (required = false) Long serie,
+			@RequestParam (required = false) Long saison,
+			@RequestParam (required = false) Long langue){
+		
+		if(langue != null && saison == null && serie == null) {
+			
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.searchByLangue(s, langue, p));
+			
+		}
+		else if(saison != null && langue == null && serie == null) {
+			
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.searchBySaison(s, saison, p));
+			
+		}
+		
+		else if(serie != null && langue == null && saison == null) {
+			
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.searchBySerie(s, serie, p));
+			
+		}
+		
+		else if(serie != null && saison != null && langue == null ) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.searchBySaisonAndSerie(s, serie, saison, p));
+		}
+		
+		else if(serie != null && langue != null && saison != null) {
+			
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.searchBySaisonAndLangueAndSerie(s, serie, langue, saison, p)); 
+		}
+		
+		else {
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.search(val, p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.search(s, p));
+    	
+		}
 	}
+
 	
 	////////////////////////////////////////////////////////////////////////
 	/*
@@ -1478,11 +1739,20 @@ public class FrontController {
 	}
 	
 	@Tag(name = "Saison")
-	@GetMapping("saisons/all/whithPaging")
-    public ResponseEntity<Object> showSaisonWithPaging(Pageable p){
+	@GetMapping("saisons/all/")
+	public ResponseEntity<Object> showSaisonPage(
+			Pageable p,
+			@RequestParam (required = false) Long langue){
+		
+		if(langue != null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, saisonService.showByLangue(langue, p));
+		}
+		else {
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-				saisonService.showPage(p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, saisonService.showPage(p));
+		
+		}
 	}
 
 	@Tag(name = "Saison")
@@ -1494,11 +1764,21 @@ public class FrontController {
 	}
 	
 	@Tag(name = "Saison")
-	@GetMapping("saisons/search/{val}")
-	public ResponseEntity<Object> showbyIdSaison(@PathVariable String val, Pageable p){
+	@GetMapping("saisons/search/")
+	public ResponseEntity<Object> showbyNameC(
+			@RequestParam String s, 
+			@RequestParam (required = false) Long langue,
+			Pageable p){
+		
+		if(langue != null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, saisonService.searchByLangue(s, langue, p));
+		}
+		else {
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-				saisonService.search(val, p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, saisonService.search(s, p));
+		}
+		
 	}
 	
 	////////////////////////////////////////////////////////////////////////

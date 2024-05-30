@@ -99,7 +99,7 @@ public class WUserService implements UserDetailsService {
 	}
 	
 	public User findByIdAndPassword(Long id, String password) {
-
+        
 		return userRepository.findByIdAndPassword(id, password);
 		
 	}
