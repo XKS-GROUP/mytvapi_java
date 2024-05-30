@@ -124,6 +124,20 @@ public class SerieService {
 			
 			return res;
 	}
+	
+	public Page<Serie> searchByLangueAndGenre(String n, Long langue, Long genre, Pageable p) {
+
+		PageImpl<Serie> res = new PageImpl<Serie>(
+				rep.findByNameOrOverviewContaining(n, n)
+				.stream()
+                .filter(f -> f.getLangue().contains(langue))
+                .filter(f -> f.getGenreList().contains(genre))
+                .collect(Collectors.toList())
+				   , p
+				   , rep.findAll().size());
+			
+			return res;
+	}
 
 	public Serie upadte(final Long id, Serie u) {
 

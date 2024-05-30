@@ -1533,14 +1533,19 @@ public class MediaController {
 			@RequestParam (required = false) Long genre ,
 			@RequestParam (required = false) Long langue){
 		
-		if(genre != null) {
+		if(genre != null && langue ==null ) {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.searchByGenre(s, genre, p));
 			
 		}
-		else if (langue != null) {
+		else if (langue != null && genre==null) {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.searchByLangue(s, langue, p));
+		}
+		else if(langue != null && genre !=null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.searchByLangueAndGenre(s, langue, genre, p));
+			
 		}
 		else {
 
@@ -1596,11 +1601,22 @@ public class MediaController {
 	@GetMapping("saisons/all/")
 	public ResponseEntity<Object> showSaisonPage(
 			Pageable p,
-			@RequestParam (required = false) Long langue){
+			@RequestParam (required = false) Long langue,
+			@RequestParam (required = false) Long serie ){
 		
-		if(langue != null) {
+		if(langue != null && serie == null) {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, saisonService.showByLangue(langue, p));
+		}
+		else if (serie != null && langue != null) {
+					
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, saisonService.showByidSerie(serie, p));
+
+		}
+		else if (langue != null && serie != null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, saisonService.showByLangueAndSerie(langue, serie, p));
+
 		}
 		else {
 
@@ -1641,11 +1657,22 @@ public class MediaController {
 	public ResponseEntity<Object> showbyNameC(
 			@RequestParam String s, 
 			@RequestParam (required = false) Long langue,
+			@RequestParam (required = false) Long serie,
 			Pageable p){
 		
-		if(langue != null) {
+		if(langue != null && serie == null) {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, saisonService.searchByLangue(s, langue, p));
+		}
+		else if (serie != null && langue != null) {
+					
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, saisonService.searchBySerie(s, serie, p));
+
+		}
+		else if (langue != null && serie != null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, saisonService.searchByLangueAndSerie(s, langue, serie, p));
+
 		}
 		else {
 

@@ -47,9 +47,27 @@ public class SaisonService{
 			return res;
 	};
 	
-	public Page<Saison> showBySerie(Serie idSerie, Pageable p) {
-		return seasRep.findByIdSerie(idSerie, p);
+	public Page<Saison> showBySerie(Serie serie, Pageable p) {
+		return seasRep.findByIdSerie(serie, p);
 	}
+	
+	public Page<Saison> showByidSerie(Long idSerie, Pageable p) {
+		return seasRep.findBySerieRef(idSerie, p);
+	}
+	
+	
+	public Page<Saison> showByLangueAndSerie(Long langue, Long serie, Pageable p){
+		
+		PageImpl<Saison> res = new PageImpl<Saison>(seasRep.findAll().stream()
+				   .filter(f -> f.getLangue().contains(langue))
+				   .filter(f -> f.getSerieRef() == serie)
+				   .toList() 
+				   , p
+				   
+				   ,seasRep.findAll().size());
+			
+			return res;
+	};
 	
 	public Page<Saison> search(String n, Pageable p) {
 		return seasRep.findByNameOrOverviewContaining(n, n, p);
@@ -65,6 +83,30 @@ public class SaisonService{
 			
 			return res;
 	}
+	
+	public Page<Saison> searchBySerie(String n, Long serie, Pageable p) {
+		
+		PageImpl<Saison> res = new PageImpl<Saison>(seasRep.findByNameOrOverviewContaining(n, n, p).stream()
+                .filter(f -> f.getSerieRef() == serie)
+                .collect(Collectors.toList()) 
+				   , p
+				   ,seasRep.findAll().size());
+			
+			return res;
+	}
+	
+	public Page<Saison> searchByLangueAndSerie(String val, Long langue, Long serie, Pageable p){
+		
+		PageImpl<Saison> res = new PageImpl<Saison>(seasRep.findByNameOrOverviewContaining(val, val, p).stream()
+				   .filter(f -> f.getLangue().contains(langue))
+				   .filter(f -> f.getSerieRef() == serie)
+				   .toList() 
+				   , p
+				   
+				   ,seasRep.findAll().size());
+			
+			return res;
+	};
 
 	public Saison showById(Long id) {
 		
