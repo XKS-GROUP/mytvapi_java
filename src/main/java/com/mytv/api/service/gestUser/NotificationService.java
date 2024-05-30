@@ -16,7 +16,7 @@ public class NotificationService {
     public void envoyer(Validation validation) {
 
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("test@smeth-dev.site");
+        message.setFrom("contact@galsen.com");
         message.setTo(validation.getUtilisateur().getEmail());
         message.setSubject("Votre code d'activation");
 
@@ -35,7 +35,7 @@ public class NotificationService {
     public void envoyerPour(Validation validation, String obj) {
 
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("test@smeth-dev.site");
+        message.setFrom("contact@galsen.com");
         message.setTo(validation.getUtilisateur().getEmail());
         message.setSubject(obj.toString());
 
@@ -54,7 +54,7 @@ public class NotificationService {
     public String sendConfirmationMdpSucces(Validation validation, String obj) {
 
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("test@smeth-dev.site");
+        message.setFrom("contact@galsen.com");
         message.setTo(validation.getUtilisateur().getEmail());
         message.setSubject(obj.toString());
 
@@ -75,7 +75,7 @@ public class NotificationService {
     public void sendUriResetPWD(Validation validation, String obj, String url) {
 
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("test@smeth-dev.site");
+        message.setFrom("contact@galsen.com");
         message.setTo(validation.getUtilisateur().getEmail());
         message.setSubject(obj.toString());
 

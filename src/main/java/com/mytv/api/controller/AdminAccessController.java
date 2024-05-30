@@ -77,23 +77,29 @@ public class AdminAccessController {
 			@PathVariable Long id,
 			@Valid @RequestBody PasswordDTO request){
 
-		String pwd = passwordEncoder.encode(request.getPassword());
+		String new_pwd = passwordEncoder.encode(request.getNew_password());
+		
+		String old_pwd = passwordEncoder.encode(request.getOld_password());
+		
+		System.out.println(" l'ancien mot de passe =  " + old_pwd);
+		System.out.println(" le new mot de passe =  " + new_pwd);
+		
 		if(userService.findById(id) == null ){
 
 			return EntityResponse.generateResponse("ATTENTION ", HttpStatus.CONFLICT, "Cet utilisateur n'existe pas ");
 			
 		}
-		else if(userService.findByIdAndPassword(id, pwd) == null ){
+		else if(userService.findByIdAndPassword(id, old_pwd) == null ){
 
-			return EntityResponse.generateResponse("ATTENTION ", HttpStatus.CONFLICT, "Ce mot de passe ne correspond pas ");
+			return EntityResponse.generateResponse("ATTENTION ", HttpStatus.CONFLICT, "Ce mot de passe ne correspond pas a votre ancien mot de passe ");
 			
 		}
 		
 		else {
 			
-			request.setPassword(pwd);
+			request.setNew_password(new_pwd);
 			
-			return EntityResponse.generateResponse("SUCESS  ", HttpStatus.OK, userService.updatePassword(id, request.getPassword()));
+			return EntityResponse.generateResponse("SUCESS  ", HttpStatus.OK, userService.updatePassword(id, request.getNew_password()));
 		}
 
 

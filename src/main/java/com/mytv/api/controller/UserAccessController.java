@@ -147,6 +147,8 @@ public class UserAccessController {
 	@PostMapping("admin-register")
 	public ResponseEntity<Object> register(@Valid @RequestBody UserRegisterRequestDTO request){
 
+
+		System.out.println(passwordEncoder.encode(request.getPassword()));
 		if(userService.findByUsername(request.getUsername()) != null){
 
 			return EntityResponse.generateResponse("le nom "+request.getUsername()+" existe deja ", HttpStatus.CONFLICT, "username : ce nom existe déja ");
@@ -189,6 +191,7 @@ public class UserAccessController {
 		else {
 
 			request.setPassword(passwordEncoder.encode(request.getPassword()));
+			
 			return EntityResponse.generateResponse("Abonée enregistre avec succès", HttpStatus.CREATED, userService.createAbonne(request));
 		}
 
