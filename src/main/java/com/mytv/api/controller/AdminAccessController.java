@@ -79,16 +79,13 @@ public class AdminAccessController {
 
 		String new_pwd = passwordEncoder.encode(request.getNew_password());
 		
-		String old_pwd = passwordEncoder.encode(request.getOld_password());
-
-		
 		if(userService.findById(id) == null ){
 
 			return EntityResponse.generateResponse("ATTENTION ", HttpStatus.CONFLICT, "Cet utilisateur n'existe pas ");
 			
 		}
-		else if(userService.findByIdAndPassword(id, old_pwd) == null ){
-
+		else if(!passwordEncoder.matches( request.getOld_password() , userService.findById(id).getPassword())){
+			
 			return EntityResponse.generateResponse("ATTENTION ", HttpStatus.CONFLICT, "Ce mot de passe ne correspond pas a votre ancien mot de passe ");
 			
 		}

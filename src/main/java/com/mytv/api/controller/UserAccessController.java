@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mytv.api.dto.NewPwdDTO;
@@ -76,7 +75,7 @@ public class UserAccessController {
 	private JwtRepository jwtRep;
 
 	//Se connecter
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	@PostMapping("/login")
 	public ResponseEntity<Object> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest)
 			throws Exception {
 
@@ -99,26 +98,26 @@ public class UserAccessController {
 
 		if(usr.isValide()) {
 
-				usr.setRemember_token(token);
+			usr.setRemember_token(token);
 
-				Jwt jwtToken = new Jwt();
+			Jwt jwtToken = new Jwt();
 
-				jwtToken.setValue(token);
-				jwtToken.setValide(jwtTokenUtil.validateToken(token, userDetails));
+			jwtToken.setValue(token);
+			jwtToken.setValide(jwtTokenUtil.validateToken(token, userDetails));
 
-				jwtToken.setRefresh_token(refreshToken);
+			jwtToken.setRefresh_token(refreshToken);
 
-				jwtToken.setUser(userService.findByUsername(jwtTokenUtil.getUsernameFromToken(token)));
+			jwtToken.setUser(userService.findByUsername(jwtTokenUtil.getUsernameFromToken(token)));
 
-				jwtRep.save(jwtToken);
+			jwtRep.save(jwtToken);
 
-				return EntityResponse.generateResponse("Authentication", HttpStatus.OK,
+			return EntityResponse.generateResponse("Authentication", HttpStatus.OK,
 
 						new AuthenticationResponse(token, refreshToken, usr));
-				}else {
+		}else {
 
-					return EntityResponse.generateResponse("Authentication", HttpStatus.BAD_REQUEST, "Ce compte n'est pas active, veuillez activez ce compte ");
-				}
+			return EntityResponse.generateResponse("Authentication", HttpStatus.BAD_REQUEST, "Ce compte n'est pas active, veuillez activez ce compte ");
+		}
 
 	}
 

@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.mytv.api.model.gestUser.Profil;
@@ -46,6 +47,9 @@ public class WUserService implements UserDetailsService {
 	
 	@Autowired
 	private ProfilRepository proRep;
+	
+	@Autowired
+	PasswordEncoder passwordEncoder;
 	
 	@Autowired
 	WRoleService roleService;
@@ -100,7 +104,12 @@ public class WUserService implements UserDetailsService {
 	
 	public User findByIdAndPassword(Long id, String password) {
         
-		return userRepository.findByIdAndPassword(id, password);
+		//findById(id).getPassword();
+		
+		System.out.println( "le comparatif donne = " + passwordEncoder.matches("Ea.123@." , findById(id).getPassword()));
+		
+		
+		return userRepository.findByIdAndPassword(id, passwordEncoder.encode(password));
 		
 	}
 	
