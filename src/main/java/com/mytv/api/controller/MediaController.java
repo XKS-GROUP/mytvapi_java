@@ -1700,11 +1700,11 @@ public class MediaController {
     		@RequestParam (required = false) Long saison,
 			@RequestParam (required = false) Long langue){
 		
-		if(langue != null && serie == null) {
+		if(langue != null && serie == null && saison == null) {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showByLangue(langue, p));
 		}
-		else if(saison != null && langue == null) {
+		else if(saison != null && langue == null && serie==null) {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showBySaison(saison, p));
 		}

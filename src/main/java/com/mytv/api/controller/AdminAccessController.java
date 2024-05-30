@@ -80,9 +80,7 @@ public class AdminAccessController {
 		String new_pwd = passwordEncoder.encode(request.getNew_password());
 		
 		String old_pwd = passwordEncoder.encode(request.getOld_password());
-		
-		System.out.println(" l'ancien mot de passe =  " + old_pwd);
-		System.out.println(" le new mot de passe =  " + new_pwd);
+
 		
 		if(userService.findById(id) == null ){
 

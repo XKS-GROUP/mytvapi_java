@@ -17,14 +17,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mytv.api.dto.NewPwdDTO;
-import com.mytv.api.dto.PasswordDTO;
 import com.mytv.api.dto.PwdResetPwdDTO;
 import com.mytv.api.model.gestUser.Jwt;
 import com.mytv.api.model.gestUser.User;
@@ -84,6 +82,8 @@ public class UserAccessController {
 
 		try {
 			authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+			
+			
 		} catch (Exception e) {
 			return EntityResponse.generateResponse("Authentication", HttpStatus.UNAUTHORIZED,
 					"Info non valide, le nom d utilsateur ou le mot de passe est incorrecte");
@@ -142,6 +142,7 @@ public class UserAccessController {
 
 		}
 	}
+	
 
 	//Route Ajout admin
 	@PostMapping("admin-register")
@@ -164,6 +165,7 @@ public class UserAccessController {
 		else {
 
 			request.setPassword(passwordEncoder.encode(request.getPassword()));
+			
 			return EntityResponse.generateResponse("Admin enregistre avec succès  ", HttpStatus.CREATED, userService.createUser(request));
 		}
 

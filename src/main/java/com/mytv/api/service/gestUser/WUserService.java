@@ -93,6 +93,7 @@ public class WUserService implements UserDetailsService {
 
 		User u = userRepository.findById(id).get();
 		u.setPassword(password);
+		
 		userRepository.save(u);
 		return u; //
 	}
