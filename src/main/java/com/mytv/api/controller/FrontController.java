@@ -96,6 +96,7 @@ import com.mytv.api.service.gestMedia.CategoryLrService;
 import com.mytv.api.service.gestMedia.EpisodeService;
 import com.mytv.api.service.gestMedia.GenreService;
 import com.mytv.api.service.gestMedia.LangueService;
+import com.mytv.api.service.gestMedia.LiveService;
 import com.mytv.api.service.gestMedia.LiveTvSetvice;
 import com.mytv.api.service.gestMedia.PaysService;
 import com.mytv.api.service.gestMedia.PodcastService;
@@ -135,6 +136,8 @@ public class FrontController {
 	private CatPodcastService catpodService;
 	@Autowired
 	private PaysService paysService;
+	@Autowired
+	private LiveService lService;
 	
 	@Autowired
 	private LangueService langService;
@@ -254,7 +257,7 @@ public class FrontController {
      */
     
     @Tag(name = "Ressource: genres, Categories, pays, langues")
-    @GetMapping("ressources/all")
+    @GetMapping("ressources/all/")
     public <R> Object getRessources(@RequestParam (required = false) List<String> resources) {
     	
     	List<Pays> pays = paysService.show();
@@ -314,7 +317,7 @@ public class FrontController {
      */
     
     @Tag(name = "Ressource")
-    @GetMapping("/medias/all")
+    @GetMapping("/medias/all/")
     public <R> Object getAllMedia(@RequestParam (required = false) List<String> media) {
     	
     	List<Film> films = filmService.show();
@@ -436,7 +439,7 @@ public class FrontController {
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.show());
 	}
 	
-	@Tag(name = "Radio")
+	@Tag(name = "Radios")
 	@GetMapping("radios/all/")
 	public ResponseEntity<Object> showRadioPage(Pageable p,
 			@RequestParam (required = false) Long categ ,
@@ -460,7 +463,7 @@ public class FrontController {
 		}
 	}
 	
-	@Tag(name = "Radio")
+	@Tag(name = "Radios")
 	@GetMapping("radios/search/")
 	public ResponseEntity<Object> showbyNameContain(
 			@RequestParam String s,
@@ -576,7 +579,7 @@ public class FrontController {
 		}
 	}
 	@Tag(name = "Radios")
-	@GetMapping("radios/favories/all")
+	@GetMapping("radios/favories/all/")
 	public ResponseEntity<Object> radioFavorieAll(){
 
 		return EntityResponse.generateResponse("Liste des radios favorie", HttpStatus.OK, 
@@ -592,184 +595,7 @@ public class FrontController {
 	}
 	
 	
-	/*
-	 * GESTION DES LIVES TV 
-	 */
-	//ROUTES LiveTV
-	@Tag(name = "Lives")
-	@GetMapping("lives")
-	public ResponseEntity<Object> showL(){
-
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.show());
-	}
-
-	@Tag(name = "Lives")
-	@GetMapping("lives/{id}")
-	public ResponseEntity<Object> showbyIdL(@PathVariable Long id){
-
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showById(id));
-	}
-    
-	@Tag(name = "TV SHOW")
-	@GetMapping("tv/all/")
-	public ResponseEntity<Object> showLivePages(Pageable p,
-			@RequestParam (required = false) Long genre ,
-			@RequestParam (required = false) Long langue,
-			@RequestParam (required = false) Long pays){
-		
-		if(genre != null && langue == null && pays == null  ) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showByGenre(genre, p));
-		}
-		else if(langue != null && genre == null && pays == null) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showByLangue(langue, p));
-		}
-		else if(pays == null && genre == null && pays == null) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showByPays(pays, p));
-		}
-		else if(pays != null && langue != null && genre != null) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showByPaysGenreLangue(genre, langue, pays, p));
-		}
-		else {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showPage(p));
-		}
-	}
 	
-	@Tag(name = "TV SHOW")
-	@GetMapping("tv/search/")
-	public ResponseEntity<Object> showLbyNameContainL(
-			@RequestParam String s, Pageable p,
-			@RequestParam (required = false) Long genre ,
-			@RequestParam (required = false) Long langue,
-			@RequestParam (required = false) Long pays){
-			
-		if(genre != null && langue == null && pays == null ) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchByGenre(s, genre, p));
-		}
-		else if(langue != null && genre == null && pays == null) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchbyLangue(s, langue, p));
-		}
-		else if( pays == null && genre == null && pays == null) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchByPays(s, pays, p));
-		}
-		else if(pays != null && langue != null && genre != null) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchByPaysGenreLangue(s, genre, langue, pays, p));
-		}
-		else {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.search(s, p));
-		}
-	}
-			
-			//LIKE
-			
-			//AFFICHE LIKE PAR RADIO
-			@Tag(name = "Lives")
-			@GetMapping("lives/likes/show/byLive/{idLive}")
-			public ResponseEntity<Object> liveLikebyLive(@PathVariable Long idLive){
-				
-				LiveTv l = liveService.showById(idLive).get();
-				
-				return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, likeliveService.findByLivetv(l));
-			}
-			
-			//AFFICHE NOMBRE LIKE PAR LIVE TV
-			@Tag(name = "Lives")
-			@GetMapping("lives/all/nblikebyLiveTv/{idLivetv}")
-			public ResponseEntity<Object> liveNbLike(@PathVariable Long idLivetv){
-				
-				return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-						likeliveService.nbretotalLike(liveService.showById(idLivetv).get()));
-			}
-			
-			//ADD LIKE
-			@Tag(name = "Lives")
-			@PostMapping("lives/add/{idLive}")
-			public ResponseEntity<Object> liveAddLike(@PathVariable Long idLive){
-				LiveTv l = liveService.showById(idLive).get();
-				User u = userService.findCurrentUser();
-				
-				if(likeliveRep.findByUserAndLivetv(u, l).isPresent()) {
-					Long id = likeliveRep.findByUserAndLivetv(u, l).get().getIdLike();
-					
-					return EntityResponse.generateResponse("VOUS VENEZ DE DISLIKEZ ", HttpStatus.OK, 
-							likeliveService.removeLike(id) );
-				}
-				else {
-					
-					LikeLivetv lt = new LikeLivetv();
-					lt.setLivetv(l);
-					lt.setUser(u);
-					
-					return EntityResponse.generateResponse("VOUS VENEZ DE LIKEZ", HttpStatus.OK, 
-							likeliveService.addLike(lt));
-				}
-			}
-			
-			//DELETE LIKE
-			@Tag(name = "Lives")
-			@DeleteMapping("lives/likes/delete/{idLike}")
-			public ResponseEntity<Object> liveDelLike(@PathVariable Long id){
-				
-				return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,  likeliveService.removeLike(id));
-				 
-			}
-			
-			/*
-			 * GESTION DES FAVORIES
-			 */
-			//FAVORIES
-			
-			@Tag(name = "Lives")
-			@PostMapping("lives/favories/add/{idLive}")
-			public ResponseEntity<Object> liveShowFavorie(@PathVariable Long idLive){
-	        
-				LiveTv l = liveService.showById(idLive).get();
-				User u = userService.findCurrentUser();
-				
-				if(favliveRep.findByUserAndLivetv(u, l).isPresent()) {
-					
-					Long id = favliveRep.findByUserAndLivetv(u, l).get().getIdFav();
-					
-					return EntityResponse.generateResponse("RETIRER DES FAVORIES ", HttpStatus.OK, 
-							favliveService.remove(id) );
-				}
-				else {
-					
-					FavLiveTv fl = new FavLiveTv();
-					fl.setLivetv(l);
-					fl.setUser(u);
-					
-					return EntityResponse.generateResponse("AJOUTEZ AUX FAVORIES", HttpStatus.OK, 
-							favliveService.addFav(fl));
-				}
-			}
-			
-			@Tag(name = "Lives")
-			@GetMapping("lives/favories/all")
-			public ResponseEntity<Object> liveAddFavorie(){
-	    
-				return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK, 
-						favliveService.findByUser(userService.findCurrentUser()));
-			}
-			
-			@Tag(name = "Lives")
-			@DeleteMapping("lives/favories/show/{idFavorie}")
-			public boolean liveDelFavorie(@PathVariable Long idFav){
-
-				return favradioService.remove(idFav);
-				
-			}
-		
-
 	
 	
 	/*
@@ -843,7 +669,7 @@ public class FrontController {
 	//COM
 	//AFFICHE TOUS LES COMMENTAIRES
 	@Tag(name = "Podcasts")
-	@GetMapping("podcasts/comments/all")
+	@GetMapping("podcasts/comments/all/")
 	public ResponseEntity<Object> podcastShowAllComment(){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, compodService.show() );
@@ -973,7 +799,7 @@ public class FrontController {
 	}
 	
 	@Tag(name = "Podcasts")
-	@GetMapping("podcasts/favories/all")
+	@GetMapping("podcasts/favories/all/")
 	public ResponseEntity<Object> podcastFavorieAll(){
 
 		return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK, 
@@ -1084,7 +910,7 @@ public class FrontController {
 	//COM
 		//AFFICHE TOUS LES COMMENTAIRES
 		@Tag(name = "Films")
-		@GetMapping("films/comments/all")
+		@GetMapping("films/comments/all/")
 		public ResponseEntity<Object> filmShowAllComment(){
 
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
@@ -1216,7 +1042,7 @@ public class FrontController {
 		}
 		
 		@Tag(name = "Films")
-		@GetMapping("films/favories/all")
+		@GetMapping("films/favories/all/")
 		public ResponseEntity<Object> filmAllFavorie(){
 
 			return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK, 
@@ -1318,7 +1144,7 @@ public class FrontController {
 	//COM
 	//AFFICHE TOUS LES COMMENTAIRES
 	@Tag(name = "Series")
-	@GetMapping("series/comments/all")
+	@GetMapping("series/comments/all/")
 	public ResponseEntity<Object> serieShowAllComment(){
 	
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
@@ -1449,7 +1275,7 @@ public class FrontController {
 	}
 	
 	@Tag(name = "Series")
-	@GetMapping("series/favories/all")
+	@GetMapping("series/favories/all/")
 	public ResponseEntity<Object> serieFavorieAll(){
 	
 	return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK, 
@@ -1585,7 +1411,7 @@ public class FrontController {
 	//COM
 	//AFFICHE TOUS LES COMMENTAIRES
 	@Tag(name = "Episodes")
-	@GetMapping("episodes/comments/All")
+	@GetMapping("episodes/comments/all/")
 	public ResponseEntity<Object> episodeShowAllComment(){
 	
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, comepisodeService.show());
@@ -1717,10 +1543,10 @@ public class FrontController {
 	}
 	
 	@Tag(name = "Episodes")
-	@GetMapping("episodes/Favories/all")
+	@GetMapping("episodes/favories/all/")
 	public ResponseEntity<Object> episodeAddFavorie(){
 	
-	return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK, 
+	return EntityResponse.generateResponse("Liste des episodes favorie", HttpStatus.OK, 
 	favepisodeService.findByUser(userService.findCurrentUser()));
 	}
 	
@@ -1811,7 +1637,7 @@ public class FrontController {
 	//COM
 	//AFFICHE TOUS LES COMMENTAIRES
 	@Tag(name = "Saison")
-	@GetMapping("saisons/comments/all")
+	@GetMapping("saisons/comments/all/")
 	public ResponseEntity<Object> saisonShowAllComment(){
 	
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
@@ -1945,7 +1771,7 @@ public class FrontController {
 	}
 	
 	@Tag(name = "Saison")
-	@GetMapping("saisons/favories/all")
+	@GetMapping("saisons/favories/all/")
 	public ResponseEntity<Object> saisonAllFavorie(){
 	
 	return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK, 
@@ -1964,7 +1790,7 @@ public class FrontController {
 	
 	//Multi Media
 	@Tag(name = "Profil Abonne")
-	@GetMapping("user/favories/all")
+	@GetMapping("user/favories/all/")
 	
 	public ResponseEntity<Object> allFavorite(){
 		
@@ -1982,4 +1808,257 @@ public class FrontController {
 		
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, fav);
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*
+	 * 
+	 * LES LIVES  DES EVENEMENTS
+	 * 
+	 * 
+	 */
+
+	@Tag(name = "Lives")
+	@GetMapping("lives")
+	public ResponseEntity<Object> showLives(){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, lService.show());
+	}
+	
+	@Tag(name = "Lives")
+	@GetMapping("lives/all/")
+	public ResponseEntity<Object> showLivesByPage(
+		Pageable p,
+		@RequestParam (required = false) Long categ ){
+	
+		if(categ != null ) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, lService.showByCategorie(categ, p));
+		}
+		else {
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, lService.showPage(p));
+		}
+	}
+
+	@Tag(name = "Lives")
+	@GetMapping("lives/{id}")
+	public ResponseEntity<Object> showbyIdLives(@PathVariable Long id){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, lService.showById(id));
+	}
+
+	@Tag(name = "Lives")
+	@GetMapping("lives/search/")
+	public ResponseEntity<Object> showbyIdLives(
+			@RequestParam String s,
+			Pageable p,
+			@RequestParam (required = false) Long categ ){
+	
+		if(categ != null ) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, lService.searchByCateg(s, categ, p));
+		}
+		else {
+
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, lService.search(s, p));
+		}
+	}
+
+
+
+	
+	/*
+	 * 
+	 * ROUTES LiveTV
+	 * 
+	 * 
+	 */
+
+	@Tag(name = "TV SHOW")
+	@GetMapping("tv")
+	public ResponseEntity<Object> showTV(){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.show());
+	}
+	
+	@Tag(name = "TV SHOW")
+	@GetMapping("tv/all/")
+	public ResponseEntity<Object> showTVPages(Pageable p,
+			@RequestParam (required = false) Long genre ,
+			@RequestParam (required = false) Long langue,
+			@RequestParam (required = false) Long pays){
+		
+		if(genre != null && langue == null && pays == null  ) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showByGenre(genre, p));
+		}
+		else if(langue != null && genre == null && pays == null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showByLangue(langue, p));
+		}
+		else if(pays == null && genre == null && pays == null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showByPays(pays, p));
+		}
+		else if(pays != null && langue != null && genre != null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showByPaysGenreLangue(genre, langue, pays, p));
+		}
+		else {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showPage(p));
+		}
+	}
+	
+	@Tag(name = "TV SHOW")
+	@GetMapping("tv/search/")
+	public ResponseEntity<Object> showTVbyNameContainL(
+			@RequestParam String s, Pageable p,
+			@RequestParam (required = false) Long genre ,
+			@RequestParam (required = false) Long langue,
+			@RequestParam (required = false) Long pays){
+			
+		if(genre != null && langue == null && pays == null ) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchByGenre(s, genre, p));
+		}
+		else if(langue != null && genre == null && pays == null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchbyLangue(s, langue, p));
+		}
+		else if( pays == null && genre == null && pays == null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchByPays(s, pays, p));
+		}
+		else if(pays != null && langue != null && genre != null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchByPaysGenreLangue(s, genre, langue, pays, p));
+		}
+		else {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.search(s, p));
+		}
+	}
+
+	@Tag(name = "TV SHOW")
+	@GetMapping("tv/{id}")
+	public ResponseEntity<Object> showbyIdLTV(@PathVariable Long id){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showById(id));
+	}
+	
+	
+	
+			
+			//LIKE
+			
+			//AFFICHE LIKE PAR RADIO
+			@Tag(name = "TV SHOW")
+			@GetMapping("tv/likes/show/byLive/{idLive}")
+			public ResponseEntity<Object> liveLikebyLive(@PathVariable Long idLive){
+				
+				LiveTv l = liveService.showById(idLive).get();
+				
+				return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, likeliveService.findByLivetv(l));
+			}
+			
+			//AFFICHE NOMBRE LIKE PAR LIVE TV
+			@Tag(name = "TV SHOW")
+			@GetMapping("tv/all/nblikebyLiveTv/{idLivetv}")
+			public ResponseEntity<Object> liveNbLike(@PathVariable Long idLivetv){
+				
+				return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+						likeliveService.nbretotalLike(liveService.showById(idLivetv).get()));
+			}
+			
+			//ADD LIKE
+			@Tag(name = "TV SHOW")
+			@PostMapping("tv/add/{idLive}")
+			public ResponseEntity<Object> liveAddLike(@PathVariable Long idLive){
+				LiveTv l = liveService.showById(idLive).get();
+				User u = userService.findCurrentUser();
+				
+				if(likeliveRep.findByUserAndLivetv(u, l).isPresent()) {
+					Long id = likeliveRep.findByUserAndLivetv(u, l).get().getIdLike();
+					
+					return EntityResponse.generateResponse("VOUS VENEZ DE DISLIKEZ ", HttpStatus.OK, 
+							likeliveService.removeLike(id) );
+				}
+				else {
+					
+					LikeLivetv lt = new LikeLivetv();
+					lt.setLivetv(l);
+					lt.setUser(u);
+					
+					return EntityResponse.generateResponse("VOUS VENEZ DE LIKEZ", HttpStatus.OK, 
+							likeliveService.addLike(lt));
+				}
+			}
+			
+			//DELETE LIKE
+			@Tag(name = "TV SHOW")
+			@DeleteMapping("tv/likes/delete/{idLike}")
+			public ResponseEntity<Object> liveDelLike(@PathVariable Long id){
+				
+				return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,  likeliveService.removeLike(id));
+				 
+			}
+			
+			/*
+			 * GESTION DES FAVORIES
+			 */
+			//FAVORIES
+			
+			@Tag(name = "TV SHOW")
+			@PostMapping("tv/favories/add/{idLive}")
+			public ResponseEntity<Object> liveShowFavorie(@PathVariable Long idLive){
+	        
+				LiveTv l = liveService.showById(idLive).get();
+				User u = userService.findCurrentUser();
+				
+				if(favliveRep.findByUserAndLivetv(u, l).isPresent()) {
+					
+					Long id = favliveRep.findByUserAndLivetv(u, l).get().getIdFav();
+					
+					return EntityResponse.generateResponse("RETIRER DES FAVORIES ", HttpStatus.OK, 
+							favliveService.remove(id) );
+				}
+				else {
+					
+					FavLiveTv fl = new FavLiveTv();
+					fl.setLivetv(l);
+					fl.setUser(u);
+					
+					return EntityResponse.generateResponse("AJOUTEZ AUX FAVORIES", HttpStatus.OK, 
+							favliveService.addFav(fl));
+				}
+			}
+			
+			@Tag(name = "TV SHOW")
+			@GetMapping("tv/favories/all/")
+			public ResponseEntity<Object> liveAddFavorie(){
+	    
+				return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK, 
+						favliveService.findByUser(userService.findCurrentUser()));
+			}
+			
+			@Tag(name = "TV SHOW")
+			@DeleteMapping("tv/favories/show/{idFavorie}")
+			public boolean liveDelFavorie(@PathVariable Long idFav){
+
+				return favradioService.remove(idFav);
+				
+			}
+		
+
 }
+
+

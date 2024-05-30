@@ -963,7 +963,12 @@ public class MediaController {
 		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, true);
 	}
 
-	//ROUTES LiveTV
+	/*
+	 * 
+	 * ROUTES LiveTV
+	 * 
+	 * 
+	 */
 
 	@Tag(name = "TV SHOW")
 	@PostMapping(path="tv/create")
