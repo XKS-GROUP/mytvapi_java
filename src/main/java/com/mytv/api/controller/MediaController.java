@@ -1310,7 +1310,7 @@ public class MediaController {
 				
 				return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.searchByCateg(s, categ, p));
 			}
-			if(langue != null && categ == null) {
+			else if(langue != null && categ == null) {
 				
 				return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.searchByLang(s, langue, p));
 			}
@@ -1483,14 +1483,18 @@ public class MediaController {
 			@RequestParam (required = false) Long genre ,
 			@RequestParam (required = false) Long langue){
 		
-		if(genre != null) {
+		if(genre != null && langue ==null) {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.showByGenre(genre, p));
 			
 		}
-		else if (langue != null) {
+		else if (langue != null && genre == null) {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.showByLangue(langue, p));
+		}
+		else if (langue != null && genre != null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.showByGenreAndLangue(genre, langue, p));
 		}
 		else {
 
