@@ -63,7 +63,7 @@ public class PubliciteService {
 
 	public Page<Publicite> findByName(String name, Pageable p) {
 		
-		return rep.findByName(name, p);
+		return rep.findByNameContaining(name, p);
 	}
 	
 	public Publicite findByName(String name) {

@@ -12,7 +12,7 @@ import com.mytv.api.model.gestPub.Publicite;
 @Repository
 public interface PubliciteRepository extends  JpaRepository<Publicite, Long>{
 
-	Page<Publicite> findByName(String name, Pageable p);
+	Page<Publicite> findByNameContaining(String name, Pageable p);
 	
 	Publicite findByName(String name);
 

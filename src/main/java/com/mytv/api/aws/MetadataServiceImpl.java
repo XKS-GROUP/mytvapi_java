@@ -161,9 +161,9 @@ public class MetadataServiceImpl implements MetadataService {
     }
     
     
-    public Set<String> listFolder(String prefix) {
+    public Page<String> listFolder(String prefix, Pageable p) {
     	
-    	return awsImpService.listFolders(prefix, bucketName);
+    	return awsImpService.listFolders(prefix, bucketName, p);
     }
     
     

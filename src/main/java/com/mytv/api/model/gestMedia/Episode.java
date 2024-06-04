@@ -68,7 +68,7 @@ public class Episode {
 
 	String duration;
 
-	@NotNull(message = "un satus par defaut doit etre attribuer")
+	@NotNull(message = "un satus par defaut doit être attribuer")
 	@Column(nullable = false, columnDefinition = "boolean default true")
 	boolean status;
 	

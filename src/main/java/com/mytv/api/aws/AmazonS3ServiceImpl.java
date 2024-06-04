@@ -15,6 +15,9 @@ import com.amazonaws.services.s3.model.ListObjectsV2Request;
 import com.amazonaws.services.s3.model.ListObjectsV2Result;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.amazonaws.HttpMethod;
@@ -23,6 +26,7 @@ import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectResult;
 import com.amazonaws.services.s3.model.S3Object;
+import com.mytv.api.model.gestMedia.LiveTv;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -70,8 +74,8 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
     }
     
     
-    public Set<String> listFolders(String prefix, String bucketName) {
-        Set<String> folders = new HashSet<>();
+    public Page<String> listFolders(String prefix, String bucketName, Pageable p) {
+        Set<String> folders = new HashSet <>();
 
         ListObjectsV2Request request = new ListObjectsV2Request()
                 .withBucketName(bucketName)
@@ -84,7 +88,14 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
             folders.add(commonPrefix);
         }
 
-        return folders;
+        //return folders;
+        
+        PageImpl<String> res = new PageImpl<String>(
+        		     folders.stream().toList()
+				   , p
+				   , folders.size());
+			
+		return res;
     }
 
     

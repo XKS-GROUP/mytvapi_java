@@ -1968,7 +1968,7 @@ public class MediaController {
     		@RequestParam(required = false) String prefix,
     		Pageable p) {
 		
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, metaImplService.listFolder(prefix) );
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, metaImplService.listFolder(prefix, p) );
     }
 	
 
