@@ -16,7 +16,9 @@ public interface MetadataService {
     public FileMeta uploadR3(MultipartFile file, String dossier) throws IOException;
 
     public S3Object download(int id);
-
+    
+    public void deteteFolder(String prefix);
+    
     public List<FileMeta> list();
     
     Page<FileMeta> listWithPage(Pageable p);

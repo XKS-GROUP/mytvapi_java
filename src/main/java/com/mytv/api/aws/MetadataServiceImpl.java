@@ -166,7 +166,11 @@ public class MetadataServiceImpl implements MetadataService {
     	return awsImpService.listFolders(prefix, bucketName, p);
     }
     
-    
+    @Override
+    public void deteteFolder(String prefix) {
+    	
+    	awsImpService.deleteFolder(bucketName, prefix);
+    }
     
     
     

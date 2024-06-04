@@ -1,13 +1,10 @@
 package com.mytv.api.controller;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,15 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.services.accessanalyzer.model.ResourceNotFoundException;
-import com.mytv.api.aws.AmazonS3ServiceImpl;
-import com.mytv.api.aws.FileMeta;
-import com.mytv.api.aws.FileMetaRepository;
-import com.mytv.api.aws.MetadataService;
-import com.mytv.api.aws.MetadataServiceImpl;
-import com.mytv.api.dto.FolderDTO;
+
 import com.mytv.api.model.gestMedia.CatPodcast;
 import com.mytv.api.model.gestMedia.CategorieLive;
 import com.mytv.api.model.gestMedia.CategoryRL;
@@ -81,14 +72,6 @@ import java.util.Map;
 @SecurityRequirement(name = "bearerAuth")
 public class MediaController {
 
-    @Autowired
-    private MetadataService metadataService;
-
-    @Autowired
-    private AmazonS3ServiceImpl awsService;
-
-	@Autowired
-    private FileMetaRepository fileMetaRep;
 
 	@Autowired
 	private RadioService radioService;
@@ -1923,136 +1906,6 @@ public class MediaController {
   		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, true);
   	}
     
-    
-    /*
-     * 
-     * 
-     *CLOUDFLARE R2 CRUD 
-     * 
-     * 
-     */
-    
-    
-
-    /* AWS R2 FILE CRUD  */
-    
-    @Autowired
-    AmazonS3ServiceImpl awsImplService;
-    MetadataServiceImpl metaImplService;
-
-	@Tag(name = "R2-CLOUDFLARE")
-    @GetMapping("r2/findall")
-    public ResponseEntity<Object> all() {
-
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, metadataService.list());
-    }
-	
-	@Tag(name = "R2-CLOUDFLARE")
-    @GetMapping("r2/find/all/whithPaging")
-    public ResponseEntity<Object> all(Pageable p) {
-
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, metadataService.listWithPage(p));
-    }
-	
-	@Tag(name = "R2-CLOUDFLARE")
-    @PostMapping("r2/folder/create")
-    public ResponseEntity<Object> createFolder(@Valid @RequestBody FolderDTO folder) {
-
-		metaImplService.createFolder(folder.getName());
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,  "" );
-    }
-	
-	@Tag(name = "R2-CLOUDFLARE")
-    @GetMapping("r2/folder/all/")
-    public ResponseEntity<Object> listFolder(
-    		@RequestParam(required = false) String prefix,
-    		Pageable p) {
-		
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, metaImplService.listFolder(prefix, p) );
-    }
-	
-
-	@Tag(name = "R2-CLOUDFLARE")
-    @GetMapping("r2/download/{idFile}")
-    public ResponseEntity<Object> download( @PathVariable int idFile) {
-
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, metadataService.download(idFile));
-    }
-	
-
-	@Tag(name = "R2-CLOUDFLARE")
-    @GetMapping("r2/search/byId/")
-    public ResponseEntity<Object> findbyid(
-    		@RequestParam int id) {
-
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, fileMetaRep.findById(id));
-    }
-
-	@Tag(name = "R2-CLOUDFLARE")
-    @GetMapping("r2/search/{name}")
-    public ResponseEntity<Object> findbyname(@PathVariable String name, Pageable p) {
-
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, fileMetaRep.findByFileNameContaining(name, p));
-    }
-
-	@Tag(name = "R2-CLOUDFLARE")
-    @PostMapping(path="r2/uploadfile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-
-    public ResponseEntity<Object> upload(@RequestParam("file") MultipartFile file) throws IOException {
-
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, metadataService.uploadR3(file, ""));
-
-    }
-
-	@Tag(name = "R2-CLOUDFLARE")
-    @PostMapping(path="r2/uploadfile/in-newFolder/{newFolder}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Object>  uploadWithFolderName(@RequestParam("file") MultipartFile file, @PathVariable String newFolder) throws IOException {
-
-
-		if(newFolder==null) {
-
-			return EntityResponse.generateResponse("Erreur", HttpStatus.BAD_REQUEST, " le dossier ne puis être vide");
-
-		}
-		else if (file.isEmpty()) {
-
-			return EntityResponse.generateResponse("Erreur", HttpStatus.BAD_REQUEST, " un fichier est requis");
-
-		}
-		else {
-
-			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, metadataService.uploadR3(file, newFolder));
-		 }
-    }
-
-	@Tag(name = "R2-CLOUDFLARE")
-    @DeleteMapping("deleteFile/{id}")
-    public ResponseEntity<Object>  deleteByName(@PathVariable  int id){
-
-
-		if (fileMetaRep.findById(id)==null) {
-
-			return EntityResponse.generateResponse("Erreur suppresion", HttpStatus.BAD_REQUEST, "Vous tentez de supprimez un objet qui n'existe pas ");
-
-		}
-		else {
-
-
-			Optional<FileMeta> fm = fileMetaRep.findById(id);
-
-
-			awsService.deleteR2( fm.get().getFilePath() , fm.get().getFileName());
-
-			fileMetaRep.deleteById(id);
-
-			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, "fichier Supprimé");
-		}
-
-	}
-	
-	
-
-
 }
 
 

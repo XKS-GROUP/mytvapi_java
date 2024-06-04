@@ -99,8 +99,9 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
     }
 
     
-    public void deleteFolder(String name) {
+    public void deleteFolder(String bucketName, String name) {
     	
+    	amazonS3.deleteObject(bucketName, name);
     	
     }
 
