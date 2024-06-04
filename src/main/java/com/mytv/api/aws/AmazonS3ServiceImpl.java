@@ -1,12 +1,19 @@
 package com.mytv.api.aws;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
+import com.amazonaws.services.s3.model.ListObjectsV2Request;
+import com.amazonaws.services.s3.model.ListObjectsV2Result;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +33,6 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
     @Autowired
     private AmazonS3 amazonS3;
 
-    @Autowired
-    private FileMetaRepository fileMetaRepository;
 
     @Override
     public PutObjectResult upload(
@@ -48,6 +53,44 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
     public void deleteR2(String path, String fileName)
     {
     	amazonS3.deleteObject(path, fileName);
+    }
+    
+    
+    @Override
+    public void createFolder(String folderName, String bucketName) {
+        // S3 folders are created by adding a trailing slash
+        String folderKey = folderName.endsWith("/") ? folderName : folderName + "/";
+
+        // Metadata for the folder
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentLength(0);
+
+        // Create an empty content
+        amazonS3.putObject(bucketName, folderKey, new ByteArrayInputStream(new byte[0]), metadata);
+    }
+    
+    
+    public Set<String> listFolders(String prefix, String bucketName) {
+        Set<String> folders = new HashSet<>();
+
+        ListObjectsV2Request request = new ListObjectsV2Request()
+                .withBucketName(bucketName)
+                .withPrefix(prefix)
+                .withDelimiter("/");
+
+        ListObjectsV2Result result = amazonS3.listObjectsV2(request);
+
+        for (String commonPrefix : result.getCommonPrefixes()) {
+            folders.add(commonPrefix);
+        }
+
+        return folders;
+    }
+
+    
+    public void deleteFolder(String name) {
+    	
+    	
     }
 
     @Override

@@ -25,6 +25,8 @@ import com.mytv.api.aws.AmazonS3ServiceImpl;
 import com.mytv.api.aws.FileMeta;
 import com.mytv.api.aws.FileMetaRepository;
 import com.mytv.api.aws.MetadataService;
+import com.mytv.api.aws.MetadataServiceImpl;
+import com.mytv.api.dto.FolderDTO;
 import com.mytv.api.model.gestMedia.CatPodcast;
 import com.mytv.api.model.gestMedia.CategorieLive;
 import com.mytv.api.model.gestMedia.CategoryRL;
@@ -1933,6 +1935,10 @@ public class MediaController {
     
 
     /* AWS R2 FILE CRUD  */
+    
+    @Autowired
+    AmazonS3ServiceImpl awsImplService;
+    MetadataServiceImpl metaImplService;
 
 	@Tag(name = "R2-CLOUDFLARE")
     @GetMapping("r2/findall")
@@ -1948,6 +1954,24 @@ public class MediaController {
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, metadataService.listWithPage(p));
     }
 	
+	@Tag(name = "R2-CLOUDFLARE")
+    @PostMapping("r2/folder/create")
+    public ResponseEntity<Object> createFolder(@Valid @RequestBody FolderDTO folder) {
+
+		metaImplService.createFolder(folder.getName());
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,  "" );
+    }
+	
+	@Tag(name = "R2-CLOUDFLARE")
+    @GetMapping("r2/folder/all/")
+    public ResponseEntity<Object> listFolder(
+    		@RequestParam(required = false) String prefix,
+    		Pageable p) {
+		
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, metaImplService.listFolder(prefix) );
+    }
+	
+
 	@Tag(name = "R2-CLOUDFLARE")
     @GetMapping("r2/download/{idFile}")
     public ResponseEntity<Object> download( @PathVariable int idFile) {

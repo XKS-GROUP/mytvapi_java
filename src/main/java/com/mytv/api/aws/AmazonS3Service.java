@@ -16,4 +16,6 @@ public interface AmazonS3Service {
             InputStream inputStream);
 
     public S3Object download(String path, String fileName);
+    public void createFolder(String folderName, String bucketName);
+    
 }

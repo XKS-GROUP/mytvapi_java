@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +28,9 @@ public class MetadataServiceImpl implements MetadataService {
 
     @Autowired
     private AmazonS3Service amazonS3Service;
-
-    @Autowired
-    private FileMetaRepository fmRep;
     
+    @Autowired
+    private AmazonS3ServiceImpl awsImpService;
     
     @Autowired
     private AmazonS3ServiceImpl awsImp;
@@ -91,7 +91,7 @@ public class MetadataServiceImpl implements MetadataService {
     		dossier="SansNom";
     	}
 
-    	String filepath="";
+    	
 
         if (file.isEmpty()) {
 			throw new IllegalStateException("Vous tentez d'uploader un fichier vide");
@@ -115,6 +115,8 @@ public class MetadataServiceImpl implements MetadataService {
         
         FileMeta dataMeta = new FileMeta(fileName.replaceAll("\\s+", "-"), path, putObjectResult.getMetadata().getVersionId(), presign);
 
+        String filepath="";
+        
         dataMeta.setSize(file.getSize());
         dataMeta.setFormat(file.getContentType());
         fileMetaRepository.save(dataMeta);
@@ -151,6 +153,32 @@ public class MetadataServiceImpl implements MetadataService {
     	return fileMetaRepository.findByFileName(nom);
     }
 
+    
+    
+    public void createFolder(String nom) {
+    	
+    	awsImpService.createFolder(nom, bucketName);
+    }
+    
+    
+    public Set<String> listFolder(String prefix) {
+    	
+    	return awsImpService.listFolders(prefix, bucketName);
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    /*
+     * 
+     * Ensemble des uploads specifiques
+     * 
+     * 
+     */
 
 
     public void uploadMovie(MultipartFile file) throws IOException{
