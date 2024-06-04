@@ -33,6 +33,13 @@ public class RessourceController {
 	PubliciteService pubService;
 	
 	
+	/*
+	 * 
+	 * Controlleur pour les publicitées
+	 * 
+	 * 
+	 */
+	
 	@Tag(name = "Publicité")
 	@GetMapping("pub")
 	public ResponseEntity<Object> showPub(){
@@ -102,7 +109,7 @@ public class RessourceController {
     
     /*
      * 
-     * CRUD acteurs
+     *AUTRES ..
      * 
      */
     //

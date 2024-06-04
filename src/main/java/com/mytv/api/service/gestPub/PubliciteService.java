@@ -38,7 +38,6 @@ public class PubliciteService {
 		return rep.findAll(p);
 	}
 
-
 	public Publicite update(final Long id, Publicite u) {
 
 		u.setIdPublicite(id);

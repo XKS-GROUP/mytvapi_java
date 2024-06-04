@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -39,9 +40,10 @@ public class Publicite {
 	
 	@Column(columnDefinition = "TEXT")
 	String videoPath;
-
+	
+	@NotEmpty(message = "ce champ ne peut etre vide, une page cible est requise ")
 	List<Long> pageTarget;
 	
-	List<Long> sectionTarget;
+	Long position;
 
 }
