@@ -359,7 +359,7 @@ public class MediaController {
 		@RequestParam String s, 
 		Pageable p){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, colPodRep.findAll(p));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, colPodRep.findByNameOrOverviewContaining(s, s, p));
 	}
     
     @Tag(name = "Podcast Collection")
@@ -372,9 +372,9 @@ public class MediaController {
     @Tag(name = "Podcast Collection")
 	@PostMapping("podcast/collections/create")
 	public ResponseEntity<Object> createCollection(@Valid @RequestBody ColPodcast r){
-
-    	r.setName(r.getName().toLowerCase());
-		if(colPodRep.findByName(r.getName()) != null) {
+		
+    	
+    	if(colPodRep.findByName(r.getName()).getName().toLowerCase() == r.getName().toLowerCase()) {
 			
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Cette collection existe déja");
 		}
@@ -386,8 +386,8 @@ public class MediaController {
     @Tag(name = "Podcast Collection")
 	@PutMapping("podcast/collections/update/{id}")
 	public ResponseEntity<Object> updateCollection(@PathVariable Long id, @Valid @RequestBody ColPodcast a){
+    	
     	a.setIdColPd(id);
-    	a.setName(a.getName().toLowerCase());
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, colPodRep.save(a));
 		
 	}
@@ -647,7 +647,7 @@ public class MediaController {
 
 	public ResponseEntity<Object> create(@Valid @RequestBody Genre g) {
 		
-		g.setName(g.getName().toLowerCase());
+		
 		if(!genreService.findByNameContain(g.getName()).isEmpty()) {
 			
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.CONFLICT, "Ce genre existe déja");
@@ -655,7 +655,6 @@ public class MediaController {
 		
 		else {
 			
-			g.getName().toUpperCase();
 		    return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, genreService.create(g));
 		
 		}
@@ -705,7 +704,7 @@ public class MediaController {
 	@Tag(name = "Genre FILM SERIE")
 	@PutMapping("genres/update/{id}")
 	public ResponseEntity<Object> updateG(@PathVariable Long id,@Valid @RequestBody Genre g){
-		g.setName(g.getName().toLowerCase());
+
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.upadte(id, g));
 
 	}
@@ -727,7 +726,6 @@ public class MediaController {
 	@PostMapping(path="catrl/create")
 	public ResponseEntity<Object> createCRL(@Valid @RequestBody CategoryRL u) {
 		
-		u.setName(u.getName().toLowerCase());
 		if(catlrRep.findByName(u.getName()) != null) {
 			
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Cette categorie existe déja");
@@ -770,7 +768,6 @@ public class MediaController {
 			@PathVariable Long id,
 			@Valid @RequestBody CategoryRL u) {
 
-		u.setName(u.getName().toLowerCase());
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catLrService.upadte(id, u));
 
 	}
@@ -860,7 +857,13 @@ public class MediaController {
 	}
 
 
-	//Radio
+	/*
+	 * 
+	 * 
+	 * RADIO 
+	 * 
+	 * 
+	 */
 	@Tag(name = "Radio")
 	@GetMapping("radios")
 	public ResponseEntity<Object> showR(){
@@ -899,12 +902,12 @@ public class MediaController {
 			@Valid
 			@RequestBody Radio r ){
 
-		r.setName(r.getName().toLowerCase());
 		if(radioService.findByName(r.getName()) != null) {
 			
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Cette radio existe déja");
 		}
 		else {
+			
 			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, radioService.create(r));
 		}
 	}
@@ -948,7 +951,6 @@ public class MediaController {
 	public ResponseEntity<Object> updateR(@PathVariable Long id,
 			@Valid @RequestBody Radio r) {
 
-		r.setName(r.getName().toLowerCase());
 		//Save du tout
 		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, radioService.upadte(id, r));
 
@@ -975,7 +977,6 @@ public class MediaController {
 	public ResponseEntity<Object> createL(
 			@Valid @RequestBody LiveTv lt) {
 
-		lt.setName(lt.getName().toLowerCase());
 		if(liveService.findByName(lt.getName()) != null) {
 			
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Cette chaine tv existe déja");
@@ -1064,7 +1065,6 @@ public class MediaController {
 			@PathVariable Long id,
 			@Valid @RequestBody LiveTv lt) {
 
-		lt.setName(lt.getName().toLowerCase());
 		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, liveService.update(id, lt));
 
 	}
@@ -1092,7 +1092,6 @@ public class MediaController {
 	public ResponseEntity<Object> createCP(
 			@Valid @RequestBody CategorieLive u) {
 		
-		u.setName(u.getName().toLowerCase());
 		if(catLiveRep.findByName(u.getName()) != null) {
 			
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Cette categorie de lıve existe déja");
@@ -1134,7 +1133,6 @@ public class MediaController {
 
 			@PathVariable Long id,
 			@Valid @RequestBody CategorieLive u){
-		u.setName(u.getName().toLowerCase());
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, categliveService.upadte(id, u));
 
 	}
@@ -1184,7 +1182,6 @@ public class MediaController {
 	public ResponseEntity<Object> createLives(
 			@Valid @RequestBody Live p){
 
-		p.setName(p.getName().toLowerCase());
 		if(lService.findByName(p.getName()) != null) {
 			
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Ce live existe déja");
@@ -1226,7 +1223,6 @@ public class MediaController {
 			@PathVariable Long id,
 			@Valid @RequestBody Live l) {
 		
-			l.setName(l.getName().toLowerCase());
 			//Save du tout
 			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, lService.update(id, l) );
 
@@ -1284,7 +1280,6 @@ public class MediaController {
 		public ResponseEntity<Object> createP(
 				@Valid @RequestBody Podcast p){
 
-			p.setName(p.getName().toLowerCase());
 			if(podcastservice.findByName(p.getName()) != null) {
 				
 				return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Ce Podcast existe déja");
@@ -1335,7 +1330,6 @@ public class MediaController {
 				@PathVariable Long id,
 				@Valid @RequestBody Podcast p) {
 
-				p.setName(p.getName().toLowerCase());
 				//Save du tout
 				return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, podcastservice.upadte(id, p) );
 
@@ -1404,7 +1398,6 @@ public class MediaController {
 	public ResponseEntity<Object> createM(
 			@RequestBody Film film) {
 
-		film.setName(film.getName().toLowerCase());
 		if(filmService.findByName(film.getName()) != null) {
 			
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Ce film existe déja");
@@ -1459,7 +1452,6 @@ public class MediaController {
 	public ResponseEntity<Object> updateM(@PathVariable Long id,
 			@Valid @RequestBody Film film)  {
 		
-		film.setName(film.getName().toLowerCase());
 		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, filmService.upadte(id, film));
 
 	}
@@ -1514,7 +1506,6 @@ public class MediaController {
 	public ResponseEntity<Object> createS(
 			@Valid @RequestBody Serie serie){
 			
-		serie.setName(serie.getName().toLowerCase());
 		if(serieService.findByName(serie.getName()) != null) {
 			
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Cette serie existe déja");
@@ -1569,7 +1560,6 @@ public class MediaController {
 			@PathVariable Long id,
 			@Valid @RequestBody Serie serie){
 
-			serie.setName(serie.getName().toLowerCase());
 			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK , serieService.upadte(id, serie));
 
 	}
@@ -1646,7 +1636,6 @@ public class MediaController {
 	public ResponseEntity<Object> createS(
 			@Valid @RequestBody Saison saison){
 
-		saison.setName(saison.getName().toLowerCase());
 		
 		
 		//Save du tout
@@ -1696,7 +1685,6 @@ public class MediaController {
 			@PathVariable Long id,
 			@Valid @RequestBody Saison saison){
 
-			saison.setName(saison.getName().toLowerCase());
 			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK , saisonService.upadte(id, saison));
 
 	}
@@ -1828,7 +1816,6 @@ public class MediaController {
 	public ResponseEntity<Object> createE(
 			@Valid @RequestBody Episode episode) {
 
-    	episode.setName(episode.getName().toLowerCase());
 			
 		
 		return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, episodeService.create(episode));
@@ -1843,7 +1830,6 @@ public class MediaController {
 			@PathVariable Long id,
 			@Valid @RequestBody Episode episode){
 
-    	episode.setName(episode.getName().toLowerCase());
 		//Save du tout
 		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, episodeService.upadte(id, episode));
 
@@ -1903,7 +1889,6 @@ public class MediaController {
   	public ResponseEntity<Object> createSlider(
   			@Valid @RequestBody Slider slider) {
 
-    	slider.setName(slider.getName().toLowerCase());
   		if(sliderService.findByName(slider.getName()) != null) {
   			
   			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Ce slider existe déja");
@@ -1922,7 +1907,6 @@ public class MediaController {
   			@PathVariable Long id,
   			@Valid @RequestBody Slider slider){
 
-    	//slider.setName(slider.getName().toLowerCase());
   		//Save du tout
   		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, sliderService.upadte(id, slider));
 
@@ -2032,9 +2016,6 @@ public class MediaController {
 
 			Optional<FileMeta> fm = fileMetaRep.findById(id);
 
-			System.out.println(fm.get().getFileName());
-
-			System.out.println(fm.get().getFilePath());
 
 			awsService.deleteR2( fm.get().getFilePath() , fm.get().getFileName());
 

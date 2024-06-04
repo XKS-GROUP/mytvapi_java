@@ -276,7 +276,6 @@ public class UserAccessController {
 
 		    else {
 
-
 		    	User user = userService.findByUserEmail(email);
 
 		    	if (user.isValide()) {
@@ -387,6 +386,7 @@ public class UserAccessController {
 	 * Mot de passe perdu, utiliser une fois que l utilisateur aura cliqué sur le lien envoyer par mail
 	 * 
 	 */
+	
 	//MAJ du password
 	@PostMapping("password/reset/{code}")
     public ResponseEntity<Object> resetpwd(@Valid @RequestBody NewPwdDTO pwd, @PathVariable Map<String, String> code) {
