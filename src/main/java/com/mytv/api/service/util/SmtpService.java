@@ -9,7 +9,10 @@ import org.springframework.stereotype.Service;
 import com.mytv.api.model.util.SmtpSetting;
 import com.mytv.api.repository.smtpRepository;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class SmtpService {
 
 	

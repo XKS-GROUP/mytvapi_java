@@ -1,4 +1,5 @@
-package com.mytv.api.model.util;
+package com.mytv.api.model.ressource;
+
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,19 +13,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class SmtpSetting {
-	
+public class PaymentProvider {
+
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
-	String host;
+	String name;
 	
-	String port;
-	
-	String email;
-	
-	String password;
 	
 	
 }
