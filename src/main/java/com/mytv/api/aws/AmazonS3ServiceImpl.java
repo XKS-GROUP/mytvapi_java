@@ -26,7 +26,6 @@ import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectResult;
 import com.amazonaws.services.s3.model.S3Object;
-import com.mytv.api.model.gestMedia.LiveTv;
 
 import lombok.extern.slf4j.Slf4j;
 

@@ -23,6 +23,7 @@ import com.mytv.api.aws.FileMeta;
 import com.mytv.api.aws.FileMetaRepository;
 import com.mytv.api.aws.MetadataService;
 import com.mytv.api.aws.MetadataServiceImpl;
+import com.mytv.api.dto.FileMetaDTO;
 import com.mytv.api.dto.FolderDTO;
 import com.mytv.api.security.EntityResponse;
 
@@ -80,6 +81,18 @@ public class AWSController {
     public ResponseEntity<Object> all(Pageable p) {
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, metadataService.listWithPage(p));
+    }
+	
+	//Renommer un fichier
+	@Tag(name = "R2-CLOUDFLARE")
+    @GetMapping("r2/file/rename/{id}")
+    public ResponseEntity<Object> renameFile(
+    			@PathVariable Long id,
+    			@Valid @RequestBody FileMetaDTO f) {
+
+		FileMeta fm = metadataService.showById(id).get();
+		fm.setFileName(f.getName());
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, metadataService.create(fm));
     }
 	
 	//Creer un dossier

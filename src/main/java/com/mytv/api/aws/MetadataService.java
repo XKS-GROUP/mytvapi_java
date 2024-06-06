@@ -3,6 +3,7 @@ package com.mytv.api.aws;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,4 +23,8 @@ public interface MetadataService {
     public List<FileMeta> list();
     
     Page<FileMeta> listWithPage(Pageable p);
+
+	Optional<FileMeta> showById(Long id);
+
+	FileMeta create(FileMeta fm);
 }
