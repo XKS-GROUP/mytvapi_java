@@ -245,7 +245,7 @@ public class RessourceController {
         if (resources == null || resources.isEmpty()) {
         	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
         			
-        			Map.of( "pays ",pays,"langues", Langues, "cat_radio_livetv", CatRL, "categlives",categorieLive,"genres", 
+        			Map.of( "pays",pays,"langues", Langues, "cat_radio_livetv", CatRL, "categlives",categorieLive,"genres", 
         					genre, "catpodcast", CatPodcast, "acteurs", acteurs, "directeurs", directeurs));
         }
         
@@ -309,7 +309,7 @@ public class RessourceController {
         if (media == null || media.isEmpty()) {
         	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
         			
-        			Map.of( "films ",films,"radios", radios, "podcasts", podcasts, "colpodcasts", colpodcasts,"series", 
+        			Map.of( "films",films,"radios", radios, "podcasts", podcasts, "colpodcasts", colpodcasts,"series", 
         					series, "saisons", saisons, "episodes", episodes, "livetv", livetv, "live", lives ));
         }
         
@@ -372,7 +372,7 @@ public class RessourceController {
         if (resources == null || resources.isEmpty()) {
         	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
         			
-        			Map.of( "pays ",pays,"langues", Langues, "cat_radio_livetv", CatRL, "categlives",categorieLive,"genres", 
+        			Map.of( "pays",pays,"langues", Langues, "cat_radio_livetv", CatRL, "categlives",categorieLive,"genres", 
         					genre, "catpodcast", CatPodcast, "acteurs", acteurs, "directeurs", directeurs));
         }
         
@@ -428,7 +428,7 @@ public class RessourceController {
         if (media == null || media.isEmpty()) {
         	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
         			
-        			Map.of( "films ",films,"radios", radios, "podcasts", podcasts, "colpodcasts",colpodcasts,"series", 
+        			Map.of( "films",films,"radios", radios, "podcasts", podcasts, "colpodcasts",colpodcasts,"series", 
         					series, "saisons", saisons, "episodes", episodes, "livetv", livetv, "live", lives));
         }
         
@@ -493,7 +493,7 @@ public class RessourceController {
         if (media == null || media.isEmpty()) {
         	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
         			
-        			Map.of( "films ",films,"radios", radios, "podcasts", podcasts, "colpodcasts",colpodcasts,"series", 
+        			Map.of( "films",films,"radios", radios, "podcasts", podcasts, "colpodcasts",colpodcasts,"series", 
         					series, "saisons", saisons, "episodes", episodes));
         }
         

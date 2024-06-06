@@ -42,7 +42,8 @@ public class LiveTvSetvice {
 
 	public Page<LiveTv> search(String val, Pageable p) {
 
-		return rep.findByNameOrOverviewContaining(val, val, p);
+		return rep.findByNameContainingOrOverviewContaining(val, val, p);
+		
 	}
 
 	public LiveTv update(final Long id, LiveTv u) {
@@ -122,7 +123,7 @@ public class LiveTvSetvice {
 
 	public Page<LiveTv> searchbyLangue(String val, Long langue, Pageable p) {
 
-		 PageImpl<LiveTv> res = new PageImpl<LiveTv>( rep.findByNameOrOverviewContaining(val, val).stream()
+		 PageImpl<LiveTv> res = new PageImpl<LiveTv>( rep.findByNameContainingOrOverviewContaining(val, val).stream()
 	                .filter(f -> f.getLangue().contains(langue))
 	                .collect(Collectors.toList()) 
 				   , p
@@ -133,7 +134,7 @@ public class LiveTvSetvice {
 	
 	public Page<LiveTv> searchByGenre(String val,Long genre, Pageable p) {
 
-		PageImpl<LiveTv> res = new PageImpl<LiveTv>( rep.findByNameOrOverviewContaining(val, val).stream()
+		PageImpl<LiveTv> res = new PageImpl<LiveTv>( rep.findByNameContainingOrOverviewContaining(val, val).stream()
                 .filter(f -> f.getIdcategories().contains(genre))
                 .collect(Collectors.toList()) 
 			   , p
@@ -145,7 +146,7 @@ public class LiveTvSetvice {
 	
 	public Page<LiveTv> searchByPays(String val,Long pays, Pageable p) {
 
-		PageImpl<LiveTv> res = new PageImpl<LiveTv>( rep.findByNameOrOverviewContaining(val, val).stream()
+		PageImpl<LiveTv> res = new PageImpl<LiveTv>( rep.findByNameContainingOrOverviewContaining(val, val).stream()
                 .filter(f -> f.getCountry().contains(pays))
                 .collect(Collectors.toList()) 
 			   , p
@@ -156,7 +157,7 @@ public class LiveTvSetvice {
 	
 	public Page<LiveTv> searchByPaysGenreLangue(String val, Long categ, Long langue, Long pays, Pageable p){
 		
-		 PageImpl<LiveTv> res = new PageImpl<LiveTv>(rep.findByNameOrOverviewContaining(val, val).stream()
+		 PageImpl<LiveTv> res = new PageImpl<LiveTv>(rep.findByNameContainingOrOverviewContaining(val, val).stream()
 				   .filter(f -> f.getIdcategories().contains(categ))
 				   .filter(f -> f.getLangue().contains(langue))
 				   .filter(f -> f.getCountry().contains(pays))
