@@ -104,10 +104,7 @@ public class MediaController {
 	private PaysService paysService;
 	@Autowired
 	private LangueService langService;
-	@Autowired
-    private SliderService sliderService;
-	
-	
+
 	@Autowired
 	private CategoryLrRepository catlrRep;
     @Autowired
@@ -1829,91 +1826,7 @@ public class MediaController {
     //FIN EPISODE
     
     
-    
-    /*
-     * 	Slider
-     * 
-     * 
-     */
-    
-  	@Tag(name = "Slider")
-  	@GetMapping("slider")
-      public ResponseEntity<Object> showSlider(){
-
-  		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, sliderService.show());
-  	}
-  	
-  	@Tag(name = "Slider")
-  	@GetMapping("slider/all/")
-      public ResponseEntity<Object> showSliderPaging(Pageable p){
-
-  		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, sliderService.showPage(p));
-  	}
-  	
-  	
-      @Tag(name = "Slider")
-  	@GetMapping("slider/{id}")
-  	public ResponseEntity<Object> slider(@PathVariable Long id){
-
-      	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, sliderService.showById(id));
-  	}
-
-      @Tag(name = "Slider")
-  	@GetMapping("slider/search/")
-  	public ResponseEntity<Object> sliderByName(
-  			@RequestParam String s, 
-  			Pageable p){
-
-      	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, sliderService.showByName(s, p));
-  	}
-
-      @Tag(name = "Slider")
-  	@PostMapping(path="slider/create")
-  	public ResponseEntity<Object> createSlider(
-  			@Valid @RequestBody Slider slider) {
-
-  		if(sliderService.findByName(slider.getName()) != null) {
-  			
-  			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Ce slider existe déja");
-  		}
-  		else {
-  			
-  			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, sliderService.create(slider));
-  		}
-
-
-  	}
-
-    @Tag(name = "Slider")
-  	@PutMapping(path="slider/update/{id}")
-  	public ResponseEntity<Object> sliderUpdate(
-  			@PathVariable Long id,
-  			@Valid @RequestBody Slider slider){
-
-  		//Save du tout
-  		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, sliderService.upadte(id, slider));
-
-  	}
-
-    @Tag(name = "Slider")
-  	@PutMapping(path="slider/update/status/{id}")
-  	public ResponseEntity<Object> sliderUpdate(
-  			@PathVariable Long id,
-  			@Valid @RequestBody StatusDTO status){
-
-    	Slider slider = sliderService.showById(id).get();
-    	slider.setStatus(status.getStatus());
-    	return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, sliderService.upadte(id, slider));
-
-  	}
-    @Tag(name = "Slider")
-  	@DeleteMapping(path="slider/delete/{id}")
-  	public ResponseEntity<Object> sliderDelete (@PathVariable Long id) {
-
-    	sliderService.delete(id);
-
-  		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, true);
-  	}
+   
     
 }
 

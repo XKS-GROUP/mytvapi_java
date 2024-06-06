@@ -36,6 +36,7 @@ import com.mytv.api.model.ressource.Actor;
 import com.mytv.api.model.ressource.Director;
 import com.mytv.api.model.ressource.Language;
 import com.mytv.api.model.ressource.Pays;
+import com.mytv.api.model.util.Slider;
 import com.mytv.api.repository.ActorRepository;
 import com.mytv.api.repository.CollectionPodcastRepository;
 import com.mytv.api.repository.DirectorRepository;
@@ -57,6 +58,8 @@ import com.mytv.api.service.gestMedia.ServiceFilm;
 import com.mytv.api.service.gestPub.PubliciteService;
 import com.mytv.api.service.gestUser.SubscriptionService;
 import com.mytv.api.service.gestUser.TransactionService;
+import com.mytv.api.service.gestUser.WUserService;
+import com.mytv.api.service.ressource.SliderService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -81,6 +84,9 @@ public class RessourceController {
 	@Autowired
 	private RadioService radioService;
 	
+	@Autowired
+	WUserService userService;
+	
 	//Pour le lives tv
 	@Autowired
 	private CategorieLiveService categliveService;
@@ -92,6 +98,9 @@ public class RessourceController {
 	//Pour les lives evenement 
 	@Autowired
 	private LiveService lService;
+	
+	@Autowired
+    private SliderService sliderService;
 	
 	@Autowired
 	private PodcastService podcastservice;
@@ -210,6 +219,91 @@ public class RessourceController {
 		
 	}
     
+	 
+    /*
+     * 	Slider
+     * 
+     * 
+     */
+    
+  	@Tag(name = "Slider")
+  	@GetMapping("slider")
+      public ResponseEntity<Object> showSlider(){
+
+  		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, sliderService.show());
+  	}
+  	
+  	@Tag(name = "Slider")
+  	@GetMapping("slider/all/")
+      public ResponseEntity<Object> showSliderPaging(Pageable p){
+
+  		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, sliderService.showPage(p));
+  	}
+  	
+  	
+      @Tag(name = "Slider")
+  	@GetMapping("slider/{id}")
+  	public ResponseEntity<Object> slider(@PathVariable Long id){
+
+      	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, sliderService.showById(id));
+  	}
+
+      @Tag(name = "Slider")
+  	@GetMapping("slider/search/")
+  	public ResponseEntity<Object> sliderByName(
+  			@RequestParam String s, 
+  			Pageable p){
+
+      	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, sliderService.showByName(s, p));
+  	}
+
+      @Tag(name = "Slider")
+  	@PostMapping(path="slider/create")
+  	public ResponseEntity<Object> createSlider(
+  			@Valid @RequestBody Slider slider) {
+
+  		if(sliderService.findByName(slider.getName()) != null) {
+  			
+  			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Ce slider existe déja");
+  		}
+  		else {
+  			
+  			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, sliderService.create(slider));
+  		}
+
+
+  	}
+
+    @Tag(name = "Slider")
+  	@PutMapping(path="slider/update/{id}")
+  	public ResponseEntity<Object> sliderUpdate(
+  			@PathVariable Long id,
+  			@Valid @RequestBody Slider slider){
+
+  		//Save du tout
+  		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, sliderService.upadte(id, slider));
+
+  	}
+
+    @Tag(name = "Slider")
+  	@PutMapping(path="slider/update/status/{id}")
+  	public ResponseEntity<Object> sliderUpdate(
+  			@PathVariable Long id,
+  			@Valid @RequestBody StatusDTO status){
+
+    	Slider slider = sliderService.showById(id).get();
+    	slider.setStatus(status.getStatus());
+    	return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, sliderService.upadte(id, slider));
+
+  	}
+    @Tag(name = "Slider")
+  	@DeleteMapping(path="slider/delete/{id}")
+  	public ResponseEntity<Object> sliderDelete (@PathVariable Long id) {
+
+    	sliderService.delete(id);
+
+  		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, true);
+  	}
 	
 	 /*
      * 
@@ -226,6 +320,10 @@ public class RessourceController {
     public <R> Object getRessources(@RequestParam (required = false) List<String> resources) {
     	
     	List<Pays> pays = paysService.show();
+    	
+    	List<Slider> sliders = sliderService.show();
+    	
+    	List<Publicite> pubs = pubService.show();
     	
     	List<Language> Langues = langService.show();
     	
@@ -245,12 +343,16 @@ public class RessourceController {
         if (resources == null || resources.isEmpty()) {
         	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
         			
-        			Map.of( "pays",pays,"langues", Langues, "cat_radio_livetv", CatRL, "categlives",categorieLive,"genres", 
+        			Map.of( "sliders", sliders, "pubs", pubs,"pays",pays,"langues", Langues, "cat_radio_livetv", CatRL, "categlives",categorieLive,"genres", 
         					genre, "catpodcast", CatPodcast, "acteurs", acteurs, "directeurs", directeurs));
         }
         
         return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, resources.stream().map(res -> {
             switch (res.toLowerCase()) {
+	            case "sliders":
+	                return Map.of("sliders",sliders);
+	            case "pubs":
+	                return Map.of("pubs", pubs);
                 case "pays":
                     return Map.of("pays",pays);
                 case "langues":
@@ -347,10 +449,16 @@ public class RessourceController {
      * Ressources stats
      */
     
+    //Stats pour les ressoures sans media
     @Tag(name = "Ressource")
     @GetMapping("ressources/stats/all")
     public <R> Object getStatsRessources(@RequestParam (required = false) List<String> resources) {
     	
+    	
+    	
+    	int users = userService.retrieveAllUserList().stream().filter(f -> f.getRole() == "ABONNE").toList().size();
+    	
+    	int sliders = sliderService.show().size();
     	
     	int pays = paysService.show().size();
     	
@@ -372,7 +480,7 @@ public class RessourceController {
         if (resources == null || resources.isEmpty()) {
         	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
         			
-        			Map.of( "pays",pays,"langues", Langues, "cat_radio_livetv", CatRL, "categlives",categorieLive,"genres", 
+        			Map.of( "abonne", users, "sliders", sliders, "pays",pays,"langues", Langues, "cat_radio_livetv", CatRL, "categlives",categorieLive,"genres", 
         					genre, "catpodcast", CatPodcast, "acteurs", acteurs, "directeurs", directeurs));
         }
         
@@ -382,6 +490,10 @@ public class RessourceController {
                     return Map.of("pays",pays);
                 case "langues":
                     return Map.of("langues", Langues);
+                case "abonne":
+                    return Map.of("abonne",users);
+                case "sliders":
+                    return Map.of("sliders", sliders);
                 case "cat_radio_live":
                 	return Map.of("cat_radio_live", CatRL);
                 case "genres":
