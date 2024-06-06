@@ -38,6 +38,8 @@ public class Director {
 	@NotBlank(message = "Ce champ ne puis etre vide")
 	@Column(nullable = false)
 	String lastName;
+	
+	String IMDB;
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	Date dob;

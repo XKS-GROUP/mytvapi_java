@@ -113,7 +113,7 @@ public class SaisonService{
 		return seasRep.findById(id).get();
 	}
 
-	public Saison upadte(Long id, Saison p) {
+	public Saison update(Long id, Saison p) {
 
 		p.setIdSaison(id);
 	   // p.setSerieRef(p.getIdSerie().getIdSerie());

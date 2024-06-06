@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mytv.api.dto.StatusDTO;
 import com.mytv.api.model.gestPub.Publicite;
 import com.mytv.api.security.EntityResponse;
 import com.mytv.api.service.gestPub.PubliciteService;
@@ -102,6 +103,17 @@ public class RessourceController {
 	public ResponseEntity<Object> updatePub(@PathVariable Long id, @Valid @RequestBody Publicite p){
 
 		
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, pubService.update(id, p ));
+		
+	}
+	
+	@Tag(name = "Publicité")
+	@PutMapping("pub/update/status/{id}")
+	public ResponseEntity<Object> updatePub(@PathVariable Long id,
+			@Valid @RequestBody StatusDTO status){
+
+		Publicite p = pubService.showById(id).get();
+		p.setStatus(status.getStatus());
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, pubService.update(id, p ));
 		
 	}

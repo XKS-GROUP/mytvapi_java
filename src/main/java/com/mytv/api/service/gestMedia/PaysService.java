@@ -38,7 +38,7 @@ public class PaysService {
 		return rep.findAll(p);
 	}
 
-	public Pays upadte(Long id, Pays u) {
+	public Pays update(Long id, Pays u) {
 
 		u.setIdPays(id);
 

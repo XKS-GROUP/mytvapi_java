@@ -43,4 +43,7 @@ public class Pays {
 	
 	@Column(columnDefinition = "TEXT")
 	String countryFlag;
+	
+	@Column(nullable = false, columnDefinition = "boolean default false")
+	private boolean status;
 }

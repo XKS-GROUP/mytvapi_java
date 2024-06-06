@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.amazonaws.services.accessanalyzer.model.ResourceNotFoundException;
-
+import com.mytv.api.dto.StatusDTO;
 import com.mytv.api.model.gestMedia.CatPodcast;
 import com.mytv.api.model.gestMedia.CategorieLive;
 import com.mytv.api.model.gestMedia.CategoryRL;
@@ -258,6 +258,117 @@ public class MediaController {
     
     /*
      * 
+     * Ressources stats
+     */
+    
+    @Tag(name = "Ressource")
+    @GetMapping("ressources/stats/all")
+    public <R> Object getStatsRessources(@RequestParam (required = false) List<String> resources) {
+    	
+    	int pays = paysService.show().size();
+    	
+    	int Langues = langService.show().size();
+    	
+    	int CatRL = catLrService.show().size();
+    	
+    	int genre = genreService.show().size();
+
+    	int CatPodcast = catpodService.show().size();
+    	
+    	int acteurs = actorRep.findAll().size();
+    	
+    	int directeurs = directorsRep.findAll().size();
+    	
+    	int categorieLive = categliveService.show().size();
+
+    	
+        if (resources == null || resources.isEmpty()) {
+        	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
+        			
+        			Map.of( "pays ",pays,"langues", Langues, "cat_radio_livetv", CatRL, "categlives",categorieLive,"genres", 
+        					genre, "catpodcast", CatPodcast, "acteurs", acteurs, "directeurs", directeurs));
+        }
+        
+        return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, resources.stream().map(res -> {
+            switch (res.toLowerCase()) {
+                case "pays":
+                    return Map.of("pays",pays);
+                case "langues":
+                    return Map.of("langues", Langues);
+                case "cat_radio_live":
+                	return Map.of("cat_radio_live", CatRL);
+                case "genres":
+                	return Map.of("genres", genre);
+                case "catpodcast":
+                	return Map.of("catpodcast", CatPodcast);
+                case "acteurs":
+                	return Map.of("acteurs", acteurs);
+                case "directeurs":
+                	return Map.of("directeurs", directeurs);
+                case "categlives":
+                	return Map.of("categlives",categorieLive);
+                default:
+                	return Map.of("erreurs", "Ressource inconnue: " + res);
+            }
+        }).toArray());
+    }
+    
+    
+    @Tag(name = "Ressource")
+    @GetMapping("/medias/stats/all")
+    public <R> Object getStatsAllMedia(@RequestParam (required = false) List<String> media) {
+    	
+    	int films = filmService.show().size() ;
+    	
+    	int radios = radioService.show().size();
+    	
+    	int podcasts = podcastservice.show().size();
+    	
+    	int colpodcasts = colPodRep.findAll().size();
+
+    	int series = serieService.show().size();
+    	
+    	int saisons = saisonService.show().size();
+    	
+    	int episodes = episodeService.show().size();
+    	
+
+    	
+        if (media == null || media.isEmpty()) {
+        	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
+        			
+        			Map.of( "films ",films,"radios", radios, "podcasts", podcasts, "colpodcasts",colpodcasts,"series", 
+        					series, "saisons", saisons, "episodes", episodes));
+        }
+        
+        return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, media.stream().map(res -> {
+            
+        	
+        	switch (res.toLowerCase()) {
+                case "films":
+                    return Map.of("films",films);
+                case "radios":
+                    return Map.of("radios", radios);
+                case "podcasts":
+                	return Map.of("podcasts", podcasts);
+                case "colpodcasts":
+                	return Map.of("colpodcasts", colpodcasts);
+                case "series":
+                	return Map.of("series", series);
+                case "saisons":
+                	return Map.of("saisons", saisons);
+                case "episodes":
+                	return Map.of("episodes",episodes);
+                default:
+                	return Map.of("erreurs", "media inconnue: " + res);
+            }
+        }).toArray());
+    }
+    
+    
+    
+    /*
+     * 
      * Slider, publicite
      * 
      * 
@@ -376,6 +487,18 @@ public class MediaController {
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, colPodRep.save(a));
 		
 	}
+    
+    @Tag(name = "Podcast Collection")
+   	@PutMapping("podcast/collections/update/status/{id}")
+   	public ResponseEntity<Object> updateSatusCollection(@PathVariable Long id, @Valid @RequestBody StatusDTO status){
+       	
+    	ColPodcast cl =  colPodRep.findById(id).get();
+    	cl.setIdColPd(id);
+    	cl.setStatus(status.getStatus());
+       	
+   		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, colPodRep.save(cl));
+   		
+   	}
     
     
     @Tag(name = "Podcast Collection")
@@ -526,6 +649,17 @@ public class MediaController {
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, langService.upadte(id, r));
 
 	}
+	
+	@Tag(name = "Langue")
+	@PutMapping("lang/update/status/{id}")
+	public ResponseEntity<Object> updateStatusLang(@PathVariable Long id, @Valid @RequestBody StatusDTO status){
+		
+		Language l = langService.showById(id).get();
+		l.setStatus(status.getStatus());
+		
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, langService.upadte(id, l));
+
+	}
 
 	@Tag(name = "Langue")
 	@PostMapping(path="lang/create")
@@ -606,7 +740,18 @@ public class MediaController {
 	public ResponseEntity<Object> updatePays(@PathVariable Long id,@Valid @RequestBody Pays u){
 
 		u.setName(u.getName().toLowerCase());
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, paysService.upadte(id, u));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, paysService.update(id, u));
+
+	}
+	@Tag(name = "Pays")
+	@PutMapping("pays/update/status/{id}")
+	public ResponseEntity<Object> updateStatusPays(@PathVariable Long id, @Valid @RequestBody StatusDTO status){
+
+		Pays p = paysService.showById(id).get();
+		
+		p.setStatus(status.getStatus());
+		
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, paysService.update(id, p));
 
 	}
 
@@ -688,8 +833,19 @@ public class MediaController {
 
 	@Tag(name = "Genre FILM SERIE")
 	@PutMapping("genres/update/{id}")
-	public ResponseEntity<Object> updateG(@PathVariable Long id,@Valid @RequestBody Genre g){
+	public ResponseEntity<Object> updateG(@PathVariable Long id, @Valid @RequestBody Genre g){
 
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.upadte(id, g));
+
+	}
+	
+	@Tag(name = "Genre FILM SERIE")
+	@PutMapping("genres/update/status/{id}")
+	public ResponseEntity<Object> updateG(@PathVariable Long id, @Valid @RequestBody StatusDTO status ){
+
+		Genre g = genreService.showById(id).get();
+		
+		g.setStatus(status.getStatus());
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.upadte(id, g));
 
 	}
@@ -754,6 +910,20 @@ public class MediaController {
 			@Valid @RequestBody CategoryRL u) {
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catLrService.upadte(id, u));
+
+	}
+	
+	@Tag(name = "Categorie RADIO LIVE ")
+	@PutMapping(path="catrl/update/status/{id}")
+	public ResponseEntity<Object> updateStatusCRL(
+			@PathVariable Long id,
+			@Valid @RequestBody StatusDTO status) {
+		
+		CategoryRL rl = catLrService.showById(id).get();
+		
+		rl.setStatus(status.getStatus());
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catLrService.upadte(id, rl));
 
 	}
 
@@ -829,6 +999,21 @@ public class MediaController {
 			@Valid @RequestBody CatPodcast u){
 		u.setName(u.getName().toLowerCase());
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catpodService.upadte(id, u));
+
+	}
+	
+	@Tag(name = "Categorie PODCAST")
+	@PutMapping(path="catpod/update/status/{id}")
+	public ResponseEntity<Object> updateSatusCP(
+
+			@PathVariable Long id,
+			@Valid @RequestBody StatusDTO status){
+		
+		CatPodcast cp =catpodService.showById(id).get();
+		cp.setStatus(status.getStatus());
+		
+		
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catpodService.upadte(id, cp));
 
 	}
 
@@ -942,6 +1127,17 @@ public class MediaController {
 	}
 
 	@Tag(name = "Radio")
+	@PutMapping(path="radios/update/status/{id}")
+	public ResponseEntity<Object> updateStatusR(@PathVariable Long id,
+			@Valid @RequestBody StatusDTO status) {
+
+		Radio r = radioService.showById(id).get();
+		r.setStatus(status.getStatus());
+		
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, radioService.upadte(id, r));
+
+	}
+	@Tag(name = "Radio")
 	@DeleteMapping(path="radios/delete/{id}")
 	public ResponseEntity<Object> deleteR (@PathVariable Long id) {
 
@@ -1053,6 +1249,19 @@ public class MediaController {
 		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, liveService.update(id, lt));
 
 	}
+	
+	@Tag(name = "TV SHOW")
+	@PutMapping(path="tv/update/status/{id}")
+	public  ResponseEntity<Object> updateStatusL(
+			@PathVariable Long id,
+			@Valid @RequestBody StatusDTO status) {
+
+		LiveTv lt = liveService.showById(id).get();
+		lt.setStatus(status.getStatus());
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, liveService.update(id, lt));
+
+	}
+	
 
 	@Tag(name = "TV SHOW")
 	@DeleteMapping(path="tv/delete/{id}")
@@ -1119,6 +1328,18 @@ public class MediaController {
 			@PathVariable Long id,
 			@Valid @RequestBody CategorieLive u){
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, categliveService.upadte(id, u));
+
+	}
+	@Tag(name = "Categorie Lives")
+	@PutMapping(path="lives/categ/update/status/{id}")
+	public ResponseEntity<Object> updatStatuseCL(
+
+			@PathVariable Long id,
+			@Valid @RequestBody StatusDTO status){
+		
+		CategorieLive cl = categliveService.showById(id).get();
+		cl.setStatus(status.getStatus());
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, categliveService.upadte(id, cl));
 
 	}
 
@@ -1210,6 +1431,19 @@ public class MediaController {
 		
 			//Save du tout
 			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, lService.update(id, l) );
+
+	}
+	
+	@Tag(name = "Lives")
+	@PutMapping(path="lives/update/status/{id}")
+	public ResponseEntity<Object> updateLives(
+			@PathVariable Long id,
+			@Valid @RequestBody StatusDTO status) {
+		
+
+		Live l = lService.showById(id).get();
+		l.setStatus(status.getStatus());
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, lService.update(id, l) );
 
 	}
 
@@ -1317,6 +1551,19 @@ public class MediaController {
 
 				//Save du tout
 				return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, podcastservice.upadte(id, p) );
+
+		}
+		
+		@Tag(name = "Podcast")
+		@PutMapping(path="podcasts/update/status/{id}")
+		public ResponseEntity<Object> updateStatusPodcast(
+				@PathVariable Long id,
+				@Valid @RequestBody StatusDTO status) {
+
+
+			Podcast p = podcastservice.showById(id).get();
+			p.setStatus(status.getStatus());
+			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, podcastservice.upadte(id, p) );
 
 		}
 
@@ -1440,13 +1687,23 @@ public class MediaController {
 		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, filmService.upadte(id, film));
 
 	}
+	
+	@Tag(name = "Movie")
+	@PutMapping(path="movies/update/status/{id}")
+	public ResponseEntity<Object> updateM(@PathVariable Long id,
+			@Valid @RequestBody StatusDTO status)  {
+		Film film = filmService.showById(id).get();
+		film.setStatus(status.getStatus());
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, filmService.upadte(id, film));
+
+	}
 
 	@Tag(name = "Movie")
 	@DeleteMapping(path="movies/delete/{id}")
 	public ResponseEntity<Object> deleteM (@PathVariable Long id) {
 
 		filmService.delete(id);
-
+        
 		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, true);
 	}
 
@@ -1545,6 +1802,18 @@ public class MediaController {
 			@PathVariable Long id,
 			@Valid @RequestBody Serie serie){
 
+			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK , serieService.upadte(id, serie));
+
+	}
+	
+	@Tag(name = "Serie")
+	@PutMapping(path="series/update/status/{id}")
+	public ResponseEntity<Object> updateStatusSerie(
+			@PathVariable Long id,
+			@Valid @RequestBody StatusDTO status){
+
+			Serie serie = serieService.showById(id).get();
+			serie.setStatus(status.getStatus());
 			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK , serieService.upadte(id, serie));
 
 	}
@@ -1670,7 +1939,19 @@ public class MediaController {
 			@PathVariable Long id,
 			@Valid @RequestBody Saison saison){
 
-			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK , saisonService.upadte(id, saison));
+			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK , saisonService.update(id, saison));
+
+	}
+	
+	@Tag(name = "Saison")
+	@PutMapping(path="saisons/update/status/{id}")
+	public ResponseEntity<Object> updateStatusSaison(
+			@PathVariable Long id,
+			@Valid @RequestBody StatusDTO status){
+
+			Saison saison = saisonService.showById(id);
+			saison.setStatus(status.getStatus());
+			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK , saisonService.update(id, saison));
 
 	}
 
@@ -1819,6 +2100,18 @@ public class MediaController {
 		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, episodeService.upadte(id, episode));
 
 	}
+    
+    @Tag(name = "Episode")
+	@PutMapping(path="episodes/update/status/{id}")
+	public ResponseEntity<Object> updateStatusEpisode(
+			@PathVariable Long id,
+			@Valid @RequestBody StatusDTO status){
+
+		Episode episode = episodeService.showById(id).get();
+		episode.setStatus(status.getStatus());
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, episodeService.upadte(id, episode));
+
+	}
 
     @Tag(name = "Episode")
 	@DeleteMapping(path="episodes/delete/{id}")
@@ -1897,6 +2190,17 @@ public class MediaController {
 
   	}
 
+    @Tag(name = "Slider")
+  	@PutMapping(path="slider/update/status/{id}")
+  	public ResponseEntity<Object> sliderUpdate(
+  			@PathVariable Long id,
+  			@Valid @RequestBody StatusDTO status){
+
+    	Slider slider = sliderService.showById(id).get();
+    	slider.setStatus(status.getStatus());
+    	return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, sliderService.upadte(id, slider));
+
+  	}
     @Tag(name = "Slider")
   	@DeleteMapping(path="slider/delete/{id}")
   	public ResponseEntity<Object> sliderDelete (@PathVariable Long id) {
