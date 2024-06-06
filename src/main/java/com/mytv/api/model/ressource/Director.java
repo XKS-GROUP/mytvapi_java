@@ -39,7 +39,7 @@ public class Director {
 	@Column(nullable = false)
 	String lastName;
 	
-	String IMDB;
+	String TMDB;
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	Date dob;
