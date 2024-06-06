@@ -19,8 +19,8 @@ public interface EpisodeRepository extends  JpaRepository<Episode, Long> {
 	List<Episode> findByNameContaining(String nom);
 	Page<Episode> findBySaisonRef(Long ref, Pageable p);
 	Page<Episode> findByIdSerie(Long ref, Pageable p);
-	Page<Episode> findByNameOrOverviewContaining(String nom, String desc, Pageable p);
-	List<Episode> findByNameOrOverviewContaining(String nom, String desc);
+	Page<Episode> findByNameContainingOrOverviewContaining(String nom, String desc, Pageable p);
+	List<Episode> findByNameContainingOrOverviewContaining(String nom, String desc);
 	Episode findByName(String name);
 
 }

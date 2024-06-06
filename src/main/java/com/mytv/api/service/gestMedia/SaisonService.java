@@ -70,12 +70,12 @@ public class SaisonService{
 	};
 	
 	public Page<Saison> search(String n, Pageable p) {
-		return seasRep.findByNameOrOverviewContaining(n, n, p);
+		return seasRep.findByNameContainingOrOverviewContaining(n, n, p);
 	}
 	
 	public Page<Saison> searchByLangue(String n, Long langue, Pageable p) {
 		
-		PageImpl<Saison> res = new PageImpl<Saison>(seasRep.findByNameOrOverviewContaining(n, n, p).stream()
+		PageImpl<Saison> res = new PageImpl<Saison>(seasRep.findByNameContainingOrOverviewContaining(n, n, p).stream()
                 .filter(f -> f.getLangue().contains(langue))
                 .collect(Collectors.toList()) 
 				   , p
@@ -86,7 +86,7 @@ public class SaisonService{
 	
 	public Page<Saison> searchBySerie(String n, Long serie, Pageable p) {
 		
-		PageImpl<Saison> res = new PageImpl<Saison>(seasRep.findByNameOrOverviewContaining(n, n, p).stream()
+		PageImpl<Saison> res = new PageImpl<Saison>(seasRep.findByNameContainingOrOverviewContaining(n, n, p).stream()
                 .filter(f -> f.getSerieRef() == serie)
                 .collect(Collectors.toList()) 
 				   , p
@@ -97,7 +97,7 @@ public class SaisonService{
 	
 	public Page<Saison> searchByLangueAndSerie(String val, Long langue, Long serie, Pageable p){
 		
-		PageImpl<Saison> res = new PageImpl<Saison>(seasRep.findByNameOrOverviewContaining(val, val, p).stream()
+		PageImpl<Saison> res = new PageImpl<Saison>(seasRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
 				   .filter(f -> f.getLangue().contains(langue))
 				   .filter(f -> f.getSerieRef() == serie)
 				   .toList() 

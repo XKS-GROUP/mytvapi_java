@@ -102,14 +102,13 @@ public class EpisodeService {
 
 	public Page<Episode> search(String val, Pageable p) {
 
-		return rep.findByNameOrOverviewContaining(val, val, p);
+		return rep.findByNameContainingOrOverviewContaining(val, val, p);
 	}
 	
 	public Page<Episode> searchByLangue(String val, Long langue, Pageable p) {
-
 		
 		PageImpl<Episode> res = new PageImpl<Episode>(
-				rep.findByNameOrOverviewContaining(val, val, p).stream()
+				rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
                 .filter(f -> f.getLangue().contains(langue))
                 .collect(Collectors.toList())
 				   , p
@@ -121,7 +120,7 @@ public class EpisodeService {
 	public Page<Episode> searchBySaison(String val, Long saison, Pageable p) {
 
 		PageImpl<Episode> res = new PageImpl<Episode>(
-				rep.findByNameOrOverviewContaining(val, val, p).stream()
+				rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
                 .filter(f -> f.getSaisonRef() == saison)
                 .collect(Collectors.toList())
 				   , p
@@ -133,7 +132,7 @@ public class EpisodeService {
 	public Page<Episode> searchBySerie(String val, Long serie, Pageable p) {
 
 		PageImpl<Episode> res = new PageImpl<Episode>(
-				rep.findByNameOrOverviewContaining(val, val, p).stream()
+				rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
                 .filter(f -> f.getIdSerie() == serie)
                 .collect(Collectors.toList())
 				   , p
@@ -160,7 +159,7 @@ public class EpisodeService {
 
 		PageImpl<Episode> res = new PageImpl<Episode>(
 				
-				rep.findByNameOrOverviewContaining(val, val).stream()
+				rep.findByNameContainingOrOverviewContaining(val, val).stream()
 				   .filter(f -> f.getLangue().contains(langue))
 				   .filter(f -> f.getSaisonRef()== saison )
 				   .filter(f -> f.getIdSerie() ==  serie )
@@ -175,7 +174,7 @@ public class EpisodeService {
 
 		PageImpl<Episode> res = new PageImpl<Episode>(
 				
-				rep.findByNameOrOverviewContaining(val, val).stream()
+				rep.findByNameContainingOrOverviewContaining(val, val).stream()
 				   .filter(f -> f.getSaisonRef()== saison )
 				   .filter(f -> f.getIdSerie() ==  serie )
 				   .toList() 

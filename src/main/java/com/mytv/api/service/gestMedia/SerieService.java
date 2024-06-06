@@ -109,13 +109,13 @@ public class SerieService {
 	
 	public Page<Serie> search(String n, Pageable p) {
 
-		return rep.findByNameOrOverviewContaining(n, n, p);
+		return rep.findByNameContainingOrOverviewContaining(n, n, p);
 	}
 	
 	public Page<Serie> searchByGenre(String n, Long genre, Pageable p) {
 		
 		PageImpl<Serie> res = new PageImpl<Serie>(
-				rep.findByNameOrOverviewContaining(n, n)
+				rep.findByNameContainingOrOverviewContaining(n, n)
 				.stream()
                 .filter(f -> f.getGenreList().contains(genre))
                 .collect(Collectors.toList())
@@ -129,7 +129,7 @@ public class SerieService {
 	public Page<Serie> searchByLangue(String n, Long langue, Pageable p) {
 
 		PageImpl<Serie> res = new PageImpl<Serie>(
-				rep.findByNameOrOverviewContaining(n, n)
+				rep.findByNameContainingOrOverviewContaining(n, n)
 				.stream()
                 .filter(f -> f.getLangue().contains(langue))
                 .collect(Collectors.toList())
@@ -142,7 +142,7 @@ public class SerieService {
 	public Page<Serie> searchByLangueAndGenre(String n, Long langue, Long genre, Pageable p) {
 
 		PageImpl<Serie> res = new PageImpl<Serie>(
-				rep.findByNameOrOverviewContaining(n, n)
+				rep.findByNameContainingOrOverviewContaining(n, n)
 				.stream()
                 .filter(f -> f.getLangue().contains(langue))
                 .filter(f -> f.getGenreList().contains(genre))

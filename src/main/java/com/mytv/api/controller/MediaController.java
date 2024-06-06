@@ -34,7 +34,6 @@ import com.mytv.api.model.ressource.Actor;
 import com.mytv.api.model.ressource.Director;
 import com.mytv.api.model.ressource.Language;
 import com.mytv.api.model.ressource.Pays;
-import com.mytv.api.model.util.Slider;
 import com.mytv.api.repository.ActorRepository;
 import com.mytv.api.repository.CatPodcastRepository;
 import com.mytv.api.repository.CategorieLiveRepository;
@@ -56,7 +55,6 @@ import com.mytv.api.service.gestMedia.RadioService;
 import com.mytv.api.service.gestMedia.SaisonService;
 import com.mytv.api.service.gestMedia.SerieService;
 import com.mytv.api.service.gestMedia.ServiceFilm;
-import com.mytv.api.service.ressource.SliderService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -171,8 +169,9 @@ public class MediaController {
 	@PostMapping("podcast/collections/create")
 	public ResponseEntity<Object> createCollection(@Valid @RequestBody ColPodcast r){
 		
+    	String nom = r.getName().toString();
     	
-    	if(colPodRep.findByName(r.getName()).getName().toLowerCase() == r.getName().toLowerCase()) {
+    	if(colPodRep.findByName(nom) != null) {
 			
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Cette collection existe déja");
 		}
@@ -736,6 +735,7 @@ public class MediaController {
 	 * 
 	 * 
 	 */
+	
 	@Tag(name = "Radio")
 	@GetMapping("radios")
 	public ResponseEntity<Object> showR(){
@@ -921,7 +921,7 @@ public class MediaController {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchbyLangue(s, langue, p));
 		}
-		else if( pays == null && genre == null && pays == null) {
+		else if( pays != null && langue == null && genre == null) {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchByPays(s, pays, p));
 		}

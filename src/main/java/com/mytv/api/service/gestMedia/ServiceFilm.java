@@ -197,14 +197,14 @@ public class ServiceFilm {
 	
 	public Page<Film> search(String val, Pageable p ) {
 
-		return rep.findByNameOrOverviewContaining(val, val, p);
+		return rep.findByNameContainingOrOverviewContaining(val, val, p);
 	}
 	
 	public Page<Film> searchByLangue(String val, Long genre, Pageable p ) {
 
 		
 		PageImpl<Film> res = new PageImpl<Film>(
-				rep.findByNameOrOverviewContaining(val, val).stream()
+				rep.findByNameContainingOrOverviewContaining(val, val).stream()
                 .filter(f -> f.getLangue().contains(genre))
                 .collect(Collectors.toList())
 				   , p
@@ -216,7 +216,7 @@ public class ServiceFilm {
 	public Page<Film> searchByGenre(String val,Long langue, Pageable p ) {
 
 		PageImpl<Film> res = new PageImpl<Film>(
-				rep.findByNameOrOverviewContaining(val, val).stream()
+				rep.findByNameContainingOrOverviewContaining(val, val).stream()
                 .filter(f -> f.getGenreList().contains(langue))
                 .collect(Collectors.toList())
 				   , p
@@ -229,7 +229,7 @@ public class ServiceFilm {
 		
 		
 		PageImpl<Film> res = new PageImpl<Film>(
-				rep.findByNameOrOverviewContaining(val, val).stream()
+				rep.findByNameContainingOrOverviewContaining(val, val).stream()
                 .filter(f -> f.getGenreList().contains(g))
                 .filter(f -> f.getLangue().contains(l))
                 .collect(Collectors.toList())

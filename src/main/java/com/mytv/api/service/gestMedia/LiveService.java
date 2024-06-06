@@ -53,7 +53,7 @@ public class LiveService {
 	
 	public Page<Live> search(String val, Pageable p) {
 
-		return rep.findByNameOrOverviewContaining(val, val, p);
+		return rep.findByNameContainingOrOverviewContaining(val, val, p);
 	}
 	
 	public Page<Live> searchByCateg(String val, Long categ, Pageable p) {
@@ -61,7 +61,7 @@ public class LiveService {
 		
 		PageImpl<Live> res = new PageImpl<Live>( 
 				
-				rep.findByNameOrOverviewContaining(val, val).stream()
+				rep.findByNameContainingOrOverviewContaining(val, val).stream()
                 .filter(f -> f.getIdCats().contains(categ))
                 .collect(Collectors.toList()) 
 				   , p

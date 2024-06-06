@@ -80,12 +80,12 @@ public class RadioService {
 	
 	public Page<Radio> search(String n, Pageable p) {
 
-		return radioRep.findByNameOrOverviewContaining(n, n, p);
+		return radioRep.findByNameContainingOrOverviewContaining(n, n, p);
 	}
 	
 	public Page<Radio> searchByLangue(String n, Long langue ,Pageable p) {
 
-		PageImpl<Radio> res = new PageImpl<Radio>(radioRep.findByNameOrOverviewContaining(n, n).stream()
+		PageImpl<Radio> res = new PageImpl<Radio>(radioRep.findByNameContainingOrOverviewContaining(n, n).stream()
                 .filter(f -> f.getLangue().contains(langue))
                 .collect(Collectors.toList()) 
 				   , p
@@ -96,7 +96,7 @@ public class RadioService {
 	
 	public Page<Radio> searchByCateg(String n, Long categ, Pageable p) {
 
-		PageImpl<Radio> res = new PageImpl<Radio>(radioRep.findByNameOrOverviewContaining(n, n).stream()
+		PageImpl<Radio> res = new PageImpl<Radio>(radioRep.findByNameContainingOrOverviewContaining(n, n).stream()
                 .filter(f -> f.getCategories().contains(categ))
                 .collect(Collectors.toList()) 
 				   , p
@@ -108,7 +108,7 @@ public class RadioService {
 	public Page<Radio> searchByCategAbdLang(String val, Long categ, Long langue, Pageable p){
 		
 		PageImpl<Radio> res = new PageImpl<Radio>(
-				    radioRep.findByNameOrOverviewContaining(val, val).stream()
+				    radioRep.findByNameContainingOrOverviewContaining(val, val).stream()
 				   .filter(f -> f.getLangue().contains(langue))
 				   .filter(f -> f.getCategories().contains(categ))
 				   .toList() 

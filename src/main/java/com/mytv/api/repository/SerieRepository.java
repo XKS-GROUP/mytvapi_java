@@ -14,7 +14,7 @@ public interface SerieRepository extends JpaRepository<Serie, Long> {
 
 	Serie findByName(String name);
 	List<Serie> findByNameContaining(String nom);
-	Page<Serie> findByNameOrOverviewContaining(String nom, String desc, Pageable p);
-	List<Serie> findByNameOrOverviewContaining(String n, String n2);
+	Page<Serie> findByNameContainingOrOverviewContaining(String nom, String desc, Pageable p);
+	List<Serie> findByNameContainingOrOverviewContaining(String n, String n2);
 
 }

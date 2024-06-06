@@ -83,13 +83,13 @@ public class PodcastService {
 	
 	public Page<Podcast> search(String n, Pageable p) {
 
-		return rep.findByNameOrOverviewContaining(n, n, p);
+		return rep.findByNameContainingOrOverviewContaining(n, n, p);
 	}
 	
 	public Page<Podcast> searchByCateg(String n, Long categ, Pageable p) {
 
 		PageImpl<Podcast> res = new PageImpl<Podcast>(
-				rep.findByNameOrOverviewContaining(n, n).stream()
+				rep.findByNameContainingOrOverviewContaining(n, n).stream()
                 .filter(f -> f.getCategories().contains(categ))
                 .collect(Collectors.toList())
 				   , p
@@ -101,7 +101,7 @@ public class PodcastService {
 	public Page<Podcast> searchByLang(String n,Long langue, Pageable p) {
 
 		PageImpl<Podcast> res = new PageImpl<Podcast>(
-				rep.findByNameOrOverviewContaining(n, n).stream()
+				rep.findByNameContainingOrOverviewContaining(n, n).stream()
                 .filter(f -> f.getLangue().contains(langue))
                 .collect(Collectors.toList())
 				   , p
@@ -113,7 +113,7 @@ public class PodcastService {
 	public Page<Podcast> searchByGenreAndLang(String val, Long genre , Long langue, Pageable p){
 		
 		PageImpl<Podcast> res = new PageImpl<Podcast>(
-				    rep.findByNameOrOverviewContaining(val, val).stream()
+				    rep.findByNameContainingOrOverviewContaining(val, val).stream()
 				   .filter(f -> f.getCategories().contains(genre))
 				   .filter(f -> f.getLangue().contains(langue))
 				   .toList() 

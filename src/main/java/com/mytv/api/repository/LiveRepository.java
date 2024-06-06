@@ -11,8 +11,8 @@ import com.mytv.api.model.gestMedia.Live;
 public interface LiveRepository  extends JpaRepository<Live, Long>{
 
 	List<Live> findByNameContaining(String name);
-	Page<Live> findByNameOrOverviewContaining(String nom, String desc, Pageable p);
-	List<Live> findByNameOrOverviewContaining(String nom, String desc);
+	Page<Live> findByNameContainingOrOverviewContaining(String nom, String desc, Pageable p);
+	List<Live> findByNameContainingOrOverviewContaining(String nom, String desc);
 	Live findByName(String name);
 
 }
