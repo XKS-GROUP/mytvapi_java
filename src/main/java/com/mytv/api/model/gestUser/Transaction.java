@@ -35,6 +35,10 @@ public class Transaction {
 	
 	Long idPaymentMode;
 	
+	float montant;
+	
+	int devise;
+	
 	@CreationTimestamp
 	Date transaction_date;
 	

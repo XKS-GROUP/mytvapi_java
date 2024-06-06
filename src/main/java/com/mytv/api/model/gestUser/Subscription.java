@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -39,7 +40,6 @@ public class Subscription {
 	@CreationTimestamp
 	Date datebegin;
 
-	@CreationTimestamp
 	Date dateEnd;
 	
 	@Column(columnDefinition = "boolean default false")
@@ -52,5 +52,9 @@ public class Subscription {
 	@ManyToOne
 	@JoinColumn(name = "idSubscriptionType", insertable = true, updatable = true)
 	private SubscriptionType substypes;
+	
+	@NotNull(message = "actif ou pas, cet champ booléean est requi ")
+	@Column(columnDefinition = "boolean default false")
+	boolean Status;
 
 }

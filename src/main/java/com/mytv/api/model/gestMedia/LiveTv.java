@@ -45,11 +45,11 @@ public class LiveTv {
 	@Column(columnDefinition = "TEXT")
 	String tvLogo_path;
 
-	@NotNull(message="ce champ ne peut pas etre vide, un live tv doit avoir une categorie")
+	@NotNull(message="ce champ ne peut pas etre vide, un liveTv doit avoir une categorie")
 	@Column(nullable = false)
 	List <Long>  idcategories= new ArrayList<>();
 
-	@NotNull(message="ce champ ne peut pas etre vide, un live tv doit avoir un status qui permet de le rendre visible ou pas")
+	@NotNull(message="ce champ ne peut pas etre vide, un liveTv doit avoir un status qui permet de le rendre visible ou pas")
 	@Column(nullable = false, columnDefinition = "boolean default false")
 	boolean status;
 

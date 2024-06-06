@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mytv.api.model.gestPub.Publicite;
 import com.mytv.api.security.EntityResponse;
 import com.mytv.api.service.gestPub.PubliciteService;
+import com.mytv.api.service.gestUser.SubscriptionService;
+import com.mytv.api.service.gestUser.TransactionService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,6 +33,12 @@ public class RessourceController {
 
 	@Autowired
 	PubliciteService pubService;
+	
+	@Autowired
+	TransactionService transService;
+	
+	@Autowired
+    SubscriptionService subsService;
 	
 	
 	/*
@@ -109,9 +117,47 @@ public class RessourceController {
     
     /*
      * 
-     *AUTRES ..
+     * Transaction
      * 
      */
     //
+	
+	@Tag(name = "Transaction (Down)")
+	@GetMapping("transaction")
+	public ResponseEntity<Object> abList(){
+		
+		
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, subsService.show());
+		
+	}
+	
+	@Tag(name = "Transaction (Down)")
+	@PostMapping("transaction/{id}")
+	public ResponseEntity<Object> abcreate(){
+		
+		
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, subsService.show());
+		
+	}
+	
+	@Tag(name = "Transaction (Down)")
+	@PostMapping("transaction/cancel")
+	public ResponseEntity<Object> abupdate(){
+		
+		
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, subsService.show());
+		
+	}
+	
+	@Tag(name = "Transaction (Down)")
+	@PostMapping("transaction/delete/{id}")
+	public ResponseEntity<Object> abDelete(@PathVariable Long id){
+		
+		
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, subsService.delete(id));
+		
+	}
+	
+
 	
 }

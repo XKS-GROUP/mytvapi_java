@@ -32,6 +32,11 @@ public class SubscriptionType {
 	@Column(nullable = false)
 	String name;
 
+	@NotNull(message = "gratuit ou payant, cet champ booléean est requis ")
+	@Column(columnDefinition = "boolean default false")
+	boolean free;
+	
+	
 	@NotNull(message = "un abonnement doit avoir un prix, marquer 0 pour les abonnement gratuit")
 	@Column(nullable = false)
 	float price;
@@ -40,14 +45,15 @@ public class SubscriptionType {
 	@Column(nullable = false)
 	int deviceLimit;
 
-	@NotNull(message = "un abonnement doit avoir une limite de nombre de mois ")
+	@NotNull(message = "un abonnement doit avoir une limite de nombre de jour limite ")
 	@Column(nullable = false)
-	int nbMonth;
+	int nbr;
 
 
 	@NotNull(message = "avec ou sans publicité, cet champ booléean est requi ")
 	@Column(columnDefinition = "boolean default false")
 	boolean Ads;
+	
 
 	@NotNull(message = "actif ou pas, cet champ booléean est requi ")
 	@Column(columnDefinition = "boolean default false")

@@ -38,7 +38,7 @@ public class Live {
 	private String name;
 	
 	@Column(columnDefinition = "TEXT")
-	@NotEmpty(message = "un nom est requis")
+	@NotEmpty(message = "une description est requise")
 	private String overview;
 	
 	@Column(columnDefinition = "TEXT")
@@ -60,7 +60,7 @@ public class Live {
 	@JsonFormat(pattern="dd-MM-yyyy")
 	private Date dateFin;
 	
-	@NotNull(message = "une heurs de debut est requise")
+	@NotNull(message = "une heure de debut est requise")
 	private LocalTime heureDebut;
 	
 	private LocalTime heureFin;
