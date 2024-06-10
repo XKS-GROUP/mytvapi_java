@@ -24,6 +24,9 @@ public class Setting {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
+    @Column(columnDefinition = "TEXT")
+	String app_name;
+    
 	@Column(columnDefinition = "TEXT")
 	String app_logo;
 	
@@ -46,31 +49,9 @@ public class Setting {
 	Long app_default_language;
 	
 	@Column(columnDefinition = "TEXT")
-	String THEMOVIEDB_APIKEY;
+	String terms_of_service;
 	
 	@Column(columnDefinition = "TEXT")
-	String CLOUDFLARE_ACCES_APIKEY;
-	
-	@Column(columnDefinition = "TEXT")
-	String CLOUDFLARE_R2_SECRET_ACCES_KEY;
-	
-	@Column(columnDefinition = "TEXT")
-	String CLOUDFLARE_R2_REGION;
-	
-	@Column(columnDefinition = "TEXT")
-	String CLOUDFLARE_R2_BUCKET;
-	
-	@Column(columnDefinition = "TEXT")
-	String instagram_uri;
-	
-	@Column(columnDefinition = "TEXT")
-	String facebook_uri;
-	
-	@Column(columnDefinition = "TEXT")
-	String twitter_uri;
-	
-	@Column(columnDefinition = "TEXT")
-	String firebase_fnc_server;
-	
+	String politique_conf;
 	
 }

@@ -1,0 +1,266 @@
+package com.mytv.api.service.util;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.mytv.api.model.util.AdmodSetting;
+import com.mytv.api.model.util.FirebaseSetting;
+import com.mytv.api.model.util.R2cloudSetting;
+import com.mytv.api.model.util.Setting;
+import com.mytv.api.model.util.SocialSetting;
+import com.mytv.api.model.util.TmdbSetting;
+import com.mytv.api.repository.AdmodSettingRepository;
+import com.mytv.api.repository.FirebaseRepository;
+import com.mytv.api.repository.R2SettingRepository;
+import com.mytv.api.repository.SettingRepository;
+import com.mytv.api.repository.SocialSRepository;
+import com.mytv.api.repository.TmbRepository;
+
+import lombok.AllArgsConstructor;
+
+@Service
+@AllArgsConstructor
+public class SettingService {
+	
+	@Autowired
+	SocialSRepository socialRep;
+	
+	@Autowired
+	TmbRepository tmdbRep;
+	
+	@Autowired
+	AdmodSettingRepository admodRep;
+	
+	@Autowired
+	FirebaseRepository firebaseRep;
+	
+	@Autowired
+	R2SettingRepository R2Rep;
+	
+	@Autowired
+	SettingRepository settingRep;
+	
+	
+	
+	/*
+	 * 
+	 * paramettre ADMOD
+	 * 
+	 * 
+	 */
+	public Setting add_setting(Setting r) {
+		
+		return settingRep.save(r);
+	}
+	
+	public Setting show_byId_setting(Long id) {
+		
+		return settingRep.findById(id).get();
+	}
+	
+	public Setting update_setting(Long id, Setting r) {
+		
+		r.setId(id);
+		return settingRep.save(r);
+	}
+	
+	public void delete_setting(Long id) {
+		
+		settingRep.deleteById(id);
+	
+	}
+	
+	public List<Setting> list_setting() {
+		
+		return settingRep.findAll();
+	}
+	
+	
+	
+	/*
+	 * 
+	 * 
+	 * paramettre ADMOD
+	 * 
+	 * 
+	 */
+	public AdmodSetting add_admod(AdmodSetting r) {
+		
+		return admodRep.save(r);
+	}
+	
+	public AdmodSetting show_byId_admod(Long id) {
+		
+		return admodRep.findById(id).get();
+	}
+	
+	public AdmodSetting update_admod(Long id, AdmodSetting r) {
+		
+		r.setId(id);
+		return admodRep.save(r);
+	}
+	
+	public void delete_admod(Long id) {
+		
+		admodRep.deleteById(id);
+	
+	}
+	
+	public List<AdmodSetting> list_admod() {
+		
+		return admodRep.findAll();
+	}
+	
+	
+	
+	
+	/*
+	 * 
+	 * paramettre R2
+	 * 
+	 * 
+	 */
+	public R2cloudSetting add_R2Setting(R2cloudSetting r) {
+		
+		return R2Rep.save(r);
+	}
+	
+	public R2cloudSetting show_byId_R2Setting(Long id) {
+		
+		return R2Rep.findById(id).get();
+	}
+	
+	public R2cloudSetting update_R2Setting(Long id, R2cloudSetting r) {
+		
+		r.setId(id);
+		return R2Rep.save(r);
+	}
+	
+	public void delete_R2Setting(Long id) {
+		
+		R2Rep.deleteById(id);
+	
+	}
+	
+	public List<R2cloudSetting> list_R2Setting() {
+		
+		return R2Rep.findAll();
+	}
+	
+	
+	
+	
+	/*
+	 * 
+	 * paramettre R2
+	 * 
+	 * 
+	 */
+	public FirebaseSetting add_firebase(FirebaseSetting r) {
+		
+		return firebaseRep.save(r);
+	}
+	
+	public FirebaseSetting show_byId_firebase(Long id) {
+		
+		return firebaseRep.findById(id).get();
+	}
+	
+	public FirebaseSetting update_firebase(Long id, FirebaseSetting r) {
+		
+		r.setId(id);
+		return firebaseRep.save(r);
+	}
+	
+	public void delete_firebase(Long id) {
+		
+		firebaseRep.deleteById(id);
+	
+	}
+	
+	public List<FirebaseSetting> list_firebase() {
+		
+		return firebaseRep.findAll();
+	}
+	
+	
+	
+	/*
+	 * 
+	 * Social Setting
+	 * 
+	 * 
+	 */
+	
+	public SocialSetting add_Social(SocialSetting r) {
+		
+		return socialRep.save(r);
+	}
+	
+	
+	public SocialSetting show_byId_Social(Long id) {
+		
+		return socialRep.findById(id).get();
+	}
+	
+	public SocialSetting update_Social(Long id, SocialSetting r) {
+		
+		r.setId(id);
+		return socialRep.save(r);
+	}
+	
+	public void delete_Social(Long id) {
+		
+		socialRep.deleteById(id);
+	
+	}
+	
+	public List<SocialSetting> list_Social() {
+		
+		return socialRep.findAll();
+	}
+	
+	
+	
+	
+	/*
+	 * 
+	 * 
+	 * TMDB 
+	 * 
+	 * 
+	 */
+	
+	public TmdbSetting add_TMDB(TmdbSetting r) {
+		
+		return tmdbRep.save(r);
+	}
+	
+	
+	public TmdbSetting show_byId_TMDB(Long id) {
+		
+		return tmdbRep.findById(id).get();
+	}
+	
+	
+	public TmdbSetting update_TMDB(Long id, TmdbSetting r) {
+		
+		r.setId(id);
+		return tmdbRep.save(r);
+	}
+	
+	public void delete_TMDB(Long id) {
+		
+		tmdbRep.deleteById(id);
+	
+	}
+	
+	public List<TmdbSetting> list_TMDB() {
+		
+		return tmdbRep.findAll();
+	}
+	
+
+}

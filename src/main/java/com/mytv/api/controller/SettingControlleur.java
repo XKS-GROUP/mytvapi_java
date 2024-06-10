@@ -12,8 +12,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mytv.api.model.util.AdmodSetting;
+import com.mytv.api.model.util.FirebaseSetting;
+import com.mytv.api.model.util.R2cloudSetting;
+import com.mytv.api.model.util.Setting;
 import com.mytv.api.model.util.SmtpSetting;
+import com.mytv.api.model.util.SocialSetting;
+import com.mytv.api.model.util.TmdbSetting;
 import com.mytv.api.security.EntityResponse;
+import com.mytv.api.service.util.SettingService;
 import com.mytv.api.service.util.SmtpService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -29,6 +36,201 @@ public class SettingControlleur {
 
 	@Autowired
 	SmtpService smtpService;
+	
+	@Autowired
+	SettingService settingService;
+	
+	/*
+	 * 
+	 * Paramettre
+	 * 
+	 * 
+	 */
+	
+	
+	@Tag(name = "Setting")
+	@PostMapping("setting/general/add")
+	public ResponseEntity<Object> Add_general( @Valid @RequestBody Setting s){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.add_setting(s));
+	}
+	
+	@Tag(name = "Setting")
+	@PostMapping("setting/firebase/add")
+	public ResponseEntity<Object> Add_firebase( @Valid @RequestBody FirebaseSetting s){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.add_firebase(s));
+	}
+	
+	@Tag(name = "Setting")
+	@PostMapping("setting/admob/add")
+	public ResponseEntity<Object> Add_admob( @Valid @RequestBody AdmodSetting s){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.add_admod(s));
+	}
+	
+	@Tag(name = "Setting")
+	@PostMapping("setting/tmdb/add")
+	public ResponseEntity<Object> Add_tmdb( @Valid @RequestBody TmdbSetting s){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.add_TMDB(s));
+	}
+	
+	@Tag(name = "Setting")
+	@PostMapping("setting/r2cloudflare/add")
+	public ResponseEntity<Object> Add_r2cloudflare( @Valid @RequestBody R2cloudSetting s){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.add_R2Setting(s));
+	}
+
+	@Tag(name = "Setting")
+	@PostMapping("setting/social/add")
+	public ResponseEntity<Object> Add_social( @Valid @RequestBody SocialSetting s){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.add_Social(s));
+	}
+	
+	//Update
+	
+	@Tag(name = "Setting")
+	@PostMapping("setting/general/update/{id}")
+	public ResponseEntity<Object> update_general(@PathVariable Long id, @Valid @RequestBody Setting s){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.add_setting(s));
+	}
+	
+	@Tag(name = "Setting")
+	@PostMapping("setting/firebase/update/{id}")
+	public ResponseEntity<Object> update_firebase(@PathVariable Long id, @Valid @RequestBody FirebaseSetting s){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.add_firebase(s));
+	}
+	
+	@Tag(name = "Setting")
+	@PostMapping("setting/admob/update/{id]")
+	public ResponseEntity<Object> update_admob(@PathVariable Long id, @Valid @RequestBody AdmodSetting s){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.add_admod(s));
+	}
+	
+	@Tag(name = "Setting")
+	@PostMapping("setting/tmdb/update/{id}")
+	public ResponseEntity<Object> update_tmdb(@PathVariable Long id, @Valid @RequestBody TmdbSetting s){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.add_TMDB(s));
+	}
+	
+	@Tag(name = "Setting")
+	@PostMapping("setting/r2cloudflare/update/{id}")
+	public ResponseEntity<Object> update_r2cloudflare(@PathVariable Long id){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.show_byId_R2Setting(id));
+	}
+
+	@Tag(name = "Setting")
+	@PostMapping("setting/social/update/{id}")
+	public ResponseEntity<Object> update_social(@PathVariable Long id, @Valid @RequestBody SocialSetting s){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.add_Social(s));
+	}
+	
+	//Show by id 
+	
+	@Tag(name = "Setting")
+	@GetMapping("setting/general/{id}")
+	public ResponseEntity<Object> show_general(@PathVariable Long id){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.show_byId_setting(id));
+	}
+	
+	@Tag(name = "Setting")
+	@GetMapping("setting/firebase/{id}")
+	public ResponseEntity<Object> show_firebase(@PathVariable Long id){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.show_byId_firebase(id));
+	}
+	
+	@Tag(name = "Setting")
+	@GetMapping("setting/admob/{id]")
+	public ResponseEntity<Object> show_admob(@PathVariable Long id){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.show_byId_admod(id));
+	}
+	
+	@Tag(name = "Setting")
+	@GetMapping("setting/tmdb/{id}")
+	public ResponseEntity<Object> show_tmdb(@PathVariable Long id){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.show_byId_TMDB(id));
+	}
+	
+	@Tag(name = "Setting")
+	@GetMapping("setting/r2cloudflare/{id}")
+	public ResponseEntity<Object> show_r2cloudflare(@PathVariable Long id){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.show_byId_R2Setting(id));
+	}
+
+	@Tag(name = "Setting")
+	@GetMapping("setting/social/{id}")
+	public ResponseEntity<Object> show_social(@PathVariable Long id, @Valid @RequestBody SocialSetting s){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.show_byId_Social(id));
+	}
+	
+	//Affichage
+	
+	@Tag(name = "Setting")
+	@GetMapping("setting/general/show")
+	public ResponseEntity<Object> show_general(){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.list_setting());
+	}
+	
+	@Tag(name = "Setting")
+	@PostMapping("setting/firebase/show")
+	public ResponseEntity<Object> show_firebase(){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.list_firebase());
+	}
+	
+	@Tag(name = "Setting")
+	@PostMapping("setting/admob/show")
+	public ResponseEntity<Object> show_admob(){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.list_admod());
+	}
+	
+	@Tag(name = "Setting")
+	@PostMapping("setting/tmdb/show")
+	public ResponseEntity<Object> show_tmdb(){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.list_TMDB());
+	}
+	
+	@Tag(name = "Setting")
+	@PostMapping("setting/r2cloudflare/show")
+	public ResponseEntity<Object> show_r2cloudflare(){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.list_R2Setting());
+	}
+
+	@Tag(name = "Setting")
+	@PostMapping("setting/social/show")
+	public ResponseEntity<Object> show_social(){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.list_Social());
+	}
+
+	
+	
+	
+	/*
+	 * 
+	 * Paramettre de SMTP
+	 * 
+	 * 
+	 */
 	
 	@Tag(name = "Setting smtp email")
 	@GetMapping("smtp")

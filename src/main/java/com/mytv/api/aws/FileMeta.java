@@ -31,7 +31,7 @@ public class FileMeta {
     @Column(name = "FILE_NAME")
     private String fileName;
 
-    @Column(name = "FILE_PATH")
+    @Column(name = "FILE_PATH", columnDefinition = "TEXT" )
     private String filePath;
 
     @Column(name = "VERSION")
