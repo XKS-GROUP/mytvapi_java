@@ -47,7 +47,7 @@ public class SettingControlleur {
 	 * 
 	 */
 	
-	
+	//AJOUT DES PARAMETTRE
 	@Tag(name = "Setting")
 	@PostMapping("setting/general/add")
 	public ResponseEntity<Object> Add_general( @Valid @RequestBody Setting s){
@@ -93,42 +93,42 @@ public class SettingControlleur {
 	//Update
 	
 	@Tag(name = "Setting")
-	@PostMapping("setting/general/update/{id}")
+	@PutMapping("setting/general/update/{id}")
 	public ResponseEntity<Object> update_general(@PathVariable Long id, @Valid @RequestBody Setting s){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.add_setting(s));
 	}
 	
 	@Tag(name = "Setting")
-	@PostMapping("setting/firebase/update/{id}")
+	@PutMapping("setting/firebase/update/{id}")
 	public ResponseEntity<Object> update_firebase(@PathVariable Long id, @Valid @RequestBody FirebaseSetting s){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.add_firebase(s));
 	}
 	
 	@Tag(name = "Setting")
-	@PostMapping("setting/admob/update/{id]")
+	@PutMapping("setting/admob/update/{id}")
 	public ResponseEntity<Object> update_admob(@PathVariable Long id, @Valid @RequestBody AdmodSetting s){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.add_admod(s));
 	}
 	
 	@Tag(name = "Setting")
-	@PostMapping("setting/tmdb/update/{id}")
+	@PutMapping("setting/tmdb/update/{id}")
 	public ResponseEntity<Object> update_tmdb(@PathVariable Long id, @Valid @RequestBody TmdbSetting s){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.add_TMDB(s));
 	}
 	
 	@Tag(name = "Setting")
-	@PostMapping("setting/r2cloudflare/update/{id}")
+	@PutMapping("setting/r2cloudflare/update/{id}")
 	public ResponseEntity<Object> update_r2cloudflare(@PathVariable Long id){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.show_byId_R2Setting(id));
 	}
 
 	@Tag(name = "Setting")
-	@PostMapping("setting/social/update/{id}")
+	@PutMapping("setting/social/update/{id}")
 	public ResponseEntity<Object> update_social(@PathVariable Long id, @Valid @RequestBody SocialSetting s){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.add_Social(s));
@@ -151,7 +151,7 @@ public class SettingControlleur {
 	}
 	
 	@Tag(name = "Setting")
-	@GetMapping("setting/admob/{id]")
+	@GetMapping("setting/admob/{id}")
 	public ResponseEntity<Object> show_admob(@PathVariable Long id){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.show_byId_admod(id));
@@ -188,35 +188,35 @@ public class SettingControlleur {
 	}
 	
 	@Tag(name = "Setting")
-	@PostMapping("setting/firebase/show")
+	@GetMapping("setting/firebase/show")
 	public ResponseEntity<Object> show_firebase(){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.list_firebase());
 	}
 	
 	@Tag(name = "Setting")
-	@PostMapping("setting/admob/show")
+	@GetMapping("setting/admob/show")
 	public ResponseEntity<Object> show_admob(){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.list_admod());
 	}
 	
 	@Tag(name = "Setting")
-	@PostMapping("setting/tmdb/show")
+	@GetMapping("setting/tmdb/show")
 	public ResponseEntity<Object> show_tmdb(){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.list_TMDB());
 	}
 	
 	@Tag(name = "Setting")
-	@PostMapping("setting/r2cloudflare/show")
+	@GetMapping("setting/r2cloudflare/show")
 	public ResponseEntity<Object> show_r2cloudflare(){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.list_R2Setting());
 	}
 
 	@Tag(name = "Setting")
-	@PostMapping("setting/social/show")
+	@GetMapping("setting/social/show")
 	public ResponseEntity<Object> show_social(){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.list_Social());
