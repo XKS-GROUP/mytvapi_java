@@ -106,7 +106,10 @@ import com.mytv.api.service.gestMedia.RadioService;
 import com.mytv.api.service.gestMedia.SaisonService;
 import com.mytv.api.service.gestMedia.SerieService;
 import com.mytv.api.service.gestMedia.ServiceFilm;
+import com.mytv.api.service.gestPub.PubliciteService;
 import com.mytv.api.service.gestUser.WUserService;
+import com.mytv.api.service.ressource.SliderService;
+
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
@@ -157,8 +160,11 @@ public class FrontController {
     @Autowired
     private CollectionPodcastRepository colPodRep;
     
+	@Autowired
+    private SliderService sliderService;
 
-	
+	@Autowired
+	PubliciteService pubService;
 	
 	
 	
