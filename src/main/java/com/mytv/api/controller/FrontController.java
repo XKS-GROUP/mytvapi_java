@@ -47,11 +47,13 @@ import com.mytv.api.model.gestMedia.Podcast;
 import com.mytv.api.model.gestMedia.Radio;
 import com.mytv.api.model.gestMedia.Saison;
 import com.mytv.api.model.gestMedia.Serie;
+import com.mytv.api.model.gestPub.Publicite;
 import com.mytv.api.model.gestUser.User;
 import com.mytv.api.model.ressource.Actor;
 import com.mytv.api.model.ressource.Director;
 import com.mytv.api.model.ressource.Language;
 import com.mytv.api.model.ressource.Pays;
+import com.mytv.api.model.util.Slider;
 import com.mytv.api.repository.ActorRepository;
 import com.mytv.api.repository.CollectionPodcastRepository;
 import com.mytv.api.repository.DirectorRepository;
@@ -256,11 +258,15 @@ public class FrontController {
      * 
      */
     
-    @Tag(name = "Ressource: genres, Categories, pays, langues")
-    @GetMapping("ressources/all/")
+	@Tag(name = "Ressource")
+    @GetMapping("ressources/all")
     public <R> Object getRessources(@RequestParam (required = false) List<String> resources) {
     	
     	List<Pays> pays = paysService.show();
+    	
+    	List<Slider> sliders = sliderService.show();
+    	
+    	List<Publicite> pubs = pubService.show();
     	
     	List<Language> Langues = langService.show();
     	
@@ -280,12 +286,16 @@ public class FrontController {
         if (resources == null || resources.isEmpty()) {
         	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
         			
-        			Map.of( "pays ",pays,"langues", Langues, "cat_radio_livetv", CatRL, "categlives",categorieLive,"genres", 
+        			Map.of( "sliders", sliders, "pubs", pubs,"pays",pays,"langues", Langues, "cat_radio_livetv", CatRL, "categlives",categorieLive,"genres", 
         					genre, "catpodcast", CatPodcast, "acteurs", acteurs, "directeurs", directeurs));
         }
         
         return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, resources.stream().map(res -> {
             switch (res.toLowerCase()) {
+	            case "sliders":
+	                return Map.of("sliders",sliders);
+	            case "pubs":
+	                return Map.of("pubs", pubs);
                 case "pays":
                     return Map.of("pays",pays);
                 case "langues":
