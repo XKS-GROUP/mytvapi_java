@@ -112,6 +112,7 @@ import com.mytv.api.service.ressource.SliderService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -446,9 +447,14 @@ public class FrontController {
 
 	
 	/*
+	 * 
+	 * 
 	 * GESTION DES RADIOS
+	 * 
+	 * 
+	 * 
 	 */
-	//Radio
+	
 	@Tag(name = "Radios")
 	@GetMapping("radios")
 	public ResponseEntity<Object> showR(){
@@ -581,13 +587,275 @@ public class FrontController {
 	}
 	
 	
+	/*
+     * 
+     * ACTEURS
+     * 
+     */
+    
+    @Tag(name = "Acteur")
+	@GetMapping("acteurs")
+	public ResponseEntity<Object> showActor(){
+
+		return fnc.showActor();
+	}
+    
+    @Tag(name = "Acteur")
+	@GetMapping("acteurs/all/")
+	public ResponseEntity<Object> showActorPaging(Pageable p){
+
+		return fnc.showActorPaging(p);
+	}
+    
+    @Tag(name = "Acteur")
+	@GetMapping("acteurs/{id}")
+	public ResponseEntity<Object> showActorById(@PathVariable long id){
+
+		return fnc.showActorById(id);
+	}
+    
+    /*
+     * 
+     * 
+     * CRUD Directors
+     * 
+     * 
+     */
+    
+    @Tag(name = "Directeur")
+	@GetMapping("directeurs")
+	public ResponseEntity<Object> showDir(){
+
+		return fnc.showDir();
+	}
+    
+    @Tag(name = "Directeur")
+	@GetMapping("directeurs/all/")
+	public ResponseEntity<Object> showDirPaging(Pageable p){
+
+		return fnc.showDirPaging(p);
+	}
+    
+    @Tag(name = "Directeur")
+	@GetMapping("directeurs/{id}")
+	public ResponseEntity<Object> showDirById(@PathVariable long id){
+
+		return showDirById(id);
+	}
 	
+    /*
+	 * 
+	 * Langue 
+	 * 
+	 * 
+	 */
+    
+	@Tag(name = "Langue")
+	@GetMapping("langs")
+	public ResponseEntity<Object> showLang(){
+
+		return fnc.showLang();
+	}
+	
+	@Tag(name = "Langue")
+	@GetMapping("langs/all/")
+	public ResponseEntity<Object> showLangPaging(Pageable p){
+
+		return fnc.showLangPaging(p);
+	}
+
+	@Tag(name = "Langue")
+	@GetMapping("langs/{id}")
+	public ResponseEntity<Object> showLangById(@PathVariable Long id){
+
+		return fnc.showLangById(id);
+	}
+	
+	@Tag(name = "Langue")
+	@GetMapping("langs/search/")
+	public ResponseEntity<Object> showLangByName( 
+			@RequestParam String s, Pageable p){
+
+		return fnc.showLangByName(s, p);
+	}
+	
+	/*
+	 * 
+	 * Pays
+	 * 
+	 * 
+	 */
+	
+	@Tag(name = "Pays")
+	@GetMapping("pays")
+	public ResponseEntity<Object> showPays(){
+
+		return fnc.showPays();
+	}
+	
+	@Tag(name = "Pays")
+	@GetMapping("pays/all/")
+	public ResponseEntity<Object> showPaysPaging(Pageable p){
+
+		return fnc.showPaysPaging(p);
+	}
+
+	@Tag(name = "Pays")
+	@GetMapping("pays/{id}")
+	public ResponseEntity<Object> showbyIdPays(@PathVariable Long id){
+
+		return fnc.showbyIdPays(id);
+	}
+	
+	
+
+	/*
+	 * 
+	 * GENRE DE FILMs ET SERIES
+	 * 
+	 */
+	
+	@Tag(name = "Genre FILM SERIE")
+	@GetMapping("genres")
+	public ResponseEntity<Object> showG(){
+
+		return fnc.showG();
+	}
+
+	@Tag(name = "Genre FILM SERIE")
+	@GetMapping("genres/all/")
+	public ResponseEntity<Object> showPage(Pageable p){
+
+		return fnc.showPage(p);
+	}
+
+	@Tag(name = "Genre FILM SERIE")
+	@GetMapping("genres/search/")
+	public ResponseEntity<Object> showByName(
+			@RequestParam String s, 
+			Pageable p){
+
+		return fnc.showByName(s, p);
+	}
+
+	@Tag(name = "Genre FILM SERIE")
+	@GetMapping("genres/search/contain/")
+	public ResponseEntity<Object> showByNameContain(
+			@RequestParam String s, 
+			Pageable p){
+
+		return fnc.showByNameContain(s, p);		
+	}
+
+	@Tag(name = "Genre FILM SERIE")
+	@GetMapping("genres/{id}")
+	public ResponseEntity<Object> showbyIdG(@PathVariable Long id){
+
+		return fnc.showbyIdG(id);
+	}
+	
+	/*
+	 * 
+	 * 
+	 * Categorie LiveTv ou Radio
+	 * 
+	 * 
+	 */
+	
+	@Tag(name = "Categorie RADIO LIVE ")
+	@GetMapping("catrl")
+	public ResponseEntity<Object> showCRL(){
+
+		return fnc.showCRL();
+	}
+
+	@Tag(name = "Categorie RADIO LIVE ")
+	@GetMapping("catrl/all/")
+	public ResponseEntity<Object> showCRLPaging(Pageable p){
+
+		return fnc.showCRLPaging(p);
+	}
+
+	@Tag(name = "Categorie RADIO LIVE ")
+	@GetMapping("catrl/{id}")
+	public ResponseEntity<Object> showbyIdCRL(@PathVariable Long id){
+
+		return fnc.showbyIdCRL(id);
+	}
+	
+	/*
+	 * 
+	 * Categorie Podcast
+	 * 
+	 * 
+	 */
+
+	@Tag(name = "Categorie PODCAST")
+	@GetMapping("catpod")
+	public ResponseEntity<Object> showCP(){
+
+		return fnc.showCP();
+	}
+	
+	@Tag(name = "Categorie PODCAST")
+	@GetMapping("catpod/all/")
+	public ResponseEntity<Object> showCP(Pageable p){
+
+		return fnc.showCP(p);
+	}
+
+	@Tag(name = "Categorie PODCAST")
+	@GetMapping("catpod/{id}")
+	public ResponseEntity<Object> showbyIdCP(@PathVariable Long id){
+
+		return fnc.showbyIdCP(id);
+	}
+
+	
+	/*
+	 * 
+	 * 
+	 * COLLECTION DE PODCAST
+	 * 
+	 * 
+	 */
+	
+	@Tag(name = "Podcast Collection")
+	@GetMapping("podcast/collections")
+	public ResponseEntity<Object> showCollection(){
+
+		return fnc.showCollection();
+	}
+    
+    @Tag(name = "Podcast Collection")
+	@GetMapping("podcast/collections/all/")
+	public ResponseEntity<Object> showCollPaging(Pageable p){
+
+		return fnc.showCollPaging(p);
+	}
+    
+    @Tag(name = "Podcast Collection")
+	@GetMapping("podcast/collections/search/")
+	public ResponseEntity<Object> searchCollection(
+		@RequestParam String s, 
+		Pageable p){
+
+    	return fnc.searchCollection(s, p);
+
+    }
+    
+    @Tag(name = "Podcast Collection")
+	@GetMapping("podcast/collections/{id}")
+	public ResponseEntity<Object> showCollectionById(@PathVariable long id){
+
+		return fnc.showCollectionById(id);
+	}
 	
 	
 	/*
 	 * GESTION DES PODCASTS
 	 */
-	//Podcast
+	
 	@Tag(name = "Podcasts")
 	@GetMapping("podcasts")
 	public ResponseEntity<Object> showP(){

@@ -41,6 +41,7 @@ import com.mytv.api.repository.CategoryLrRepository;
 import com.mytv.api.repository.CollectionPodcastRepository;
 import com.mytv.api.repository.DirectorRepository;
 import com.mytv.api.security.EntityResponse;
+import com.mytv.api.service.CommonFunction;
 import com.mytv.api.service.gestMedia.CatPodcastService;
 import com.mytv.api.service.gestMedia.CategorieLiveService;
 import com.mytv.api.service.gestMedia.CategoryLrService;
@@ -67,7 +68,10 @@ import lombok.AllArgsConstructor;
 
 @SecurityRequirement(name = "bearerAuth")
 public class MediaController {
-
+	
+	
+	@Autowired
+	private CommonFunction fnc;
 
 	@Autowired
 	private RadioService radioService;
@@ -126,9 +130,6 @@ public class MediaController {
     
 
     
-    
-   
-    
     /*
      * Collection Podcast
      * 
@@ -139,14 +140,14 @@ public class MediaController {
 	@GetMapping("podcast/collections")
 	public ResponseEntity<Object> showCollection(){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, colPodRep.findAll());
+		return fnc.showCollection();
 	}
     
     @Tag(name = "Podcast Collection")
 	@GetMapping("podcast/collections/all/")
 	public ResponseEntity<Object> showCollPaging(Pageable p){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, colPodRep.findAll(p));
+		return fnc.showCollPaging(p);
 	}
     
     @Tag(name = "Podcast Collection")
@@ -155,37 +156,30 @@ public class MediaController {
 		@RequestParam String s, 
 		Pageable p){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, colPodRep.findByNameOrOverviewContaining(s, s, p));
-	}
+    	return fnc.searchCollection(s, p);
+
+    }
     
     @Tag(name = "Podcast Collection")
 	@GetMapping("podcast/collections/{id}")
 	public ResponseEntity<Object> showCollectionById(@PathVariable long id){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, colPodRep.findById(id));
+		return fnc.showCollectionById(id);
 	}
     
     @Tag(name = "Podcast Collection")
 	@PostMapping("podcast/collections/create")
 	public ResponseEntity<Object> createCollection(@Valid @RequestBody ColPodcast r){
-		
-    	String nom = r.getName().toString();
     	
-    	if(colPodRep.findByName(nom) != null) {
-			
-			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Cette collection existe déja");
-		}
-		else {
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.CREATED, colPodRep.save(r));
-		}
+    	return fnc.createCollection(r);
+    	
 	}
     
     @Tag(name = "Podcast Collection")
 	@PutMapping("podcast/collections/update/{id}")
 	public ResponseEntity<Object> updateCollection(@PathVariable Long id, @Valid @RequestBody ColPodcast a){
     	
-    	a.setIdColPd(id);
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, colPodRep.save(a));
+    	return fnc.updateCollection(id, a);
 		
 	}
     
@@ -193,21 +187,16 @@ public class MediaController {
    	@PutMapping("podcast/collections/update/status/{id}")
    	public ResponseEntity<Object> updateSatusCollection(@PathVariable Long id, @Valid @RequestBody StatusDTO status){
        	
-    	ColPodcast cl =  colPodRep.findById(id).get();
-    	cl.setIdColPd(id);
-    	cl.setStatus(status.getStatus());
-       	
-   		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, colPodRep.save(cl));
-   		
+    	return fnc.updateSatusCollection(id, status);
+    	
    	}
     
     
     @Tag(name = "Podcast Collection")
 	@DeleteMapping("podcast/collections/delete/{id}")
 	public ResponseEntity<Object> deleteCollection(@PathVariable Long id){
-    	colPodRep.deleteById(id);
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, "");
-		
+
+    	return fnc.deleteCollection(id);
 	}
     
     
@@ -222,143 +211,139 @@ public class MediaController {
 	@GetMapping("acteurs")
 	public ResponseEntity<Object> showActor(){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, actorRep.findAll());
+		return fnc.showActor();
 	}
     
     @Tag(name = "Acteur")
 	@GetMapping("acteurs/all/")
 	public ResponseEntity<Object> showActorPaging(Pageable p){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, actorRep.findAll(p));
+		return fnc.showActorPaging(p);
 	}
     
     @Tag(name = "Acteur")
 	@GetMapping("acteurs/{id}")
 	public ResponseEntity<Object> showActorById(@PathVariable long id){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, actorRep.findById(id));
+		return fnc.showActorById(id);
 	}
     
     @Tag(name = "Acteur")
 	@PostMapping("acteurs/create")
 	public ResponseEntity<Object> createActor(@Valid @RequestBody Actor a){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.CREATED, actorRep.save(a));
+		return fnc.createActor(a);
 	}
     
     @Tag(name = "Acteur")
 	@PutMapping("acteurs/update/{id}")
 	public ResponseEntity<Object> updateActor(@PathVariable Long id, @Valid @RequestBody Actor a){
 
-    	a.setIdActor(id);
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, actorRep.save(a));
+    	return fnc.updateActor(id, a);
 		
 	}
-    
     
     @Tag(name = "Acteur")
 	@DeleteMapping("acteurs/delete/{id}")
 	public ResponseEntity<Object> deleteActor(@PathVariable Long id){
-    	actorRep.deleteById(id);
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, " ");
-		
+    	
+    	return fnc.deleteActor(id);
 	}
     
-    //
     
-    //CRUD Directors
+    /*
+     * 
+     * 
+     * CRUD Directors
+     * 
+     * 
+     */
     
     @Tag(name = "Directeur")
 	@GetMapping("directeurs")
 	public ResponseEntity<Object> showDir(){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, directorsRep.findAll());
+		return fnc.showDir();
 	}
     
     @Tag(name = "Directeur")
 	@GetMapping("directeurs/all/")
 	public ResponseEntity<Object> showDirPaging(Pageable p){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, directorsRep.findAll(p));
+		return fnc.showDirPaging(p);
 	}
     
     @Tag(name = "Directeur")
 	@GetMapping("directeurs/{id}")
 	public ResponseEntity<Object> showDirById(@PathVariable long id){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, directorsRep.findById(id));
+		return showDirById(id);
 	}
     
     @Tag(name = "Directeur")
 	@PostMapping("directeurs/create")
 	public ResponseEntity<Object> createDir(@Valid @RequestBody Director a){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.CREATED, directorsRep.save(a));
+		return fnc.createDir(a);
 	}
     
     @Tag(name = "Directeur")
 	@PutMapping("directeurs/update/{id}")
 	public ResponseEntity<Object> updateDirecteur(@PathVariable Long id, @Valid @RequestBody Director a){
     	
-    	a.setIdDirector(id);
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, directorsRep.save(a));
+    	return fnc.updateDirecteur(id, a);
 		
 	}
     
     @Tag(name = "Directeur")
 	@DeleteMapping("directeurs/delete/{id}")
 	public ResponseEntity<Object> deleteDir(@PathVariable Long id){
-    	directorsRep.deleteById(id);
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, "");
+    	
+    	return fnc.deleteDir(id);
 		
 	}
     
     
+	/*
+	 * 
+	 * Langue 
+	 * 
+	 * 
+	 */
     
-    
-	//private final String asset ="/RESSOURCES/IMG/";
-
-	//Langue
-
 	@Tag(name = "Langue")
 	@GetMapping("langs")
 	public ResponseEntity<Object> showLang(){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, langService.show());
+		return fnc.showLang();
 	}
 	
 	@Tag(name = "Langue")
 	@GetMapping("langs/all/")
 	public ResponseEntity<Object> showLangPaging(Pageable p){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
-				
-				langService.showPage(p)); 
+		return fnc.showLangPaging(p);
 	}
 
 	@Tag(name = "Langue")
 	@GetMapping("langs/{id}")
 	public ResponseEntity<Object> showLangById(@PathVariable Long id){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, langService.showById(id));
+		return fnc.showLangById(id);
 	}
 
 	@Tag(name = "Langue")
 	@PutMapping("lang/update/{id}")
 	public ResponseEntity<Object> updateLang(@PathVariable Long id,@Valid @RequestBody Language r){
-		r.setName(r.getName().toLowerCase());
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, langService.upadte(id, r));
-
+		
+		return fnc.updateLang(id, r);
 	}
 	
 	@Tag(name = "Langue")
 	@PutMapping("lang/update/status/{id}")
 	public ResponseEntity<Object> updateStatusLang(@PathVariable Long id, @Valid @RequestBody StatusDTO status){
 		
-		Language l = langService.showById(id).get();
-		l.setStatus(status.getStatus());
-		
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, langService.upadte(id, l));
+		return fnc.updateStatusLang(id, status);
 
 	}
 
@@ -366,16 +351,7 @@ public class MediaController {
 	@PostMapping(path="lang/create")
 	public ResponseEntity<Object> createLang(@Valid @RequestBody Language u) {
 		
-		u.setName(u.getName().toLowerCase());
-		if( langService.showByName(u.getName()) != null ) {
-			
-			
-			return EntityResponse.generateResponse("ATTENTION ", HttpStatus.BAD_REQUEST , "Cette langue existe déja");
-		}
-		else {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.CREATED , langService.create(u));
-		}
+		return fnc.createLang(u);
 	}
 
 	
@@ -383,9 +359,7 @@ public class MediaController {
 	@DeleteMapping(path="langs/delete/{id}")
 	public ResponseEntity<Object> delete (@PathVariable Long id) {
 
-		langService.delete(id);
-
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, true);
+		return fnc.delete(id);
 	}
 
 	@Tag(name = "Langue")
@@ -393,39 +367,37 @@ public class MediaController {
 	public ResponseEntity<Object> showLangByName( 
 			@RequestParam String s, Pageable p){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, langService.showByName(s, p));
+		return fnc.showLangByName(s, p);
 	}
 
-	//Pays
+	/*
+	 * 
+	 * 
+	 * CRUD Pays
+	 * 
+	 * 
+	 */
+	
 	@Tag(name = "Pays")
 	@PostMapping("pays/create")
 
 	public ResponseEntity<Object> createPays(@Valid @RequestBody Pays u) {
-		u.setName(u.getName().toLowerCase());
-		if(paysService.findByname(u.getName()) != null) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.CONFLICT, "Ce nom de pays existe déja ");
-		}
-		else {
-			
-		 return EntityResponse.generateResponse("SUCCES ", HttpStatus.CREATED, paysService.create(u));
-		 
-		}
+		
+		return fnc.createPays(u);
 	}
 
 	@Tag(name = "Pays")
 	@GetMapping("pays")
 	public ResponseEntity<Object> showPays(){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, paysService.show());
+		return fnc.showPays();
 	}
 	
 	@Tag(name = "Pays")
 	@GetMapping("pays/all/")
 	public ResponseEntity<Object> showPaysPaging(Pageable p){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
-				paysService.showPage(p));
+		return fnc.showPaysPaging(p);
 	}
 
 
@@ -433,36 +405,29 @@ public class MediaController {
 	@GetMapping("pays/{id}")
 	public ResponseEntity<Object> showbyIdPays(@PathVariable Long id){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, paysService.showById(id));
+		return fnc.showbyIdPays(id);
 	}
 
 	@Tag(name = "Pays")
 	@PutMapping("pays/update/{id}")
 	public ResponseEntity<Object> updatePays(@PathVariable Long id,@Valid @RequestBody Pays u){
 
-		u.setName(u.getName().toLowerCase());
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, paysService.update(id, u));
+		return fnc.updatePays(id, u);
 
 	}
+	
 	@Tag(name = "Pays")
 	@PutMapping("pays/update/status/{id}")
 	public ResponseEntity<Object> updateStatusPays(@PathVariable Long id, @Valid @RequestBody StatusDTO status){
 
-		Pays p = paysService.showById(id).get();
-		
-		p.setStatus(status.getStatus());
-		
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, paysService.update(id, p));
-
+		return fnc.updateStatusPays(id, status);
 	}
 
 	@Tag(name = "Pays")
 	@DeleteMapping(path="pays/delete/{id}")
 	public ResponseEntity<Object> deletePays (@PathVariable Long id) {
 
-		paysService.delete(id);
-
-		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK , true);
+		return fnc.deletePays(id);
 	}
 
 
@@ -471,6 +436,7 @@ public class MediaController {
 	 * 
 	 * GENRE DE FILMs ET SERIES
 	 * 
+	 * 
 	 */
 	
 	@Tag(name = "Genre FILM SERIE")
@@ -478,31 +444,21 @@ public class MediaController {
 
 	public ResponseEntity<Object> create(@Valid @RequestBody Genre g) {
 		
-		
-		if(!genreService.findByNameContain(g.getName()).isEmpty()) {
-			
-			return EntityResponse.generateResponse("ATTENTION", HttpStatus.CONFLICT, "Ce genre existe déja");
-		}
-		
-		else {
-			
-		    return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, genreService.create(g));
-		
-		}
+		return fnc.create(g);
 	}
 
 	@Tag(name = "Genre FILM SERIE")
 	@GetMapping("genres")
 	public ResponseEntity<Object> showG(){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.show());
+		return fnc.showG();
 	}
 
 	@Tag(name = "Genre FILM SERIE")
 	@GetMapping("genres/all/")
 	public ResponseEntity<Object> showPage(Pageable p){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.showByPages(p));
+		return fnc.showPage(p);
 	}
 
 	@Tag(name = "Genre FILM SERIE")
@@ -511,7 +467,7 @@ public class MediaController {
 			@RequestParam String s, 
 			Pageable p){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.showByName(s, p));
+		return fnc.showByName(s, p);
 	}
 
 	@Tag(name = "Genre FILM SERIE")
@@ -520,8 +476,7 @@ public class MediaController {
 			@RequestParam String s, 
 			Pageable p){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.findByNameContain(s, p));
-		
+		return fnc.showByNameContain(s, p);		
 	}
 
 
@@ -529,80 +484,67 @@ public class MediaController {
 	@GetMapping("genres/{id}")
 	public ResponseEntity<Object> showbyIdG(@PathVariable Long id){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.showById(id).orElseThrow(() -> new ResourceNotFoundException("aucune donne avec id= " + id)));
+		return fnc.showbyIdG(id);
 	}
 
 	@Tag(name = "Genre FILM SERIE")
 	@PutMapping("genres/update/{id}")
 	public ResponseEntity<Object> updateG(@PathVariable Long id, @Valid @RequestBody Genre g){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.upadte(id, g));
-
+		return fnc.updateG(id, g);
 	}
 	
 	@Tag(name = "Genre FILM SERIE")
 	@PutMapping("genres/update/status/{id}")
 	public ResponseEntity<Object> updateG(@PathVariable Long id, @Valid @RequestBody StatusDTO status ){
 
-		Genre g = genreService.showById(id).get();
-		
-		g.setStatus(status.getStatus());
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.upadte(id, g));
-
+		return fnc.updateG(id, status);
 	}
 
 	@Tag(name = "Genre FILM SERIE")
 	@DeleteMapping(path="genres/delete/{id}")
 	public ResponseEntity<Object> deleteG (@PathVariable Long id) {
 
-		genreService.delete(id);
-
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, true);
+		return fnc.deleteG(id);
 	}
 
 
 
-	//Categorie LiveTv ou Radio
+	/*
+	 * 
+	 * 
+	 * Categorie LiveTv ou Radio
+	 * 
+	 * 
+	 */
 
 	@Tag(name = "Categorie RADIO LIVE ")
 	@PostMapping(path="catrl/create")
 	public ResponseEntity<Object> createCRL(@Valid @RequestBody CategoryRL u) {
 		
-		if(catlrRep.findByName(u.getName()) != null) {
-			
-			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Cette categorie existe déja");
-		}
-		else {
-			
-		
-		    return EntityResponse.generateResponse("Succes", HttpStatus.CREATED, catLrService.create(u));
-		
-		}
+		return fnc.createCRL(u);
 	}
-
 
 	@Tag(name = "Categorie RADIO LIVE ")
 	@GetMapping("catrl")
 	public ResponseEntity<Object> showCRL(){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catLrService.show());
+		return fnc.showCRL();
 	}
 
 	@Tag(name = "Categorie RADIO LIVE ")
 	@GetMapping("catrl/all/")
 	public ResponseEntity<Object> showCRLPaging(Pageable p){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
-				catLrService.showPaging(p));
+		return fnc.showCRLPaging(p);
 	}
 
 	@Tag(name = "Categorie RADIO LIVE ")
 	@GetMapping("catrl/{id}")
 	public ResponseEntity<Object> showbyIdCRL(@PathVariable Long id){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catLrService.showById(id));
+		return fnc.showbyIdCRL(id);
 	}
-
 
 	@Tag(name = "Categorie RADIO LIVE ")
 	@PutMapping(path="catrl/update/{id}")
@@ -610,8 +552,7 @@ public class MediaController {
 			@PathVariable Long id,
 			@Valid @RequestBody CategoryRL u) {
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catLrService.upadte(id, u));
-
+		return fnc.updateCRL(id, u);
 	}
 	
 	@Tag(name = "Categorie RADIO LIVE ")
@@ -620,23 +561,14 @@ public class MediaController {
 			@PathVariable Long id,
 			@Valid @RequestBody StatusDTO status) {
 		
-		CategoryRL rl = catLrService.showById(id).get();
-		
-		rl.setStatus(status.getStatus());
-
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catLrService.upadte(id, rl));
-
+		return fnc.updateStatusCRL(id, status);
 	}
-
 
 	@Tag(name = "Categorie RADIO LIVE ")
 	@DeleteMapping(path="catrl/delete/{id}")
 	public ResponseEntity<Object> deleteCRL (@PathVariable Long id) {
 
-		catLrService.delete(id);
-
-
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, true);
+		return fnc.deleteCRL(id);
 	}
 
 
@@ -655,41 +587,28 @@ public class MediaController {
 	public ResponseEntity<Object> createCP(
 			@Valid @RequestBody CatPodcast u) {
 
-		u.setName(u.getName().toLowerCase());
-		if(catPodRep.findByName(u.getName()) != null) {
-			
-			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Cette categorie de podcast existe déja");
-		}
-		else {
-			
-		
-		    return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, catpodService.create(u));
-		
-		}
+		return fnc.createCP(u);
 	}
-
 
 	@Tag(name = "Categorie PODCAST")
 	@GetMapping("catpod")
 	public ResponseEntity<Object> showCP(){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catpodService.show());
+		return fnc.showCP();
 	}
 	
 	@Tag(name = "Categorie PODCAST")
 	@GetMapping("catpod/all/")
 	public ResponseEntity<Object> showCP(Pageable p){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
-				catpodService.showPaging(p) );
+		return fnc.showCP(p);
 	}
-
 
 	@Tag(name = "Categorie PODCAST")
 	@GetMapping("catpod/{id}")
 	public ResponseEntity<Object> showbyIdCP(@PathVariable Long id){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catpodService.showById(id));
+		return fnc.showbyIdCP(id);
 	}
 
 	@Tag(name = "Categorie PODCAST")
@@ -698,9 +617,8 @@ public class MediaController {
 
 			@PathVariable Long id,
 			@Valid @RequestBody CatPodcast u){
-		u.setName(u.getName().toLowerCase());
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catpodService.upadte(id, u));
-
+		
+		return fnc.updateCP(id, u);
 	}
 	
 	@Tag(name = "Categorie PODCAST")
@@ -710,21 +628,14 @@ public class MediaController {
 			@PathVariable Long id,
 			@Valid @RequestBody StatusDTO status){
 		
-		CatPodcast cp =catpodService.showById(id).get();
-		cp.setStatus(status.getStatus());
-		
-		
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catpodService.upadte(id, cp));
-
+		return fnc.updateSatusCP(id, status);
 	}
 
 	@Tag(name = "Categorie PODCAST")
 	@DeleteMapping(path="catpod/delete/{id}")
 	public ResponseEntity<Object> deleteCP (@PathVariable Long id) {
 
-		catpodService.delete(id);
-
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, true);
+		return fnc.deleteCP(id);
 	}
 
 
