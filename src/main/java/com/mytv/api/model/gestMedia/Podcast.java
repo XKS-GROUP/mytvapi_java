@@ -75,5 +75,8 @@ public class Podcast {
 	
 	@CreatedDate
 	Date addDate;
+	
+	@Column(nullable = true, columnDefinition = "boolean default false")
+	boolean top10;
 
 }

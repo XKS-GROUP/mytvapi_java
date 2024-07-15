@@ -39,7 +39,7 @@ public class UserRegisterRequestDTO {
 	private String email;
 
 	@Pattern(regexp = "^\\+?[1-9]\\d{1,14}$", message = "Format numéro invalide, il doit commencé par le code pays")
-	@Column(nullable = false, unique = true)
+	//@Column(nullable = false, unique = true)
 	String phone;
 
 	@JsonIgnore

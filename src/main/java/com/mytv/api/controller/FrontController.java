@@ -2082,6 +2082,82 @@ public class FrontController {
 				
 			}
 		
+			
+	/*
+	 * 
+	 * Controlleur pour les publicitées
+	 * 
+	 * 
+	 */
+	
+	@Tag(name = "Publicité")
+	@GetMapping("pub")
+	public ResponseEntity<Object> showPub(){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, pubService.show());
+	}
+    
+	@Tag(name = "Publicité")
+	@GetMapping("pub/all/")
+	public ResponseEntity<Object> showPubPaging(Pageable p){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, pubService.showPage(p));
+		
+	}
+	
+	@Tag(name = "Publicité")
+	@GetMapping("pub/search/")
+	public ResponseEntity<Object> searchPub(
+		@RequestParam String s, 
+		Pageable p){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, pubService.findByName(s, p));
+	}
+    
+	@Tag(name = "Publicité")
+	@GetMapping("pub/{id}")
+	public ResponseEntity<Object> showPubById(@PathVariable long id){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, pubService.showById(id));
+	}
+	
+	 
+    /*
+     * 	Slider
+     * 
+     * 
+     */
+    
+  	@Tag(name = "Slider")
+  	@GetMapping("slider")
+      public ResponseEntity<Object> showSlider(){
+
+  		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, sliderService.show());
+  	}
+  	
+  	@Tag(name = "Slider")
+  	@GetMapping("slider/all/")
+      public ResponseEntity<Object> showSliderPaging(Pageable p){
+
+  		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, sliderService.showPage(p));
+  	}
+  	
+  	
+      @Tag(name = "Slider")
+  	@GetMapping("slider/{id}")
+  	public ResponseEntity<Object> slider(@PathVariable Long id){
+
+      	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, sliderService.showById(id));
+  	}
+
+    @Tag(name = "Slider")
+  	@GetMapping("slider/search/")
+  	public ResponseEntity<Object> sliderByName(
+  			@RequestParam String s, 
+  			Pageable p){
+
+      	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, sliderService.showByName(s, p));
+  	}
 
 }
 

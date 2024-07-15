@@ -35,6 +35,7 @@ public class PodcastService {
 	public List<Podcast> show() {
 
 		return rep.findAll();
+		
 	}
 
 	public Page<Podcast> showPage(Pageable p) {
@@ -77,9 +78,7 @@ public class PodcastService {
 		
 	};
 	
-	
-	
-	
+	//public List<Podcast> 
 	
 	public Page<Podcast> search(String n, Pageable p) {
 
@@ -131,8 +130,6 @@ public class PodcastService {
 
 		return rep.save(u);
 	}
-
-
 
 	public Boolean delete(Long id) {
 
