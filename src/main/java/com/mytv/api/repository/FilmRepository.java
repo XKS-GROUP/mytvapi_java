@@ -20,4 +20,6 @@ public interface FilmRepository  extends JpaRepository<Film, Long>{
 	Page<Film> findByNameContainingOrOverviewContaining(String nom, String desc, Pageable p);
 	List<Film> findByNameContainingOrOverviewContaining(String nom, String desc);
 
+	List<Film> findByTop10True();
+
 }

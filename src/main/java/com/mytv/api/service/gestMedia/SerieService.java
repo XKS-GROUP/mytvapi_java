@@ -4,20 +4,17 @@ package com.mytv.api.service.gestMedia;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import com.mytv.api.model.gestMedia.Genre;
 import com.mytv.api.model.gestMedia.Serie;
 import com.mytv.api.model.gestMedia.SerieGenre;
 import com.mytv.api.repository.GenreRepository;
 import com.mytv.api.repository.SerieGenreRepository;
 import com.mytv.api.repository.SerieRepository;
-
 import lombok.AllArgsConstructor;
 
 @Service
@@ -197,7 +194,6 @@ public class SerieService {
 
 		serieGenreRep.save(serieGenre);
 
-
 	}
 	
 	public void addSerieGenreId(Long serie, Long genre) {
@@ -216,6 +212,19 @@ public class SerieService {
 	public Serie findByName(String name) {
 		
 		return rep.findByName(name);
+	}
+	
+	public List<Serie> top10(){
+		
+		return rep.findByTop10True();
+	}
+	
+	public Serie Addtop10(Long id, boolean status){
+		
+		Serie r =  rep.findById(id).get();
+		r.setTop10(status);
+		
+		return r;
 	}
 
 }

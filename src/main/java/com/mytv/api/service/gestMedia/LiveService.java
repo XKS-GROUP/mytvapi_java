@@ -99,5 +99,19 @@ public class LiveService {
 		
 		return rep.findByName(name);
 	}
+	
+	public List<Live> top10(){
+		
+		return rep.findByTop10True();
+	}
+	
+	public Live Addtop10(Long id, boolean status){
+		
+		Live pc =  rep.findById(id).get();
+		pc.setTop10(status);
+		
+		return pc;
+		
+	}
 
 }

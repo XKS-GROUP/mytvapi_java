@@ -112,7 +112,6 @@ import com.mytv.api.service.ressource.SliderService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -1479,11 +1478,6 @@ public class FrontController {
 
 	
 	
-	
-	
-	
-	
-	
 	/*
 	 * GESTION DES EPISODES
 	 */
@@ -1984,7 +1978,7 @@ public class FrontController {
 			
 			//LIKE
 			
-			//AFFICHE LIKE PAR RADIO
+			//AFFICHE LIKE PAR 
 			@Tag(name = "TV SHOW")
 			@GetMapping("tv/likes/show/byLive/{idLive}")
 			public ResponseEntity<Object> liveLikebyLive(@PathVariable Long idLive){
@@ -2143,7 +2137,7 @@ public class FrontController {
   	}
   	
   	
-      @Tag(name = "Slider")
+    @Tag(name = "Slider")
   	@GetMapping("slider/{id}")
   	public ResponseEntity<Object> slider(@PathVariable Long id){
 
@@ -2158,6 +2152,55 @@ public class FrontController {
 
       	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, sliderService.showByName(s, p));
   	}
+    
+    
+    /*
+     * 
+     * 
+     * 
+     * SECTION HOME PAGE
+     * 
+     * 
+     *  
+     */
+    
+    @Tag(name = "HomePage")
+	@GetMapping("podcast/top10")
+	public ResponseEntity<Object> podcastTop10(){
+
+	  return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,podcastservice.top10());
+	}
+    
+    @Tag(name = "HomePage")
+	@GetMapping("film/top10")
+	public ResponseEntity<Object> filmTop10(){
+
+    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.top10());
+	}
+    
+    @Tag(name = "HomePage")
+	@GetMapping("serie/top10")
+	public ResponseEntity<Object> serieTop10(){
+
+    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.top10() );
+	}
+    
+    @Tag(name = "HomePage")
+	@GetMapping("radio/top10")
+	public ResponseEntity<Object> radioTop10(){
+
+    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.top10());
+		
+	}
+    
+    @Tag(name = "HomePage")
+	@GetMapping("tv/top10")
+	public ResponseEntity<Object> livetvTop10(){
+
+    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.top10());
+		
+	}
+    
 
 }
 

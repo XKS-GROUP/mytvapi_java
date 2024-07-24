@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.amazonaws.services.accessanalyzer.model.ResourceNotFoundException;
 import com.mytv.api.dto.StatusDTO;
 import com.mytv.api.model.gestMedia.CatPodcast;
 import com.mytv.api.model.gestMedia.CategorieLive;
@@ -34,23 +33,14 @@ import com.mytv.api.model.ressource.Actor;
 import com.mytv.api.model.ressource.Director;
 import com.mytv.api.model.ressource.Language;
 import com.mytv.api.model.ressource.Pays;
-import com.mytv.api.repository.ActorRepository;
-import com.mytv.api.repository.CatPodcastRepository;
 import com.mytv.api.repository.CategorieLiveRepository;
-import com.mytv.api.repository.CategoryLrRepository;
-import com.mytv.api.repository.CollectionPodcastRepository;
-import com.mytv.api.repository.DirectorRepository;
 import com.mytv.api.security.EntityResponse;
 import com.mytv.api.service.CommonFunction;
 import com.mytv.api.service.gestMedia.CatPodcastService;
 import com.mytv.api.service.gestMedia.CategorieLiveService;
-import com.mytv.api.service.gestMedia.CategoryLrService;
 import com.mytv.api.service.gestMedia.EpisodeService;
-import com.mytv.api.service.gestMedia.GenreService;
-import com.mytv.api.service.gestMedia.LangueService;
 import com.mytv.api.service.gestMedia.LiveService;
 import com.mytv.api.service.gestMedia.LiveTvSetvice;
-import com.mytv.api.service.gestMedia.PaysService;
 import com.mytv.api.service.gestMedia.PodcastService;
 import com.mytv.api.service.gestMedia.RadioService;
 import com.mytv.api.service.gestMedia.SaisonService;
@@ -97,36 +87,14 @@ public class MediaController {
 	@Autowired
 	private EpisodeService episodeService;
 	@Autowired
-	private GenreService genreService;
-	@Autowired
-	private CategoryLrService catLrService;
-	@Autowired
 	private CatPodcastService catpodService;
-	@Autowired
-	private PaysService paysService;
-	@Autowired
-	private LangueService langService;
 
-	@Autowired
-	private CategoryLrRepository catlrRep;
-    @Autowired
-    private CatPodcastRepository catPodRep;
-    
     @Autowired
     private CategorieLiveRepository catLiveRep;
-    
     
     @Autowired
     private SaisonService saisonService;
     
-    @Autowired
-    private ActorRepository actorRep;
-    
-    @Autowired
-    private DirectorRepository directorsRep;
-    
-    @Autowired
-    private CollectionPodcastRepository colPodRep;
     
 
     
@@ -1188,11 +1156,6 @@ public class MediaController {
 
 			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, true );
 		}
-	
-	
-	
-	
-	
 	
 	
 	

@@ -149,5 +149,21 @@ public class PodcastService {
 
 		return rep.findByName(name);
 	}
+	
+	public List<Podcast> top10(){
+		
+		return rep.findByTop10True();
+	}
+	
+	public Podcast Addtop10(Long id, boolean status){
+		
+		Podcast pc =  rep.findById(id).get();
+		pc.setTop10(status);
+		
+		return pc;
+		
+	}
+	
+
 
 }

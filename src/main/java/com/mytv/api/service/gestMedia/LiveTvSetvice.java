@@ -57,8 +57,6 @@ public class LiveTvSetvice {
 		return rep.save(old);
 	}
 
-
-
 	public Boolean delete(Long id) {
 
 		rep.deleteById(id);
@@ -120,7 +118,6 @@ public class LiveTvSetvice {
 		
 	};
 	
-
 	public Page<LiveTv> searchbyLangue(String val, Long langue, Pageable p) {
 
 		 PageImpl<LiveTv> res = new PageImpl<LiveTv>( rep.findByNameContainingOrOverviewContaining(val, val).stream()
@@ -173,5 +170,20 @@ public class LiveTvSetvice {
 		
 		return rep.findByName(name);
 	}
+	
+	public List<LiveTv> top10(){
+		
+		return rep.findByTop10True();
+	}
+	
+	public LiveTv Addtop10(Long id, boolean status){
+		
+		LiveTv lv =  rep.findById(id).get();
+		lv.setTop10(status);
+		
+		return lv;
+		
+	}
+	
 
 }

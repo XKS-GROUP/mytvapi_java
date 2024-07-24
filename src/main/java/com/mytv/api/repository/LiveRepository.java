@@ -14,5 +14,6 @@ public interface LiveRepository  extends JpaRepository<Live, Long>{
 	Page<Live> findByNameContainingOrOverviewContaining(String nom, String desc, Pageable p);
 	List<Live> findByNameContainingOrOverviewContaining(String nom, String desc);
 	Live findByName(String name);
+	List<Live> findByTop10True();
 
 }

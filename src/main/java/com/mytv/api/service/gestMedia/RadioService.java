@@ -77,7 +77,6 @@ public class RadioService {
 		
 	};
 	
-	
 	public Page<Radio> search(String n, Pageable p) {
 
 		return radioRep.findByNameContainingOrOverviewContaining(n, n, p);
@@ -149,4 +148,17 @@ public class RadioService {
 		return radioRep.findByName(name);
 	}
 
+	public List<Radio> top10(){
+		
+		return radioRep.findByTop10True();
+	}
+	
+	public Radio Addtop10(Long id, boolean status){
+		
+		Radio r =  radioRep.findById(id).get();
+		r.setTop10(status);
+		
+		return r;
+	}
+	
 }

@@ -100,5 +100,7 @@ public class Serie {
 	@JsonManagedReference
 	List<Saison> idSaison;
 	
+	@Column(nullable = true, columnDefinition = "boolean default false")
+	boolean top10;
 
 }

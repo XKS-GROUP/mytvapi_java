@@ -16,5 +16,6 @@ public interface RadioRepository extends JpaRepository<Radio, Long>{
 	List<Radio> findByNameContaining(String nom);
 	Page<Radio> findByNameContainingOrOverviewContaining(String nom, String desc, Pageable p);
 	List<Radio> findByNameContainingOrOverviewContaining(String n, String n2);
+	List<Radio> findByTop10True();
 
 }
