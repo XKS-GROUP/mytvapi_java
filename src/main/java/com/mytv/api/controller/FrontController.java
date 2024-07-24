@@ -2131,9 +2131,17 @@ public class FrontController {
   	
   	@Tag(name = "Slider")
   	@GetMapping("slider/all/")
-      public ResponseEntity<Object> showSliderPaging(Pageable p){
+      public ResponseEntity<Object> showSliderPaging(Pageable p, 
+    		  @RequestParam (required = false) Long page ){
 
-  		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, sliderService.showPage(p));
+  		if(page != null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, sliderService.showByPage(page, p));
+		}
+		else {
+
+  		  return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, sliderService.showPage(p));
+		}
   	}
   	
   	
@@ -2158,7 +2166,7 @@ public class FrontController {
      * 
      * 
      * 
-     * SECTION HOME PAGE
+     * SECTION HOME PAGE TOP 10
      * 
      * 
      *  
@@ -2201,6 +2209,53 @@ public class FrontController {
 		
 	}
     
+    
+    /*
+     * 
+     * 
+     * 
+     * SECTION HOME PAGE EN VEDETTE
+     * 
+     * 
+     *  
+     */
+    
+    @Tag(name = "HomePage")
+	@GetMapping("podcast/top")
+	public ResponseEntity<Object> podcastTop(){
+
+	  return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,podcastservice.top());
+	}
+    
+    @Tag(name = "HomePage")
+	@GetMapping("film/top")
+	public ResponseEntity<Object> filmTop(){
+
+    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.top());
+	}
+    
+    @Tag(name = "HomePage")
+	@GetMapping("serie/top")
+	public ResponseEntity<Object> serieTop(){
+
+    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.top() );
+	}
+    
+    @Tag(name = "HomePage")
+	@GetMapping("radio/top")
+	public ResponseEntity<Object> radioTop(){
+
+    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.top());
+		
+	}
+    
+    @Tag(name = "HomePage")
+	@GetMapping("tv/top")
+	public ResponseEntity<Object> livetvTop(){
+
+    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.top());
+		
+	}
 
 }
 

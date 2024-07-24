@@ -17,4 +17,5 @@ public interface PodcastRepository extends JpaRepository<Podcast, Long> {
 	Page<Podcast> findByNameContainingOrOverviewContaining(String nom, String desc, Pageable p);
 	List<Podcast> findByNameContainingOrOverviewContaining(String nom, String des);
 	List<Podcast> findByTop10True();
+	List<Podcast> findByTopTrue();
 }

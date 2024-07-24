@@ -22,4 +22,6 @@ public interface FilmRepository  extends JpaRepository<Film, Long>{
 
 	List<Film> findByTop10True();
 
+	List<Film> findByTopTrue();
+
 }

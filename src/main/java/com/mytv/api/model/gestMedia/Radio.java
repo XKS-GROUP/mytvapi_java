@@ -77,4 +77,7 @@ public class Radio {
 	@Column(nullable = true, columnDefinition = "boolean default false")
 	boolean top10;
 	
+	@Column(nullable = true, columnDefinition = "boolean default false")
+	boolean top;
+	
 }

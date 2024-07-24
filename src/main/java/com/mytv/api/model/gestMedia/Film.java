@@ -113,6 +113,9 @@ public class Film {
 	
 	@Column(nullable = true, columnDefinition = "boolean default false")
 	boolean top10;
+	
+	@Column(nullable = true, columnDefinition = "boolean default false")
+	boolean top;
 
 	@Column(nullable = false, columnDefinition = "boolean default false")
 	boolean download;

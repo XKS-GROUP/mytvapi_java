@@ -185,5 +185,18 @@ public class LiveTvSetvice {
 		
 	}
 	
+    public List<LiveTv> top(){
+		
+		return rep.findByTopTrue();
+	}
+	
+	public LiveTv Addtop(Long id, boolean status){
+		
+		LiveTv lv =  rep.findById(id).get();
+		lv.setTop(status);
+		
+		return lv;
+	}
+	
 
 }

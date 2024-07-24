@@ -42,5 +42,12 @@ public class ColPodcast {
 	@NotNull(message = "un satus par defaut doit etre attribuer")
 	@Column(nullable = false, columnDefinition = "boolean default true")
 	boolean status;
+	
+	@Column(nullable = true, columnDefinition = "boolean default false")
+	boolean top10;
+	
+	@Column(nullable = true, columnDefinition = "boolean default false")
+	boolean top;
+
 
 }

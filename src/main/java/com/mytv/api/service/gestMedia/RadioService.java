@@ -161,4 +161,17 @@ public class RadioService {
 		return r;
 	}
 	
+	public List<Radio> top(){
+		
+		return radioRep.findByTopTrue();
+	}
+	
+	public Radio Addtop(Long id, boolean status){
+		
+		Radio r =  radioRep.findById(id).get();
+		r.setTop10(status);
+		
+		return r;
+	}
+	
 }

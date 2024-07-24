@@ -164,6 +164,21 @@ public class PodcastService {
 		
 	}
 	
+	
+	public List<Podcast> top(){
+		
+		return rep.findByTopTrue();
+	}
+	
+	public Podcast Addtop(Long id, boolean status){
+		
+		Podcast pc =  rep.findById(id).get();
+		pc.setTop10(status);
+		
+		return pc;
+		
+	}
+	
 
 
 }

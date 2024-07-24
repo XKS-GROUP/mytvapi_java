@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import com.mytv.api.model.gestMedia.Film;
 import com.mytv.api.model.gestMedia.FilmGenre;
 import com.mytv.api.model.gestMedia.Genre;
-import com.mytv.api.model.gestMedia.Radio;
 import com.mytv.api.repository.FilmGenreRepository;
 import com.mytv.api.repository.FilmRepository;
 import com.mytv.api.repository.GenreRepository;
@@ -276,6 +275,19 @@ public class ServiceFilm {
 	}
 	
 	public Film Addtop10(Long id, boolean status){
+		
+		Film r =  rep.findById(id).get();
+		r.setTop10(status);
+		
+		return r;
+	}
+	
+	public List<Film> top(){
+		
+		return rep.findByTopTrue();
+	}
+	
+	public Film Addtop(Long id, boolean status){
 		
 		Film r =  rep.findById(id).get();
 		r.setTop10(status);

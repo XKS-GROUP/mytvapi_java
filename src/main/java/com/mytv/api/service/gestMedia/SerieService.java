@@ -226,5 +226,18 @@ public class SerieService {
 		
 		return r;
 	}
+	
+	public List<Serie> top(){
+		
+		return rep.findByTopTrue();
+	}
+	
+	public Serie Addtop(Long id, boolean status){
+		
+		Serie r =  rep.findById(id).get();
+		r.setTop10(status);
+		
+		return r;
+	}
 
 }
