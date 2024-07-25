@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -25,7 +24,7 @@ import lombok.ToString;
 @ToString
 public class UserRegisterRequestDTO {
 
-	@Size(min = 7, message = "le nom d utilisateur doit contenir au moins 7 caractère" )
+	@Size(min = 5, message = "le nom d utilisateur doit contenir au moins 5 caractère" )
 	@NotBlank(message = "ce champ ne peut pas etre vide et doit etre unique")
 	private String username;
 	

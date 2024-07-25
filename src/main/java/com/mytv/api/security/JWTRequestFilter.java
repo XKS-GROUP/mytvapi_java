@@ -61,7 +61,9 @@ public class JWTRequestFilter extends OncePerRequestFilter {
 			String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
 			UserDetails userValueObject = userDetailsService.loadUserByUsername(username);
 	
-			User usr = userService.findByUsername(username);
+			System.out.println(" Je suis appeler avant chaque requete ");
+			
+			User usr = userService.findByUserEmail(username);
 			
 		    if (jwtTokenUtil.validateToken(jwtToken, userValueObject) && !jwtRep.findByValue(jwtToken).isEmpty() && usr.isValide()) {
 				System.out.println("Le nom d'utilisateur est  "+username);

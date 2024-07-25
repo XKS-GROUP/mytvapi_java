@@ -28,7 +28,6 @@ public class Publicite {
 	@Column(nullable = false)
 	String name;
 	
-	
 	@Column(nullable = true  ,columnDefinition = "TEXT")
 	private String overview;
     

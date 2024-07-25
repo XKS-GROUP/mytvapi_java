@@ -59,7 +59,7 @@ public class WUserService implements UserDetailsService {
 
 		User user = userRepository.findByEmail(email);
 
-		System.out.println("je l ai vu avec "+user.getEmail());
+		//System.out.println("je l ai vu avec "+user.getEmail());
 		
 		if (user != null) {
 			List<UserRole> userRoles = userRoleRepository.findAllByUserId(user.getId());

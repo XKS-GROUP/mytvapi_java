@@ -93,10 +93,12 @@ public class UserAccessController {
 
 		final String token = jwtTokenUtil.generateToken(userDetails);
 
+		
 		final String refreshToken = jwtTokenUtil.generateRefreshToken(userDetails);
 
 		User usr = userService.findByUserEmail(authenticationRequest.getUsername());
 
+		
 		if(usr.isValide()) {
 
 			usr.setRemember_token(token);
