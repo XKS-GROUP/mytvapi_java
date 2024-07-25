@@ -55,10 +55,12 @@ public class WUserService implements UserDetailsService {
 	WRoleService roleService;
 
 	@Override
-	public UserDetails loadUserByUsername(String username) {
+	public UserDetails loadUserByUsername(String email) {
 
-		User user = userRepository.findByUsername(username);
+		User user = userRepository.findByEmail(email);
 
+		System.out.println("je l ai vu avec "+user.getEmail());
+		
 		if (user != null) {
 			List<UserRole> userRoles = userRoleRepository.findAllByUserId(user.getId());
 
@@ -68,7 +70,7 @@ public class WUserService implements UserDetailsService {
 				authorities.add(new SimpleGrantedAuthority(userRole.getRole().getName()));
 			});
 
-			UserDetails principal = new org.springframework.security.core.userdetails.User(user.getUsername(),
+			UserDetails principal = new org.springframework.security.core.userdetails.User(user.getEmail(),
 					user.getPassword(), authorities);
 
 			return principal;

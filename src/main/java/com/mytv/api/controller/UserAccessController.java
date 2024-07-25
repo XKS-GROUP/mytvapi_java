@@ -80,6 +80,7 @@ public class UserAccessController {
 			throws Exception {
 
 		try {
+			
 			authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 			
 			
@@ -94,7 +95,7 @@ public class UserAccessController {
 
 		final String refreshToken = jwtTokenUtil.generateRefreshToken(userDetails);
 
-		User usr = userService.findByUsername(authenticationRequest.getUsername());
+		User usr = userService.findByUserEmail(authenticationRequest.getUsername());
 
 		if(usr.isValide()) {
 
@@ -107,7 +108,7 @@ public class UserAccessController {
 
 			jwtToken.setRefresh_token(refreshToken);
 
-			jwtToken.setUser(userService.findByUsername(jwtTokenUtil.getUsernameFromToken(token)));
+			jwtToken.setUser(userService.findByUserEmail(jwtTokenUtil.getUsernameFromToken(token)));
 
 			jwtRep.save(jwtToken);
 
