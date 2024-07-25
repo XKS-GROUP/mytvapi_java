@@ -42,6 +42,8 @@ public class Slider {
 	
 	private List<Long> targetPage;
 	
+	private Long typeMedia;
+	
 	private Long idMediaref;
 	
 	@Column(nullable = false, columnDefinition = "boolean default false")
