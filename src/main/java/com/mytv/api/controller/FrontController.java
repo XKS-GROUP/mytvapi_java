@@ -680,6 +680,34 @@ public class FrontController {
 	
 	/*
 	 * 
+	 * Podcasteur 
+	 * 
+	 * 
+	 */
+	
+	@Tag(name = "Podcasteur")
+	@GetMapping("podcasteurs")
+	public ResponseEntity<Object> podShow(){
+
+		return fnc.podShow();
+	}
+    
+    @Tag(name = "Podcasteur")
+	@GetMapping("podcasteurs/all/")
+	public ResponseEntity<Object> podPaging(Pageable p){
+
+		return fnc.podPaging(p);
+	}
+    
+    @Tag(name = "Podcasteur")
+	@GetMapping("podcasteurs/{id}")
+	public ResponseEntity<Object> podShowById(@PathVariable long id){
+
+		return fnc.podShowById(id);
+	}
+	
+	/*
+	 * 
 	 * Pays
 	 * 
 	 * 
