@@ -159,6 +159,9 @@ public class MetadataServiceImpl implements MetadataService {
     public Page<FileMeta> listWithPage(Pageable p) {
        
         return fileMetaRepository.findAll(p);
+        
+        
+        
     }
     
 
@@ -178,12 +181,14 @@ public class MetadataServiceImpl implements MetadataService {
     public Page<String> listFolder(String prefix, Pageable p) {
     	
     	return awsImpService.listFolders(prefix, bucketName, p);
+    	
     }
     
     @Override
     public void deteteFolder(String prefix) {
     	
     	awsImpService.deleteFolder(bucketName, prefix);
+    	
     }
     
     

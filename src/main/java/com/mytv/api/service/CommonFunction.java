@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
 import com.amazonaws.services.accessanalyzer.model.ResourceNotFoundException;
 import com.mytv.api.dto.StatusDTO;
 import com.mytv.api.model.gestMedia.CatPodcast;
@@ -17,6 +18,7 @@ import com.mytv.api.model.gestMedia.Genre;
 import com.mytv.api.model.gestMedia.Live;
 import com.mytv.api.model.gestMedia.LiveTv;
 import com.mytv.api.model.gestMedia.Podcast;
+import com.mytv.api.model.gestMedia.Podcasteur;
 import com.mytv.api.model.gestMedia.Radio;
 import com.mytv.api.model.gestMedia.Saison;
 import com.mytv.api.model.gestMedia.Serie;
@@ -41,6 +43,7 @@ import com.mytv.api.service.gestMedia.LiveService;
 import com.mytv.api.service.gestMedia.LiveTvSetvice;
 import com.mytv.api.service.gestMedia.PaysService;
 import com.mytv.api.service.gestMedia.PodcastService;
+import com.mytv.api.service.gestMedia.PodcasterService;
 import com.mytv.api.service.gestMedia.RadioService;
 import com.mytv.api.service.gestMedia.SaisonService;
 import com.mytv.api.service.gestMedia.SerieService;
@@ -58,6 +61,9 @@ public class CommonFunction {
 	// Pour le lives tv
 	@Autowired
 	private CategorieLiveService categliveService;
+	
+	@Autowired
+	private PodcasterService podcasterService;
 
 	// Pour le lives tv
 	@Autowired
@@ -244,7 +250,55 @@ public class CommonFunction {
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, "");
 
 	}
+	
+	/*
+	 * 
+	 * Poscasteur
+	 * 
+	 * 
+	 */
 
+
+	public ResponseEntity<Object> podShow(){
+
+		
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcasterService.show());
+	}
+    
+	public ResponseEntity<Object> podPaging(Pageable p){
+
+    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcasterService.showPage(p));
+	}
+    
+
+	public ResponseEntity<Object> podShowById( long id){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcasterService.showById(id));
+	}
+    
+
+	public ResponseEntity<Object> podCreate(  Podcasteur p){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.CREATED, podcasterService.create(p));
+	}
+    
+
+	public ResponseEntity<Object> podUpdate( Long id,   Podcasteur p){
+    	
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcasterService.update(id, p));
+		
+	}
+    
+
+	public ResponseEntity<Object> podDelete( Long id){
+    	
+    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcasterService.delete(id));
+		
+	}
+    
+	
+	
+	
 	/*
 	 * 
 	 * Langue

@@ -72,7 +72,7 @@ public class LiveService {
 		
 	}
 
-	public Live update(final Long id, Live u) {
+	public Live update(Long id, Live u) {
 
 		u.setIdLive(id);
 
@@ -89,7 +89,7 @@ public class LiveService {
 
 	}
 
-	public Optional<Live> showById(final Long id) {
+	public Optional<Live> showById(Long id) {
 
 		return rep.findById(id);
 

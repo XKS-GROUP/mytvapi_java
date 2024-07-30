@@ -14,6 +14,7 @@ public class FolderService {
 	
 	public Folder create(Folder folder) {
 		
+		folder.setFolderpath(null);
 		return rep.save(folder);
 		
 	}

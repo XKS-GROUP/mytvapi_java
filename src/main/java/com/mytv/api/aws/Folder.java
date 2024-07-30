@@ -30,7 +30,10 @@ public class Folder {
 	 @NotEmpty(message = "un nom de dossier est requis")
 	 String name;
 	 
-	 @Column(columnDefinition = "TEXT" )
+	 @Column(columnDefinition = "TEXT")
+	 String parentDirectory;
+	 
+	 @Column(columnDefinition = "TEXT")
 	 String folderpath;
 	 
 	 @CreationTimestamp

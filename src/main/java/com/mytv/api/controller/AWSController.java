@@ -21,6 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.mytv.api.aws.AmazonS3ServiceImpl;
 import com.mytv.api.aws.FileMeta;
 import com.mytv.api.aws.FileMetaRepository;
+import com.mytv.api.aws.Folder;
+import com.mytv.api.aws.FolderService;
 import com.mytv.api.aws.MetadataService;
 import com.mytv.api.aws.MetadataServiceImpl;
 import com.mytv.api.dto.FileMetaDTO;
@@ -47,6 +49,9 @@ public class AWSController {
 
 	@Autowired
     private FileMetaRepository fileMetaRep;
+	
+	@Autowired
+	private FolderService folderService;
 
 	
     /*
@@ -100,20 +105,35 @@ public class AWSController {
     @PostMapping("r2/folder/create")
     public ResponseEntity<Object> createFolder(@Valid @RequestBody FolderDTO folder) {
 
+		Folder f = new Folder();
+		f.setName(folder.getName());
+		
 		metaImplService.createFolder(folder.getName());
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,  folder.getName()+" a été créer avec succès" );
+		
+		
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,  folderService.create(f));
     }
 	
 	
 	//lister les dossier
 	@Tag(name = "R2-CLOUDFLARE")
-    @GetMapping("r2/folder/all/")
+    @GetMapping("r2/folder/all/r2")
     public ResponseEntity<Object> listFolder(
     		@RequestParam(required = false) String dossier,
     		Pageable p) {
 		
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, metaImplService.listFolder(dossier, p) );
     }
+	
+	
+	//lister des dossier contenu dans la DB
+	@Tag(name = "R2-CLOUDFLARE")
+    @GetMapping("r2/folder/all/")
+    public ResponseEntity<Object> listFolders(Pageable p) {
+		
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, folderService.show(p));
+    }
+	
 	
 	//Supprimer un dossier
 	@Tag(name = "R2-CLOUDFLARE")

@@ -26,6 +26,7 @@ import com.mytv.api.model.gestMedia.Genre;
 import com.mytv.api.model.gestMedia.Live;
 import com.mytv.api.model.gestMedia.LiveTv;
 import com.mytv.api.model.gestMedia.Podcast;
+import com.mytv.api.model.gestMedia.Podcasteur;
 import com.mytv.api.model.gestMedia.Radio;
 import com.mytv.api.model.gestMedia.Saison;
 import com.mytv.api.model.gestMedia.Serie;
@@ -268,6 +269,58 @@ public class MediaController {
 	public ResponseEntity<Object> deleteDir(@PathVariable Long id){
     	
     	return fnc.deleteDir(id);
+		
+	}
+    
+    
+    /*
+     * 
+     * Podcasteur
+     * 
+     * 
+     */
+    
+    @Tag(name = "Podcasteur")
+	@GetMapping("podcasteurs")
+	public ResponseEntity<Object> podShow(){
+
+		return fnc.podShow();
+	}
+    
+    @Tag(name = "Podcasteur")
+	@GetMapping("podcasteurs/all/")
+	public ResponseEntity<Object> podPaging(Pageable p){
+
+		return fnc.podPaging(p);
+	}
+    
+    @Tag(name = "Podcasteur")
+	@GetMapping("podcasteurs/{id}")
+	public ResponseEntity<Object> podShowById(@PathVariable long id){
+
+		return fnc.podShowById(id);
+	}
+    
+    @Tag(name = "Podcasteur")
+	@PostMapping("podcasteurs/create")
+	public ResponseEntity<Object> podCreate(@Valid @RequestBody Podcasteur p){
+
+		return fnc.podCreate(p);
+	}
+    
+    @Tag(name = "Podcasteur")
+	@PutMapping("podcasteurs/update/{id}")
+	public ResponseEntity<Object> podUpdate(@PathVariable Long id, @Valid @RequestBody Podcasteur p){
+    	
+    	return fnc.podUpdate(id, p);
+		
+	}
+    
+    @Tag(name = "Podcasteur")
+	@DeleteMapping("podcasteurs/delete/{id}")
+	public ResponseEntity<Object> podDelete(@PathVariable Long id){
+    	
+    	return fnc.podDelete(id);
 		
 	}
     
