@@ -37,6 +37,9 @@ public class Podcasteur {
 	@Column(nullable = false, columnDefinition = "TEXT")
 	String imgPro;
 	
+	@Column(nullable = false, columnDefinition = "TEXT")
+	String cover;
+	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	Date dob;
 	
