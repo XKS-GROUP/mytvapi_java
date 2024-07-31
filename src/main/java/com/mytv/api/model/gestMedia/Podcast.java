@@ -44,7 +44,7 @@ public class Podcast {
 	
 	Long idCollection;
 	
-	Long idPodcasteur;
+	List <Long> idPodcasteur;
 	
 	@NotBlank(message="ce champ ne peut etre vide, un podcast doit forcement avoir une description")
 	String overview;
