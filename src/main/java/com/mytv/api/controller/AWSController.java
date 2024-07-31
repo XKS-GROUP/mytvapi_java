@@ -100,50 +100,6 @@ public class AWSController {
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, metadataService.create(fm));
     }
 	
-	//Creer un dossier
-	@Tag(name = "R2-CLOUDFLARE")
-    @PostMapping("r2/folder/create")
-    public ResponseEntity<Object> createFolder(@Valid @RequestBody FolderDTO folder) {
-
-		Folder f = new Folder();
-		f.setName(folder.getName());
-		
-		metaImplService.createFolder(folder.getName());
-		
-		
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,  folderService.create(f));
-    }
-	
-	
-	//lister les dossier
-	@Tag(name = "R2-CLOUDFLARE")
-    @GetMapping("r2/folder/all/r2")
-    public ResponseEntity<Object> listFolder(
-    		@RequestParam(required = false) String dossier,
-    		Pageable p) {
-		
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, metaImplService.listFolder(dossier, p) );
-    }
-	
-	
-	//lister des dossier contenu dans la DB
-	@Tag(name = "R2-CLOUDFLARE")
-    @GetMapping("r2/folder/all/")
-    public ResponseEntity<Object> listFolders(Pageable p) {
-		
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, folderService.show(p));
-    }
-	
-	
-	//Supprimer un dossier
-	@Tag(name = "R2-CLOUDFLARE")
-    @DeleteMapping("r2/folder/delete/")
-    public ResponseEntity<Object> deleteFolder(
-    		@RequestParam String dossier ) {
-		
-		metaImplService.deteteFolder(dossier);
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, dossier+" a été supprimé avec succès");
-    }
 	
 
 	//Telecharger un fichier
@@ -238,6 +194,71 @@ public class AWSController {
 
 	}
 	
+	
+	/*
+	 * 
+	 *  FOLDER
+	 * 
+	 * 
+	 * 
+	 */
+	
+	//Creer un dossier
+	@Tag(name = "R2-CLOUDFLARE-FOLDER")
+    @PostMapping("r2/folder/create")
+    public ResponseEntity<Object> createFolder(@Valid @RequestBody Folder folder) {
+
+		/*
+		Folder f = new Folder();
+		f.setName(folder.getName());
+		*/
+		metaImplService.createFolder(folder.getName());
+		
+		
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,  folderService.create(folder));
+    }
+	
+	
+	//MAJ FOLDER
+	@Tag(name = "R2-CLOUDFLARE-FOLDER")
+    @PostMapping("r2/folder/update/{id}")
+    public ResponseEntity<Object> updateFolder(
+    		@Valid @RequestBody Folder folder,
+    		@PathVariable long id) {
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,  folderService.update(id ,folder));
+    }
+	
+	
+	//lister les dossier
+	@Tag(name = "R2-CLOUDFLARE-FOLDER")
+    @GetMapping("r2/folder/all/r2")
+    public ResponseEntity<Object> listFolder(
+    		@RequestParam(required = false) String dossier,
+    		Pageable p) {
+		
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, metaImplService.listFolder(dossier, p) );
+    }
+	
+	
+	//lister des dossier contenu dans la DB
+	@Tag(name = "R2-CLOUDFLARE-FOLDER")
+    @GetMapping("r2/folder/all/")
+    public ResponseEntity<Object> listFolders(Pageable p) {
+		
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, folderService.show(p));
+    }
+	
+	
+	//Supprimer un dossier
+	@Tag(name = "R2-CLOUDFLARE-FOLDER")
+    @DeleteMapping("r2/folder/delete/")
+    public ResponseEntity<Object> deleteFolder(
+    		@RequestParam String dossier ) {
+		
+		metaImplService.deteteFolder(dossier);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, dossier+" a été supprimé avec succès");
+    }
 	
 
 }

@@ -9,6 +9,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,6 +38,10 @@ public class FileMeta {
 
     @Column(name = "VERSION")
     private String version;
+    
+    @ManyToOne
+    @JoinColumn(name="idFolder")
+    private Folder folder;
     
     @Column(columnDefinition = "TEXT" )
     private String urlPresign;

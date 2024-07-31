@@ -28,15 +28,14 @@ public class Podcasteur {
 
 	@NotBlank(message = "Ce champ ne puis etre vide")
 	@Column(nullable = false)
-	String fistName;
-
-	@NotBlank(message = "Ce champ ne puis etre vide")
-	@Column(nullable = false)
-	String lastName;
+	String name;
 	
 	@NotBlank(message = "Ce champ ne peut etre vide")
 	@Column(nullable = false, columnDefinition = "TEXT")
 	String biography;
+	
+	@Column(nullable = false, columnDefinition = "TEXT")
+	String imgPro;
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	Date dob;

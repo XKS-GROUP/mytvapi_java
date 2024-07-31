@@ -19,10 +19,19 @@ public class FolderService {
 		
 	}
 	
+	
+	public Folder showbyId(Long id) {
+		
+		return rep.findById(id).get();
+		
+	}
+	
 	public Folder update(Long id, Folder folder) {
 		
 		return rep.save(folder);
 	}
+	
+	
 
 	
 	public Page<Folder> show(Pageable p){
