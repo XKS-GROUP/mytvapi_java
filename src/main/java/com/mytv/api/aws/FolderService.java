@@ -1,5 +1,8 @@
 package com.mytv.api.aws;
 
+
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,13 +29,21 @@ public class FolderService {
 		
 	}
 	
+	public Optional<Folder> showbyname(String nom) {
+		
+		return rep.findByName(nom);
+		
+	}
+	
 	public Folder update(Long id, Folder folder) {
 		
 		return rep.save(folder);
 	}
 	
-	
 
+    public Folder createFolder(Folder Folder) {
+        return rep.save(Folder);
+    }
 	
 	public Page<Folder> show(Pageable p){
 		

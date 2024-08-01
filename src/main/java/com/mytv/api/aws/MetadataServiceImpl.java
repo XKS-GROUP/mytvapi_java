@@ -36,6 +36,9 @@ public class MetadataServiceImpl implements MetadataService {
     
     @Autowired
     private FileMetaRepository fileMetaRepository;
+    
+    @Autowired
+    private FolderService folderService;
 
     @Value("${aws.s3.bucket.name}")
     private String bucketName;
@@ -141,7 +144,55 @@ public class MetadataServiceImpl implements MetadataService {
 
         
     }
+    
+    @Override
+    public FileMeta createFile(MultipartFile file, Long folderId) throws IOException {
 
+    	Folder folder = folderService.showbyId(folderId) ;
+
+    	//seulement au cas ou le fichier est vide 
+        if (file.isEmpty()) {
+			throw new IllegalStateException("Vous tentez d'uploader un fichier vide");
+		}
+
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("Content-Type", file.getContentType());
+        metadata.put("Content-Length", String.valueOf(file.getSize()));
+
+        String pathFile = String.format("%s/%s",folder.name, UUID.randomUUID());
+        
+        String path =  bucketName+"/"+ pathFile;
+        String fileName = String.format("%s", file.getOriginalFilename()).replaceAll("[^a-zA-Z0-9.]", "");
+
+        // upload du fichier dans R2
+        PutObjectResult putObjectResult = amazonS3Service.upload(
+                path, fileName, Optional.of(metadata), file.getInputStream());
+
+        // Enregistrement de la trace dans la db
+        //String presign = awsImp.generatePresignedUrl(bucketName, pathFile+"/"+fileName.replaceAll("[^a-zA-Z0-9.]", ""), 10080).toString();
+        
+        //ici j ai placé une url normal basé sur le domaine d acces de l api + le chemin vers le fichier sur R2
+        //Ceci servira de lien d acces pour le fichier
+        String presign = accesspoint+"/"+ pathFile+"/"+fileName;
+        
+        FileMeta dataMeta = new FileMeta(fileName.replaceAll("\\s+", "-"), path, putObjectResult.getMetadata().getVersionId(), presign);
+
+        dataMeta.setFolder(folder);
+        
+        //Recuperation de la taille et du format du fichier
+        dataMeta.setSize(file.getSize());
+        dataMeta.setFormat(file.getContentType());
+        
+        fileMetaRepository.save(dataMeta);
+        
+        //String filepath="";
+        //filepath = dataMeta.getFilePath()+"/"+dataMeta.getFileName();
+
+        return dataMeta;
+
+        
+    }
+    
     @Override
     public S3Object download(int id) {
         FileMeta fileMeta = fileMetaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
@@ -155,12 +206,9 @@ public class MetadataServiceImpl implements MetadataService {
         return metas;
     }
     
-    
     public Page<FileMeta> listWithPage(Pageable p) {
        
         return fileMetaRepository.findAll(p);
-        
-        
         
     }
     
@@ -170,7 +218,6 @@ public class MetadataServiceImpl implements MetadataService {
     	return fileMetaRepository.findByFileName(nom);
     }
 
-    
     
     public void createFolder(String nom) {
     	
@@ -190,9 +237,6 @@ public class MetadataServiceImpl implements MetadataService {
     	awsImpService.deleteFolder(bucketName, prefix);
     	
     }
-    
-    
-    
     
     
     

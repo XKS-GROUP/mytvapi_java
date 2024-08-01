@@ -246,7 +246,7 @@ public class MediaController {
 	@GetMapping("directeurs/{id}")
 	public ResponseEntity<Object> showDirById(@PathVariable long id){
 
-		return showDirById(id);
+		return fnc.showDirById(id);
 	}
     
     @Tag(name = "Directeur")

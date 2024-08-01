@@ -27,4 +27,6 @@ public interface MetadataService {
 	Optional<FileMeta> showById(Long id);
 
 	FileMeta create(FileMeta fm);
+	
+	public FileMeta createFile(MultipartFile file, Long folderId) throws IOException;
 }

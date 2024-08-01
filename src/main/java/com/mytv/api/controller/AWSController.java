@@ -145,8 +145,32 @@ public class AWSController {
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, metadataService.uploadR3(file, ""));
 
     }
+	
+	//Uploader un fichier en precisant l'id du dossier
+	@Tag(name = "R2-CLOUDFLARE")
+    @PostMapping(path="r2/file/upload/folder/{folderid}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Object>  uploadWithFolderName(
+    		@RequestParam("file") MultipartFile file, 
+    		@PathVariable Long folderid) throws IOException {
 
-	//Uploader un fichier en precisant son dossier
+
+		if(folderid==null) {
+
+			return EntityResponse.generateResponse("Erreur", HttpStatus.BAD_REQUEST, " le dossier ne puis être vide");
+
+		}
+		else if (file.isEmpty()) {
+
+			return EntityResponse.generateResponse("Erreur", HttpStatus.BAD_REQUEST, " un fichier est requis");
+
+		}
+		else {
+
+			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, metadataService.createFile(file, folderid));
+		 }
+    }
+
+	//Uploader un fichier en precisant le nom du dossier
 	@Tag(name = "R2-CLOUDFLARE")
     @PostMapping(path="r2/file/upload/folder/{folderName}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Object>  uploadWithFolderName(@RequestParam("file") MultipartFile file, @PathVariable String folderName) throws IOException {
@@ -167,6 +191,7 @@ public class AWSController {
 			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, metadataService.uploadR3(file, folderName));
 		 }
     }
+	
 
 	//Supprimer un fichier par son Id
 	@Tag(name = "R2-CLOUDFLARE")
@@ -208,14 +233,16 @@ public class AWSController {
     @PostMapping("r2/folder/create")
     public ResponseEntity<Object> createFolder(@Valid @RequestBody Folder folder) {
 
-		/*
-		Folder f = new Folder();
-		f.setName(folder.getName());
-		*/
-		metaImplService.createFolder(folder.getName());
+		if(folderService.showbyname(folder.getName()).isPresent() ) {
+			
+			return EntityResponse.generateResponse("ATTENTION ", HttpStatus.BAD_REQUEST, "Ce nom existe déja");
+		}else {
+			
+			metaImplService.createFolder(folder.getName());
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,  folderService.create(folder));
+		}
 		
-		
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,  folderService.create(folder));
     }
 	
 	
@@ -230,14 +257,23 @@ public class AWSController {
     }
 	
 	
-	//lister les dossier
+	//lister tous les dossiers de AWS
 	@Tag(name = "R2-CLOUDFLARE-FOLDER")
-    @GetMapping("r2/folder/all/r2")
+    @GetMapping("r2/folder/all/cloud-r2")
     public ResponseEntity<Object> listFolder(
     		@RequestParam(required = false) String dossier,
     		Pageable p) {
 		
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, metaImplService.listFolder(dossier, p) );
+    }
+	
+	//Afficher dossier par id
+	@Tag(name = "R2-CLOUDFLARE-FOLDER")
+    @GetMapping("r2/folder/{id}")
+    public ResponseEntity<Object> listFolder(
+    		@PathVariable Long id) {
+		
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, folderService.showbyId(id));
     }
 	
 	
@@ -250,11 +286,26 @@ public class AWSController {
     }
 	
 	
+	
 	//Supprimer un dossier
 	@Tag(name = "R2-CLOUDFLARE-FOLDER")
-    @DeleteMapping("r2/folder/delete/")
+    @DeleteMapping("r2/folder/delete/{id}")
+    public ResponseEntity<Object> deleteFolder( @PathVariable long id ) {
+		
+		
+		
+		metaImplService.deteteFolder(folderService.showbyId(id).getName());
+		
+		folderService.delete(id);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,"dossier à été supprimé avec succès");
+    }
+	
+	
+	//Supprimer un dossier
+	@Tag(name = "R2-CLOUDFLARE-FOLDER")
+    @DeleteMapping("r2/folder/delete/name/{name}")
     public ResponseEntity<Object> deleteFolder(
-    		@RequestParam String dossier ) {
+    		@PathVariable String dossier ) {
 		
 		metaImplService.deteteFolder(dossier);
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, dossier+" a été supprimé avec succès");
