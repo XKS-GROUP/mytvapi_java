@@ -853,7 +853,7 @@ public class MediaController {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchbyLangue(s, langue, p));
 		}
-		else if( pays != null && langue == null && genre == null) {
+		else if( pays == null && langue == null && genre == null) {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchByPays(s, pays, p));
 		}
