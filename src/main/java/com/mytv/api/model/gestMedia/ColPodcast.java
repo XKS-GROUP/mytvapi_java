@@ -1,5 +1,7 @@
 package com.mytv.api.model.gestMedia;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 
 //import java.sql.Date;
@@ -48,6 +50,7 @@ public class ColPodcast {
 	
 	@Column(nullable = true, columnDefinition = "boolean default false")
 	boolean top;
-
+	
+	List <Long> idPodcasteur;
 
 }

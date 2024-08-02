@@ -825,15 +825,16 @@ public class MediaController {
 		}
 		else if(pays == null && genre == null && pays == null) {
 			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showByPays(pays, p));
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,   liveService.showPage(p));
 		}
 		else if(pays != null && langue != null && genre != null) {
-			
+			 
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showByPaysGenreLangue(genre, langue, pays, p));
 		}
 		else {
 			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showPage(p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showByPays(pays, p));
 		}
 	}
 	
@@ -855,15 +856,16 @@ public class MediaController {
 		}
 		else if( pays == null && langue == null && genre == null) {
 			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchByPays(s, pays, p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.search(s, p));
 		}
 		else if(pays != null && langue != null && genre != null) {
+			
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchByPaysGenreLangue(s, genre, langue, pays, p));
 		}
 		else {
 			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.search(s, p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchByPays(s, pays, p));
 		}
 	}
 
