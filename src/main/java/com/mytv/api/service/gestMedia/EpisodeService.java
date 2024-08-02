@@ -30,9 +30,11 @@ public class EpisodeService {
 	//private SeasonRepository repS;
 
 	public Episode create(Episode g) {
-
 		//g.setSaisonRef(g.getIdSaison().getIdSaison());
-		return rep.save(g);
+		
+	
+			return rep.save(g);
+		
 
 	}
 

@@ -35,6 +35,7 @@ import com.mytv.api.model.ressource.Director;
 import com.mytv.api.model.ressource.Language;
 import com.mytv.api.model.ressource.Pays;
 import com.mytv.api.repository.CategorieLiveRepository;
+import com.mytv.api.repository.EpisodeRepository;
 import com.mytv.api.security.EntityResponse;
 import com.mytv.api.service.CommonFunction;
 import com.mytv.api.service.gestMedia.CatPodcastService;
@@ -60,7 +61,10 @@ import lombok.AllArgsConstructor;
 @SecurityRequirement(name = "bearerAuth")
 public class MediaController {
 	
-	
+    @Autowired
+    //Necessaire pour le controle du nom de l'episode par saison
+	private EpisodeRepository repEpisode; 
+    
 	@Autowired
 	private CommonFunction fnc;
 
@@ -451,7 +455,18 @@ public class MediaController {
 		return fnc.deletePays(id);
 	}
 
-
+	@Tag(name = "Pays")
+	@GetMapping("pays/search/{value}")
+	public ResponseEntity<Object> paysSearch(
+			@RequestParam String s,
+			Pageable p){
+		
+			return  fnc.findPays(s);
+		
+		
+	}
+	
+	
 	
 	/*
 	 * 
@@ -1712,18 +1727,31 @@ public class MediaController {
     	
 		}
 	}
+    
+    
 
+    
     @Tag(name = "Episode")
 	@PostMapping(path="episodes/create")
 	public ResponseEntity<Object> createE(
 			@Valid @RequestBody Episode episode) {
 
+		int nb = repEpisode.findByIdSaison(episode.getIdSaison())
+				.stream()
+				.filter( e -> e.getName().contains(episode.getName()) )
+				.toList().size();
+		
+		System.out.println("le total est de : "+nb);
+		
+		if(nb>0) {
 			
-		
-		return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, episodeService.create(episode));
-		
-
-
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Pour cette saison ce nom existe déja");
+			
+		}
+		else{
+			
+			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, episodeService.create(episode));
+		}
 	}
 
     @Tag(name = "Episode")

@@ -418,6 +418,13 @@ public class CommonFunction {
 
 		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, true);
 	}
+	
+	public ResponseEntity<Object> findPays(String name) {
+
+		
+
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, paysService.findBynamecontain(name));
+	}
 
 	/*
 	 * 

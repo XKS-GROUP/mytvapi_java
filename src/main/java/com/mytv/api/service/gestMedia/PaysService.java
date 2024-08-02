@@ -56,6 +56,11 @@ public class PaysService {
 		
 		return rep.findByName(name);
 	}
+	
+	public List<Pays> findBynamecontain(String name) {
+		
+		return rep.findByNameContaining(name);
+	}
 
 	public Optional<Pays> showById(final Long id) {
 
