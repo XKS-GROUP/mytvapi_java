@@ -172,7 +172,7 @@ public class AWSController {
 
 	//Uploader un fichier en precisant le nom du dossier
 	@Tag(name = "R2-CLOUDFLARE")
-    @PostMapping(path="r2/file/upload/folder/{folderName}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(path="r2/file/upload/folder/byName/{folderName}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Object>  uploadWithFolderName(@RequestParam("file") MultipartFile file, @PathVariable String folderName) throws IOException {
 
 

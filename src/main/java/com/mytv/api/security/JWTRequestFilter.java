@@ -48,14 +48,12 @@ public class JWTRequestFilter extends OncePerRequestFilter {
 			
 			chain.doFilter(request, response);
 			
-			System.out.println("Je suis appeler   ");
-			
 			return;
 		}
 		
 		else {
 			
-		
+			//Executer avant chaque requete
 			String jwtToken = requestTokenHeader.split(" ")[1].trim();
 			
 			String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
@@ -66,7 +64,9 @@ public class JWTRequestFilter extends OncePerRequestFilter {
 			User usr = userService.findByUserEmail(username);
 			
 		    if (jwtTokenUtil.validateToken(jwtToken, userValueObject) && !jwtRep.findByValue(jwtToken).isEmpty() && usr.isValide()) {
-				System.out.println("Le nom d'utilisateur est  "+username);
+				
+		    	
+		    	System.out.println("Le nom d'utilisateur est  "+username);
 
 				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
 						userValueObject, null, userValueObject.getAuthorities());
