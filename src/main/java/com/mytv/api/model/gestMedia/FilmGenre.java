@@ -19,11 +19,13 @@ public class FilmGenre {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long idFilmGenre;
-    
+   
+	/*
 	@ManyToOne
 	@JoinColumn(name = "idFilm", insertable = true, updatable = true)
 	private Film film;
-
+	*/
+	
 	//@ManyToOne
 	//@JoinColumn(name = "idGenre", insertable = true, updatable = true)
 	private Long genre;

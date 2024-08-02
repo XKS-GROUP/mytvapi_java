@@ -121,7 +121,7 @@ public class ServiceFilm {
 
 		FilmGenre filmGenre = new FilmGenre();
 
-		filmGenre.setFilm(film);
+		//filmGenre.setFilm(film);
 
 		//filmGenre.setGenre(genre);
 
@@ -134,7 +134,7 @@ public class ServiceFilm {
 
 		FilmGenre filmGenre = new FilmGenre();
 
-		filmGenre.setFilm(film);
+		//filmGenre.setFilm(film);
 
 		filmGenre.setGenre(genre);
 
