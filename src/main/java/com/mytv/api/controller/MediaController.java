@@ -854,6 +854,10 @@ public class MediaController {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchbyLangue(s, langue, p));
 		}
+		else if(langue != null && genre != null && pays == null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchByGenreLangue(s, genre, langue, p));
+		}
 		else if( pays == null && langue == null && genre == null) {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.search(s, p));
@@ -886,6 +890,7 @@ public class MediaController {
 
 	}
 	
+	
 	@Tag(name = "TV SHOW")
 	@PutMapping(path="tv/update/status/{id}")
 	public  ResponseEntity<Object> updateStatusL(
@@ -895,8 +900,8 @@ public class MediaController {
 		LiveTv lt = liveService.showById(id).get();
 		lt.setStatus(status.getStatus());
 		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, liveService.update(id, lt));
-
 	}
+	
 	
 
 	@Tag(name = "TV SHOW")

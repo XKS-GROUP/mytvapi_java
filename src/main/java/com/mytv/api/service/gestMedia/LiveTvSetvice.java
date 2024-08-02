@@ -166,6 +166,20 @@ public class LiveTvSetvice {
 		
 	};
 	
+	
+	public Page<LiveTv> searchByGenreLangue(String val, Long categ, Long langue, Pageable p){
+		
+		 PageImpl<LiveTv> res = new PageImpl<LiveTv>(rep.findByNameContainingOrOverviewContaining(val, val).stream()
+				   .filter(f -> f.getIdcategories().contains(categ))
+				   .filter(f -> f.getLangue().contains(langue))
+				   .toList() 
+				   ,p
+				   ,rep.findAll().size());
+			
+			return res;
+		
+	};
+	
 	public LiveTv findByName(String name) {
 		
 		return rep.findByName(name);

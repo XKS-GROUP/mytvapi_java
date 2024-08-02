@@ -287,8 +287,8 @@ public class WUserService implements UserDetailsService {
 	//Renvoi  utilisateur actuellement connecte
 	public User findCurrentUser() {
 		
+		System.out.println(" l actuel connecte est ici ");
 		return userRepository.findById(SecurityPrincipal.getInstance().getLoggedInPrincipal().getId()).get();
-		
 
 	}
 	

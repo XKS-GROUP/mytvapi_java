@@ -66,7 +66,7 @@ public class JWTRequestFilter extends OncePerRequestFilter {
 		    if (jwtTokenUtil.validateToken(jwtToken, userValueObject) && !jwtRep.findByValue(jwtToken).isEmpty() && usr.isValide()) {
 				
 		    	
-		    	System.out.println("Le nom d'utilisateur est  "+username);
+		    	System.out.println("Le mail de l'utilisateur est  "+username);
 
 				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
 						userValueObject, null, userValueObject.getAuthorities());
