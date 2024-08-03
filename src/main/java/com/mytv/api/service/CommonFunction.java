@@ -141,12 +141,14 @@ public class CommonFunction {
 
 	public ResponseEntity<Object> createCollection(ColPodcast r) {
 
-		String nom = r.getName().toString();
+		String nom = r.getName().toString() ;
 
 		if (colPodRep.findByName(nom) != null) {
 
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Cette collection existe déja");
+			
 		} else {
+			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.CREATED, colPodRep.save(r));
 		}
 	}
@@ -323,7 +325,7 @@ public class CommonFunction {
 	}
 
 	public ResponseEntity<Object> updateLang(Long id, Language r) {
-		r.setName(r.getName().toLowerCase());
+		
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, langService.upadte(id, r));
 
 	}
@@ -339,7 +341,7 @@ public class CommonFunction {
 
 	public ResponseEntity<Object> createLang(Language u) {
 
-		u.setName(u.getName().toLowerCase());
+		
 		if (langService.showByName(u.getName()) != null) {
 
 			return EntityResponse.generateResponse("ATTENTION ", HttpStatus.BAD_REQUEST, "Cette langue existe déja");
@@ -369,7 +371,7 @@ public class CommonFunction {
 	 */
 
 	public ResponseEntity<Object> createPays(Pays u) {
-		u.setName(u.getName().toLowerCase());
+		
 		if (paysService.findByname(u.getName()) != null) {
 
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.CONFLICT, "Ce nom de pays existe déja ");
@@ -397,7 +399,7 @@ public class CommonFunction {
 
 	public ResponseEntity<Object> updatePays(Long id, Pays u) {
 
-		u.setName(u.getName().toLowerCase());
+	
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, paysService.update(id, u));
 
 	}
@@ -561,7 +563,7 @@ public class CommonFunction {
 
 	public ResponseEntity<Object> createCP(CatPodcast u) {
 
-		u.setName(u.getName().toLowerCase());
+		
 		if (catPodRep.findByName(u.getName()) != null) {
 
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST,
@@ -589,7 +591,7 @@ public class CommonFunction {
 	}
 
 	public ResponseEntity<Object> updateCP(Long id, CatPodcast u) {
-		u.setName(u.getName().toLowerCase());
+		
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catpodService.upadte(id, u));
 
 	}
