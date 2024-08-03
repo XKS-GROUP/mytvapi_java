@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,7 +35,7 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class WUserService implements UserDetailsService {
 
-	private static final Logger LOG = LoggerFactory.getLogger(WUserService.class);
+	//private static final Logger LOG = LoggerFactory.getLogger(WUserService.class);
 
 	@Autowired
 	private IUserRepository userRepository;
@@ -255,10 +255,9 @@ public class WUserService implements UserDetailsService {
 		return user;
 	}
 	
-	public User updateInfo(UserDTO u) {
+	public User updateInfo(UserDTO u, String Email) {
 		
-		 User OldUser = userRepository.findByEmail(u.getEmail());
-		
+		 User OldUser = userRepository.findByEmail(Email);
 		 OldUser.setUsername(u.getUsername());
 		 OldUser.setEmail(u.getEmail());
 		 OldUser.setImageUrl(u.getImageUrl());

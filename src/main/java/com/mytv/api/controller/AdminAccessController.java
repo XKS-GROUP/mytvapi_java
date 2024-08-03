@@ -119,16 +119,18 @@ public class AdminAccessController {
 	@Tag(name = "ADMIN Profil")
 	@PutMapping("profil/update")
 	public ResponseEntity<Object> updateProfile(@Valid @RequestBody UserDTO user){
-		//UserRegisterRequestDTO
 		
-		if(userService.findByUserEmail(user.getEmail()) != null) {
+		String old_mail = userService.findCurrentUser().getEmail().toLowerCase();
+		String new_mail = user.getEmail().toLowerCase();
+		
+		if(userService.findByUserEmail(user.getEmail()) != null &&  !old_mail.equalsIgnoreCase(new_mail)) {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.CONFLICT, "Cette adresse email existe déja ");
 		}
 		else {
 			
 			return EntityResponse.generateResponse("User "+user.getUsername()+" a été mis a jour ", HttpStatus.OK, 
-				userService.updateInfo(user) );
+				userService.updateInfo(user, userService.findCurrentUser().getEmail() ) );
 		}
 	}
 	
@@ -137,7 +139,10 @@ public class AdminAccessController {
 	@PutMapping("profil/update/{id}")
 	public ResponseEntity<Object> updateProfileId(@PathVariable Long id, @Valid @RequestBody User user){
 		
-		if(userService.findByUserEmail(user.getEmail()) != null) {
+		String old_mail = userService.findCurrentUser().getEmail().toLowerCase();
+		String new_mail = user.getEmail().toLowerCase();
+		
+		if(userService.findByUserEmail(user.getEmail()) != null &&  !old_mail.equalsIgnoreCase(new_mail)) {
 			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.CONFLICT, "Cette adresse email existe déja ");
 		}
@@ -145,7 +150,6 @@ public class AdminAccessController {
 			
 			return EntityResponse.generateResponse("User "+user.getUsername()+" a été mis a jour ", HttpStatus.OK, 
 				userService.updateByid(id, user) );
-		
 		}
 	}
 	

@@ -76,11 +76,12 @@ public class JWTTokenUtil {
 	// 3. According to JWS Compact
 	// Serialization(https://tools.ietf.org/html/draft-ietf-jose-json-web-signature-41#section-3.1)
 	// compaction of the JWT to a URL-safe string
+	//Ancien valeur rbacspring
 	private String doGenerateToken(Map<String, Object> claims, String subject) {
 		Header header = Jwts.header();
 		header.setType("JWT");
 		return Jwts.builder().setHeader((Map<String, Object>) header).setClaims(claims).setSubject(subject)
-				.setIssuer("rbacspring").setIssuedAt(new Date(System.currentTimeMillis()))
+				.setIssuer("xks").setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
 				.signWith(SignatureAlgorithm.HS512, secret).compact();
 	}
@@ -90,7 +91,7 @@ public class JWTTokenUtil {
 		Header header = Jwts.header();
 		header.setType("JWT");
 		return Jwts.builder().setHeader((Map<String, Object>) header).setClaims(claims).setSubject(subject)
-				.setIssuer("rbackspring").setIssuedAt(new Date(System.currentTimeMillis()))
+				.setIssuer("xks").setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 2 * 1000))
 				.signWith(SignatureAlgorithm.HS512, secret).compact();
 	}
