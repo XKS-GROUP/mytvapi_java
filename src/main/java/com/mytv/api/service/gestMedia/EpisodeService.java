@@ -32,10 +32,7 @@ public class EpisodeService {
 	public Episode create(Episode g) {
 		//g.setSaisonRef(g.getIdSaison().getIdSaison());
 		
-	
 			return rep.save(g);
-		
-
 	}
 
 	public List<Episode> show() {

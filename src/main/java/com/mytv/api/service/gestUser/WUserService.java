@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.mytv.api.dto.UserDTO;
 import com.mytv.api.model.gestUser.Profil;
 import com.mytv.api.model.gestUser.Role;
 import com.mytv.api.model.gestUser.User;
@@ -252,6 +253,19 @@ public class WUserService implements UserDetailsService {
 		addUserRole(user, roleService.findRoleByName("ROLE_ADMIN"));
 
 		return user;
+	}
+	
+	public User updateInfo(UserDTO u) {
+		
+		 User OldUser = userRepository.findByEmail(u.getEmail());
+		
+		 OldUser.setUsername(u.getUsername());
+		 OldUser.setEmail(u.getEmail());
+		 OldUser.setImageUrl(u.getImageUrl());
+		 OldUser.setPhone(u.getPhone());
+		 
+		 
+		 return userRepository.save(OldUser);
 	}
 	
     public User updateByid(Long id, User u) {

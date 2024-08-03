@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mytv.api.dto.PasswordDTO;
+import com.mytv.api.dto.UserDTO;
 import com.mytv.api.model.gestUser.Role;
 import com.mytv.api.model.gestUser.SubscriptionType;
 import com.mytv.api.model.gestUser.User;
@@ -117,19 +118,35 @@ public class AdminAccessController {
 	//Update Current profil
 	@Tag(name = "ADMIN Profil")
 	@PutMapping("profil/update")
-	public ResponseEntity<Object> updateProfile(@Valid @RequestBody UserRegisterRequestDTO user){
-
-		return EntityResponse.generateResponse("User "+user.getUsername()+" a été mis a jour ", HttpStatus.OK, 
-				userService.updateUser(user) );
+	public ResponseEntity<Object> updateProfile(@Valid @RequestBody UserDTO user){
+		//UserRegisterRequestDTO
+		
+		if(userService.findByUserEmail(user.getEmail()) != null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.CONFLICT, "Cette adresse email existe déja ");
+		}
+		else {
+			
+			return EntityResponse.generateResponse("User "+user.getUsername()+" a été mis a jour ", HttpStatus.OK, 
+				userService.updateInfo(user) );
+		}
 	}
 	
 	//Update Current profil
 	@Tag(name = "ADMIN Profil")
 	@PutMapping("profil/update/{id}")
 	public ResponseEntity<Object> updateProfileId(@PathVariable Long id, @Valid @RequestBody User user){
-
-		return EntityResponse.generateResponse("User "+user.getUsername()+" a été mis a jour ", HttpStatus.OK, 
+		
+		if(userService.findByUserEmail(user.getEmail()) != null) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.CONFLICT, "Cette adresse email existe déja ");
+		}
+		else {
+			
+			return EntityResponse.generateResponse("User "+user.getUsername()+" a été mis a jour ", HttpStatus.OK, 
 				userService.updateByid(id, user) );
+		
+		}
 	}
 	
 	//Sup compte actuel

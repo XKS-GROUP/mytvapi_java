@@ -52,7 +52,15 @@ public class SettingService {
 	 */
 	public Setting add_setting(Setting r) {
 		
-		return settingRep.save(r);
+		if(settingRep.findAll().isEmpty()) {
+			return settingRep.save(r);
+		}
+		else {
+			//Je recupere l id u paramettre existant 
+			Long id = settingRep.findAll().get(0).getId();
+			r.setId(id);
+			return settingRep.save(r);
+		}
 	}
 	
 	public Setting show_byId_setting(Long id) {
@@ -88,7 +96,16 @@ public class SettingService {
 	 */
 	public AdmodSetting add_admod(AdmodSetting r) {
 		
-		return admodRep.save(r);
+		if(admodRep.findAll().isEmpty()) {
+			return admodRep.save(r);
+		}
+		else {
+			//Je recupere l id u paramettre existant 
+			Long id = admodRep.findAll().get(0).getId();
+			r.setId(id);
+			return admodRep.save(r);
+		}
+		
 	}
 	
 	public AdmodSetting show_byId_admod(Long id) {
@@ -124,7 +141,15 @@ public class SettingService {
 	 */
 	public R2cloudSetting add_R2Setting(R2cloudSetting r) {
 		
-		return R2Rep.save(r);
+		if(R2Rep.findAll().isEmpty()) {
+			return R2Rep.save(r);
+		}
+		else {
+			//Je recupere l id u paramettre existant 
+			Long id = R2Rep.findAll().get(0).getId();
+			r.setId(id);
+			return R2Rep.save(r);
+		}
 	}
 	
 	public R2cloudSetting show_byId_R2Setting(Long id) {
@@ -154,13 +179,21 @@ public class SettingService {
 	
 	/*
 	 * 
-	 * paramettre R2
+	 * paramettre FireBase
 	 * 
 	 * 
 	 */
 	public FirebaseSetting add_firebase(FirebaseSetting r) {
 		
-		return firebaseRep.save(r);
+		if(R2Rep.findAll().isEmpty()) {
+			return firebaseRep.save(r);
+		}
+		else {
+			//Je recupere l id u paramettre existant 
+			Long id = firebaseRep.findAll().get(0).getId();
+			r.setId(id);
+			return firebaseRep.save(r);
+		}
 	}
 	
 	public FirebaseSetting show_byId_firebase(Long id) {
@@ -196,7 +229,16 @@ public class SettingService {
 	
 	public SocialSetting add_Social(SocialSetting r) {
 		
-		return socialRep.save(r);
+		if(R2Rep.findAll().isEmpty()) {
+			return socialRep.save(r);
+		}
+		else {
+			//Je recupere l id u paramettre existant 
+			Long id = socialRep.findAll().get(0).getId();
+			r.setId(id);
+			return socialRep.save(r);
+		}
+		
 	}
 	
 	
@@ -235,7 +277,15 @@ public class SettingService {
 	
 	public TmdbSetting add_TMDB(TmdbSetting r) {
 		
-		return tmdbRep.save(r);
+		if(tmdbRep.findAll().isEmpty()) {
+			return tmdbRep.save(r);
+		}
+		else {
+			//Je recupere l id u paramettre existant 
+			Long id = tmdbRep.findAll().get(0).getId();
+			r.setId(id);
+			return tmdbRep.save(r);
+		}
 	}
 	
 	

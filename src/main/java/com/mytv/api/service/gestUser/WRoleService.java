@@ -2,8 +2,8 @@ package com.mytv.api.service.gestUser;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ import jakarta.transaction.Transactional;
 @Service
 @Transactional
 public class WRoleService {
-	private static final Logger LOG = LoggerFactory.getLogger(WRoleService.class);
+	//private static final Logger LOG = LoggerFactory.getLogger(WRoleService.class);
 
 	@Autowired
 	private IRoleRepository roleReposiroty;
@@ -39,7 +39,7 @@ public class WRoleService {
 	public String delete(Long id) {
 		roleReposiroty.deleteById(id);
 
-		return "supp";
+		return "";
 	}
 
 }

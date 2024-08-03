@@ -1741,8 +1741,6 @@ public class MediaController {
 				.filter( e -> e.getName().contains(episode.getName()) )
 				.toList().size();
 		
-		System.out.println("le total est de : "+nb);
-		
 		if(nb>0) {
 			
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Pour cette saison ce nom existe déja");

@@ -26,7 +26,6 @@ import com.mytv.api.aws.FolderService;
 import com.mytv.api.aws.MetadataService;
 import com.mytv.api.aws.MetadataServiceImpl;
 import com.mytv.api.dto.FileMetaDTO;
-import com.mytv.api.dto.FolderDTO;
 import com.mytv.api.security.EntityResponse;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
