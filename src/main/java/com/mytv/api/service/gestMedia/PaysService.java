@@ -57,9 +57,9 @@ public class PaysService {
 		return rep.findByName(name);
 	}
 	
-	public List<Pays> findBynamecontain(String name) {
+	public Page<Pays> findBynamecontain(String name, Pageable p) {
 		
-		return rep.findByNameContaining(name);
+		return rep.findByNameContaining(name, p);
 	}
 
 	public Optional<Pays> showById(final Long id) {

@@ -421,11 +421,11 @@ public class CommonFunction {
 		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, true);
 	}
 	
-	public ResponseEntity<Object> findPays(String name) {
+	public ResponseEntity<Object> findPays(String name, Pageable p) {
 
 		
 
-		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, paysService.findBynamecontain(name));
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, paysService.findBynamecontain(name, p));
 	}
 
 	/*

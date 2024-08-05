@@ -463,8 +463,7 @@ public class MediaController {
 			@RequestParam String s,
 			Pageable p){
 		
-			return  fnc.findPays(s);
-		
+			return  fnc.findPays(s, p);
 		
 	}
 	

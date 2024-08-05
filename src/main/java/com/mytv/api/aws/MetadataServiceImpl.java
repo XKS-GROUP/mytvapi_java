@@ -68,6 +68,8 @@ public class MetadataServiceImpl implements MetadataService {
 			throw new IllegalStateException("Cannot upload empty file");
 		}
 
+        
+        
         Map<String, String> metadata = new HashMap<>();
         metadata.put("Content-Type", file.getContentType());
         metadata.put("Content-Length", String.valueOf(file.getSize()));
