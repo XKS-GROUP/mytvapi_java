@@ -185,7 +185,7 @@ public class SettingService {
 	 */
 	public FirebaseSetting add_firebase(FirebaseSetting r) {
 		
-		if(R2Rep.findAll().isEmpty()) {
+		if(firebaseRep.findAll().isEmpty()) {
 			return firebaseRep.save(r);
 		}
 		else {
@@ -229,7 +229,7 @@ public class SettingService {
 	
 	public SocialSetting add_Social(SocialSetting r) {
 		
-		if(R2Rep.findAll().isEmpty()) {
+		if(socialRep.findAll().isEmpty()) {
 			return socialRep.save(r);
 		}
 		else {

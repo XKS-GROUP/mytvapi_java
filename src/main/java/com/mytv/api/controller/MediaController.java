@@ -1735,16 +1735,27 @@ public class MediaController {
 	@PostMapping(path="episodes/create")
 	public ResponseEntity<Object> createE(
 			@Valid @RequestBody Episode episode) {
-
+    	
+    	//controle du nom de l episode 
 		int nb = repEpisode.findByIdSaison(episode.getIdSaison())
 				.stream()
 				.filter( e -> e.getName().contains(episode.getName()) )
+				.toList().size();
+		
+		//Controle du numero de l episode 
+		int nbEp = repEpisode.findByNumero(episode.getNumero())
+				.stream()
+				.filter( e -> e.getNumero() == episode.getNumero() )
 				.toList().size();
 		
 		if(nb>0) {
 			
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Pour cette saison ce nom existe déja");
 			
+		}
+		else if (nbEp>0) {
+			
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Pour cette saison ce numero existe déja");
 		}
 		else{
 			

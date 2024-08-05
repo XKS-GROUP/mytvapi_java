@@ -266,6 +266,14 @@ public class AWSController {
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, metaImplService.listFolder(dossier, p) );
     }
 	
+	//Rechercher un dossier
+	@Tag(name = "R2-CLOUDFLARE-FOLDER")
+    @GetMapping("r2/folder/search/{value}")
+    public ResponseEntity<Object> searchFolder( @RequestParam(required = false) String s) {
+		
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, folderService.showbynameC(s));
+    }
+	
 	//Afficher dossier par id
 	@Tag(name = "R2-CLOUDFLARE-FOLDER")
     @GetMapping("r2/folder/{id}")

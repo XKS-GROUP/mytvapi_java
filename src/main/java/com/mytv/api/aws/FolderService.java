@@ -1,6 +1,7 @@
 package com.mytv.api.aws;
 
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,12 @@ public class FolderService {
 	public Optional<Folder> showbyname(String nom) {
 		
 		return rep.findByName(nom);
+		
+	}
+	
+	public List<Folder> showbynameC(String nom) {
+		
+		return rep.findByNameContaining(nom);
 		
 	}
 	

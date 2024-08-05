@@ -22,5 +22,6 @@ public interface EpisodeRepository extends  JpaRepository<Episode, Long> {
 	Page<Episode> findByNameContainingOrOverviewContaining(String nom, String desc, Pageable p);
 	List<Episode> findByNameContainingOrOverviewContaining(String nom, String desc);
 	Episode findByName(String name);
+	List<Episode> findByNumero(int numero);
 
 }
