@@ -250,7 +250,9 @@ public class AdminAccessController {
 	@PutMapping("users/update/{idUser}")
 	public ResponseEntity<Object> userUpdate(@PathVariable Long idUser,@Valid @RequestBody UserDTO u){
 		
-		String old_mail = userService.findCurrentUser().getEmail().toLowerCase();
+		//String old_mail = userService.findCurrentUser().getEmail().toLowerCase();
+		
+		String old_mail = userService.findById(idUser).getEmail().toLowerCase();
 		String new_mail = u.getEmail().toLowerCase();
 		
 		if(userService.findByUserEmail(u.getEmail()) != null &&  !old_mail.equalsIgnoreCase(new_mail)) {
@@ -259,8 +261,7 @@ public class AdminAccessController {
 		}
 		else {
 			
-			return EntityResponse.generateResponse("Suppression d un abonnement", HttpStatus.OK,
-					userService.updateByidUsrDTO(idUser, u));
+			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, userService.updateByidUsrDTO(idUser, u));
 		
 		}
 	}
