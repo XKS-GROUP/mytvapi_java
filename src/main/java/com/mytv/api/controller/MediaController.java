@@ -458,7 +458,7 @@ public class MediaController {
 	}
 
 	@Tag(name = "Pays")
-	@GetMapping("pays/search/{value}")
+	@GetMapping("pays/search/")
 	public ResponseEntity<Object> paysSearch(
 			@RequestParam String s,
 			Pageable p){
@@ -1750,7 +1750,7 @@ public class MediaController {
 				.filter( e -> e.getNumero() == episode.getNumero() )
 				.toList().size();
 		
-		if(nb>0) {
+		if(nb>0 ) {
 			
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, Map.of("name","Pour cette saison ce nom existe déja"));
 			
@@ -1771,8 +1771,36 @@ public class MediaController {
 			@PathVariable Long id,
 			@Valid @RequestBody Episode episode){
 
+    	
+    	
+		Episode old_Ep = repEpisode.findById(id).get();
 		//Save du tout
-		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, episodeService.upadte(id, episode));
+    	
+    	//controle du nom de l episode 
+    			int nb = repEpisode.findByIdSaison(episode.getIdSaison())
+    					.stream()
+    					.filter( e -> e.getName().contains(episode.getName()) )
+    					.toList().size();
+    			
+    			//Controle du numero de l episode 
+    			int nbEp = repEpisode.findByNumero(episode.getNumero())
+    					.stream()
+    					.filter( e -> e.getNumero() == episode.getNumero() )
+    					.toList().size();
+    			
+    			if(nb>0 && !old_Ep.getName().contains(episode.getName())) {
+    				
+    				return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, Map.of("name","Pour cette saison ce nom existe déja"));
+    				
+    			}
+    			else if (nbEp>0 && old_Ep.getNumero() != episode.getNumero()) {
+    				
+    				return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, Map.of("numero","Pour cette saison ce numero existe déja") );
+    			}
+    			else{
+    				
+    				return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, episodeService.upadte(id, episode));
+		}
 
 	}
     

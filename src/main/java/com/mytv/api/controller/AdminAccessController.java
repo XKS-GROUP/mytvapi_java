@@ -90,7 +90,6 @@ public class AdminAccessController {
 			return EntityResponse.generateResponse("ATTENTION ", HttpStatus.CONFLICT, "Ce mot de passe ne correspond pas a votre ancien mot de passe ");
 			
 		}
-		
 		else {
 			
 			request.setNew_password(new_pwd);

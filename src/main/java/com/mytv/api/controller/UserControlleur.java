@@ -120,7 +120,6 @@ public class UserControlleur {
 	@PostMapping("profile/create")
 	public ResponseEntity<Object> createProfil(@Valid @RequestBody Profil p){
 		
-		System.out.println(" NOM ++ "+p.getProfilName());
 		int lim = profilRep.findByUtilisateur(userService.findCurrentUser()).size();
 		
 		if(lim == 4) {
