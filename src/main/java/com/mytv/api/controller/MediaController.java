@@ -1,6 +1,8 @@
 package com.mytv.api.controller;
 
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -1750,12 +1752,12 @@ public class MediaController {
 		
 		if(nb>0) {
 			
-			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Pour cette saison ce nom existe déja");
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, Map.of("name","Pour cette saison ce nom existe déja"));
 			
 		}
 		else if (nbEp>0) {
 			
-			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Pour cette saison ce numero existe déja");
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, Map.of("numero","Pour cette saison ce numero existe déja") );
 		}
 		else{
 			
