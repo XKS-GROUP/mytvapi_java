@@ -276,6 +276,19 @@ public class WUserService implements UserDetailsService {
 
 		return userRepository.save(old);
 	}
+    
+    
+    public User updateByidUsrDTO(Long id, UserDTO u) {
+
+		User old = userRepository.findById(id).get();
+		old.setId(id);
+		old.setEmail(u.getEmail());
+		old.setImageUrl(u.getImageUrl());
+		old.setValide(u.isValide());
+		old.setUsername(u.getUsername());
+
+		return userRepository.save(old);
+	}
 	
     public User updateUser(UserRegisterRequestDTO userRequestDTO) {
 

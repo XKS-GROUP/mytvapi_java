@@ -1,5 +1,7 @@
 package com.mytv.api.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -124,7 +126,7 @@ public class AdminAccessController {
 		
 		if(userService.findByUserEmail(user.getEmail()) != null &&  !old_mail.equalsIgnoreCase(new_mail)) {
 			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.CONFLICT, "Cette adresse email existe déja ");
+			return EntityResponse.generateResponse("ATTENTION ", HttpStatus.CONFLICT, Map.of("email","Cette adresse email existe déja "));
 		}
 		else {
 			
@@ -143,7 +145,7 @@ public class AdminAccessController {
 		
 		if(userService.findByUserEmail(user.getEmail()) != null &&  !old_mail.equalsIgnoreCase(new_mail)) {
 			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.CONFLICT, "Cette adresse email existe déja ");
+			return EntityResponse.generateResponse("ATTENTION ", HttpStatus.CONFLICT, Map.of("email"," Cette adresse email existe déja "));
 		}
 		else {
 			
@@ -246,9 +248,21 @@ public class AdminAccessController {
 
 	@Tag(name = "User")
 	@PutMapping("users/update/{idUser}")
-	public ResponseEntity<Object> userUpdate(@PathVariable Long idUser,@Valid @RequestBody User u){
-		return EntityResponse.generateResponse("Suppression d un abonnement", HttpStatus.OK,
-				userService.updateByid(idUser, u));
+	public ResponseEntity<Object> userUpdate(@PathVariable Long idUser,@Valid @RequestBody UserDTO u){
+		
+		String old_mail = userService.findCurrentUser().getEmail().toLowerCase();
+		String new_mail = u.getEmail().toLowerCase();
+		
+		if(userService.findByUserEmail(u.getEmail()) != null &&  !old_mail.equalsIgnoreCase(new_mail)) {
+			
+			return EntityResponse.generateResponse("ATTENTION ", HttpStatus.CONFLICT,  Map.of("email","Cette adresse email existe déja "));
+		}
+		else {
+			
+			return EntityResponse.generateResponse("Suppression d un abonnement", HttpStatus.OK,
+					userService.updateByidUsrDTO(idUser, u));
+		
+		}
 	}
 
 	//List des utilisateur non valide
