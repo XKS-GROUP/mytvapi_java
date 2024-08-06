@@ -1,6 +1,10 @@
 package com.mytv.api.model.util;
 
 import java.util.List;
+import java.util.Map;
+
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -38,9 +42,10 @@ public class Slider {
 	@Column(nullable = true  ,columnDefinition = "TEXT")
 	private String video_path;
 	
-	private Long position;
+	@JdbcTypeCode(SqlTypes.JSON)
+	private Map<String, Integer> position;
 	
-	private List<Long> targetPage;
+	//private List<String> targetPage;
 	
 	private Long typeMedia;
 	
