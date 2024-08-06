@@ -69,12 +69,13 @@ public class SliderService {
 
 	public Page<Slider> showByPage(Long pg, Pageable p){
 		
-		 PageImpl<Slider> res = new PageImpl<Slider>(rep.findAll().stream()
-				   .filter(s -> s.getTargetPage().contains(pg)).toList() 
-				   , p
-				   , rep.findAll().size());
+		    //PageImpl<Slider> res = new PageImpl<Slider>(rep.findAll().stream()
+				//   .filter(s -> s.getTargetPage().contains(pg)).toList() 
+				  // , p
+				  // , rep.findAll().size());
 			
-			return res;
+			return null;
+			
 		
 	};
 	
