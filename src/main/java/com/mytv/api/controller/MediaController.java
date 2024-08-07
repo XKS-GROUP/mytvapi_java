@@ -102,9 +102,6 @@ public class MediaController {
     @Autowired
     private SaisonService saisonService;
     
-    
-
-    
     /*
      * Collection Podcast
      * 
