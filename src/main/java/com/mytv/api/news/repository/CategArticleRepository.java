@@ -7,4 +7,6 @@ import com.mytv.api.news.model.CategArticle;
 
 public interface CategArticleRepository extends JpaRepository<CategArticle, Long> {
 
+	
+	CategArticle findByName(String title);
 }

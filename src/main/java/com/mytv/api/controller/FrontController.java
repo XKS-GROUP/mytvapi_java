@@ -2284,6 +2284,66 @@ public class FrontController {
     	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.top());
 		
 	}
+    
+    
+
+	/*
+	 * 
+	 * CRUD CATEG ARTICLE
+	 * 
+	 * 
+	 * 
+	 */
+	@Tag(name = "Categorie Article")
+	@GetMapping("articles/categ")
+	public ResponseEntity<Object> cat_article_show(){
+
+		return fnc.cat_article_show();
+	}
+    
+    @Tag(name = "Categorie Article")
+	@GetMapping("articles/categ/all/")
+	public ResponseEntity<Object> cat_article_show_Paging(Pageable p){
+
+    	return fnc.cat_article_show_Paging(p);
+	}
+    
+    @Tag(name = "Categorie Article")
+	@GetMapping("articles/categ/{id}")
+	public ResponseEntity<Object> cat_article_show_byid(@PathVariable long id){
+
+    	return fnc.cat_article_show_byid(id);
+	}
+    
+    
+    /*
+	 * 
+	 * CRUD ARTICLE
+	 * 
+	 * 
+	 * 
+	 */
+    
+	@Tag(name = "Article")
+	@GetMapping("articles")
+	public ResponseEntity<Object> article_show(){
+
+		return fnc.article_show();
+	}
+    
+    @Tag(name = "Article")
+	@GetMapping("articles/all/")
+	public ResponseEntity<Object> article_show_Paging(Pageable p){
+
+    	return fnc.article_show_Paging(p);
+	}
+    
+    @Tag(name = "Article")
+	@GetMapping("articles/{id}")
+	public ResponseEntity<Object> article_show_byid(@PathVariable long id){
+
+    	return fnc.cat_article_show_byid(id);
+	}
 
 }
 

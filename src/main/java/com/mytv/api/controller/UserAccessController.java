@@ -150,19 +150,20 @@ public class UserAccessController {
 	@PostMapping("admin-register")
 	public ResponseEntity<Object> register(@Valid @RequestBody UserRegisterRequestDTO request){
 
-
-		System.out.println(passwordEncoder.encode(request.getPassword()));
 		if(userService.findByUsername(request.getUsername()) != null){
 
-			return EntityResponse.generateResponse("le nom "+request.getUsername()+" existe deja ", HttpStatus.CONFLICT, "username : ce nom existe déja ");
+			return EntityResponse.generateResponse("le nom "+request.getUsername()+" existe deja ", HttpStatus.CONFLICT,
+					Map.of("username", " ce nom existe déja "));
 		}
 		else if (userService.findByUserEmail(request.getEmail()) !=null) {
 
-			return EntityResponse.generateResponse("Cette adresse email "+request.getEmail()+"existe deja ", HttpStatus.CONFLICT, "email : cette adresse email existe déja");
+			return EntityResponse.generateResponse("Cette adresse email "+request.getEmail()+"existe deja ", HttpStatus.CONFLICT, 
+					Map.of("email", " cette adresse email existe déja"));
 		}
 		else if (userService.findByUserPhone(request.getPhone()) !=null) {
 
-			return EntityResponse.generateResponse("Ce numéro de telephone "+request.getPhone()+" existe deja ", HttpStatus.CONFLICT, " phone : ce numéro de téléphone existe déja");
+			return EntityResponse.generateResponse("Ce numéro de telephone "+request.getPhone()+" existe deja ", HttpStatus.CONFLICT, 
+					Map.of("phone", " ce numéro de téléphone existe déja"));
 		}
 		else {
 
@@ -181,11 +182,13 @@ public class UserAccessController {
 
 		if(userService.findByUsername(request.getUsername()) != null){
 
-			return EntityResponse.generateResponse("le nom "+request.getUsername()+" existe deja ", HttpStatus.BAD_REQUEST, "username : ce nom existe déja ");
+			return EntityResponse.generateResponse("le nom "+request.getUsername()+" existe deja ", HttpStatus.BAD_REQUEST, 
+					Map.of("username", " ce nom existe déja "));
 		}
 		else if (userService.findByUserEmail(request.getEmail()) !=null) {
 
-			return EntityResponse.generateResponse("Cette adresse email "+request.getEmail()+"existe deja ", HttpStatus.BAD_REQUEST, "email : cette adresse email existe déja");
+			return EntityResponse.generateResponse("Cette adresse email "+request.getEmail()+"existe deja ", HttpStatus.BAD_REQUEST, 
+					Map.of("email", " cette adresse email existe déja"));
 		}
 		
 		/*else if (userService.findByUserPhone(request.getPhone()) !=null) {
@@ -197,7 +200,8 @@ public class UserAccessController {
 
 			request.setPassword(passwordEncoder.encode(request.getPassword()));
 			
-			return EntityResponse.generateResponse("Abonée enregistre avec succès", HttpStatus.CREATED, userService.createAbonne(request));
+			return EntityResponse.generateResponse("Abonée enregistre avec succès", HttpStatus.CREATED, 
+					userService.createAbonne(request));
 		}
 
 
@@ -218,7 +222,8 @@ public class UserAccessController {
 
 	    if(email.isEmpty()) {
 
-	    	return EntityResponse.generateResponse("Champ email vide", HttpStatus.BAD_REQUEST, "le champ email ne puis être vide");
+	    	return EntityResponse.generateResponse("Champ email vide", HttpStatus.BAD_REQUEST, 
+	    			Map.of("email", "le champ email ne puis être vide"));
 	    }
 
 
@@ -268,7 +273,8 @@ public class UserAccessController {
 
 		    if(email.isEmpty()) {
 
-		    	return EntityResponse.generateResponse("Champ email vide", HttpStatus.BAD_REQUEST, "le champ email ne puis être vide");
+		    	return EntityResponse.generateResponse("Champ email vide", HttpStatus.BAD_REQUEST, 
+		    			Map.of("email", "le champ email ne puis être vide"));
 		    }
 
 

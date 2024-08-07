@@ -721,7 +721,8 @@ public class MediaController {
 
 		if(radioService.findByName(r.getName()) != null) {
 			
-			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Cette radio existe déja");
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
+					Map.of("name",  "Cette radio existe déja"));
 		}
 		else {
 			
@@ -807,7 +808,8 @@ public class MediaController {
 
 		if(liveService.findByName(lt.getName()) != null) {
 			
-			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Cette chaine tv existe déja");
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
+					Map.of("name", "Cette chaine tv existe déja"));
 		}
 		else {
 			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, liveService.create(lt));
@@ -942,7 +944,8 @@ public class MediaController {
 		
 		if(catLiveRep.findByName(u.getName()) != null) {
 			
-			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Cette categorie de lıve existe déja");
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
+					Map.of("name", "Cette categorie de lıve existe déja"));
 		}
 		else {
 			
@@ -1044,7 +1047,8 @@ public class MediaController {
 
 		if(lService.findByName(p.getName()) != null) {
 			
-			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Ce live existe déja");
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
+					Map.of("name", "Ce live existe déja"));
 		}
 		else {
 			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, lService.create(p) );
@@ -1155,7 +1159,8 @@ public class MediaController {
 
 			if(podcastservice.findByName(p.getName()) != null) {
 				
-				return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Ce Podcast existe déja");
+				return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
+						Map.of("name", "Ce Podcast existe déja"));
 			}
 			else {
 				return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, podcastservice.create(p) );
@@ -1281,7 +1286,8 @@ public class MediaController {
 
 		if(filmService.findByName(film.getName()) != null) {
 			
-			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Ce film existe déja");
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
+					Map.of("name", "Ce film existe déja"));
 		}
 		else {
 			//Save du tout
@@ -1399,7 +1405,8 @@ public class MediaController {
 			
 		if(serieService.findByName(serie.getName()) != null) {
 			
-			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Cette serie existe déja");
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
+					Map.of("name", "Cette serie existe déja"));
 		}
 		else {
 			//Save du tout
@@ -1473,7 +1480,8 @@ public class MediaController {
 		
 		if(serieService.showById(id).isEmpty()) {
 			
-			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Vous tentez de supprimer une serie qui n'existe pas");
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST,
+					"Vous tentez de supprimer une serie qui n'existe pas");
 		}
 		else {
 			
@@ -1748,12 +1756,14 @@ public class MediaController {
 		
 		if(nb>0 ) {
 			
-			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, Map.of("name","Pour cette saison ce nom existe déja"));
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
+					Map.of("name","Pour cette saison ce nom existe déja"));
 			
 		}
 		else if (nbEp>0) {
 			
-			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, Map.of("numero","Pour cette saison ce numero existe déja") );
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
+					Map.of("numero","Pour cette saison ce numero existe déja") );
 		}
 		else{
 			
@@ -1786,12 +1796,14 @@ public class MediaController {
     			
     			if(nb>0 && !old_Ep.getName().contains(episode.getName())) {
     				
-    				return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, Map.of("name","Pour cette saison ce nom existe déja"));
+    				return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
+    						Map.of("name","Pour cette saison ce nom existe déja"));
     				
     			}
     			else if (nbEp>0 && old_Ep.getNumero() != episode.getNumero()) {
     				
-    				return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, Map.of("numero","Pour cette saison ce numero existe déja") );
+    				return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
+    						Map.of("numero","Pour cette saison ce numero existe déja") );
     			}
     			else{
     				

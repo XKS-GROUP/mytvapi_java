@@ -1,6 +1,7 @@
 package com.mytv.api.news.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,6 +31,16 @@ public class CategArticleService {
 	public List<CategArticle> show(){
 		
 		return rep.findAll();
+	}
+	
+	public CategArticle findbyname(String name){
+		
+		return rep.findByName(name);
+	}
+	
+	public Optional<CategArticle> showById(Long id){
+		
+		return rep.findById(id);
 	}
 
 	public Page<CategArticle> showByPage(Pageable p){

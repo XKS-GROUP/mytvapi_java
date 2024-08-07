@@ -22,6 +22,11 @@ public class ArticleService {
 		return rep.save(a);
 	}
 	
+	public Article findByTitle(String title) {
+		
+		return rep.findByTitle(title);
+	}
+	
 	public Article update(Long id, Article a) {
 		
 		a.setId(id);

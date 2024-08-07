@@ -1,5 +1,7 @@
 package com.mytv.api.service;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -26,6 +28,10 @@ import com.mytv.api.model.ressource.Actor;
 import com.mytv.api.model.ressource.Director;
 import com.mytv.api.model.ressource.Language;
 import com.mytv.api.model.ressource.Pays;
+import com.mytv.api.news.model.Article;
+import com.mytv.api.news.model.CategArticle;
+import com.mytv.api.news.service.ArticleService;
+import com.mytv.api.news.service.CategArticleService;
 import com.mytv.api.repository.ActorRepository;
 import com.mytv.api.repository.CatPodcastRepository;
 import com.mytv.api.repository.CategorieLiveRepository;
@@ -55,6 +61,12 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class CommonFunction {
 
+	@Autowired
+	ArticleService artService;
+	
+	@Autowired
+	CategArticleService catArtService;
+	
 	@Autowired
 	private RadioService radioService;
 
@@ -145,7 +157,7 @@ public class CommonFunction {
 
 		if (colPodRep.findByName(nom) != null) {
 
-			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Cette collection existe déja");
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, Map.of("name", "Cette collection existe déja"));
 			
 		} else {
 			
@@ -344,7 +356,8 @@ public class CommonFunction {
 		
 		if (langService.showByName(u.getName()) != null) {
 
-			return EntityResponse.generateResponse("ATTENTION ", HttpStatus.BAD_REQUEST, "Cette langue existe déja");
+			return EntityResponse.generateResponse("ATTENTION ", HttpStatus.BAD_REQUEST, Map.of("name","Cette langue existe déja"));
+			
 		} else {
 
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.CREATED, langService.create(u));
@@ -374,7 +387,7 @@ public class CommonFunction {
 		
 		if (paysService.findByname(u.getName()) != null) {
 
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.CONFLICT, "Ce nom de pays existe déja ");
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.BAD_REQUEST, Map.of("name","Ce nom de pays existe déja "));
 		} else {
 
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.CREATED, paysService.create(u));
@@ -438,7 +451,7 @@ public class CommonFunction {
 
 		if (!genreService.findByNameContain(g.getName()).isEmpty()) {
 
-			return EntityResponse.generateResponse("ATTENTION", HttpStatus.CONFLICT, "Ce genre existe déja");
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, Map.of("name","Ce genre existe déja"));
 		}
 
 		else {
@@ -508,7 +521,7 @@ public class CommonFunction {
 
 		if (catlrRep.findByName(u.getName()) != null) {
 
-			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Cette categorie existe déja");
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, Map.of("name","Cette categorie existe déja"));
 		} else {
 
 			return EntityResponse.generateResponse("Succes", HttpStatus.CREATED, catLrService.create(u));
@@ -567,7 +580,7 @@ public class CommonFunction {
 		if (catPodRep.findByName(u.getName()) != null) {
 
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST,
-					"Cette categorie de podcast existe déja");
+					Map.of("name", "Cette categorie de podcast existe déja"));
 		} else {
 
 			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, catpodService.create(u));
@@ -647,7 +660,7 @@ public class CommonFunction {
 
 		if (radioService.findByName(r.getName()) != null) {
 
-			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Cette radio existe déja");
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, Map.of("name", "Cette radio existe déja"));
 		} else {
 
 			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, radioService.create(r));
@@ -712,7 +725,7 @@ public class CommonFunction {
 
 		if (liveService.findByName(lt.getName()) != null) {
 
-			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Cette chaine tv existe déja");
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, Map.of("name", "Cette chaine tv existe déja"));
 		} else {
 			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, liveService.create(lt));
 		}
@@ -802,7 +815,7 @@ public class CommonFunction {
 		if (catLiveRep.findByName(u.getName()) != null) {
 
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST,
-					"Cette categorie de lıve existe déja");
+					Map.of("name", "Cette categorie de lıve existe déja"));
 		} else {
 
 			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, categliveService.create(u));
@@ -875,7 +888,7 @@ public class CommonFunction {
 
 		if (lService.findByName(p.getName()) != null) {
 
-			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Ce live existe déja");
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, Map.of("name",  "Ce live existe déja"));
 		} else {
 			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, lService.create(p));
 		}
@@ -953,7 +966,7 @@ public class CommonFunction {
 
 		if (podcastservice.findByName(p.getName()) != null) {
 
-			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Ce Podcast existe déja");
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, Map.of("name", "Ce Podcast existe déja"));
 		} else {
 			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, podcastservice.create(p));
 		}
@@ -1041,7 +1054,7 @@ public class CommonFunction {
 
 		if (filmService.findByName(film.getName()) != null) {
 
-			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Ce film existe déja");
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, Map.of("name", "Ce film existe déja"));
 		} else {
 			// Save du tout
 			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, filmService.create(film));
@@ -1132,7 +1145,7 @@ public class CommonFunction {
 
 		if (serieService.findByName(serie.getName()) != null) {
 
-			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Cette serie existe déja");
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, Map.of("name", "Cette serie existe déja"));
 		} else {
 			// Save du tout
 			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, serieService.create(serie));
@@ -1185,7 +1198,7 @@ public class CommonFunction {
 		if (serieService.showById(id).isEmpty()) {
 
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST,
-					"Vous tentez de supprimer une serie qui n'existe pas");
+					Map.of("name", "Vous tentez de supprimer une serie qui n'existe pas"));
 		} else {
 
 			serieService.delete(id);
@@ -1404,5 +1417,98 @@ public class CommonFunction {
 		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, true);
 	}
 	// FIN EPISODE
+	
+	
+	/*
+	 * 
+	 * CRUD CATEG ARTICLE
+	 * 
+	 */
+	public ResponseEntity<Object> cat_article_show(){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catArtService.show());
+	}
+    
+	public ResponseEntity<Object> cat_article_show_Paging(Pageable p){
+
+    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catArtService.showByPage(p));
+	}
+    
+	public ResponseEntity<Object> cat_article_show_byid(long id){
+
+    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catArtService.showById(id));
+	}
+    
+	public ResponseEntity<Object> cat_article_create(CategArticle ca){
+
+    	
+    	if(catArtService.findbyname(ca.getName()) != null) {
+    		
+    		return EntityResponse.generateResponse("ATTENTION ", HttpStatus.BAD_REQUEST, Map.of("name", "ce nom existe déja"));
+    	}
+    	else {
+    		
+    		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catArtService.create(ca));
+    	}
+    	
+    	
+    }
+    
+	public ResponseEntity<Object> cat_article_update( Long id, CategArticle a){
+
+    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catArtService.update(id, a));
+		
+	}
+	
+	public ResponseEntity<Object> cat_article_delete( Long id){
+    	catArtService.delete(id);
+    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, "Categorie supprimé" );
+	}
+	
+	
+	/*
+	 * 
+	 * CRUD ARTICLE
+	 * 
+	 */
+	
+	public ResponseEntity<Object> article_show(){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, artService.show());
+	}
+	
+	public ResponseEntity<Object> article_show_Paging(Pageable p){
+
+    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, artService.showPage(p));
+	}
+    
+	public ResponseEntity<Object> article_show_byid(long id){
+
+    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, artService.showById(id));
+	}
+    
+	public ResponseEntity<Object> article_create(Article a){
+		
+		if(artService.findByTitle(a.getTitle()) != null) {
+    		
+    		return EntityResponse.generateResponse("ATTENTION ", HttpStatus.BAD_REQUEST, Map.of("title", "ce titre existe déja"));
+    	}
+    	else {
+    		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, artService.create(a));
+    		
+    	}
+    	
+    }
+    
+	public ResponseEntity<Object> article_update( Long id, Article a){
+
+    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, artService.update(id, a));
+		
+	}
+
+	public ResponseEntity<Object> article_delete( Long id){
+    	artService.delete(id);
+    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, "Article supprimé" );
+	}
 
 }
