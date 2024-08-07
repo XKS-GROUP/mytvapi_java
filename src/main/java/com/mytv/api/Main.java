@@ -25,6 +25,7 @@ public class Main {
 	PasswordEncoder passwordEncoder() {
 		
 		return new BCryptPasswordEncoder();
+		
 	}
 
 }

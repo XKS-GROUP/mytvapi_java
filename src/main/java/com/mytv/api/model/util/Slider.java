@@ -1,6 +1,5 @@
 package com.mytv.api.model.util;
 
-import java.util.List;
 import java.util.Map;
 
 import org.hibernate.annotations.JdbcTypeCode;
@@ -47,7 +46,7 @@ public class Slider {
 	
 	//private List<String> targetPage;
 	
-	private Long typeMedia;
+	private String typeMedia;
 	
 	private Long idMediaref;
 	

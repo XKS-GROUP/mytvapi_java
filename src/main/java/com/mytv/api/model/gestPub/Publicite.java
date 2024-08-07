@@ -1,6 +1,9 @@
 package com.mytv.api.model.gestPub;
 
-import java.util.List;
+import java.util.Map;
+
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,7 +11,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -44,10 +46,11 @@ public class Publicite {
 	@Column(nullable = true  ,columnDefinition = "TEXT")
 	private String targetUrl;
 	
-	@NotEmpty(message = "ce champ ne peut etre vide, une page cible est requise ")
-	List<Long> pageTarget;
+	//@NotEmpty(message = "ce champ ne peut etre vide, une page cible est requise ")
+	//List<Long> pageTarget;
 	
-	Long position;
+	@JdbcTypeCode(SqlTypes.JSON)
+	private Map<String, Integer> position;
 	
 	@NotNull(message = "un satus par defaut doit être attribuer")
 	@Column(nullable = false, columnDefinition = "boolean default true")
