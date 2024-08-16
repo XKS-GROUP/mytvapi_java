@@ -47,6 +47,9 @@ public class NewsController {
 	 * 
 	 * 
 	 */
+	
+	
+	
 	@Tag(name = "Categorie Article")
 	@GetMapping("articles/categ")
 	public ResponseEntity<Object> cat_article_show(){
@@ -90,6 +93,7 @@ public class NewsController {
     	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, "Categorie supprimé" );
 	}
 	
+    
 	
 	/*
 	 * 
@@ -98,6 +102,9 @@ public class NewsController {
 	 * 
 	 * 
 	 */
+    
+    
+    
     
 	@Tag(name = "Article")
 	@GetMapping("articles")

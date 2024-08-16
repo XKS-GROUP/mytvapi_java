@@ -55,6 +55,7 @@ public class ArticleService {
 	public void delete(Long id) {
 		
 		rep.deleteById(id);
+		
 	}
 	
 }

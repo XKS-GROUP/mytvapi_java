@@ -46,6 +46,9 @@ public class Live {
 	
 	private String liveUrl;
 	
+	@Column(columnDefinition = "TEXT")
+	private String trailler;
+	
 	@Column(columnDefinition = "boolean default false")
 	Boolean accessFree;
 	

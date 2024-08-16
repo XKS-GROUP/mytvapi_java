@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @ComponentScan
 public class Main {
 
+	
 	public static void main(String[] args) {
 		SpringApplication.run(Main.class, args);
 	}
@@ -25,7 +26,6 @@ public class Main {
 	PasswordEncoder passwordEncoder() {
 		
 		return new BCryptPasswordEncoder();
-		
 	}
 
 }
