@@ -6,11 +6,17 @@ import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 
+import com.mytv.api.model.ressource.Language;
+import com.mytv.api.model.ressource.Pays;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -39,6 +45,9 @@ public class Radio {
 	
 	@Column(nullable = false)
 	List <Long> categories = new ArrayList<>();
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idcat",  cascade = CascadeType.ALL)
+	List<CategoryRL> list_categories = new ArrayList<>();
 
 	@NotBlank(message = "ce champ ne peut etre vide, une description est requise pour une radio")
 	@Column(columnDefinition = "TEXT", nullable = false)
@@ -67,9 +76,15 @@ public class Radio {
 	@Column(nullable = false)
 	List<Long>  country = new ArrayList<>();
 	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idPays",  cascade = CascadeType.ALL)
+	List<Pays> list_country = new ArrayList<>();
+	
 	@NotNull(message = "ce champ ne peut etre vide, une radio doit avoir au moins une langue")
 	@Column(nullable = false)
 	List<Long>  langue = new ArrayList<>();
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idLang",  cascade = CascadeType.ALL)
+	List<Language> list_langues;
 	
 	@CreatedDate
 	Date addDate;

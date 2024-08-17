@@ -840,7 +840,6 @@ public class MediaController {
 		}
 		else if(pays == null && genre == null && pays == null) {
 			
-			
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,   liveService.showPage(p));
 		}
 		else if(pays != null && langue != null && genre != null) {

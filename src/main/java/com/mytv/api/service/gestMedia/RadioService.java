@@ -12,6 +12,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.mytv.api.model.gestMedia.Radio;
+import com.mytv.api.repository.CategoryLrRepository;
+import com.mytv.api.repository.LangRepository;
+import com.mytv.api.repository.PaysRepository;
 import com.mytv.api.repository.RadioRepository;
 
 import lombok.AllArgsConstructor;
@@ -24,10 +27,22 @@ public class RadioService {
 
 	@Autowired
 	private RadioRepository radioRep;
-
+	
+	@Autowired
+	private PaysRepository rep_pays;
+	
+	@Autowired
+	private CategoryLrRepository rep_categ;
+	
+	@Autowired
+	private LangRepository rep_langue;
 
 	public Radio create(Radio g) {
 
+		g.setList_langues(rep_langue.findAllById(g.getLangue()));
+		g.setList_country(rep_pays.findAllById(g.getCountry()));
+		g.setList_categories(rep_categ.findAllById(g.getCategories()));
+		
 		return radioRep.save(g);
 
 	}
@@ -118,15 +133,14 @@ public class RadioService {
 		
 	};
 	
-	public Radio upadte(final Long id, Radio u) {
+	public Radio upadte( Long id, Radio u) {
 
-		Radio old = radioRep.findById(id).get();
+		u.setIdRadio(id);
+		u.setList_langues(rep_langue.findAllById(u.getLangue()));
+		u.setList_country(rep_pays.findAllById(u.getCountry()));
+		u.setList_categories(rep_categ.findAllById(u.getCategories()));
 
-		old = u;
-
-		old.setIdRadio(id);
-
-		return radioRep.save(old);
+		return radioRep.save(u);
 	}
 
 	public Boolean delete(Long id) {

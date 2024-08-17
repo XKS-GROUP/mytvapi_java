@@ -8,11 +8,16 @@ import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 
+import com.mytv.api.model.ressource.Language;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -46,6 +51,9 @@ public class Podcast {
 	
 	List <Long> idPodcasteur;
 	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "id",  cascade = CascadeType.ALL)
+	List<Podcasteur> list_podcasteur;
+	
 	@NotBlank(message="ce champ ne peut etre vide, un podcast doit forcement avoir une description")
 	String overview;
 
@@ -58,6 +66,9 @@ public class Podcast {
 
 	@NotNull(message="Un podcast doit forcement avoir une categori")
 	List <Long> categories = new ArrayList<>();
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "id",  cascade = CascadeType.ALL)
+	List<PodcastGenre> list_categories = new ArrayList<>();
 
 	@Column(nullable = false, columnDefinition = "boolean default true")
 	boolean status;
@@ -74,6 +85,9 @@ public class Podcast {
 	@NotNull(message = "ce champ ne peut etre vide, au moins une langue est requise")
 	@Column(nullable = false)
 	List<Long>  langue = new ArrayList<>();
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idLang",  cascade = CascadeType.ALL)
+	List<Language> list_langues;
 	
 	@CreatedDate
 	Date addDate;

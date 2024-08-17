@@ -1,5 +1,6 @@
 package com.mytv.api.service.gestMedia;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -9,8 +10,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import com.mytv.api.dto.LiveTvDTO;
 import com.mytv.api.model.gestMedia.LiveTv;
+import com.mytv.api.repository.CategoryLrRepository;
+import com.mytv.api.repository.LangRepository;
 import com.mytv.api.repository.LiveTvRepository;
+import com.mytv.api.repository.PaysRepository;
 
 import lombok.AllArgsConstructor;
 
@@ -22,26 +28,107 @@ public class LiveTvSetvice {
 
 	@Autowired
 	private LiveTvRepository rep;
-
+	
+	@Autowired
+	private PaysRepository rep_pays;
+	
+	@Autowired
+	private CategoryLrRepository rep_categ;
+	
+	@Autowired
+	private LangRepository rep_langue;
 
 	public LiveTv create(LiveTv g) {
 
+		//
+		g.setLangues(rep_langue.findAllById(g.getLangue()));
+		g.setPays(rep_pays.findAllById(g.getCountry()));
+		g.setListCateg(rep_categ.findAllById(g.getCountry()));
+		
 		return rep.save(g);
 
 	}
-
+	
 	public List<LiveTv> show() {
+		
+		List<LiveTv> l = rep.findAll();
+		
+		for(int i =0; i <  rep.findAll().size(); i++) {
+			
+			  l.get(i).setLangues(rep_langue.findAllById(l.get(i).getLangue()));
+			  l.get(i).setPays(rep_pays.findAllById(l.get(i).getCountry()));
+			  l.get(i).setListCateg(rep_categ.findAllById(l.get(i).getIdcategories()));
+			}
+		
+		
+		return l;
+	}
+	
+	public LiveTvDTO dto(LiveTv l) {
+		
+		LiveTvDTO dto = new LiveTvDTO();
+		
+		dto.setAccessFree(l.getAccessFree());
+		dto.setAddDate(l.getAddDate());
+		dto.setCountry(l.getCountry());
+		dto.setIdcategories(l.getIdcategories());
+		dto.setIdLiveTv(l.getIdLiveTv());
+		dto.setLangue(l.getLangue());
+		
+		
+		dto.setName(l.getName());
+		dto.setOverview(l.getOverview());
+		
+		dto.setStatus(l.isStatus());
+		dto.setSvr1_url(l.getSvr1_url());
+		dto.setSvr2_url(l.getSvr2_url());
+		dto.setSvr3_url(l.getSvr3_url());
+		dto.setTop(l.isTop());
+		dto.setTop10(l.isTop10());
+		dto.setTvEmbedCode(l.getTvEmbedCode());
+		dto.setTvLogo_path(l.getTvLogo_path());
+		
+		
 
-		return rep.findAll();
+		dto.setLangues(rep_langue.findAllById(l.getLangue()));
+		dto.setPays(rep_pays.findAllById(l.getCountry()));
+		dto.setListCateg(rep_categ.findAllById(l.getCountry()));
+		return dto;
+		
+	}
+	
+	public List<LiveTvDTO> showDTO() {
+		
+		List<LiveTvDTO> livetv = new ArrayList<>();
+		
+		for(int i =0; i <  rep.findAll().size(); i++) {
+			
+		  livetv.add(dto(rep.findAll().get(i)));
+		}
+		
+		return livetv;
 	}
 	
 	public Page<LiveTv> showPage(Pageable p) {
 
-		return rep.findAll(p);
+		Page<LiveTv> l = rep.findAll(p);
+		
+		l.get().toList().forEach(  
+				
+				lv -> {
+					lv.setLangues(rep_langue.findAllById(lv.getLangue()));
+					lv.setPays(rep_pays.findAllById(lv.getLangue()));
+					lv.setListCateg(rep_categ.findAllById(lv.getIdcategories()));
+				}
+				
+		);
+		
+		return l;//return rep.findAll(p);
+		
 	}
 
 	public Page<LiveTv> search(String val, Pageable p) {
-
+		show();
 		return rep.findByNameContainingOrOverviewContaining(val, val, p);
 		
 	}
@@ -53,7 +140,7 @@ public class LiveTvSetvice {
 		old = u;
 
 		old.setIdLiveTv(id);
-
+		show();
 		return rep.save(old);
 	}
 

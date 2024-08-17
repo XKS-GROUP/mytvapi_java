@@ -1,44 +1,29 @@
-package com.mytv.api.model.gestMedia;
+package com.mytv.api.dto;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 
+import com.mytv.api.model.gestMedia.CategoryRL;
 import com.mytv.api.model.ressource.Language;
 import com.mytv.api.model.ressource.Pays;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-
-@Entity
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
-@Getter
-@Setter
-public class LiveTv implements Serializable {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 850357098919235230L;
+public class LiveTvDTO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -87,22 +72,18 @@ public class LiveTv implements Serializable {
 	@Column(nullable = false)
 	List<Long>  langue = new ArrayList<>();
 	
+	
+	List<Language> langues;
+	List<Pays> pays;
+	List<CategoryRL> listCateg;
+	
 	@CreatedDate
 	Date addDate;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idLang",  cascade = CascadeType.ALL)
-	List<Language> langues = new ArrayList<>();
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idPays",  cascade = CascadeType.ALL)
-	List<Pays> pays = new ArrayList<>();
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idcat",  cascade = CascadeType.ALL)
-	List<CategoryRL> listCateg = new ArrayList<>();
 	
 	@Column(nullable = true, columnDefinition = "boolean default false")
 	boolean top10;
 	
 	@Column(nullable = true, columnDefinition = "boolean default false")
 	boolean top;
-	
+
 }
