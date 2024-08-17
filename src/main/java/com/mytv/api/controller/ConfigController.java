@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mytv.api.model.gestUser.Role;
 import com.mytv.api.security.EntityResponse;
-import com.mytv.api.service.gestUser.WRoleService;
-import com.mytv.api.service.gestUser.WUserService;
+import com.mytv.api.user.model.Role;
+import com.mytv.api.user.service.WRoleService;
+import com.mytv.api.user.service.WUserService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

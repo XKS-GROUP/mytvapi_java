@@ -12,9 +12,9 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.mytv.api.model.gestUser.User;
-import com.mytv.api.repository.JwtRepository;
-import com.mytv.api.service.gestUser.WUserService;
+import com.mytv.api.user.model.User;
+import com.mytv.api.user.repository.JwtRepository;
+import com.mytv.api.user.service.WUserService;
 
 import io.jsonwebtoken.SignatureException;
 import jakarta.servlet.FilterChain;

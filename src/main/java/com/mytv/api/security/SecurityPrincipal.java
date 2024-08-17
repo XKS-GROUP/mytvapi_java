@@ -11,8 +11,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import com.mytv.api.model.gestUser.User;
-import com.mytv.api.service.gestUser.WUserService;
+import com.mytv.api.user.model.User;
+import com.mytv.api.user.service.WUserService;
 
 
 @Service

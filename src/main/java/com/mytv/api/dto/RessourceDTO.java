@@ -3,11 +3,11 @@ package com.mytv.api.dto;
 import java.io.Serializable;
 import java.util.List;
 
-import com.mytv.api.model.gestMedia.CatPodcast;
-import com.mytv.api.model.gestMedia.CategoryRL;
-import com.mytv.api.model.gestMedia.Genre;
-import com.mytv.api.model.ressource.Language;
-import com.mytv.api.model.ressource.Pays;
+import com.mytv.api.podcast.CatPodcast;
+import com.mytv.api.ressource.model.CategoryRL;
+import com.mytv.api.ressource.model.Genre;
+import com.mytv.api.ressource.model.Language;
+import com.mytv.api.ressource.model.Pays;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

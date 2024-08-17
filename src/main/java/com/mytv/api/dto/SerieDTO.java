@@ -8,10 +8,10 @@ import org.springframework.data.annotation.CreatedDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.mytv.api.model.gestMedia.Genre;
-import com.mytv.api.model.gestMedia.Saison;
-import com.mytv.api.model.ressource.Actor;
-import com.mytv.api.model.ressource.Director;
+import com.mytv.api.intervenant.Actor;
+import com.mytv.api.intervenant.Director;
+import com.mytv.api.ressource.model.Genre;
+import com.mytv.api.saison.model.Saison;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

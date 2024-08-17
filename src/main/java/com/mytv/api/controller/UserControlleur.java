@@ -14,15 +14,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mytv.api.model.gestUser.Profil;
-import com.mytv.api.model.gestUser.User;
-import com.mytv.api.model.ressource.Pays;
-import com.mytv.api.repository.JwtRepository;
-import com.mytv.api.repository.ProfilRepository;
-import com.mytv.api.repository.UserRepository;
+import com.mytv.api.ressource.model.Pays;
 import com.mytv.api.security.EntityResponse;
-import com.mytv.api.service.gestUser.ProfilService;
-import com.mytv.api.service.gestUser.WUserService;
+import com.mytv.api.user.model.Profil;
+import com.mytv.api.user.model.User;
+import com.mytv.api.user.repository.JwtRepository;
+import com.mytv.api.user.repository.ProfilRepository;
+import com.mytv.api.user.repository.UserRepository;
+import com.mytv.api.user.service.ProfilService;
+import com.mytv.api.user.service.WUserService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;

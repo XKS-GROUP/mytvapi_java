@@ -18,16 +18,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mytv.api.dto.PasswordDTO;
 import com.mytv.api.dto.UserDTO;
-import com.mytv.api.model.gestUser.Role;
-import com.mytv.api.model.gestUser.SubscriptionType;
-import com.mytv.api.model.gestUser.User;
-import com.mytv.api.repository.JwtRepository;
 import com.mytv.api.security.EntityResponse;
 import com.mytv.api.security.UserRegisterRequestDTO;
-import com.mytv.api.service.gestUser.SubscriptionServiceImplement;
-import com.mytv.api.service.gestUser.SubscriptionTypeServiceImplement;
-import com.mytv.api.service.gestUser.WRoleService;
-import com.mytv.api.service.gestUser.WUserService;
+import com.mytv.api.subscription.service.SubscriptionServiceImplement;
+import com.mytv.api.subscription.service.SubscriptionTypeServiceImplement;
+import com.mytv.api.user.model.Role;
+import com.mytv.api.user.model.SubscriptionType;
+import com.mytv.api.user.model.User;
+import com.mytv.api.user.repository.JwtRepository;
+import com.mytv.api.user.service.WRoleService;
+import com.mytv.api.user.service.WUserService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;

@@ -2,7 +2,7 @@ package com.mytv.api.security;
 
 import java.io.Serializable;
 
-import com.mytv.api.model.gestUser.User;
+import com.mytv.api.user.model.User;
 
 
 public class AuthenticationResponse implements Serializable{

@@ -6,9 +6,9 @@ import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 
-import com.mytv.api.model.gestMedia.CategoryRL;
-import com.mytv.api.model.ressource.Language;
-import com.mytv.api.model.ressource.Pays;
+import com.mytv.api.ressource.model.CategoryRL;
+import com.mytv.api.ressource.model.Language;
+import com.mytv.api.ressource.model.Pays;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;

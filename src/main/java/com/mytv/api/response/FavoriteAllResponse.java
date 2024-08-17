@@ -3,12 +3,12 @@ package com.mytv.api.response;
 import java.io.Serializable;
 import java.util.List;
 
+import com.mytv.api.film.model.FavFilm;
+import com.mytv.api.livetv.model.FavLiveTv;
+import com.mytv.api.podcast.model.FavPodcast;
+import com.mytv.api.radio.model.FavRadio;
+import com.mytv.api.serie.model.FavSerie;
 
-import com.mytv.api.model.FavFilm;
-import com.mytv.api.model.FavLiveTv;
-import com.mytv.api.model.FavPodcast;
-import com.mytv.api.model.FavRadio;
-import com.mytv.api.model.FavSerie;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

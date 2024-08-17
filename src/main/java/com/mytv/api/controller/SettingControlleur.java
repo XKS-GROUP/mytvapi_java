@@ -12,16 +12,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mytv.api.model.util.AdmodSetting;
-import com.mytv.api.model.util.FirebaseSetting;
-import com.mytv.api.model.util.R2cloudSetting;
-import com.mytv.api.model.util.Setting;
-import com.mytv.api.model.util.SmtpSetting;
-import com.mytv.api.model.util.SocialSetting;
-import com.mytv.api.model.util.TmdbSetting;
 import com.mytv.api.security.EntityResponse;
-import com.mytv.api.service.util.SettingService;
-import com.mytv.api.service.util.SmtpService;
+import com.mytv.api.setting.model.AdmodSetting;
+import com.mytv.api.setting.model.FirebaseSetting;
+import com.mytv.api.setting.model.R2cloudSetting;
+import com.mytv.api.setting.model.Setting;
+import com.mytv.api.setting.model.SmtpSetting;
+import com.mytv.api.setting.model.SocialSetting;
+import com.mytv.api.setting.model.TmdbSetting;
+import com.mytv.api.util.SettingService;
+import com.mytv.api.util.SmtpService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
