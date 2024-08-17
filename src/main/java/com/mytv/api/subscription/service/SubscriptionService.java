@@ -2,7 +2,7 @@ package com.mytv.api.subscription.service;
 
 import java.util.List;
 
-import com.mytv.api.user.model.Subscription;
+import com.mytv.api.subscription.model.Subscription;
 
 
 public interface SubscriptionService {

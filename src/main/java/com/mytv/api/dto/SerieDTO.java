@@ -8,8 +8,8 @@ import org.springframework.data.annotation.CreatedDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.mytv.api.intervenant.Actor;
-import com.mytv.api.intervenant.Director;
+import com.mytv.api.intervenant.model.Actor;
+import com.mytv.api.intervenant.model.Director;
 import com.mytv.api.ressource.model.Genre;
 import com.mytv.api.saison.model.Saison;
 

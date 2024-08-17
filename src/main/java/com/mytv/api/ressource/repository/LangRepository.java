@@ -12,4 +12,5 @@ import com.mytv.api.ressource.model.Language;
 public interface LangRepository extends  JpaRepository<Language, Long>{
 	List<Language> findByName(String name, Pageable p);
 	Language findByName(String name);
+	Language findBySlug(String name);
 }

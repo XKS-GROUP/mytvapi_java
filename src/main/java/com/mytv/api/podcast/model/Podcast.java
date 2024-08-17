@@ -8,9 +8,9 @@ import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 
-import com.mytv.api.intervenant.Podcasteur;
+import com.mytv.api.intervenant.model.Podcasteur;
+import com.mytv.api.podcastcateg.model.CatPodcast;
 import com.mytv.api.ressource.model.Language;
-import com.mytv.api.ressource.model.PodcastGenre;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -69,8 +69,8 @@ public class Podcast {
 	@NotNull(message="Un podcast doit forcement avoir une categori")
 	List <Long> categories = new ArrayList<>();
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "id",  cascade = CascadeType.ALL)
-	List<PodcastGenre> list_categories = new ArrayList<>();
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idCatPod",  cascade = CascadeType.ALL)
+	List<CatPodcast> list_categories = new ArrayList<>();
 
 	@Column(nullable = false, columnDefinition = "boolean default true")
 	boolean status;

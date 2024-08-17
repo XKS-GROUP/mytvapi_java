@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 
-import com.mytv.api.user.model.SubscriptionType;
+import com.mytv.api.subscription.model.SubscriptionType;
 
 @AutoConfiguration
 public interface SubscriptionTypeService {

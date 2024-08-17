@@ -48,6 +48,13 @@ public class LangueService {
 		return langRep.findByName(name);
 
 	}
+	
+	public Language showBySlug(String slug) {
+
+		return langRep.findBySlug(slug);
+
+	}
+	
 	public Optional<Language> showById(final Long id) {
 
 		return langRep.findById(id);

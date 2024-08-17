@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mytv.api.subscription.model.SubscriptionType;
 import com.mytv.api.subscription.repository.SubscriptionTypeRepository;
-import com.mytv.api.user.model.SubscriptionType;
 
 import lombok.AllArgsConstructor;
 

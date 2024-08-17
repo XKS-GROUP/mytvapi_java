@@ -8,10 +8,10 @@ import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mytv.api.user.NotificationService;
 import com.mytv.api.user.model.User;
 import com.mytv.api.user.model.Validation;
 import com.mytv.api.user.repository.ValidationRepository;
+import com.mytv.api.util.service.NotificationService;
 
 import lombok.AllArgsConstructor;
 

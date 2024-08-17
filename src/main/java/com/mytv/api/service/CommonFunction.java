@@ -14,12 +14,12 @@ import com.mytv.api.episode.model.Episode;
 import com.mytv.api.episode.service.EpisodeService;
 import com.mytv.api.film.model.Film;
 import com.mytv.api.film.service.ServiceFilm;
-import com.mytv.api.intervenant.Actor;
-import com.mytv.api.intervenant.ActorRepository;
-import com.mytv.api.intervenant.Director;
-import com.mytv.api.intervenant.DirectorRepository;
-import com.mytv.api.intervenant.PodcasterService;
-import com.mytv.api.intervenant.Podcasteur;
+import com.mytv.api.intervenant.model.Actor;
+import com.mytv.api.intervenant.model.Director;
+import com.mytv.api.intervenant.model.Podcasteur;
+import com.mytv.api.intervenant.repository.ActorRepository;
+import com.mytv.api.intervenant.repository.DirectorRepository;
+import com.mytv.api.intervenant.service.PodcasterService;
 import com.mytv.api.live.model.Live;
 import com.mytv.api.live.service.LiveService;
 import com.mytv.api.livetv.model.LiveTv;
@@ -28,13 +28,13 @@ import com.mytv.api.news.model.Article;
 import com.mytv.api.news.model.CategArticle;
 import com.mytv.api.news.service.ArticleService;
 import com.mytv.api.news.service.CategArticleService;
-import com.mytv.api.podcast.CatPodcast;
-import com.mytv.api.podcast.CatPodcastRepository;
-import com.mytv.api.podcast.CatPodcastService;
-import com.mytv.api.podcast.ColPodcast;
-import com.mytv.api.podcast.CollectionPodcastRepository;
 import com.mytv.api.podcast.model.Podcast;
 import com.mytv.api.podcast.service.PodcastService;
+import com.mytv.api.podcastCollecton.model.ColPodcast;
+import com.mytv.api.podcastCollecton.repository.CollectionPodcastRepository;
+import com.mytv.api.podcastcateg.model.CatPodcast;
+import com.mytv.api.podcastcateg.repository.CatPodcastRepository;
+import com.mytv.api.podcastcateg.service.CatPodcastService;
 import com.mytv.api.radio.model.Radio;
 import com.mytv.api.radio.service.RadioService;
 import com.mytv.api.ressource.model.CategorieLive;
@@ -358,7 +358,13 @@ public class CommonFunction {
 
 			return EntityResponse.generateResponse("ATTENTION ", HttpStatus.BAD_REQUEST, Map.of("name","Cette langue existe déja"));
 			
-		} else {
+		}
+		else if (langService.showBySlug(u.getSlug()) != null) {
+
+			return EntityResponse.generateResponse("ATTENTION ", HttpStatus.BAD_REQUEST, Map.of("slug","Cette valeur existe déja"));
+			
+		}
+		else {
 
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.CREATED, langService.create(u));
 		}

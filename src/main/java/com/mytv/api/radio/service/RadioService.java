@@ -36,6 +36,19 @@ public class RadioService {
 	
 	@Autowired
 	private LangRepository rep_langue;
+	
+	public void refresh() {
+		
+	       List<Radio> l = radioRep.findAll();
+			
+			l.forEach(  
+					
+					p -> {
+						p.setList_langues(rep_langue.findAllById(p.getLangue()));
+						p.setList_categories(rep_categ.findAllById(p.getCategories()));
+					}
+			);
+		}
 
 	public Radio create(Radio g) {
 
@@ -48,12 +61,12 @@ public class RadioService {
 	}
 
 	public List<Radio> show() {
-
+		refresh();
 		return radioRep.findAll();
 	}
 	
 	public Page<Radio> showPage(Pageable p) {
-
+		
 		return radioRep.findAll(p);
 	}
 	

@@ -3,7 +3,7 @@ package com.mytv.api.dto;
 import java.io.Serializable;
 import java.util.List;
 
-import com.mytv.api.podcast.CatPodcast;
+import com.mytv.api.podcastcateg.model.CatPodcast;
 import com.mytv.api.ressource.model.CategoryRL;
 import com.mytv.api.ressource.model.Genre;
 import com.mytv.api.ressource.model.Language;

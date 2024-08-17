@@ -11,14 +11,11 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.mytv.api.intervenant.PodcasterRepository;
-import com.mytv.api.podcast.CatPodcastRepository;
+import com.mytv.api.intervenant.repository.PodcasterRepository;
 import com.mytv.api.podcast.model.Podcast;
 import com.mytv.api.podcast.repository.PodcastRepository;
-import com.mytv.api.ressource.model.PodcastGenre;
-import com.mytv.api.ressource.repository.CategoryLrRepository;
+import com.mytv.api.podcastcateg.repository.CatPodcastRepository;
 import com.mytv.api.ressource.repository.LangRepository;
-import com.mytv.api.ressource.repository.PaysRepository;
 
 import lombok.AllArgsConstructor;
 
@@ -40,29 +37,49 @@ public class PodcastService {
 	@Autowired
 	private LangRepository rep_langue;
 
-	public Podcast create(Podcast g) {
+	public Podcast create(Podcast p) {
 
-		g.setList_langues(rep_langue.findAllById(g.getLangue()));
-		//g.setList_categories(rep_categ.findAllById(g.getCategories()));
+		p.setList_langues(rep_langue.findAllById(p.getLangue()));
+		p.setList_podcasteur(rep_podcasteur.findAllById(p.getIdPodcasteur()));
+		p.setList_categories(rep_categ.findAllById(p.getCategories()));
 		
-		
-		return rep.save(g);
+		return rep.save(p);
 
 	}
 
-	public List<Podcast> show() {
-
-		return rep.findAll();
+	/*
+	 * 
+	 * cette fonction a pour objectif de rafraichir la liste des different objets renvoyees
+	 * 
+	 */
+	public void refresh() {
 		
+       List<Podcast> l = rep.findAll();
+		
+		l.forEach(  
+				
+				p -> {
+					p.setList_langues(rep_langue.findAllById(p.getLangue()));
+					p.setList_podcasteur(rep_podcasteur.findAllById(p.getIdPodcasteur()));
+					p.setList_categories(rep_categ.findAllById(p.getCategories()));
+				}
+				
+		);
+	}
+	
+	
+	public List<Podcast> show() {
+		refresh();
+		return rep.findAll();
 	}
 
 	public Page<Podcast> showPage(Pageable p) {
-
+		refresh();
 		return rep.findAll(p);
 	}
 	
 	public Page<Podcast> showByCateg(Long id, Pageable p){
-		
+		refresh();
 		PageImpl<Podcast> res = new PageImpl<Podcast>(rep.findAll().stream()
 				   .filter(f -> f.getCategories().contains(id)).toList() 
 				   , p
@@ -73,7 +90,7 @@ public class PodcastService {
 	};
 	
 	public Page<Podcast> showByLang(Long id, Pageable p){
-		
+		refresh();
 		PageImpl<Podcast> res = new PageImpl<Podcast>(rep.findAll().stream()
 				   .filter(f -> f.getLangue().contains(id)).toList() 
 				   , p
@@ -84,7 +101,7 @@ public class PodcastService {
 	};
 	
 	public Page<Podcast> showByGenreAndLang(Long genre , Long langue, Pageable p){
-		
+		refresh();
 		PageImpl<Podcast> res = new PageImpl<Podcast>(rep.findAll().stream()
 				   .filter(f -> f.getCategories().contains(genre))
 				   .filter(f -> f.getLangue().contains(langue))
@@ -99,12 +116,12 @@ public class PodcastService {
 	//public List<Podcast> 
 	
 	public Page<Podcast> search(String n, Pageable p) {
-
+		refresh();
 		return rep.findByNameContainingOrOverviewContaining(n, n, p);
 	}
 	
 	public Page<Podcast> searchByCateg(String n, Long categ, Pageable p) {
-
+		refresh();
 		PageImpl<Podcast> res = new PageImpl<Podcast>(
 				rep.findByNameContainingOrOverviewContaining(n, n).stream()
                 .filter(f -> f.getCategories().contains(categ))
@@ -116,7 +133,7 @@ public class PodcastService {
 	}
 	
 	public Page<Podcast> searchByLang(String n,Long langue, Pageable p) {
-
+		refresh();
 		PageImpl<Podcast> res = new PageImpl<Podcast>(
 				rep.findByNameContainingOrOverviewContaining(n, n).stream()
                 .filter(f -> f.getLangue().contains(langue))
@@ -128,7 +145,7 @@ public class PodcastService {
 	}
 	
 	public Page<Podcast> searchByGenreAndLang(String val, Long genre , Long langue, Pageable p){
-		
+		refresh();
 		PageImpl<Podcast> res = new PageImpl<Podcast>(
 				    rep.findByNameContainingOrOverviewContaining(val, val).stream()
 				   .filter(f -> f.getCategories().contains(genre))
@@ -141,12 +158,14 @@ public class PodcastService {
 		
 	};
 
-	public Podcast upadte(final Long id, Podcast u) {
+	public Podcast upadte(final Long id, Podcast p) {
 
+		p.setIdPodcast(id);
+		p.setList_langues(rep_langue.findAllById(p.getLangue()));
+		p.setList_podcasteur(rep_podcasteur.findAllById(p.getIdPodcasteur()));
+		p.setList_categories(rep_categ.findAllById(p.getCategories()));
 
-		u.setIdPodcast(id);
-
-		return rep.save(u);
+		return rep.save(p);
 	}
 
 	public Boolean delete(Long id) {
