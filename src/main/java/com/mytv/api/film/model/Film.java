@@ -7,12 +7,19 @@ import java.util.List;
 import org.springframework.data.annotation.CreatedDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mytv.api.intervenant.model.Actor;
+import com.mytv.api.intervenant.model.Director;
+import com.mytv.api.ressource.model.Genre;
+import com.mytv.api.ressource.model.Language;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -76,6 +83,9 @@ public class Film {
 	String poster;
 
 	List<Long> Langue = new ArrayList<Long>();
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idLang",  cascade = CascadeType.ALL)
+	List<Language> list_langues;
 
 	String popularity;
 
@@ -127,9 +137,15 @@ public class Film {
 	Boolean adult;
 
 	List <Long> acteurList = new ArrayList<>();
-
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idActor",  cascade = CascadeType.ALL)
+	List<Actor> acteurs;
+	
 	List <Long> directorList = new ArrayList<>();
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idDirector",  cascade = CascadeType.ALL)
+	List<Director> directors;
 
 	List<Long> genreList = new ArrayList<>();
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idGenre",  cascade = CascadeType.ALL)
+	List<Genre> genres;
 
 }

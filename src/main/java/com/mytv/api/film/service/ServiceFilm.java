@@ -14,7 +14,10 @@ import org.springframework.stereotype.Service;
 import com.mytv.api.film.model.Film;
 import com.mytv.api.film.model.FilmGenre;
 import com.mytv.api.film.repository.FilmRepository;
+import com.mytv.api.intervenant.repository.ActorRepository;
+import com.mytv.api.intervenant.repository.DirectorRepository;
 import com.mytv.api.ressource.model.Genre;
+import com.mytv.api.ressource.repository.LangRepository;
 import com.mytv.api.ressource.service.GenreService;
 import com.mytv.api.serie.repository.FilmGenreRepository;
 import com.mytv.api.serie.repository.GenreRepository;
@@ -38,9 +41,24 @@ public class ServiceFilm {
 
 	@Autowired
 	GenreService genreService;
+	
+	@Autowired
+	private ActorRepository rep_actor;
+	
+	@Autowired
+	private DirectorRepository rep_dirs;
+	
+	@Autowired
+	private LangRepository rep_langue;
+	
 
 	public Film create(Film g) {
 
+			g.setActeurs(rep_actor.findAllById(g.getActeurList()));
+			g.setGenres(genreRep.findAllById(g.getGenreList()));
+			g.setDirectors(rep_dirs.findAllById(g.getDirectorList()));
+			g.setList_langues(rep_langue.findAllById(g.getLangue()));
+			
 			//Recuperation de la liste des genres
 			//Teste de chaque valeur, si il n existe pas ce genre sera creer
 			Film film = rep.save(g);
@@ -62,6 +80,11 @@ public class ServiceFilm {
 
 	public Film createFilm(Film g) {
 
+		
+			g.setActeurs(rep_actor.findAllById(g.getActeurList()));
+			g.setGenres(genreRep.findAllById(g.getGenreList()));
+			g.setDirectors(rep_dirs.findAllById(g.getDirectorList()));
+			g.setList_langues(rep_langue.findAllById(g.getLangue()));
 			//Recuperation de la liste des genres
 			//Teste de chaque valeur, si il n existe pas ce genre sera creer
 			Film film = rep.save(g);
@@ -144,8 +167,24 @@ public class ServiceFilm {
 
 	}
 
+	public void refresh() {
+		
+	       List<Film> l = rep.findAll();
+			
+			l.forEach(  
+					
+					g -> {
+						g.setActeurs(rep_actor.findAllById(g.getActeurList()));
+						g.setGenres(genreRep.findAllById(g.getGenreList()));
+						g.setDirectors(rep_dirs.findAllById(g.getDirectorList()));
+						g.setList_langues(rep_langue.findAllById(g.getLangue()));
+					}
+			);
+		}
+	
 	public List<Film> show() {
 
+		refresh();
 		return rep.findAll();
 	}
 
@@ -241,15 +280,15 @@ public class ServiceFilm {
 		
 	};
 
+	public Film upadte(final Long id, Film g) {
 
-	public Film upadte(final Long id, Film u) {
+		g.setIdFilm(id);
+		g.setActeurs(rep_actor.findAllById(g.getActeurList()));
+		g.setGenres(genreRep.findAllById(g.getGenreList()));
+		g.setDirectors(rep_dirs.findAllById(g.getDirectorList()));
+		g.setList_langues(rep_langue.findAllById(g.getLangue()));
 
-		Film old = rep.findById(id).get();
-
-		old = u;
-		old.setIdFilm(id);
-
-		return rep.save(old);
+		return rep.save(g);
 	}
 
 	public Boolean delete(Long id) {
@@ -270,6 +309,7 @@ public class ServiceFilm {
 		
 		return rep.findByName(name);
 	}
+	
 	public List<Film> top10(){
 		
 		return rep.findByTop10True();

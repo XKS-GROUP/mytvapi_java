@@ -10,7 +10,11 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.mytv.api.intervenant.repository.ActorRepository;
+import com.mytv.api.intervenant.repository.DirectorRepository;
 import com.mytv.api.ressource.model.Genre;
+import com.mytv.api.ressource.repository.LangRepository;
+import com.mytv.api.ressource.service.GenreService;
 import com.mytv.api.ressource.service.SerieGenre;
 import com.mytv.api.serie.model.Serie;
 import com.mytv.api.serie.repository.GenreRepository;
@@ -33,10 +37,25 @@ public class SerieService {
 	
 	@Autowired
 	SerieGenreRepository serieGenreRep;
+	
+	@Autowired
+	GenreService genreService;
+	
+	@Autowired
+	private ActorRepository rep_actor;
+	
+	@Autowired
+	private DirectorRepository rep_dirs;
+	
+	@Autowired
+	private LangRepository rep_langue;
 
 	public Serie create(Serie g) {
 		
-		
+		g.setActeurs(rep_actor.findAllById(g.getActeurList()));
+		g.setGenres(genreRep.findAllById(g.getGenreList()));
+		g.setDirectors(rep_dirs.findAllById(g.getDirectorList()));
+		g.setList_langues(rep_langue.findAllById(g.getLangue()));
 		//Recuperation de la liste des genres
 		//Teste de chaque valeur, si il n existe pas ce genre sera creer
 		Serie serie = rep.save(g);
@@ -55,8 +74,24 @@ public class SerieService {
 
 	}
 
+	public void refresh() {
+		
+	       List<Serie> l = rep.findAll();
+			
+			l.forEach(  
+					
+					g -> {
+						g.setActeurs(rep_actor.findAllById(g.getActeurList()));
+						g.setGenres(genreRep.findAllById(g.getGenreList()));
+						g.setDirectors(rep_dirs.findAllById(g.getDirectorList()));
+						g.setList_langues(rep_langue.findAllById(g.getLangue()));
+					}
+			);
+		}
+	
 	public List<Serie> show() {
 
+		refresh();
 		return rep.findAll();
 	}
 	
@@ -152,17 +187,14 @@ public class SerieService {
 			return res;
 	}
 
-	public Serie upadte(final Long id, Serie u) {
+	public Serie upadte(Long id, Serie g) {
 
-		
-		Serie old = rep.findById(id).get();
-
-		old = u;
-
-
-		old.setIdSerie(id);
-
-		return rep.save(old);
+		g.setIdSerie(id);
+		g.setActeurs(rep_actor.findAllById(g.getActeurList()));
+		g.setGenres(genreRep.findAllById(g.getGenreList()));
+		g.setDirectors(rep_dirs.findAllById(g.getDirectorList()));
+		g.setList_langues(rep_langue.findAllById(g.getLangue()));
+		return rep.save(g);
 	}
 
 	public Boolean delete(Long id) {
