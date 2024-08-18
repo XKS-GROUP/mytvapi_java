@@ -33,6 +33,10 @@ public class ReplayCollection {
 	@NotBlank(message = "Ce champ ne puis etre vide")
 	String name;
 	
+	@NotBlank(message = "ce champ ne peut etre vide, une description est requise pour un film")
+	@Column(nullable = false, columnDefinition = "TEXT")
+	String overview;
+	
 	@NotBlank(message = "Ce champ ne puis etre vide")
 	@Column(nullable = false, columnDefinition = "TEXT")
 	String cover;
@@ -42,5 +46,4 @@ public class ReplayCollection {
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "id",  cascade = CascadeType.ALL)
 	List<Intervenant> intervenants;
-	
 }

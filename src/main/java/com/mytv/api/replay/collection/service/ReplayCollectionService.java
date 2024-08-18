@@ -6,10 +6,16 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import com.mytv.api.replay.collection.model.ReplayCollection;
 import com.mytv.api.replay.collection.repository.ReplayCollectionRepository;
 
+import lombok.AllArgsConstructor;
+
+
+@Service
+@AllArgsConstructor
 public class ReplayCollectionService {
 
 	@Autowired
@@ -26,6 +32,15 @@ public class ReplayCollectionService {
 		return rep.findAll();
 	}
 	
+	public ReplayCollection showByName(String name) {
+
+		return rep.findByName(name);
+	}
+	
+	public List<ReplayCollection> showByNameC(String name) {
+
+		return rep.findByNameContaining(name);
+	}
 	
 	public Page<ReplayCollection> showPage(Pageable p) {
 
@@ -52,5 +67,9 @@ public class ReplayCollectionService {
 
 		return true;
 
+	}
+
+	public Page<ReplayCollection> findByNameOrOverviewContaining(String s, String s2, Pageable p) {
+		return rep.findByNameOrOverviewContaining(s, s, p);
 	}
 }

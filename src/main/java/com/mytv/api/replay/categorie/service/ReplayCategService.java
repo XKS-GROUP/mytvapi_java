@@ -47,11 +47,15 @@ public class ReplayCategService {
 
 		return rep.findByName(name, p);
 	}
+	
+	public ReplayCateg showByName(String name) {
+
+		return rep.findByName(name);
+	}
 
 	public ReplayCateg upadte(Long id, ReplayCateg u) {
 
 		u.setId(id);
-
 		return rep.save(u);
 	}
 

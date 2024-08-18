@@ -117,7 +117,6 @@ import lombok.AllArgsConstructor;
 @RestController
 @AllArgsConstructor
 @RequestMapping("api/v1/front/")
-
 @SecurityRequirement(name = "bearerAuth")
 public class FrontController {
 

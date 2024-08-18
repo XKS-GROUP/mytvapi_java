@@ -61,7 +61,7 @@ public class ReplayService {
 	public Page<Replay> showByCategorie(List<Long> ids, Pageable p){
 		
 		PageImpl<Replay> res = new PageImpl<Replay>(rep.findAll().stream()
-				   .filter(f -> f.getIdCategorie().containsAll(ids)).toList() 
+				   .filter(f -> f.getIdCategories().containsAll(ids)).toList() 
 				   , p
 				   , rep.findAll().size());
 			
@@ -74,7 +74,7 @@ public class ReplayService {
 		
 		PageImpl<Replay> res = new PageImpl<Replay>(
 				rep.findAll().stream()
-                .filter(f -> f.getIdCategorie().containsAll(c))
+                .filter(f -> f.getIdCategories().containsAll(c))
                 .filter(f -> f.getIdLangues().containsAll(l))
                 .collect(Collectors.toList())
 				   , p
@@ -111,7 +111,7 @@ public class ReplayService {
 
 		PageImpl<Replay> res = new PageImpl<Replay>(
 				rep.findByNameContainingOrOverviewContaining(val, val).stream()
-                .filter(f -> f.getIdCategorie().containsAll(langues))
+                .filter(f -> f.getIdCategories().containsAll(langues))
                 .collect(Collectors.toList())
 				   , p
 				   , rep.findAll().size());
@@ -124,7 +124,7 @@ public class ReplayService {
 		
 		PageImpl<Replay> res = new PageImpl<Replay>(
 				rep.findByNameContainingOrOverviewContaining(val, val).stream()
-                .filter(f -> f.getIdCategorie().containsAll(c))
+                .filter(f -> f.getIdCategories().containsAll(c))
                 .filter(f -> f.getIdLangues().containsAll(l))
                 .collect(Collectors.toList())
 				   , p
