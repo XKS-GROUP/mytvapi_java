@@ -40,6 +40,6 @@ public class ReplayCateg {
 	@Column(nullable = false, columnDefinition = "TEXT")
 	private String img_path;
 	
-	@ManyToMany(mappedBy = "categs")
+	@ManyToMany(mappedBy = "categories")
 	private List<Replay> replays ;
 }

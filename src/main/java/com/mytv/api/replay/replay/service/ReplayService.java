@@ -10,18 +10,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.mytv.api.intervenant.repository.ActorRepository;
-import com.mytv.api.intervenant.repository.DirectorRepository;
 import com.mytv.api.replay.categorie.repository.ReplayCategRepository;
-import com.mytv.api.replay.intervenant.repository.IntervenantRepository;
 import com.mytv.api.replay.replay.model.Replay;
 import com.mytv.api.replay.replay.repository.ReplayRepository;
-import com.mytv.api.ressource.model.Genre;
-import com.mytv.api.ressource.model.Language;
-import com.mytv.api.ressource.repository.LangRepository;
-import com.mytv.api.ressource.service.GenreService;
-import com.mytv.api.serie.repository.FilmGenreRepository;
-import com.mytv.api.serie.repository.GenreRepository;
 
 import lombok.AllArgsConstructor;
 
@@ -37,18 +28,12 @@ public class ReplayService {
 	@Autowired
 	ReplayCategRepository rep_categ;
 	
-	@Autowired
-	private IntervenantRepository rep_intervenant;
-	
-	@Autowired
-	private LangRepository rep_langue;
-	
-
 	public Replay create(Replay r) {
 
 		return rep.save(r);
 
 	}
+
 
 	public List<Replay> show() {
 
@@ -59,11 +44,13 @@ public class ReplayService {
 
 		return rep.findAll(p);
 	}
-/*
-	public Page<Replay> showByLangue(List <Language> id, Pageable p){
+
+	public Page<Replay> showByLangueList (List<Long> ids, Pageable p){
 		
 		PageImpl<Replay> res = new PageImpl<Replay>(rep.findAll().stream()
-				   .filter(f -> f.getLangues() == id)
+				   .filter(
+						   f -> f.getIdLangues().containsAll(ids)
+						   ).toList()
 				   , p
 				   , rep.findAll().size());
 			
@@ -71,10 +58,10 @@ public class ReplayService {
 		
 	};
 	
-	public Page<Replay> showByGenre(Long id, Pageable p){
+	public Page<Replay> showByCategorie(List<Long> ids, Pageable p){
 		
 		PageImpl<Replay> res = new PageImpl<Replay>(rep.findAll().stream()
-				   .filter(f -> f.getGenreList().contains(id)).toList() 
+				   .filter(f -> f.getIdCategorie().containsAll(ids)).toList() 
 				   , p
 				   , rep.findAll().size());
 			
@@ -82,13 +69,13 @@ public class ReplayService {
 		
 	};
 	
-	public Page<Replay> showByGenreAndLang(Long g, Long l, Pageable p){
+	public Page<Replay> showByCtegAndLang(List<Long> c, List<Long> l, Pageable p){
 		
 		
 		PageImpl<Replay> res = new PageImpl<Replay>(
 				rep.findAll().stream()
-                .filter(f -> f.getGenreList().contains(g))
-                .filter(f -> f.getLangue().contains(l))
+                .filter(f -> f.getIdCategorie().containsAll(c))
+                .filter(f -> f.getIdLangues().containsAll(l))
                 .collect(Collectors.toList())
 				   , p
 				   , rep.findAll().size());
@@ -107,12 +94,12 @@ public class ReplayService {
 		return rep.findByNameContainingOrOverviewContaining(val, val, p);
 	}
 	
-	public Page<Replay> searchByLangue(String val, Long genre, Pageable p ) {
+	public Page<Replay> searchByLangue(String val, List<Long> categs, Pageable p ) {
 
 		
 		PageImpl<Replay> res = new PageImpl<Replay>(
 				rep.findByNameContainingOrOverviewContaining(val, val).stream()
-                .filter(f -> f.getLangue().contains(genre))
+                .filter(f -> f.getIdLangues().containsAll(categs))
                 .collect(Collectors.toList())
 				   , p
 				   , rep.findAll().size());
@@ -120,11 +107,11 @@ public class ReplayService {
 			return res;
 	}
 
-	public Page<Replay> searchByGenre(String val,Long langue, Pageable p ) {
+	public Page<Replay> searchByGenre(String val,List<Long> langues, Pageable p ) {
 
 		PageImpl<Replay> res = new PageImpl<Replay>(
 				rep.findByNameContainingOrOverviewContaining(val, val).stream()
-                .filter(f -> f.getGenreList().contains(langue))
+                .filter(f -> f.getIdCategorie().containsAll(langues))
                 .collect(Collectors.toList())
 				   , p
 				   , rep.findAll().size());
@@ -132,13 +119,13 @@ public class ReplayService {
 			return res;
 	}
 	
-	public Page<Replay> searchByGenreAndLang(String val , Long g, Long l, Pageable p){
+	public Page<Replay> searchByGenreAndLang(String val , List<Long> c, List<Long> l, Pageable p){
 		
 		
 		PageImpl<Replay> res = new PageImpl<Replay>(
 				rep.findByNameContainingOrOverviewContaining(val, val).stream()
-                .filter(f -> f.getGenreList().contains(g))
-                .filter(f -> f.getLangue().contains(l))
+                .filter(f -> f.getIdCategorie().containsAll(c))
+                .filter(f -> f.getIdLangues().containsAll(l))
                 .collect(Collectors.toList())
 				   , p
 				   , rep.findAll().size());
@@ -146,7 +133,7 @@ public class ReplayService {
 			return res;
 		
 	};
-*/
+
 	public Replay upadte( Long id, Replay g) {
 
 		g.setId(id);
