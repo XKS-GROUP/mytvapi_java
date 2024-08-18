@@ -12,12 +12,10 @@ import org.springframework.stereotype.Service;
 import com.mytv.api.ressource.model.Genre;
 import com.mytv.api.serie.repository.GenreRepository;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-@Schema(description = "Modèle représentant le genre de serie et film.")
 public class GenreService {
 
 
@@ -26,8 +24,6 @@ public class GenreService {
 
 
 	public Genre create(Genre g) {
-
-		//Appel de la fonction upload pour enregistrer l'image sur R2
 
 		return genreRep.save(g);
 
@@ -55,13 +51,9 @@ public class GenreService {
 
 	public Genre upadte(final Long id, Genre u) {
 
-		Genre old = genreRep.findById(id).get();
+		u.setIdGenre(id);
 
-		old = u;
-
-		old.setIdGenre(id);
-
-		return genreRep.save(old);
+		return genreRep.save(u);
 	}
 
 

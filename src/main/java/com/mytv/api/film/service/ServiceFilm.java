@@ -26,7 +26,6 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-
 public class ServiceFilm {
 
 
