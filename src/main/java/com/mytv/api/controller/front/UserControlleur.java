@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mytv.api.config.UserSessionTracker;
 import com.mytv.api.ressource.model.Pays;
 import com.mytv.api.security.EntityResponse;
 import com.mytv.api.user.model.Profil;
@@ -26,6 +27,7 @@ import com.mytv.api.user.service.WUserService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
@@ -37,6 +39,9 @@ public class UserControlleur {
 	
 	@Autowired
 	WUserService userService;
+	
+	@Autowired
+    private UserSessionTracker sessionTracker;
 	
 	@Autowired
 	UserRepository userRep;
@@ -187,7 +192,7 @@ public class UserControlleur {
 	//Deconexion
 	@Tag(name = "Profil Abonne")
 	@PostMapping("logout")
-	public ResponseEntity<Object> userLogout(){
+	public ResponseEntity<Object> userLogout(HttpServletRequest request){
 
 		User usr = userService.findCurrentUser();
 
@@ -196,7 +201,9 @@ public class UserControlleur {
 			 return EntityResponse.generateResponse("Deconexion", HttpStatus.OK, " Aucun utilisateur connecté ou aucune session en cour ");
 
 		}
-
+			 String ipAddress = request.getRemoteAddr();
+		     sessionTracker.removeSession(usr.getEmail(), ipAddress);
+		     //
 			 jwtRep.deleteByUser(usr); 
 			 return EntityResponse.generateResponse("Deconexion", HttpStatus.OK, usr.getUsername()+" à été deconnecter avec succès" );
 	  }

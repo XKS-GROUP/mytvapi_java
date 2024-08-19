@@ -51,8 +51,8 @@ public class UserAccessController {
 
     @Autowired
     private UserSessionTracker sessionTracker;
+    
 	@Autowired
-	
 	private AuthenticationManager authenticationManager;
 
 	@Autowired
