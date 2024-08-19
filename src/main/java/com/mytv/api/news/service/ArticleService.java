@@ -11,7 +11,10 @@ import org.springframework.stereotype.Service;
 import com.mytv.api.news.model.Article;
 import com.mytv.api.news.repository.ArticleRepository;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class ArticleService {
 
 	@Autowired

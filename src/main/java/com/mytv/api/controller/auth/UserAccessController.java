@@ -464,26 +464,32 @@ public class UserAccessController {
 	@SecurityRequirement(name = "bearerAuth")
 	@PostMapping("logout")
 	@Transactional
-	public ResponseEntity<Object> logout() {
+	public ResponseEntity<Object> logout(HttpServletRequest request) {
 
 		User usr = userService.findCurrentUser();
 
-		if(usr==null) {
-
-			 return EntityResponse.generateResponse("Deconexion", HttpStatus.OK, " Aucun utilisateur connecté ou aucune session en cour ");
-
-		}
-
+		
+        
+			if(usr==null) {
+	
+				 return EntityResponse.generateResponse("Deconexion", HttpStatus.OK, 
+						 Map.of("message", " Aucun utilisateur connecté ou aucune session en cours "));
+			}
+			 
+			 String ipAddress = request.getRemoteAddr();
+		     sessionTracker.removeSession(usr.getEmail(), ipAddress);
+		     //
 			 jwtRep.deleteByUser(usr); //jwtRep.deleteAll();//
 			 System.out.println("Supp ");
-			 return EntityResponse.generateResponse("Deconexion", HttpStatus.OK, usr.getUsername()+" à été deconnecter avec succès" );
+			 return EntityResponse.generateResponse("Deconexion", HttpStatus.OK, 
+					 Map.of("message", usr.getUsername()+" à été deconnecter avec succès" ));
 	    }
 
 	//Se deconnecter de tous les periphériques
 	@SecurityRequirement(name = "bearerAuth")
 	@PostMapping("logout/allDevice")
 	@Transactional
-	public ResponseEntity<Object> logoutAll() {
+	public ResponseEntity<Object> logoutAll(HttpServletRequest request) {
 
 		User usr = userService.findCurrentUser();
 
@@ -493,6 +499,9 @@ public class UserAccessController {
 
 		}
 
+			 String ipAddress = request.getRemoteAddr();
+		     sessionTracker.removeSession(usr.getEmail(), ipAddress);
+		     //
 			 jwtRep.deleteAll();
 			 return EntityResponse.generateResponse("Deconexion", HttpStatus.OK, usr.getUsername()+" à été deconnecter avec succès" );
 	    }
