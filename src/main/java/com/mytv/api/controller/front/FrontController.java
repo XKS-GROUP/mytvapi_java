@@ -103,6 +103,8 @@ import com.mytv.api.serie.service.FavSerieService;
 import com.mytv.api.serie.service.LikeSerieService;
 import com.mytv.api.serie.service.SerieService;
 import com.mytv.api.service.CommonFunction;
+import com.mytv.api.setting.model.SocialSetting;
+import com.mytv.api.setting.service.SettingService;
 import com.mytv.api.user.model.User;
 import com.mytv.api.user.service.WUserService;
 import com.mytv.api.util.model.Publicite;
@@ -112,6 +114,7 @@ import com.mytv.api.util.service.SliderService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -122,6 +125,9 @@ public class FrontController {
 
 	@Autowired
 	private CommonFunction fnc;
+	
+	@Autowired
+	SettingService settingService;
 	
 	@Autowired
 	private RadioService radioService;
@@ -2344,6 +2350,97 @@ public class FrontController {
     	return fnc.cat_article_show_byid(id);
 	}
 
+    
+  	/*
+  	 * 
+  	 * OPERATION SUR LES SETTING
+  	 * 
+  	 */
+	
+  	@Tag(name = "Setting")
+  	@GetMapping("setting/general/{id}")
+  	public ResponseEntity<Object> show_general(@PathVariable Long id){
+
+  		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.show_byId_setting(id));
+  	}
+  	
+  	@Tag(name = "Setting")
+  	@GetMapping("setting/firebase/{id}")
+  	public ResponseEntity<Object> show_firebase(@PathVariable Long id){
+
+  		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.show_byId_firebase(id));
+  	}
+  	
+  	@Tag(name = "Setting")
+  	@GetMapping("setting/admob/{id}")
+  	public ResponseEntity<Object> show_admob(@PathVariable Long id){
+
+  		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.show_byId_admod(id));
+  	}
+  	
+  	@Tag(name = "Setting")
+  	@GetMapping("setting/tmdb/{id}")
+  	public ResponseEntity<Object> show_tmdb(@PathVariable Long id){
+
+  		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.show_byId_TMDB(id));
+  	}
+  	
+  	@Tag(name = "Setting")
+  	@GetMapping("setting/r2cloudflare/{id}")
+  	public ResponseEntity<Object> show_r2cloudflare(@PathVariable Long id){
+
+  		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.show_byId_R2Setting(id));
+  	}
+
+  	@Tag(name = "Setting")
+  	@GetMapping("setting/social/{id}")
+  	public ResponseEntity<Object> show_social(@PathVariable Long id, @Valid @RequestBody SocialSetting s){
+
+  		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.show_byId_Social(id));
+  	}
+  	
+  	
+  	@Tag(name = "Setting")
+  	@GetMapping("setting/general/show")
+  	public ResponseEntity<Object> show_general(){
+
+  		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.list_setting());
+  	}
+  	
+  	@Tag(name = "Setting")
+  	@GetMapping("setting/firebase/show")
+  	public ResponseEntity<Object> show_firebase(){
+
+  		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.list_firebase());
+  	}
+  	
+  	@Tag(name = "Setting")
+  	@GetMapping("setting/admob/show")
+  	public ResponseEntity<Object> show_admob(){
+
+  		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.list_admod());
+  	}
+  	
+  	@Tag(name = "Setting")
+  	@GetMapping("setting/tmdb/show")
+  	public ResponseEntity<Object> show_tmdb(){
+
+  		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.list_TMDB());
+  	}
+  	
+  	@Tag(name = "Setting")
+  	@GetMapping("setting/r2cloudflare/show")
+  	public ResponseEntity<Object> show_r2cloudflare(){
+
+  		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.list_R2Setting());
+  	}
+
+  	@Tag(name = "Setting")
+  	@GetMapping("setting/social/show")
+  	public ResponseEntity<Object> show_social(){
+
+  		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.list_Social());
+  	}
 }
 
 

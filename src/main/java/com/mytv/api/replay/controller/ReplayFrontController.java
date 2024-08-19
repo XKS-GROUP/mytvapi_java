@@ -88,10 +88,10 @@ public class ReplayFrontController {
 	
 	
 	 /*
-     * OPERATION SUR LES COLLECTIONS DE REPLAY
-     * 
-     * */
-    
+	 * OPERATION SUR LES COLLECTIONS DE REPLAY
+	 * 
+	 * */
+
     @Tag(name = "Replay Collection")
 	@GetMapping("replay/collections")
 	public ResponseEntity<Object> replay_collection_show(){

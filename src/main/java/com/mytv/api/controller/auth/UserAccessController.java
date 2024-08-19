@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mytv.api.config.UserSessionTracker;
 import com.mytv.api.dto.NewPwdDTO;
 import com.mytv.api.dto.PwdResetPwdDTO;
 import com.mytv.api.security.AuthenticationRequest;
@@ -40,6 +41,7 @@ import com.mytv.api.util.service.NotificationService;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
@@ -47,7 +49,10 @@ import jakarta.validation.Valid;
 @RequestMapping("api/v1/auth")
 public class UserAccessController {
 
+    @Autowired
+    private UserSessionTracker sessionTracker;
 	@Autowired
+	
 	private AuthenticationManager authenticationManager;
 
 	@Autowired
@@ -76,7 +81,7 @@ public class UserAccessController {
 
 	//Se connecter
 	@PostMapping("/login")
-	public ResponseEntity<Object> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest)
+	public ResponseEntity<Object> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest, HttpServletRequest request)
 			throws Exception {
 
 		try {
@@ -101,6 +106,16 @@ public class UserAccessController {
 		
 		if(usr.isValide()) {
 
+			String ipAddress = request.getRemoteAddr();
+			
+			if (!sessionTracker.addSession(authenticationRequest.getUsername(), ipAddress)) {
+				
+	            //throw new RuntimeException("Maximum session limit reached for this IP address.");
+				
+				return EntityResponse.generateResponse("Authentication", HttpStatus.BAD_REQUEST, 
+						Map.of("message"," le nombre maximum de session est atteint veuillez vous deconnecter sur l'un de vos periphériques "));
+	        }
+			
 			usr.setRemember_token(token);
 
 			Jwt jwtToken = new Jwt();
@@ -117,9 +132,10 @@ public class UserAccessController {
 			return EntityResponse.generateResponse("Authentication", HttpStatus.OK,
 
 						new AuthenticationResponse(token, refreshToken, usr));
-		}else {
+		}
+		else {
 
-			return EntityResponse.generateResponse("Authentication", HttpStatus.BAD_REQUEST, "Ce compte n'est pas active, veuillez activez ce compte ");
+			return EntityResponse.generateResponse("Authentication", HttpStatus.BAD_REQUEST, Map.of("message","Ce compte n'est pas active, veuillez activez ce compte "));
 		}
 
 	}
