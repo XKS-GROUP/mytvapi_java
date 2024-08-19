@@ -1,10 +1,8 @@
 package com.mytv.api.config;
 
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.stereotype.Service;
 
-@Service
-@EnableScheduling
+//@Service
+//@EnableScheduling
 public class CronTache {
 
 	
