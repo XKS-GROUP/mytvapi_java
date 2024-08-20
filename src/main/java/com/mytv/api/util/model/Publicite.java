@@ -34,20 +34,17 @@ public class Publicite {
 	private String overview;
     
 	@NotBlank(message = "ce champ ne peut etre vide, une publicité doit avoir une bannière ")
-	@Column(nullable = false , columnDefinition = "TEXT")
+	@Column(nullable = true , columnDefinition = "TEXT")
 	String bannerPath;
 
-	@Column(nullable = false, columnDefinition = "boolean default false")
+	@Column(nullable = true, columnDefinition = "boolean default false")
 	private boolean typeVideo;
 	
 	@Column(columnDefinition = "TEXT")
 	String videoPath;
 	
-	@Column(nullable = true  ,columnDefinition = "TEXT")
-	private String targetUrl;
-	
-	//@NotEmpty(message = "ce champ ne peut etre vide, une page cible est requise ")
-	//List<Long> pageTarget;
+	//@Column(nullable = true  ,columnDefinition = "TEXT")
+	//private String targetUrl;
 	
 	@JdbcTypeCode(SqlTypes.JSON)
 	private Map<String, Integer> position;

@@ -60,6 +60,10 @@ import com.mytv.api.podcast.service.LikePodcastService;
 import com.mytv.api.podcast.service.PodcastService;
 import com.mytv.api.podcastCollecton.model.ColPodcast;
 import com.mytv.api.podcastCollecton.repository.CollectionPodcastRepository;
+import com.mytv.api.podcastCollecton.repository.FavColPodcastRepository;
+import com.mytv.api.podcastCollecton.repository.LikeColPodcastRepository;
+import com.mytv.api.podcastCollecton.service.FavColPodcastService;
+import com.mytv.api.podcastCollecton.service.LikeColPodcastService;
 import com.mytv.api.podcastcateg.model.CatPodcast;
 import com.mytv.api.podcastcateg.service.CatPodcastService;
 import com.mytv.api.radio.model.FavRadio;
@@ -205,6 +209,16 @@ public class FrontController {
 	private LikePodcastRepository likepodRep;
 	@Autowired
 	private FavPodcastRepository favpodRep;
+	
+	//PODCAST FAV LIKE COM
+	@Autowired
+	private FavColPodcastService favcolpodService;
+	@Autowired
+	private LikeColPodcastService likecolpodService;
+	@Autowired
+	private LikeColPodcastRepository likecolpodRep;
+	@Autowired
+	private FavColPodcastRepository favcolpodRep;
 	
 	//FILM FAV LIKE COM
 	@Autowired
@@ -851,7 +865,6 @@ public class FrontController {
 	 * 
 	 * 
 	 */
-	
 	@Tag(name = "Podcast Collection")
 	@GetMapping("podcast/collections")
 	public ResponseEntity<Object> showCollection(){
@@ -883,6 +896,111 @@ public class FrontController {
 		return fnc.showCollectionById(id);
 	}
 	
+    //LIKE
+	
+  	//AFFICHE LIKE PAR COLLECTION PODCAST
+  	@Tag(name = "Podcast Collection")
+  	@GetMapping("podcast/collections/likes/byPodcast/{idCol}")
+  	public ResponseEntity<Object> col_podcast_Likebycol(@PathVariable Long idCol){
+  		
+  		Podcast l = podcastservice.showById(idCol).get();
+  		
+  		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+  					likepodService.findByPodcast(l));
+  	}
+  	
+  	//AFFICHE NOMBRE LIKE PAR COLLECTION PODCAST
+  	@Tag(name = "Podcast Collection")
+  	@GetMapping("podcasts/likes/nblikebyPodcast/{idColPod}")
+  	public ResponseEntity<Object> col_podcast_NbLike(@PathVariable Long idColPod){
+  		
+  		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+  				likepodService.nbretotalLike(podcastservice.showById(idColPod).get()));
+  	}
+  	
+  	//ADD LIKE
+  	@Tag(name = "Podcast Collection")
+  	@PostMapping("podcast/collections/likes/add/{idColPod}")
+  	public ResponseEntity<Object> col_podcast_AddLike(@PathVariable Long idColPod){
+  		
+  		Podcast l = podcastservice.showById(idColPod).get();
+  		User u = userService.findCurrentUser();
+  		
+  		if(likepodRep.findByUserAndPodcast(u, l).isPresent()) {
+  			Long id = likepodRep.findByUserAndPodcast(u, l).get().getIdLike();
+  			
+  			return EntityResponse.generateResponse("VOUS VENEZ DE DISLIKEZ ", HttpStatus.OK, 
+  					likepodService.removeLike(id) );
+  		}
+  		else {
+  			
+  			LikePodcast lt = new LikePodcast();
+  			lt.setPodcast(l);
+  			lt.setUser(u);
+  			
+  			return EntityResponse.generateResponse("VOUS VENEZ DE LIKEZ", HttpStatus.OK, 
+  					likepodService.addLike(lt));
+  		}
+  	}
+  	
+  	//DELETE LIKE
+  	@Tag(name = "Podcast Collection")
+  	@DeleteMapping("podcast/collections/likes/delete/{idLike}")
+  	public ResponseEntity<Object> col_podcast_DelLike(@PathVariable Long id){
+  		
+  		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
+  				likepodService.removeLike(id));
+  		 
+  	}
+  	
+  	/*
+  	 * GESTION DES FAVORIES
+  	 */
+  	//FAVORIES
+  	
+  	@Tag(name = "Podcast Collection")
+  	@PostMapping("podcast/collections/favories/add/{idColPod}")
+  	public ResponseEntity<Object> col_podcast_show_fav(@PathVariable Long idColPod){
+      
+  		Podcast l = podcastservice.showById(idColPod).get();
+  		User u = userService.findCurrentUser();
+  		
+  		if(favpodRep.findByUserAndPodcast(u, l).isPresent()) {
+  			
+  			Long id = favpodRep.findByUserAndPodcast(u, l).get().getIdFav();
+  			
+  			return EntityResponse.generateResponse("RETIRER DES FAVORIES ", HttpStatus.OK, 
+  					favpodService.remove(id) );
+  		}
+  		else {
+  			
+  			FavPodcast fl = new FavPodcast();
+  			fl.setPodcast(l);
+  			fl.setUser(u);
+  			
+  			return EntityResponse.generateResponse("AJOUTEZ AUX FAVORIES", HttpStatus.OK, 
+  					favpodService.addFav(fl));
+  		}
+  	}
+  	
+  	@Tag(name = "Podcast Collection")
+  	@GetMapping("podcast/collections/favories/all/")
+  	public ResponseEntity<Object> col_podcast_fav_all(){
+
+  		return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK, 
+  				favpodService.findByUser(userService.findCurrentUser()));
+  	}
+  	
+  	@Tag(name = "Podcast Collection")
+  	@DeleteMapping("podcast/collections/favories/all/{idFavorie}")
+  	public ResponseEntity<Object> col_podcast_supp_fav(@PathVariable Long idFav){
+
+  		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+  				favpodService.remove(idFav));
+  		
+  	}
+    
+    
 	
 	/*
 	 * GESTION DES PODCASTS
