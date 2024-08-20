@@ -7,7 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.mytv.api.podcast.model.Podcast;
 import com.mytv.api.podcastCollecton.model.FavColPod;
 import com.mytv.api.podcastCollecton.repository.FavColPodcastRepository;
 import com.mytv.api.user.model.User;
@@ -42,9 +41,9 @@ public class FavColPodcastService {
 		return rep.findByUser(u) ;
 	}
 	
-	public List<FavColPod> findByPodcast(Podcast p) {
+	public List<FavColPod> findByPodcast(FavColPod p) {
 		
-		return rep.findByPodcast(p);
+		return rep.findByColpodcast(p);
 	}
 	
 	

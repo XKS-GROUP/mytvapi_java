@@ -8,7 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.mytv.api.podcast.model.Podcast;
 import com.mytv.api.podcastCollecton.model.LikeColPod;
 import com.mytv.api.podcastCollecton.repository.LikeColPodcastRepository;
 import com.mytv.api.user.model.User;
@@ -42,14 +41,14 @@ public class LikeColPodcastService {
 		return rep.findByUser(u);
 	}
 	
-	public List<LikeColPod> findByPodcast(Podcast p) {
+	public List<LikeColPod> findByPodcast(LikeColPod p) {
 		
-		return rep.findByPodcast(p);
+		return rep.findByColPodcast(p);
 	}
 	
-	public Long nbretotalLike(Podcast p) {
+	public Long nbretotalLike(LikeColPod p) {
 		
-		return (long) rep.findByPodcast(p).size();
+		return (long) rep.findByColPodcast(p).size();
 	}
 	
 	public boolean removeLike(Long id) {

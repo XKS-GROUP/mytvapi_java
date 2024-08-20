@@ -39,6 +39,6 @@ public class FavColPod {
 	private User user;
 	
 	@ManyToOne
-	@JoinColumn(name = "idPodcast", insertable = true, updatable = true)
+	@JoinColumn(name = "idColPd", insertable = true, updatable = true)
 	private ColPodcast colpodcast;
 }

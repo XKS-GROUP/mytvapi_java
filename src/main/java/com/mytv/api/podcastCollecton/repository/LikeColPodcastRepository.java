@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.mytv.api.podcast.model.Podcast;
 import com.mytv.api.podcastCollecton.model.LikeColPod;
 import com.mytv.api.user.model.User;
 
@@ -15,6 +14,6 @@ public interface LikeColPodcastRepository extends JpaRepository<LikeColPod, Long
 
 	Optional<LikeColPod> findByUser(User u);
 
-	List<LikeColPod> findByPodcast(Podcast p);
+	List<LikeColPod> findByColPodcast(LikeColPod p);
 
 }
