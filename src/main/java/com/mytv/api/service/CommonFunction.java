@@ -741,6 +741,18 @@ public class CommonFunction {
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.show());
 	}
+	
+	public ResponseEntity<Object> livetv_find_by_name(String name) {
+
+		if(liveService.findByName(name) == null) {
+			return EntityResponse.generateResponse("ERREUR ", HttpStatus.BAD_REQUEST, Map.of("message", "Cette chaine n existe pas"));
+		}else {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.findByName(name));
+			
+		}
+	}
+
 
 	public ResponseEntity<Object> showLivePages(Pageable p, Long genre, Long langue, Long pays) {
 

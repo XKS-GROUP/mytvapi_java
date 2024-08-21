@@ -12,7 +12,7 @@ import com.mytv.api.serie.model.Serie;
 @Repository
 public interface SerieRepository extends JpaRepository<Serie, Long> {
 
-	Serie findByName(String name);
+	Serie findByNameIgnoreCase(String name);
 	List<Serie> findByNameContaining(String nom);
 	Page<Serie> findByNameContainingOrOverviewContaining(String nom, String desc, Pageable p);
 	List<Serie> findByNameContainingOrOverviewContaining(String n, String n2);

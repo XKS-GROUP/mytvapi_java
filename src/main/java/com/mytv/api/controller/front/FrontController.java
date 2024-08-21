@@ -2097,6 +2097,14 @@ public class FrontController {
 	}
 	
 	@Tag(name = "TV SHOW")
+	@GetMapping("tv/find/byname/{name}")
+	public ResponseEntity<Object> showTV(@PathVariable String name){
+
+		return fnc.livetv_find_by_name(name);
+			
+	}
+	
+	@Tag(name = "TV SHOW")
 	@GetMapping("tv/all/")
 	public ResponseEntity<Object> showTVPages(Pageable p,
 			@RequestParam (required = false) Long genre ,

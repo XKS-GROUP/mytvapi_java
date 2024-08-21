@@ -1361,7 +1361,13 @@ public class MediaController {
 		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, true);
 	}
 
-	//Series
+	
+	/*
+	 * 
+	 * ROUTES SUR LES SERIES
+	 * 
+	 * 
+	 */
 
 	@Tag(name = "Serie")
 	@GetMapping("series")

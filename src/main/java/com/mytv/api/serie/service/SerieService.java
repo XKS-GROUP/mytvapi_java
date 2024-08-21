@@ -251,7 +251,7 @@ public class SerieService {
 
 	public Serie findByName(String name) {
 		
-		return rep.findByName(name);
+		return rep.findByNameIgnoreCase(name);
 	}
 	
 	public List<Serie> top10(){
