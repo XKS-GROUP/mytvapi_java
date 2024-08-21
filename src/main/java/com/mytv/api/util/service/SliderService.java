@@ -72,6 +72,8 @@ public class SliderService {
 				//   .filter(s -> s.getTargetPage().contains(pg)).toList() 
 				  // , p
 				  // , rep.findAll().size());
+		
+		
 			
 			return null;
 			
