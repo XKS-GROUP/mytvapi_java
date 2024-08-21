@@ -2287,7 +2287,7 @@ public class FrontController {
 
   		if(page != null) {
 			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, sliderService.showByPage(page, p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, sliderService.showPage(p));
 		}
 		else {
 
