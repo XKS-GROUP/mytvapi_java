@@ -91,7 +91,7 @@ public class UserAccessController {
 			
 		} catch (Exception e) {
 			return EntityResponse.generateResponse("Authentication", HttpStatus.UNAUTHORIZED,
-					"Info non valide, le nom d utilsateur ou le mot de passe est incorrecte");
+					Map.of("message","Info non valide, le nom d utilsateur ou le mot de passe est incorrecte"));
 		}
 
 		final UserDetails userDetails = userService.loadUserByUsername(authenticationRequest.getUsername());
@@ -152,7 +152,7 @@ public class UserAccessController {
 
 		} catch (BadCredentialsException e) {
 
-			throw new Exception("Le nom d utilsateur ou le mot de passe est incorrecte", e);
+			throw new Exception( "Le nom d utilsateur ou le mot de passe est incorrecte", e);
 
 		}catch(Exception e) {
 
@@ -245,13 +245,15 @@ public class UserAccessController {
 
 	    else if(userService.findByUserEmail(email) ==null ) {
 
-	    	return EntityResponse.generateResponse("Utilisateur Introuvable", HttpStatus.BAD_REQUEST, "Aucun utilisateur enregistré sous "+email.toString());
+	    	return EntityResponse.generateResponse("Utilisateur Introuvable", HttpStatus.BAD_REQUEST, 
+	    			Map.of("message","Aucun utilisateur enregistré sous "+email.toString()));
 
 	    }
 
 	    else if (user.isValide()) {
 
-	    	return EntityResponse.generateResponse("Utilisateur Valide", HttpStatus.BAD_REQUEST, "Ce compte a déja été validé");
+	    	return EntityResponse.generateResponse("Utilisateur Valide", HttpStatus.BAD_REQUEST, 
+	    			Map.of("message","Ce compte a déja été validé"));
 
     	}
 	    
@@ -261,11 +263,11 @@ public class UserAccessController {
 
 	        if(Instant.now().isAfter(validation.getExpiration())){
 	        	
-	        	return EntityResponse.generateResponse("Utilisateur Valide", HttpStatus.BAD_REQUEST, "Ce code a expiré, veuillez faire une nouvelle demande d envoi ");
+	        	return EntityResponse.generateResponse("Utilisateur Valide", HttpStatus.BAD_REQUEST, Map.of("message","Ce code a expiré, veuillez faire une nouvelle demande d envoi "));
 	        }
 	        
 	        userService.activation(activation);
-	        return EntityResponse.generateResponse("Activation", HttpStatus.OK, "Utilisateur activé avec succès");
+	        return EntityResponse.generateResponse("Activation", HttpStatus.OK, Map.of("message","Utilisateur activé avec succès"));
     	}
 
     }
@@ -296,7 +298,7 @@ public class UserAccessController {
 
 		    else if(userService.findByUserEmail(email) ==null ) {
 
-		    	return EntityResponse.generateResponse("Utilisateur Introuvable", HttpStatus.BAD_REQUEST, "Aucun utilisateur enregistré sous "+email.toString());
+		    	return EntityResponse.generateResponse("Utilisateur Introuvable", HttpStatus.BAD_REQUEST, Map.of("message","Aucun utilisateur enregistré sous "+email.toString()));
 
 		    }
 
@@ -306,7 +308,7 @@ public class UserAccessController {
 
 		    	if (user.isValide()) {
 
-			    	return EntityResponse.generateResponse("Utilisateur Valide", HttpStatus.BAD_REQUEST, "Ce compte a déja été validé");
+			    	return EntityResponse.generateResponse("Utilisateur Valide", HttpStatus.BAD_REQUEST, Map.of("message","Ce compte a déja été validé"));
 
 		    	}
 		    	else {
@@ -338,7 +340,7 @@ public class UserAccessController {
 			        	//suppValidation(validationRepository.findByUtilisateurId(user.getId()).getId());
 			        	validationService.updateByid(validationRepository.findByUtilisateurId(user.getId()).getId(), validation);
 			        	notificationService.envoyer(validation);
-			        	return EntityResponse.generateResponse("User Profile", HttpStatus.OK, "Nouveau Code Renvoyer a l'adresse "+user.getEmail());
+			        	return EntityResponse.generateResponse("User Profile", HttpStatus.OK,Map.of("message", "Nouveau Code Renvoyer a l'adresse "+user.getEmail()));
 			        }
 			        
 			        
@@ -348,7 +350,7 @@ public class UserAccessController {
 			        
 			        validationRepository.save(validation);
 			        notificationService.envoyer(validation);
-			        return EntityResponse.generateResponse("User Profile", HttpStatus.OK, "Nouveau Code Renvoyer a l'adresse "+user.getEmail());
+			        return EntityResponse.generateResponse("User Profile", HttpStatus.OK, Map.of("message","Nouveau Code Renvoyer a l'adresse "+user.getEmail()));
 		    	}
 		    }
 
@@ -368,7 +370,7 @@ public class UserAccessController {
 
 		    if(userService.findByUserEmail(email.getEmail()) == null ) {
 
-		    	return EntityResponse.generateResponse("Utilisateur Introuvable", HttpStatus.CONFLICT, "Aucun utilisateur enregistré sous "+email.getEmail());
+		    	return EntityResponse.generateResponse("Utilisateur Introuvable", HttpStatus.CONFLICT, Map.of("message","Aucun utilisateur enregistré sous "+email.getEmail()));
 
 		    }
 
@@ -401,7 +403,7 @@ public class UserAccessController {
 			        
 			        notificationService.envoyerPour(validation, "Code de validation");
 
-			        return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, "Un code à été envoyer à l'adresse "+user.getEmail());
+			        return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, Map.of("message","Un code à été envoyer à l'adresse "+user.getEmail()));
 		    }
 
     }
@@ -432,12 +434,12 @@ public class UserAccessController {
 		    	    //test si l user existe vraiment
 		    	    if(userService.findByUserEmail(email) ==null ) {
 
-				    	return EntityResponse.generateResponse("Utilisateur Introuvable", HttpStatus.CONFLICT, "Aucun utilisateur enregistré sous "+email.toString());
+				    	return EntityResponse.generateResponse("Utilisateur Introuvable", HttpStatus.CONFLICT, Map.of("message", "Aucun utilisateur enregistré sous "+email.toString()));
 
 				    }
 		    	    else if(Instant.now().isAfter(validation.getExpiration())){
 			        	
-			        	return EntityResponse.generateResponse("Utilisateur Valide", HttpStatus.CONFLICT, "Ce code a expiré, veuillez faire une nouvelle demande d envoi ");
+			        	return EntityResponse.generateResponse("Utilisateur Valide", HttpStatus.CONFLICT, Map.of("message", "Ce code a expiré, veuillez faire une nouvelle demande d envoi "));
 			        }
 		    	    else  {
 		    	    	
@@ -449,8 +451,8 @@ public class UserAccessController {
 			    	    userService.updateByid(user.getId(), user);
 
 			    	    
-				        return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, "Le mot de passe a été changé avec succès pour " 
-				                              +user.getEmail()+notificationService.sendConfirmationMdpSucces(validation, "Modification de votre mot de passe"));
+				        return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, Map.of("message", "Le mot de passe a été changé avec succès pour " 
+				                              +user.getEmail()+notificationService.sendConfirmationMdpSucces(validation, "Modification de votre mot de passe")));
 				        
 
 		    	    }
@@ -503,7 +505,7 @@ public class UserAccessController {
 		     sessionTracker.removeSession(usr.getEmail(), ipAddress);
 		     //
 			 jwtRep.deleteAll();
-			 return EntityResponse.generateResponse("Deconexion", HttpStatus.OK, usr.getUsername()+" à été deconnecter avec succès" );
+			 return EntityResponse.generateResponse("Deconexion", HttpStatus.OK, Map.of("message", usr.getUsername()+" à été deconnecter avec succès" ));
 	    }
 
 
