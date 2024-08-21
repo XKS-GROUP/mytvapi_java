@@ -106,6 +106,7 @@ public class SerieService {
 		PageImpl<Serie> res = new PageImpl<Serie>(
 				rep.findAll().stream()
                 .filter(f -> f.getLangue().contains(id))
+                .filter(f -> f.isStatus() == true)
                 .collect(Collectors.toList()) 
 				   , p
 				   , rep.findAll().size());
@@ -119,6 +120,7 @@ public class SerieService {
 		PageImpl<Serie> res = new PageImpl<Serie>(
 				rep.findAll().stream()
                 .filter(f -> f.getGenreList().contains(id))
+                .filter(f -> f.isStatus() == true)
                 .collect(Collectors.toList()) 
 				   , p
 				   , rep.findAll().size());
@@ -133,6 +135,7 @@ public class SerieService {
 				rep.findAll().stream()
                 .filter(f -> f.getGenreList().contains(genre))
                 .filter(f -> f.getLangue().contains(langue))
+                .filter(f -> f.isStatus() == true)
                 .collect(Collectors.toList()) 
 				   , p
 				   , rep.findAll().size());
@@ -152,6 +155,7 @@ public class SerieService {
 				rep.findByNameContainingOrOverviewContaining(n, n)
 				.stream()
                 .filter(f -> f.getGenreList().contains(genre))
+                .filter(f -> f.isStatus() == true)
                 .collect(Collectors.toList())
 				   , p
 				   , rep.findAll().size());
@@ -166,6 +170,7 @@ public class SerieService {
 				rep.findByNameContainingOrOverviewContaining(n, n)
 				.stream()
                 .filter(f -> f.getLangue().contains(langue))
+                .filter(f -> f.isStatus() == true)
                 .collect(Collectors.toList())
 				   , p
 				   , rep.findAll().size());
@@ -180,6 +185,7 @@ public class SerieService {
 				.stream()
                 .filter(f -> f.getLangue().contains(langue))
                 .filter(f -> f.getGenreList().contains(genre))
+                .filter(f -> f.isStatus() == true)
                 .collect(Collectors.toList())
 				   , p
 				   , rep.findAll().size());

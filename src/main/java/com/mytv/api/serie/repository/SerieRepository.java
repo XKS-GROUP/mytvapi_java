@@ -18,5 +18,8 @@ public interface SerieRepository extends JpaRepository<Serie, Long> {
 	List<Serie> findByNameContainingOrOverviewContaining(String n, String n2);
 	List<Serie> findByTop10True();
 	List<Serie> findByTopTrue();
+	
+	List<Serie> findByStatusTrue();
+	Page<Serie> findByStatusTrue(Pageable p);
 
 }
