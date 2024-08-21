@@ -2283,7 +2283,7 @@ public class FrontController {
   	@Tag(name = "Slider")
   	@GetMapping("slider/all/")
       public ResponseEntity<Object> showSliderPaging(Pageable p, 
-    		  @RequestParam (required = false) Long page ){
+    		  @RequestParam (required = false) String page ){
 
   		if(page != null) {
 			
@@ -2291,7 +2291,7 @@ public class FrontController {
 		}
 		else {
 
-  		  return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, sliderService.showPage(p));
+  		  return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, sliderService.showPageByTarget(page,p));
 		}
   	}
   	

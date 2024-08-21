@@ -235,9 +235,18 @@ public class RessourceController {
   	
   	@Tag(name = "Slider")
   	@GetMapping("slider/all/")
-      public ResponseEntity<Object> showSliderPaging(Pageable p){
+      public ResponseEntity<Object> showSliderPaging(Pageable p,
+    		  @RequestParam (required = false) String page ){
 
-  		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, sliderService.showPage(p));
+		if(page != null) {
+  			
+  			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, sliderService.showPage(p));
+  		}
+  		else {
+
+  			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, sliderService.showPageByTarget(page,p));
+  		
+  		}
   	}
   	
   	
@@ -262,7 +271,7 @@ public class RessourceController {
   	public ResponseEntity<Object> createSlider(
   			@Valid @RequestBody Slider slider) {
 
-  		if(sliderService.findByName(slider.getName()) != null) {
+  		if(sliderService.findByName(slider.getName() ) != null) {
   			
   			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, "Ce slider existe déja");
   		}
