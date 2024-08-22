@@ -56,7 +56,7 @@ public class Article {
 	boolean status;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "id",  cascade = CascadeType.ALL)
-	List<CategArticle> list_categorie;
+	List<CategArticle> list_categories;
 	
 	@Column(nullable = false, columnDefinition = "TEXT")
 	String media;
