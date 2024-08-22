@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.mytv.api.news.model.Article;
 import com.mytv.api.news.repository.ArticleRepository;
+import com.mytv.api.news.repository.CategArticleRepository;
 
 import lombok.AllArgsConstructor;
 
@@ -20,7 +21,11 @@ public class ArticleService {
 	@Autowired
 	ArticleRepository rep;
 	
+	CategArticleRepository rep_cat;
+	
 	public Article create(Article a) {
+		
+		a.setList_categories(rep_cat.findAllById(a.getCategories()));
 		
 		return rep.save(a);
 	}
@@ -33,6 +38,7 @@ public class ArticleService {
 	public Article update(Long id, Article a) {
 		
 		a.setId(id);
+		a.setList_categories(rep_cat.findAllById(a.getCategories()));
 		return rep.save(a);
 	}
 	

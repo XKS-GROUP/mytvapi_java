@@ -1462,7 +1462,7 @@ public class CommonFunction {
     	
     	if(catArtService.findbyname(ca.getName()) != null) {
     		
-    		return EntityResponse.generateResponse("ATTENTION ", HttpStatus.BAD_REQUEST, Map.of("name", "ce nom existe déja"));
+    		return EntityResponse.generateResponse("ATTENTION ", HttpStatus.CREATED, Map.of("name", "ce nom existe déja"));
     	}
     	else {
     		
