@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mytv.api.dto.StatusDTO;
 import com.mytv.api.news.model.Article;
 import com.mytv.api.news.model.CategArticle;
 import com.mytv.api.news.service.ArticleService;
@@ -90,6 +91,15 @@ public class NewsController {
 	}
     
     @Tag(name = "Categorie Article")
+    @PutMapping("articles/categ/update/status/{id}")
+	public ResponseEntity<Object> cat_article_update_status(@PathVariable Long id,
+			@Valid @RequestBody StatusDTO status) {
+
+		return fnc.cat_article_update_status(id, status);
+
+	}
+    
+    @Tag(name = "Categorie Article")
 	@DeleteMapping("articles/categ/delete/{id}")
 	public ResponseEntity<Object> cat_article_delete(@PathVariable Long id){
     	catArtService.delete(id);
@@ -137,6 +147,16 @@ public class NewsController {
     	return fnc.article_create(a);
     	
     }
+    
+	@Tag(name = "Article")
+	@PutMapping(path="articles/update/status/{id}")
+	public ResponseEntity<Object> updateStatusR(@PathVariable Long id,
+			@Valid @RequestBody StatusDTO status) {
+
+		return fnc.article_update_status(id, status);
+
+	}
+	
     
     @Tag(name = "Article")
 	@PutMapping("articles/update/{id}")

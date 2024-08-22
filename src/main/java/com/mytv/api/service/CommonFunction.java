@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.amazonaws.services.accessanalyzer.model.ResourceNotFoundException;
 import com.mytv.api.dto.StatusDTO;
@@ -56,7 +58,7 @@ import com.mytv.api.security.EntityResponse;
 import com.mytv.api.serie.model.Serie;
 import com.mytv.api.serie.service.SerieService;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -1480,6 +1482,17 @@ public class CommonFunction {
 		
 	}
 	
+	
+	public ResponseEntity<Object> cat_article_update_status(Long id, StatusDTO status) {
+
+		CategArticle a = catArtService.showById(id).get();
+		
+		a.setStatus(status.getStatus());
+		
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, catArtService.update(id, a));
+
+	}
+	
 	public ResponseEntity<Object> cat_article_delete( Long id){
     	catArtService.delete(id);
     	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, "Categorie supprimé" );
@@ -1513,8 +1526,6 @@ public class CommonFunction {
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, artService.showById(id));
     	}
 	}
-    
-	
 
 	public ResponseEntity<Object> article_search_filtre(
 			String s,
@@ -1534,7 +1545,6 @@ public class CommonFunction {
 		}
 	}
 	
-	
 	public ResponseEntity<Object> article_create(Article a){
 		
 		if(artService.findByTitle(a.getTitle()) != null) {
@@ -1548,6 +1558,17 @@ public class CommonFunction {
     	
     }
     
+	public ResponseEntity<Object> article_update_status(Long id, StatusDTO status) {
+
+		Article a = artService.showById(id).get();
+		
+		a.setStatus(status.getStatus());
+		
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, artService.update(id, a));
+
+	}
+	
+	
 	public ResponseEntity<Object> article_update( Long id, Article a){
 
     	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, artService.update(id, a));

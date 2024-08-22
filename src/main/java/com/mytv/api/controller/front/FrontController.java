@@ -210,7 +210,7 @@ public class FrontController {
 	@Autowired
 	private FavPodcastRepository favpodRep;
 	
-	//PODCAST FAV LIKE COM
+	//COLLECTION PODCAST FAV LIKE COM
 	@Autowired
 	private FavColPodcastService favcolpodService;
 	@Autowired
@@ -588,6 +588,8 @@ public class FrontController {
 					favradioService.addFav(fr));
 		}
 	}
+	
+	
 	@Tag(name = "Radios")
 	@GetMapping("radios/favories/all/")
 	public ResponseEntity<Object> radioFavorieAll(){
