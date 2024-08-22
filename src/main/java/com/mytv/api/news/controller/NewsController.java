@@ -1,5 +1,7 @@
 package com.mytv.api.news.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mytv.api.news.model.Article;
@@ -142,6 +145,19 @@ public class NewsController {
     	return fnc.article_update(id, a);
 		
 	}
+    
+    
+    @Tag(name = "Article")
+	@GetMapping("articles/search/")
+	public ResponseEntity<Object> showbyNameContain(
+			@RequestParam String s,
+			Pageable p,
+			@RequestParam (required = false) List<Long> categ
+			){
+		
+		return fnc.article_search_filtre(s, categ, p);
+	}
+    
     
     @Tag(name = "Article")
 	@DeleteMapping("articles/delete/{id}")

@@ -2,12 +2,15 @@ package com.mytv.api.news.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.mytv.api.film.model.Film;
 import com.mytv.api.news.model.Article;
 import com.mytv.api.news.repository.ArticleRepository;
 import com.mytv.api.news.repository.CategArticleRepository;
@@ -34,6 +37,25 @@ public class ArticleService {
 		
 		return rep.findByTitle(title);
 	}
+	
+	public Page<Article> search(String s, Pageable p){
+		
+		return rep.findByTitleContainingOrContentContaining(s, s, p);
+	}
+	
+	public Page<Article> searchByCateg(String s,List<Long> categ, Pageable p){
+		
+		PageImpl<Article> res = new PageImpl<Article>(
+				rep.findByTitleContainingOrContentContaining(s, s, p).stream()
+                .filter(f -> f.getCategories().containsAll(categ)).toList()
+				   , p
+				   , rep.findAll().size());
+		
+		return res;
+		
+	}
+	
+	
 	
 	public Article update(Long id, Article a) {
 		

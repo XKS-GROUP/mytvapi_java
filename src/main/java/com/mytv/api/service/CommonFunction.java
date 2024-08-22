@@ -1,5 +1,6 @@
 package com.mytv.api.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,7 @@ import com.mytv.api.security.EntityResponse;
 import com.mytv.api.serie.model.Serie;
 import com.mytv.api.serie.service.SerieService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -1502,9 +1504,37 @@ public class CommonFunction {
     
 	public ResponseEntity<Object> article_show_byid(long id){
 
-    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, artService.showById(id));
+		if(artService.showById(id) ==null) {
+			
+			return EntityResponse.generateResponse("ERREUR", HttpStatus.BAD_REQUEST, Map.of("message", "aucun article pour cette valeur"));
+		}
+		else {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, artService.showById(id));
+    	}
 	}
     
+	
+
+	public ResponseEntity<Object> article_search_filtre(
+			String s,
+			List<Long> categ,
+			Pageable p
+			
+			){
+		
+		if(categ == null ) {
+			
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, artService.search(s, p));
+		}
+		else {
+
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, artService.searchByCateg(s, categ, p));
+		
+		}
+	}
+	
+	
 	public ResponseEntity<Object> article_create(Article a){
 		
 		if(artService.findByTitle(a.getTitle()) != null) {
@@ -1512,7 +1542,7 @@ public class CommonFunction {
     		return EntityResponse.generateResponse("ATTENTION ", HttpStatus.BAD_REQUEST, Map.of("title", "ce titre existe déja"));
     	}
     	else {
-    		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, artService.create(a));
+    		return EntityResponse.generateResponse("SUCCES ", HttpStatus.CREATED, artService.create(a));
     		
     	}
     	
