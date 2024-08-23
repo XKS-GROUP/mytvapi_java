@@ -21,6 +21,6 @@ public interface FilmRepository  extends JpaRepository<Film, Long>{
 	List<Film> findByNameContainingOrOverviewContaining(String nom, String desc);
 	List<Film> findByTop10True();
 
-	Film findByTopTrue();
+	List<Film> findByTopTrue();
 
 }

@@ -190,7 +190,7 @@ public class RadioService {
 	
 	public Radio top(){
 		
-		return radioRep.findByTopTrue();
+		return radioRep.findByTopTrue().get(0);
 	}
 	
 	public Radio Addtop(Long id, boolean status){

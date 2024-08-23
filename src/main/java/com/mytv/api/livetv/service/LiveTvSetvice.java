@@ -288,7 +288,7 @@ public class LiveTvSetvice {
 	
     public LiveTv top(){
 		
-		return rep.findByTopTrue();
+		return rep.findByTopTrue().get(0);
 	}
 	
 	public LiveTv Addtop(Long id, boolean status){

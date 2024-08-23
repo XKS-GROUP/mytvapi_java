@@ -1,8 +1,10 @@
 package com.mytv.api.news.model;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -44,9 +46,12 @@ public class Article {
 	@Column(nullable = false, columnDefinition = "TEXT")
 	String content;
 	
-	Date publishDate;
+	@CreationTimestamp
+    @Column(updatable = false)
+	LocalDateTime  publishDate;
 	
-	Date updateDate;
+	@UpdateTimestamp
+	LocalDateTime  updateDate;
 	
 	Long idUser;
 	

@@ -324,7 +324,7 @@ public class ServiceFilm {
 	
 	public Film top(){
 		
-		return rep.findByTopTrue();
+		return rep.findByTopTrue().get(0);
 	}
 	
 	public Film Addtop(Long id, boolean status){

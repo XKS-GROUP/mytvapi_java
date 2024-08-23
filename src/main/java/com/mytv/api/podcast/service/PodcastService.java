@@ -204,7 +204,7 @@ public class PodcastService {
 	
 	public Podcast top(){
 		
-		return rep.findByTopTrue();
+		return rep.findByTopTrue().get(0);
 	}
 	
 	public Podcast Addtop(Long id, boolean status){

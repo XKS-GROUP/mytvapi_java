@@ -269,7 +269,7 @@ public class SerieService {
 	
 	public Serie top(){
 		
-		return rep.findByTopTrue();
+		return rep.findByTopTrue().get(0);
 	}
 	
 	public Serie Addtop(Long id, boolean status){
