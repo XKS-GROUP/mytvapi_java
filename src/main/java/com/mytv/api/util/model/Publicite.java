@@ -43,8 +43,10 @@ public class Publicite {
 	@Column(columnDefinition = "TEXT")
 	String videoPath;
 	
-	//@Column(nullable = true  ,columnDefinition = "TEXT")
-	//private String targetUrl;
+	
+	@NotBlank(message = "ce champ ne peut etre vide, une pub doit avoir une cible ")
+	@Column(nullable = false  ,columnDefinition = "TEXT")
+	private String targetUrl;
 	
 	@JdbcTypeCode(SqlTypes.JSON)
 	private Map<String, Integer> position;

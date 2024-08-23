@@ -75,7 +75,7 @@ public class RestControllerException {
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<Object> NullPointerException(NullPointerException ex) {
 
-        return EntityResponse.generateResponse("Authentication", HttpStatus.BAD_REQUEST, Map.of("message","Verifié que votre compte est bien valide ou à été activé, que la asession n'est pas expiré car vous tentez une operation sur un utilisateur null ou qui n'existe plus"));
+        return EntityResponse.generateResponse("Authentication", HttpStatus.BAD_REQUEST, Map.of("message","Verifié que votre compte est bien valide ou à été activé, que la a session n'est pas expiré car vous tentez une operation sur un utilisateur null ou qui n'existe plus"));
     }
     
     

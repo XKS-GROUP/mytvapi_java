@@ -5,6 +5,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.mytv.api.dto.EmailDTO;
+import com.mytv.api.firebase.model.Otp;
 import com.mytv.api.user.model.Validation;
 
 import lombok.AllArgsConstructor;
@@ -12,7 +14,10 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @Service
 public class NotificationService {
+	
     JavaMailSender javaMailSender;
+    
+    
     public void envoyer(Validation validation) {
 
         SimpleMailMessage message = new SimpleMailMessage();
@@ -25,6 +30,43 @@ public class NotificationService {
                 validation.getUtilisateur().getUsername(),
                 validation.getCode()
 
+                );
+
+        message.setText(texte);
+
+        javaMailSender.send(message);
+    }
+    
+    //Pour l'envoie des OTP
+    public void envoyerOTP(EmailDTO email, String code ) {
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("contact@galsen.com");
+        message.setTo(email.getValue());
+        message.setSubject("Votre code OTP");
+
+        String texte = String.format(
+                "Bonjour %s, Votre code OTP est le suivant %s; ce code expirera dans 10 minute",
+                email.getValue(),
+                code
+                );
+
+        message.setText(texte);
+
+        javaMailSender.send(message);
+    }
+    
+    public void envoyerOTP(Otp otp) {
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("contact@galsen.com");
+        message.setTo(otp.getEmail());
+        message.setSubject("Votre code OTP");
+
+        String texte = String.format(
+                "Bonjour %s, Votre code OTP est le suivant %s; ce code expirera dans 10 minute",
+                otp.getEmail(),
+                otp.getOtp()
                 );
 
         message.setText(texte);
@@ -50,6 +92,8 @@ public class NotificationService {
 
         javaMailSender.send(message);
     }
+    
+    
     
     public String sendConfirmationMdpSucces(Validation validation, String obj) {
 
