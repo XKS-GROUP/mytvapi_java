@@ -188,7 +188,7 @@ public class RadioService {
 		return r;
 	}
 	
-	public List<Radio> top(){
+	public Radio top(){
 		
 		return radioRep.findByTopTrue();
 	}

@@ -286,7 +286,7 @@ public class LiveTvSetvice {
 		
 	}
 	
-    public List<LiveTv> top(){
+    public LiveTv top(){
 		
 		return rep.findByTopTrue();
 	}

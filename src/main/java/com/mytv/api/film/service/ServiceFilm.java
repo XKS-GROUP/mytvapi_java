@@ -322,7 +322,7 @@ public class ServiceFilm {
 		return r;
 	}
 	
-	public List<Film> top(){
+	public Film top(){
 		
 		return rep.findByTopTrue();
 	}

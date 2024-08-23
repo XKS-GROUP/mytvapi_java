@@ -66,7 +66,7 @@ public class Podcast {
 	@Column(columnDefinition = "TEXT")
 	String poster_path;
 
-	@NotNull(message="Un podcast doit forcement avoir une categori")
+	@NotNull(message="Un podcast doit forcement avoir une categorie")
 	List <Long> categories = new ArrayList<>();
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idCatPod",  cascade = CascadeType.ALL)

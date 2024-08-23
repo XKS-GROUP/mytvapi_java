@@ -147,7 +147,9 @@ public class CommonFunction {
 	public ResponseEntity<Object> searchCollection(String s, Pageable p) {
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-				colPodRep.findByNameOrOverviewContaining(s, s, p));
+				
+				
+				colPodRep.findByNameContainingOrOverviewContaining(s, s, p));
 	}
 
 	public ResponseEntity<Object> showCollectionById(long id) {

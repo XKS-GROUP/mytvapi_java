@@ -62,6 +62,7 @@ import com.mytv.api.podcastCollecton.model.ColPodcast;
 import com.mytv.api.podcastCollecton.repository.CollectionPodcastRepository;
 import com.mytv.api.podcastCollecton.repository.FavColPodcastRepository;
 import com.mytv.api.podcastCollecton.repository.LikeColPodcastRepository;
+import com.mytv.api.podcastCollecton.service.ColPodcastService;
 import com.mytv.api.podcastCollecton.service.FavColPodcastService;
 import com.mytv.api.podcastCollecton.service.LikeColPodcastService;
 import com.mytv.api.podcastcateg.model.CatPodcast;
@@ -219,6 +220,8 @@ public class FrontController {
 	private LikeColPodcastRepository likecolpodRep;
 	@Autowired
 	private FavColPodcastRepository favcolpodRep;
+	@Autowired
+	private ColPodcastService colpodservice;
 	
 	//FILM FAV LIKE COM
 	@Autowired
@@ -755,7 +758,6 @@ public class FrontController {
 		return fnc.showbyIdPays(id);
 	}
 	
-	
 
 	/*
 	 * 
@@ -902,13 +904,12 @@ public class FrontController {
 	
   	//AFFICHE LIKE PAR COLLECTION PODCAST
   	@Tag(name = "Podcast Collection")
-  	@GetMapping("podcast/collections/likes/byPodcast/{idCol}")
+  	@GetMapping("podcast/collections/likes/bycolPodcast/{idCol}")
   	public ResponseEntity<Object> col_podcast_Likebycol(@PathVariable Long idCol){
   		
-  		Podcast l = podcastservice.showById(idCol).get();
+  		ColPodcast cl =  colpodservice.showById(idCol).get();
   		
-  		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-  					likepodService.findByPodcast(l));
+  		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,"");
   	}
   	
   	//AFFICHE NOMBRE LIKE PAR COLLECTION PODCAST
@@ -917,7 +918,7 @@ public class FrontController {
   	public ResponseEntity<Object> col_podcast_NbLike(@PathVariable Long idColPod){
   		
   		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-  				likepodService.nbretotalLike(podcastservice.showById(idColPod).get()));
+  				likecolpodService.nbretotalLike(colpodservice.showById(idColPod).get()));
   	}
   	
   	//ADD LIKE

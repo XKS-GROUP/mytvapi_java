@@ -202,7 +202,7 @@ public class PodcastService {
 	}
 	
 	
-	public List<Podcast> top(){
+	public Podcast top(){
 		
 		return rep.findByTopTrue();
 	}

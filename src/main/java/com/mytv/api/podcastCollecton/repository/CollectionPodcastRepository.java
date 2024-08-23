@@ -13,11 +13,14 @@ import com.mytv.api.podcastCollecton.model.ColPodcast;
 @Repository
 public interface CollectionPodcastRepository extends JpaRepository<ColPodcast, Long>{
 
-	Page<ColPodcast> findByNameOrOverviewContaining(String nom, String desc, Pageable p);
-	List<ColPodcast> findByNameOrOverviewContaining(String nom, String desc);
+	Page<ColPodcast> findByNameContainingOrOverviewContaining(String nom, String desc, Pageable p);
+	List<ColPodcast> findByNameContainingOrOverviewContaining(String nom, String desc);
 	
 	ColPodcast findByName(String name);
 	Page<ColPodcast> findByName(String name, Pageable p);
+	List<ColPodcast> findByTop10True();
+	List<ColPodcast> findByTopTrue();
+	
 	
 	
 }

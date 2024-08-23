@@ -46,7 +46,7 @@ public class NewsController {
 	
 	/*
 	 * 
-	 * CRUD CATEG ARTICLE
+	 * ROUTES CATEG ARTICLE
 	 * 
 	 * 
 	 * 
@@ -106,17 +106,14 @@ public class NewsController {
     	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, "Categorie supprimé" );
 	}
 	
-    
 	
 	/*
 	 * 
-	 * CRUD ARTICLE
+	 * ROUTES ARTICLES
 	 * 
 	 * 
 	 * 
 	 */
-    
-    
     
     
 	@Tag(name = "Article")

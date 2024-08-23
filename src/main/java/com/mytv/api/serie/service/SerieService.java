@@ -267,7 +267,7 @@ public class SerieService {
 		return r;
 	}
 	
-	public List<Serie> top(){
+	public Serie top(){
 		
 		return rep.findByTopTrue();
 	}
