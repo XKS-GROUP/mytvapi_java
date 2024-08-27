@@ -80,7 +80,7 @@ public class SecurityConfiguration {
 	@Bean
 	public SecurityFilterChain securityFilterChainGlobalAbonneAPIv1(HttpSecurity http) throws Exception {
 		
-		//sharedSecurityConfiguration(http);
+		sharedSecurityConfiguration(http);
 		
 		//La partie front sera géré par Fire base maintenant
 		http.csrf().disable()
