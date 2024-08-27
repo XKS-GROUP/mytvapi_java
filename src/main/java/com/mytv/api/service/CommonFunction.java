@@ -54,7 +54,7 @@ import com.mytv.api.ressource.service.LangueService;
 import com.mytv.api.ressource.service.PaysService;
 import com.mytv.api.saison.model.Saison;
 import com.mytv.api.saison.service.SaisonService;
-import com.mytv.api.security.EntityResponse;
+import com.mytv.api.security.request.EntityResponse;
 import com.mytv.api.serie.model.Serie;
 import com.mytv.api.serie.service.SerieService;
 

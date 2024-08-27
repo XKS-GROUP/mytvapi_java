@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.mytv.api.serie.model.FavSerie;
 import com.mytv.api.serie.model.Serie;
 import com.mytv.api.serie.repository.FavSerieRepository;
+import com.mytv.api.serie.repository.SerieRepository;
 import com.mytv.api.user.model.User;
 
 import lombok.AllArgsConstructor;
@@ -20,6 +21,9 @@ public class FavSerieService {
 
 	@Autowired
 	FavSerieRepository favSerieRep;
+	
+	@Autowired
+	SerieRepository repSerie;
 	
 	public FavSerie addFav(FavSerie ls) {
 		
@@ -46,11 +50,15 @@ public class FavSerieService {
 		return favSerieRep.findBySerie(s);
 	}
 	
+	public List<FavSerie> findBySerieId(Long id) {
+		
+		return favSerieRep.findBySerie(repSerie.findById(id).get());
+	}
+	
 	public Long nbretotalLike(Serie s) {
 		
 		return (long) favSerieRep.findBySerie(s).size();
 	}
-	
 	
 	public boolean remove(Long id) {
 		

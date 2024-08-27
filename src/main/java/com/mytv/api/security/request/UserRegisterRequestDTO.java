@@ -1,4 +1,4 @@
-package com.mytv.api.security;
+package com.mytv.api.security.request;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.mytv.api.security;
+package com.mytv.api.security.request;
 
 import java.io.Serializable;
 

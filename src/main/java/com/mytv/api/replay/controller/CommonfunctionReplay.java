@@ -15,7 +15,7 @@ import com.mytv.api.replay.collection.model.ReplayCollection;
 import com.mytv.api.replay.collection.service.ReplayCollectionService;
 import com.mytv.api.replay.replay.model.Replay;
 import com.mytv.api.replay.replay.service.ReplayService;
-import com.mytv.api.security.EntityResponse;
+import com.mytv.api.security.request.EntityResponse;
 
 import lombok.AllArgsConstructor;
 

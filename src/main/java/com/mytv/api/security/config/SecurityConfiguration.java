@@ -1,4 +1,4 @@
-package com.mytv.api.security;
+package com.mytv.api.security.config;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,6 +23,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.mytv.api.firebase.filter.FirebaseJwtFilter;
+import com.mytv.api.security.filter.JWTRequestFilter;
+
 
 @Configuration
 @EnableWebSecurity
@@ -33,6 +36,10 @@ public class SecurityConfiguration {
 
 	@Autowired
 	private JWTRequestFilter jwtRequestFilter;
+	
+	@Autowired
+	
+	private FirebaseJwtFilter firebaseFilter;
 
 
 	@Autowired
@@ -70,15 +77,33 @@ public class SecurityConfiguration {
 		return httpSecurity.build();
 	}
 
+	@SuppressWarnings({ "removal", "deprecation" })
 	@Bean
-	public SecurityFilterChain securityFilterChainGlobalAbonneAPIv1(HttpSecurity httpSecurity) throws Exception {
-		sharedSecurityConfiguration(httpSecurity);
+	public SecurityFilterChain securityFilterChainGlobalAbonneAPIv1(HttpSecurity http) throws Exception {
+		
+		//sharedSecurityConfiguration(http);
+		
+		//La partie admin sera géré par Fire base maintenant
+		http.csrf().disable()
+        .authorizeRequests()
+        .requestMatchers("api/v1/front/**").authenticated()
+        .and()
+        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+      http.addFilterBefore(firebaseFilter, UsernamePasswordAuthenticationFilter.class);
+
+      
+      return http.build();
+		/*
+		
 		httpSecurity.securityMatcher("api/v1/front/**").authorizeHttpRequests(auth -> {
 			auth.anyRequest()
 			.hasRole("USER");
 		}).addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return httpSecurity.build();
+		
+		*/
 	}
 
 	@Bean

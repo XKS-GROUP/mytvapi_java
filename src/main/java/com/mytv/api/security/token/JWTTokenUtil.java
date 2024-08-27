@@ -1,4 +1,4 @@
-package com.mytv.api.security;
+package com.mytv.api.security.token;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -22,12 +22,12 @@ public class JWTTokenUtil {
 	@Value("${jwt.secret}")
 	private String secret;
 
-	// retrieve username from jwt token
+	// ici je recupere le nom d'utilisateur ou son adresse email signé 
 	public String getUsernameFromToken(String token) {
 		return getClaimFromToken(token, Claims::getSubject);
 	}
 
-	// retrieve expiration date from jwt token
+	// ici je recp la date d'expiation du token
 	public Date getExpirationDateFromToken(String token) {
 		return getClaimFromToken(token, Claims::getExpiration);
 	}
@@ -40,7 +40,8 @@ public class JWTTokenUtil {
 		return null;
 	}
 
-	// for retrieveing any information from token we will need the secret key
+	// je recupère toutes les info du l'user après la signature
+	//for retrieveing any information from token we will need the secret key
 	private Claims getAllClaimsFromToken(String token) {
 		try {
 			return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
@@ -50,7 +51,7 @@ public class JWTTokenUtil {
 		return null;
 	}
 
-	// check if the token has expired
+	// verifie si le token est expiré
 	public Boolean isTokenExpired(String token) {
 		final Date expiration = getExpirationDateFromToken(token);
 		return expiration.before(new Date());
@@ -80,13 +81,16 @@ public class JWTTokenUtil {
 	private String doGenerateToken(Map<String, Object> claims, String subject) {
 		Header header = Jwts.header();
 		header.setType("JWT");
-		return Jwts.builder().setHeader((Map<String, Object>) header).setClaims(claims).setSubject(subject)
-				.setIssuer("xks").setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
-				.signWith(SignatureAlgorithm.HS512, secret).compact();
+		return Jwts.builder()
+				.setHeader((Map<String, Object>) header).setClaims(claims).setSubject(subject)
+				.setIssuer("xks")
+				.setIssuedAt(new Date(System.currentTimeMillis()))
+				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))//))
+				.signWith(SignatureAlgorithm.HS512, secret)
+				.compact();
 	}
 
-	// refresh token
+	//refresh token
 	private String doGenerateRefreshToken(Map<String, Object> claims, String subject) {
 		Header header = Jwts.header();
 		header.setType("JWT");
@@ -100,6 +104,7 @@ public class JWTTokenUtil {
 	public Boolean validateToken(String token, UserDetails userDetails) {
 		final String username = getUsernameFromToken(token);
 		if (username != null) {
+			
 			return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
 		}
 		return false;

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mytv.api.security.EntityResponse;
+import com.mytv.api.security.request.EntityResponse;
 import com.mytv.api.setting.model.AdmodSetting;
 import com.mytv.api.setting.model.FirebaseSetting;
 import com.mytv.api.setting.model.R2cloudSetting;

@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mytv.api.dto.EmailDTO;
 import com.mytv.api.dto.OtpConfirmDTO;
 import com.mytv.api.firebase.model.Otp;
-import com.mytv.api.firebase.service.FirebaseService;
-import com.mytv.api.security.EntityResponse;
+import com.mytv.api.firebase.service.OtpService;
+import com.mytv.api.security.request.EntityResponse;
 import com.mytv.api.util.service.NotificationService;
 
 import jakarta.validation.Valid;
@@ -27,7 +27,7 @@ import lombok.AllArgsConstructor;
 public class FirebaseController {
 
 	@Autowired
-	FirebaseService fire_service;
+	OtpService fire_service;
 	
 	@Autowired
 	NotificationService notification;

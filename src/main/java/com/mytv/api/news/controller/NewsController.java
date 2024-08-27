@@ -21,7 +21,7 @@ import com.mytv.api.news.model.Article;
 import com.mytv.api.news.model.CategArticle;
 import com.mytv.api.news.service.ArticleService;
 import com.mytv.api.news.service.CategArticleService;
-import com.mytv.api.security.EntityResponse;
+import com.mytv.api.security.request.EntityResponse;
 import com.mytv.api.service.CommonFunction;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

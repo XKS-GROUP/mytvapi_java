@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mytv.api.security.EntityResponse;
+import com.mytv.api.security.request.EntityResponse;
 import com.mytv.api.user.model.Role;
 import com.mytv.api.user.service.WRoleService;
 import com.mytv.api.user.service.WUserService;

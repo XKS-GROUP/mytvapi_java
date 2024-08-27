@@ -15,8 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mytv.api.config.UserSessionTracker;
+import com.mytv.api.firebase.service.FirebaseService;
 import com.mytv.api.ressource.model.Pays;
-import com.mytv.api.security.EntityResponse;
+import com.mytv.api.security.request.EntityResponse;
 import com.mytv.api.user.model.Profil;
 import com.mytv.api.user.model.User;
 import com.mytv.api.user.repository.JwtRepository;
@@ -39,6 +40,8 @@ public class UserControlleur {
 	
 	@Autowired
 	WUserService userService;
+	@Autowired
+	FirebaseService firbaseService;
 	
 	@Autowired
     private UserSessionTracker sessionTracker;
@@ -59,7 +62,10 @@ public class UserControlleur {
 	@Tag(name = "Profil Abonne")
 	@GetMapping("info")
 	public ResponseEntity<Object> retrieveUserProfile(){
-		return EntityResponse.generateResponse("Abonne Profil Info : "+userService.findCurrentUser().getUsername(), HttpStatus.OK, userService.findCurrentUser());
+		
+		firbaseService.getUser();
+		
+		return EntityResponse.generateResponse("Abonne Profil Info : "+userService.findCurrentUser().getUsername(), HttpStatus.OK, "user "  );
 	}
 
 	//Update User

@@ -211,8 +211,9 @@ public class SerieService {
 
 	}
 
-	public Optional<Serie> showById(final Long id) {
+	public Optional<Serie> showById( Long id) {
 
+		refresh();
 		return rep.findById(id);
 
 	}

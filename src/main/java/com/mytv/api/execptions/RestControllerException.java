@@ -13,11 +13,13 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
 import com.amazonaws.services.apigatewaymanagementapi.model.ForbiddenException;
-import com.mytv.api.security.EntityResponse;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.mytv.api.security.request.EntityResponse;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -66,6 +68,7 @@ public class RestControllerException {
 
         	return EntityResponse.generateResponse("Authentication", HttpStatus.BAD_REQUEST, "Votre session a expiré");
     }
+    
     @ExceptionHandler(java.util.NoSuchElementException.class)
     public ResponseEntity<Object> NoSuchElementException(java.util.NoSuchElementException ex) {
 
@@ -128,4 +131,25 @@ public class RestControllerException {
 //        return EntityResponse.generateResponse("ERREUR", HttpStatus.BAD_REQUEST, Map.of("message", "Veuillez saisir un code valide "));
 //    }
     
+    
+ // Gestion de FirebaseAuthException
+    
+    @ExceptionHandler(FirebaseAuthException.class)
+    public ResponseEntity<Object> handleFirebaseAuthException(FirebaseAuthException ex) {
+
+        // Gestion personnalisée en fonction du code d'erreur
+        switch (ex.getAuthErrorCode()) {
+            case EXPIRED_ID_TOKEN:
+            	
+            	return EntityResponse.generateResponse("Envoi de mail", HttpStatus.UNAUTHORIZED,
+            			Map.of("message", "Votre token à expiré"));
+		case USER_NOT_FOUND:
+			    return EntityResponse.generateResponse("Envoi de mail", HttpStatus.NOT_FOUND,
+        			Map.of("message", "utilisateur n'existe pas"));
+        default:
+        	return EntityResponse.generateResponse("Envoi de mail", HttpStatus.UNAUTHORIZED,
+        			Map.of("message", "Erreur de connexion"));
+        }
+
+    }
 }

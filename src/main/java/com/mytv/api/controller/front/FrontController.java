@@ -96,7 +96,7 @@ import com.mytv.api.saison.service.ComSaisonService;
 import com.mytv.api.saison.service.FavSaisonService;
 import com.mytv.api.saison.service.LikeSaisonService;
 import com.mytv.api.saison.service.SaisonService;
-import com.mytv.api.security.EntityResponse;
+import com.mytv.api.security.request.EntityResponse;
 import com.mytv.api.serie.model.ComSerie;
 import com.mytv.api.serie.model.FavSerie;
 import com.mytv.api.serie.model.LikeSerie;

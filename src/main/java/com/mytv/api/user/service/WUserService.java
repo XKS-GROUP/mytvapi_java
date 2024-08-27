@@ -19,8 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.mytv.api.dto.UserDTO;
-import com.mytv.api.security.SecurityPrincipal;
-import com.mytv.api.security.UserRegisterRequestDTO;
+import com.mytv.api.security.config.SecurityPrincipal;
+import com.mytv.api.security.request.UserRegisterRequestDTO;
 import com.mytv.api.user.model.Profil;
 import com.mytv.api.user.model.Role;
 import com.mytv.api.user.model.User;

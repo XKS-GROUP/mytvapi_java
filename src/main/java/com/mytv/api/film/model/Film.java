@@ -84,7 +84,7 @@ public class Film {
 
 	List<Long> Langue = new ArrayList<Long>();
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idLang",  cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idLang",  cascade = CascadeType.ALL)
 	List<Language> list_langues;
 
 	String popularity;
@@ -137,15 +137,15 @@ public class Film {
 	Boolean adult;
 
 	List <Long> acteurList = new ArrayList<>();
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idActor",  cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idActor",  cascade = CascadeType.ALL)
 	List<Actor> acteurs;
 	
 	List <Long> directorList = new ArrayList<>();
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idDirector",  cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idDirector",  cascade = CascadeType.ALL)
 	List<Director> directors;
 
 	List<Long> genreList = new ArrayList<>();
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idGenre",  cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idGenre",  cascade = CascadeType.ALL)
 	List<Genre> genres;
 
 }

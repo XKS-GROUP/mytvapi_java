@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.mytv.api.security;
+package com.mytv.api.security.config;
 
 import java.util.Collection;
 
