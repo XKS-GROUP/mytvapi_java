@@ -77,13 +77,12 @@ public class SecurityConfiguration {
 		return httpSecurity.build();
 	}
 
-	@SuppressWarnings({ "removal", "deprecation" })
 	@Bean
 	public SecurityFilterChain securityFilterChainGlobalAbonneAPIv1(HttpSecurity http) throws Exception {
 		
 		//sharedSecurityConfiguration(http);
 		
-		//La partie admin sera géré par Fire base maintenant
+		//La partie front sera géré par Fire base maintenant
 		http.csrf().disable()
         .authorizeRequests()
         .requestMatchers("api/v1/front/**").authenticated()

@@ -131,9 +131,8 @@ public class RestControllerException {
 //        return EntityResponse.generateResponse("ERREUR", HttpStatus.BAD_REQUEST, Map.of("message", "Veuillez saisir un code valide "));
 //    }
     
-    
  // Gestion de FirebaseAuthException
-    
+    //
     @ExceptionHandler(FirebaseAuthException.class)
     public ResponseEntity<Object> handleFirebaseAuthException(FirebaseAuthException ex) {
 
