@@ -1562,7 +1562,7 @@ public class CommonFunction {
     
 	public ResponseEntity<Object> article_update_status(Long id, StatusDTO status) {
 
-		Article a = artService.showById(id).get();
+		Article a = artService.showById(id);
 		
 		a.setStatus(status.getStatus());
 		

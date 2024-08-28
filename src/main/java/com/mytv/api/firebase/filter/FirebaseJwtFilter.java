@@ -1,5 +1,6 @@
 package com.mytv.api.firebase.filter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.auth.FirebaseToken;
 import com.mytv.api.firebase.token.FirebaseTokenUtil;
 
@@ -15,6 +16,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class FirebaseJwtFilter extends OncePerRequestFilter {
@@ -36,7 +40,21 @@ public class FirebaseJwtFilter extends OncePerRequestFilter {
             try {
                 decodedToken = firebaseTokenUtil.verifyToken(idToken);
             } catch (Exception e) {
-                logger.error("Token invalide", e);
+            	
+            	 // Gestion de l'exception et envoi de la réponse HTTP
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setContentType("application/json");
+
+                Map<String, Object> responseData = new HashMap<>();
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
+                responseData.put("TimeStamp", new Date());
+                responseData.put("Message", "TOKEN_INVALID");
+                responseData.put("Status", HttpServletResponse.SC_UNAUTHORIZED);
+                responseData.put("Data", Map.of("message","Votre session a expiré ou le token est invalide."));
+                response.getWriter().write(new ObjectMapper().writeValueAsString(responseData));
+                
+                //return;
             }
         }
 

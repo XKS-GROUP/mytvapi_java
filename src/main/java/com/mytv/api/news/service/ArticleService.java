@@ -67,9 +67,9 @@ public class ArticleService {
 		return rep.findAll();
 	}
 	
-	public Optional<Article> showById(Long id){
+	public Article showById(Long id){
 		
-		return rep.findById(id);
+		return rep.findById(id).get();
 	}
 	public Page<Article> showPage(Pageable p){
 		
