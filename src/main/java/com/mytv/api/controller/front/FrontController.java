@@ -2476,10 +2476,8 @@ public class FrontController {
 	@GetMapping("articles/{id}")
 	public ResponseEntity<Object> article_show_byid(@PathVariable long id){
 
-    	return fnc.cat_article_show_byid(id);
+    	return fnc.article_show_byid(id);
 	}
-
-    
   	/*
   	 * 
   	 * OPERATION SUR LES SETTING
