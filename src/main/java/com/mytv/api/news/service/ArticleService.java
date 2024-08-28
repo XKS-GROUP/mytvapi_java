@@ -1,7 +1,6 @@
 package com.mytv.api.news.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,10 +23,25 @@ public class ArticleService {
 	
 	CategArticleRepository rep_cat;
 	
+	
+	public void refresh() {
+		
+	       List<Article> l = rep.findAll();
+			
+			l.forEach(  
+					
+					g -> {
+						
+						g.setList_categories(rep_cat.findAllById(g.getCategories()));
+						
+					}
+			);
+		}
+	
 	public Article create(Article a) {
 		
 		a.setList_categories(rep_cat.findAllById(a.getCategories()));
-		
+		refresh();
 		return rep.save(a);
 	}
 	
@@ -59,30 +73,32 @@ public class ArticleService {
 		
 		a.setId(id);
 		a.setList_categories(rep_cat.findAllById(a.getCategories()));
+		refresh();
 		return rep.save(a);
 	}
 	
 	public List<Article> show(){
-		
+		refresh();
 		return rep.findAll();
 	}
 	
 	public Article showById(Long id){
-		
+
+		refresh();
 		return rep.findById(id).get();
 	}
 	public Page<Article> showPage(Pageable p){
-		
+		refresh();
 		return rep.findAll(p);
 	}
 	
 	public Page<Article> searchby(String val, Pageable p){
-		
+		refresh();
 		return rep.findByTitleContainingOrContentContaining(val, val, p);
 	}
 	
 	public void delete(Long id) {
-		
+		refresh();
 		rep.deleteById(id);
 		
 	}
