@@ -478,36 +478,38 @@ public class FrontController {
 	
 	@Tag(name = "Radios")
 	@GetMapping("radios")
-	public ResponseEntity<Object> showR(){
+	public ResponseEntity<Object> radio_show(){
 
-		return fnc.showR();
+		return fnc.radio_show();
 	}
 	
 	@Tag(name = "Radios")
 	@GetMapping("radios/all/")
-	public ResponseEntity<Object> showRadioPage(Pageable p,
+	public ResponseEntity<Object> radio_show_page(Pageable p,
 			@RequestParam (required = false) Long categ ,
-			@RequestParam (required = false) Long langue){
+			@RequestParam (required = false) Long langue,
+			@RequestParam (required = false) Long pays){
 		
-		return fnc.showRadioPage(p, categ, langue);
+		return fnc.radio_show_page(p, categ, langue, pays);
 	}
 	
 	@Tag(name = "Radios")
 	@GetMapping("radios/search/")
-	public ResponseEntity<Object> showbyNameContain(
+	public ResponseEntity<Object> radio_search(
 			@RequestParam String s,
 			Pageable p,
 			@RequestParam (required = false) Long categ ,
-			@RequestParam (required = false) Long langue){
+			@RequestParam (required = false) Long langue,
+			@RequestParam (required = false) Long pays){
 		
-		return fnc.showbyNameContain(s, p, categ, langue);
+		return fnc.radio_search(s, categ, langue, pays, p);
 	}
 
 	@Tag(name = "Radios")
 	@GetMapping("radios/{id}")
-	public ResponseEntity<Object> showbyIdR(@PathVariable Long id){
+	public ResponseEntity<Object> radio_show_by_id(@PathVariable Long id){
 
-		return fnc.showbyIdR(id);
+		return fnc.radio_show_by_id(id);
 	}
 	
 	//LIKE

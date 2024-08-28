@@ -645,27 +645,16 @@ public class CommonFunction {
 	 * 
 	 */
 
-	public ResponseEntity<Object> showR() {
+	public ResponseEntity<Object> radio_show() {
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.show());
 	}
 
-	public ResponseEntity<Object> showRadioPage(Pageable p, Long categ, Long langue) {
+	public ResponseEntity<Object> radio_show_page(Pageable p, Long categ, Long langue, Long pays) {
 
-		if (categ != null && langue == null) {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.showByCateg(categ, p));
-		} else if (langue != null && categ == null) {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.showByLangue(langue, p));
-		} else if (langue != null && categ != null) {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-					radioService.showByCategAbdLang(categ, langue, p));
-		} else {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.showPage(p));
-		}
+		
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.filtre_complet(categ, langue, pays, p));
+		
 	}
 
 	public ResponseEntity<Object> createR(Radio r) {
@@ -679,28 +668,15 @@ public class CommonFunction {
 		}
 	}
 
-	public ResponseEntity<Object> showbyIdR(Long id) {
+	public ResponseEntity<Object> radio_show_by_id(Long id) {
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.showById(id));
 	}
 
-	public ResponseEntity<Object> showbyNameContain(String s, Pageable p, Long categ, Long langue) {
+	public ResponseEntity<Object> radio_search(String s, Long categ, Long langue,  Long pays, Pageable p) {
 
-		if (categ != null && langue == null) {
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.filtre_recherche_complet(s, categ, langue, pays, p));
 
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.searchByCateg(s, categ, p));
-		} else if (langue != null && categ == null) {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.searchByLangue(s, langue, p));
-		} else if (langue != null && categ != null) {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-					radioService.searchByCategAbdLang(s, categ, langue, p));
-		} else {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.search(s, p));
-
-		}
 	}
 
 	public ResponseEntity<Object> updateR(Long id, Radio r) {

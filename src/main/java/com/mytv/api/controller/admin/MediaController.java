@@ -686,36 +686,23 @@ public class MediaController {
 	public ResponseEntity<Object> showR(){
 		
 		
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.show());
+		return fnc.radio_show();
 	}
 	
 	@Tag(name = "Radio")
 	@GetMapping("radios/all/")
-	public ResponseEntity<Object> showRadioPage(Pageable p,
+	public ResponseEntity<Object> radio_show_page(Pageable p,
 			@RequestParam (required = false) Long categ ,
-			@RequestParam (required = false) Long langue){
+			@RequestParam (required = false) Long langue,
+			@RequestParam (required = false) Long pays){
 		
-		if(categ != null && langue == null) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.showByCateg(categ, p));
-		}
-		else if(langue != null && categ == null) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.showByLangue(langue, p));
-		}
-		else if(langue != null && categ != null  ) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.showByCategAbdLang(categ, langue, p));
-		}
-		else {
-
-		    return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.showPage(p));
-		}
+		    return fnc.radio_show_page(p, categ, langue, pays);
+		
 	}
 
 	@Tag(name = "Radio")
 	@PostMapping(path="radios/create")
-	public  ResponseEntity<Object> createR(
+	public  ResponseEntity<Object> radio_create(
 			@Valid
 			@RequestBody Radio r ){
 
@@ -732,9 +719,9 @@ public class MediaController {
 
 	@Tag(name = "Radio")
 	@GetMapping("radios/{id}")
-	public ResponseEntity<Object> showbyIdR(@PathVariable Long id){
+	public ResponseEntity<Object> radio_show_by_id(@PathVariable Long id){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.showById(id));
+		return fnc.radio_show_by_id(id);
 	}
 
 	@Tag(name = "Radio")
@@ -743,25 +730,11 @@ public class MediaController {
 			@RequestParam String s,
 			Pageable p,
 			@RequestParam (required = false) Long categ ,
-			@RequestParam (required = false) Long langue){
+			@RequestParam (required = false) Long langue,
+			@RequestParam (required = false) Long pays){
 		
-		if(categ != null && langue == null) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.searchByCateg(s, categ, p));
-		}
-		else if(langue != null && categ == null  ) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.searchByLangue(s, langue, p));
-		}
-		else if(langue != null && categ != null  ) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.searchByCategAbdLang(s, categ, langue, p));
-		}
-		else {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.search(s, p));
+			return fnc.radio_search(s, categ, langue, pays, p);
 		
-		}
 	}
 
 	@Tag(name = "Radio")
