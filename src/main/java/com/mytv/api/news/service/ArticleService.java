@@ -55,19 +55,53 @@ public class ArticleService {
 		return rep.findByTitleContainingOrContentContaining(s, s, p);
 	}
 	
-	public Page<Article> searchByCateg(String s,List<Long> categ, Pageable p){
+	public Page<Article> filtre_recherche_complet(String s,List<Long> categ, Pageable p){
 		
 		PageImpl<Article> res = new PageImpl<Article>(
 				rep.findByTitleContainingOrContentContaining(s, s, p).stream()
-                .filter(f -> f.getCategories().containsAll(categ)).toList()
+                   .toList()
 				   , p
 				   , rep.findAll().size());
 		
-		return res;
+		
+		if(categ != null) {
+			
+			return res = new PageImpl<Article>(
+					 rep.findByTitleContainingOrContentContaining(s, s, p).stream()
+	                 .filter(f -> f.getCategories().containsAll(categ)).toList()
+					   , p
+					   , rep.findAll().size());
+		}
+		else {
+
+			return res;
+		}
 		
 	}
 	
-	
+	public Page<Article> filtre_complet(List<Long> categ, Pageable p){
+		
+		PageImpl<Article> res = new PageImpl<Article>(
+				rep.findAll(p).stream()
+                   .toList()
+				   , p
+				   , rep.findAll().size());
+		
+		if(categ != null) {
+			
+			return res = new PageImpl<Article>(
+					rep.findAll(p).stream()
+	                .filter(f -> f.getCategories().containsAll(categ)).toList()
+					   , p
+					   , rep.findAll().size());
+			
+		}
+		else {
+
+			return res;
+		}
+		
+	}
 	
 	public Article update(Long id, Article a) {
 		
@@ -87,6 +121,7 @@ public class ArticleService {
 		refresh();
 		return rep.findById(id).get();
 	}
+	
 	public Page<Article> showPage(Pageable p){
 		refresh();
 		return rep.findAll(p);

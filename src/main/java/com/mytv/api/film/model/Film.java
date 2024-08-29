@@ -59,12 +59,22 @@ public class Film {
 	Date addDate;
 
 	Date releaseDate;
+	
+	String epoque;
 
 	String IMDbRating;
 
 	String ContentRating;
 
 	float budget;
+	
+	float recette;
+	
+	@Column( columnDefinition = "TEXT")
+	String classification;
+	
+	@Column( columnDefinition = "TEXT")
+	String prix;
 
 	@Column(columnDefinition = "TEXT")
 	String trailerUrl;
@@ -92,6 +102,8 @@ public class Film {
 	String vote_average;
 
 	String vote_count;
+	
+	float note;
 
 	//@NotNull(message = "un fichier video initial est requis pour un film")
 	@Column(columnDefinition = "TEXT")
@@ -135,6 +147,8 @@ public class Film {
 
 	@Column(nullable = false, columnDefinition = "boolean default false")
 	Boolean adult;
+	
+	String duration;
 
 	List <Long> acteurList = new ArrayList<>();
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idActor",  cascade = CascadeType.ALL)

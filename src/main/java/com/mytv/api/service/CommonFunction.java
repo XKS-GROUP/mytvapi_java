@@ -1488,9 +1488,10 @@ public class CommonFunction {
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, artService.show());
 	}
 	
-	public ResponseEntity<Object> article_show_Paging(Pageable p){
+	public ResponseEntity<Object> article_show_Paging(List<Long> categ, Pageable p){
 
-    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, artService.showPage(p));
+    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, artService.filtre_complet(categ, p));
+    	
 	}
     
 	public ResponseEntity<Object> article_show_byid(long id){
@@ -1512,15 +1513,8 @@ public class CommonFunction {
 			
 			){
 		
-		if(categ == null ) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, artService.search(s, p));
-		}
-		else {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, artService.searchByCateg(s, categ, p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, artService.filtre_recherche_complet(s, categ, p));
 		
-		}
 	}
 	
 	public ResponseEntity<Object> article_create(Article a){

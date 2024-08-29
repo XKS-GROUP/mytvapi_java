@@ -2467,18 +2467,33 @@ public class FrontController {
 		return fnc.article_show();
 	}
     
-    @Tag(name = "Article")
-	@GetMapping("articles/all/")
-	public ResponseEntity<Object> article_show_Paging(Pageable p){
-
-    	return fnc.article_show_Paging(p);
-	}
     
     @Tag(name = "Article")
 	@GetMapping("articles/{id}")
 	public ResponseEntity<Object> article_show_byid(@PathVariable long id){
 
     	return fnc.article_show_byid(id);
+    	
+	}
+    
+    @Tag(name = "Article")
+	@GetMapping("articles/search/")
+	public ResponseEntity<Object> showbyNameContain(
+			@RequestParam String s,
+			Pageable p,
+			@RequestParam (required = false) List<Long> categ
+			){
+		
+		return fnc.article_search_filtre(s, categ, p);
+	}
+    
+    @Tag(name = "Article")
+	@GetMapping("articles/all/")
+	public ResponseEntity<Object> article_show_Paging(
+			@RequestParam (required = false) List<Long> categ,
+			Pageable p){
+
+    	return fnc.article_show_Paging(categ, p);
 	}
   	/*
   	 * 

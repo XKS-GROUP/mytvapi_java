@@ -125,9 +125,11 @@ public class NewsController {
     
     @Tag(name = "Article")
 	@GetMapping("articles/all/")
-	public ResponseEntity<Object> article_show_Paging(Pageable p){
+	public ResponseEntity<Object> article_show_Paging(
+			@RequestParam (required = false) List<Long> categ,
+			Pageable p){
 
-    	return fnc.article_show_Paging(p);
+    	return fnc.article_show_Paging(categ, p);
 	}
     
     @Tag(name = "Article")
