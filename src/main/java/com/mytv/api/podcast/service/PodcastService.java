@@ -46,12 +46,40 @@ public class PodcastService {
 		return rep.save(p);
 
 	}
+	
+	public Podcast checktoplimit() {
+		
+		if(rep.findByTopTrue() != null) {
+			
+			return rep.findByTopTrue();
+		}
+		
+		else {
+			
+			return null;
+		}
+	}
+	
+	//Si null la limite n'est pas encore atteinte
+	
+	public List<Podcast> checktop10limit() {
+		
+		if(rep.findByTop10True().size() <=10) {
+			
+			return null;
+		}
+		else {
+			
+			return rep.findByTop10True();
+		}
+	}
 
 	/*
 	 * 
 	 * cette fonction a pour objectif de rafraichir la liste des different objets renvoyees
 	 * 
 	 */
+	
 	public void refresh() {
 		
        List<Podcast> l = rep.findAll();
@@ -204,7 +232,7 @@ public class PodcastService {
 	
 	public Podcast top(){
 		
-		return rep.findByTopTrue().get(0);
+		return rep.findByTopTrue();
 	}
 	
 	public Podcast Addtop(Long id, boolean status){

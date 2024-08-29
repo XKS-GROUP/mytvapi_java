@@ -3,7 +3,6 @@ package com.mytv.api.livetv.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -158,114 +157,164 @@ public class LiveTvSetvice {
 
 	}
 	
-	public Page<LiveTv> showByLangue(Long id, Pageable p){
-		
-		 PageImpl<LiveTv> res = new PageImpl<LiveTv>(rep.findAll().stream()
-				   .filter(f -> f.getLangue().contains(id)).toList() 
-				   , p
-				   , rep.findAll().size());
-			
-			return res;
-		
-	};
 	
-	public Page<LiveTv> showByGenre(Long id, Pageable p){
+	@SuppressWarnings("unused")
+	public Page<LiveTv> filtre_complet(Long categ, Long langue, Long pays, Pageable p){
 		
-		 PageImpl<LiveTv> res = new PageImpl<LiveTv>(rep.findAll().stream()
-				   .filter(f -> f.getIdcategories().contains(id)).toList() 
-				   , p
-				   , rep.findAll().size());
-			
-			return res;
-		
-	};
-	
-	public Page<LiveTv> showByPays(Long id, Pageable p){
-		
-		 PageImpl<LiveTv> res = new PageImpl<LiveTv>(rep.findAll().stream()
-				   .filter(f -> f.getCountry().contains(id)).toList() 
-				   , p
-				   , rep.findAll().size());
-			
-			return res;
-		
-	};
-	
-	public Page<LiveTv> showByPaysGenreLangue(Long categ, Long langue, Long pays, Pageable p){
-		
-		 PageImpl<LiveTv> res = new PageImpl<LiveTv>(rep.findAll().stream()
-				   .filter(f -> f.getIdcategories().contains(categ))
-				   .filter(f -> f.getLangue().contains(langue))
-				   .filter(f -> f.getCountry().contains(pays))
+		PageImpl<LiveTv> res = new PageImpl<LiveTv>(rep.findAll().stream()
 				   .toList() 
 				   , p
 				   , rep.findAll().size());
+		
+		if(categ != null && langue == null && pays == null) {
 			
+		  return res = new PageImpl<LiveTv>(rep.findAll().stream()
+					   .filter(f -> f.getIdcategories().contains(categ))
+					   .toList()
+					   , p
+					   , rep.findAll().size());
+		}
+		else if(langue != null && categ == null && pays == null) {
+			
+			return res = new PageImpl<LiveTv>(rep.findAll().stream()
+					   .filter(f -> f.getLangue().contains(langue))
+					   .toList()
+					   , p
+					   , rep.findAll().size());
+			
+			
+		}
+		else if(pays != null && categ == null && pays == null) {
+			
+			return res = new PageImpl<LiveTv>(rep.findAll().stream()
+					   .filter(f -> f.getCountry().contains(pays))
+					   .toList()
+					   , p
+					   , rep.findAll().size());
+			
+		}
+		else if(categ != null && langue != null && pays == null) {
+			
+			return res = new PageImpl<LiveTv>(rep.findAll().stream()
+					   .filter(f -> f.getCountry().contains(categ))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .toList()
+					   , p
+					   , rep.findAll().size());
+			
+		}
+		else if(categ != null && pays != null && langue == null) {
+			
+			return res = new PageImpl<LiveTv>(rep.findAll().stream()
+					   .filter(f -> f.getIdcategories().contains(categ))
+					   .filter(f -> f.getCountry().contains(pays))
+					   .toList()
+					   , p
+					   , rep.findAll().size());
+		}
+		else if(pays != null && langue != null && categ == null) {
+			return res = new PageImpl<LiveTv>(rep.findAll().stream()
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .toList()
+					   , p
+					   , rep.findAll().size());
+		}
+		else if (pays != null && langue != null && categ != null) {
+			
+			return res = new PageImpl<LiveTv>(rep.findAll().stream()
+					   .filter(f -> f.getIdcategories().contains(categ))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f -> f.getCountry().contains(pays))
+					   .toList()
+					   , p
+					   , rep.findAll().size());
+		}
+		else {
 			return res;
+		}
 		
 	};
 	
-	public Page<LiveTv> searchbyLangue(String val, Long langue, Pageable p) {
-
-		 PageImpl<LiveTv> res = new PageImpl<LiveTv>( rep.findByNameContainingOrOverviewContaining(val, val).stream()
-	                .filter(f -> f.getLangue().contains(langue))
-	                .collect(Collectors.toList()) 
+	
+	@SuppressWarnings("unused")
+	public Page<LiveTv> filtre_recherche_complet(String val,Long categ, Long langue, Long pays, Pageable p){
+		
+		PageImpl<LiveTv> res = new PageImpl<LiveTv>(rep.findByNameContainingOrOverviewContaining(val, val).stream()
+				   .toList() 
 				   , p
 				   , rep.findAll().size());
+		
+		if(categ != null && langue == null && pays == null) {
 			
-			return res;
-	}
-	
-	public Page<LiveTv> searchByGenre(String val,Long genre, Pageable p) {
-
-		PageImpl<LiveTv> res = new PageImpl<LiveTv>( rep.findByNameContainingOrOverviewContaining(val, val).stream()
-                .filter(f -> f.getIdcategories().contains(genre))
-                .collect(Collectors.toList()) 
-			   , p
-			   , rep.findAll().size());
-		
-		return res;
-		
-	}
-	
-	public Page<LiveTv> searchByPays(String val,Long pays, Pageable p) {
-
-		PageImpl<LiveTv> res = new PageImpl<LiveTv>( rep.findByNameContainingOrOverviewContaining(val, val).stream()
-                .filter(f -> f.getCountry().contains(pays))
-                .collect(Collectors.toList()) 
-			   , p
-			   , rep.findAll().size());
-		return res;
-		
-	}
-	
-	public Page<LiveTv> searchByPaysGenreLangue(String val, Long categ, Long langue, Long pays, Pageable p){
-		
-		 PageImpl<LiveTv> res = new PageImpl<LiveTv>(rep.findByNameContainingOrOverviewContaining(val, val).stream()
-				   .filter(f -> f.getIdcategories().contains(categ))
-				   .filter(f -> f.getLangue().contains(langue))
-				   .filter(f -> f.getCountry().contains(pays))
-				   .toList() 
-				   ,p
-				   ,rep.findAll().size());
+		  return res = new PageImpl<LiveTv>(rep.findByNameContainingOrOverviewContaining(val, val).stream()
+					   .filter(f -> f.getIdcategories().contains(categ))
+					   .toList()
+					   , p
+					   , rep.findAll().size());
+		}
+		else if(langue != null && categ == null && pays == null) {
 			
+			return res = new PageImpl<LiveTv>(rep.findByNameContainingOrOverviewContaining(val, val).stream()
+					   .filter(f -> f.getLangue().contains(langue))
+					   .toList()
+					   , p
+					   , rep.findAll().size());
+			
+			
+		}
+		else if(pays != null && categ == null && pays == null) {
+			
+			return res = new PageImpl<LiveTv>(rep.findByNameContainingOrOverviewContaining(val, val).stream()
+					   .filter(f -> f.getCountry().contains(pays))
+					   .toList()
+					   , p
+					   , rep.findAll().size());
+			
+		}
+		else if(categ != null && langue != null && pays == null) {
+			
+			return res = new PageImpl<LiveTv>(rep.findByNameContainingOrOverviewContaining(val, val).stream()
+					   .filter(f -> f.getCountry().contains(categ))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .toList()
+					   , p
+					   , rep.findAll().size());
+			
+		}
+		else if(categ != null && pays != null && langue == null) {
+			
+			return res = new PageImpl<LiveTv>(rep.findByNameContainingOrOverviewContaining(val, val).stream()
+					   .filter(f -> f.getIdcategories().contains(categ))
+					   .filter(f -> f.getCountry().contains(pays))
+					   .toList()
+					   , p
+					   , rep.findAll().size());
+		}
+		else if(pays != null && langue != null && categ == null) {
+			return res = new PageImpl<LiveTv>(rep.findByNameContainingOrOverviewContaining(val, val).stream()
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .toList()
+					   , p
+					   , rep.findAll().size());
+		}
+		else if (pays != null && langue != null && categ != null) {
+			
+			return res = new PageImpl<LiveTv>(rep.findByNameContainingOrOverviewContaining(val, val).stream()
+					   .filter(f -> f.getIdcategories().contains(categ))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f -> f.getCountry().contains(pays))
+					   .toList()
+					   , p
+					   , rep.findAll().size());
+		}
+		else {
 			return res;
+		}
 		
 	};
 	
-	
-	public Page<LiveTv> searchByGenreLangue(String val, Long categ, Long langue, Pageable p){
-		
-		 PageImpl<LiveTv> res = new PageImpl<LiveTv>(rep.findByNameContainingOrOverviewContaining(val, val).stream()
-				   .filter(f -> f.getIdcategories().contains(categ))
-				   .filter(f -> f.getLangue().contains(langue))
-				   .toList() 
-				   ,p
-				   ,rep.findAll().size());
-			
-			return res;
-		
-	};
 	
 	public LiveTv findByName(String name) {
 		
@@ -288,7 +337,7 @@ public class LiveTvSetvice {
 	
     public LiveTv top(){
 		
-		return rep.findByTopTrue().get(0);
+		return rep.findByTopTrue();
 	}
 	
 	public LiveTv Addtop(Long id, boolean status){
@@ -299,5 +348,31 @@ public class LiveTvSetvice {
 		return lv;
 	}
 	
+	
+	public LiveTv checktoplimit() {
+		
+		if(rep.findByTopTrue() != null) {
+			
+			return rep.findByTopTrue();
+		}
+		
+		else {
+			
+			return null;
+		}
+	}
+	
+	//Si null la limite n'est pas encore atteinte
+	public List<LiveTv> checktop10limit() {
+		
+		if(rep.findByTop10True().size() <=10) {
+			
+			return null;
+		}
+		else {
+			
+			return rep.findByTop10True();
+		}
+	}
 
 }

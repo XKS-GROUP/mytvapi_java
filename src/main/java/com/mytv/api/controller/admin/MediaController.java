@@ -1,6 +1,7 @@
 package com.mytv.api.controller.admin;
 
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,7 @@ import com.mytv.api.livetv.service.LiveTvSetvice;
 import com.mytv.api.podcast.model.Podcast;
 import com.mytv.api.podcast.service.PodcastService;
 import com.mytv.api.podcastCollecton.model.ColPodcast;
+import com.mytv.api.podcastCollecton.service.ColPodcastService;
 import com.mytv.api.podcastcateg.model.CatPodcast;
 import com.mytv.api.podcastcateg.service.CatPodcastService;
 import com.mytv.api.radio.model.Radio;
@@ -100,6 +102,9 @@ public class MediaController {
     private CategorieLiveRepository catLiveRep;
     
     @Autowired
+    private ColPodcastService colpodservice;
+    
+    @Autowired
     private SaisonService saisonService;
     
     /*
@@ -143,8 +148,20 @@ public class MediaController {
 	@PostMapping("podcast/collections/create")
 	public ResponseEntity<Object> createCollection(@Valid @RequestBody ColPodcast r){
     	
-    	return fnc.createCollection(r);
+    	if(colpodservice.checktop10limit() != null ) {
+			
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
+					Map.of("top10", "les 10 collections de podcast en tete sont atteint", "podcast_top10", colpodservice.checktop10limit()));
+		}
+		else if(colpodservice.checktoplimit() != null ) {
+			
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
+					Map.of("top", "il y a deja une collection de podcast en vedette", "podcast_vedette", colpodservice.checktoplimit()));
+		}
+		else {
     	
+			return fnc.createCollection(r);
+		}
 	}
     
     @Tag(name = "Podcast Collection")
@@ -181,45 +198,57 @@ public class MediaController {
     
     @Tag(name = "Acteur")
 	@GetMapping("acteurs")
-	public ResponseEntity<Object> showActor(){
+	public ResponseEntity<Object> actor_show(){
 
-		return fnc.showActor();
+		return fnc.actor_show();
 	}
     
     @Tag(name = "Acteur")
 	@GetMapping("acteurs/all/")
-	public ResponseEntity<Object> showActorPaging(Pageable p){
+	public ResponseEntity<Object> actor_show_paging(
+			@RequestParam (required = false) List<Long> pays, 
+			Pageable p){
 
-		return fnc.showActorPaging(p);
+		return fnc.actor_show_paging(p, pays);
+	}
+    
+    @Tag(name = "Acteur")
+	@GetMapping("acteurs/search/")
+	public ResponseEntity<Object> acteur_search(
+			@RequestParam (required = false) String s,
+			@RequestParam (required = false) List<Long> pays,
+			Pageable p){
+
+    	return fnc.actor_search(p, s, pays) ;
 	}
     
     @Tag(name = "Acteur")
 	@GetMapping("acteurs/{id}")
-	public ResponseEntity<Object> showActorById(@PathVariable long id){
+	public ResponseEntity<Object> actor_show_by_id(@PathVariable long id){
 
-		return fnc.showActorById(id);
+		return fnc.actor_show_by_id(id);
 	}
     
     @Tag(name = "Acteur")
 	@PostMapping("acteurs/create")
-	public ResponseEntity<Object> createActor(@Valid @RequestBody Actor a){
+	public ResponseEntity<Object> actor_create(@Valid @RequestBody Actor a){
 
-		return fnc.createActor(a);
+		return fnc.actor_create(a);
 	}
     
     @Tag(name = "Acteur")
 	@PutMapping("acteurs/update/{id}")
-	public ResponseEntity<Object> updateActor(@PathVariable Long id, @Valid @RequestBody Actor a){
+	public ResponseEntity<Object> actor_update(@PathVariable Long id, @Valid @RequestBody Actor a){
 
-    	return fnc.updateActor(id, a);
+    	return fnc.actor_update(id, a);
 		
 	}
     
     @Tag(name = "Acteur")
 	@DeleteMapping("acteurs/delete/{id}")
-	public ResponseEntity<Object> deleteActor(@PathVariable Long id){
+	public ResponseEntity<Object> actor_delete(@PathVariable Long id){
     	
-    	return fnc.deleteActor(id);
+    	return fnc.actor_delete(id);
 	}
     
     
@@ -711,6 +740,16 @@ public class MediaController {
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
 					Map.of("name",  "Cette radio existe déja"));
 		}
+		else if(radioService.checktop10limit() != null ) {
+			
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
+					Map.of("top10", "les 10 radios en tete sont atteint", "podcast_top10", radioService.checktop10limit()));
+		}
+		else if(radioService.checktoplimit() != null ) {
+			
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
+					Map.of("top", "il y a deja une radio en vedette", "podcast_vedette", radioService.checktoplimit()));
+		}
 		else {
 			
 			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, radioService.create(r));
@@ -742,8 +781,20 @@ public class MediaController {
 	public ResponseEntity<Object> updateR(@PathVariable Long id,
 			@Valid @RequestBody Radio r) {
 
-		//Save du tout
-		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, radioService.upadte(id, r));
+		if(radioService.checktop10limit() != null ) {
+			
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
+					Map.of("top10", "les 10 radios en tete sont atteint", "podcast_top10", radioService.checktop10limit()));
+		}
+		else if(radioService.checktoplimit() != null ) {
+			
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
+					Map.of("top", "il y a deja une radio en vedette", "podcast_vedette", radioService.checktoplimit()));
+		}
+		else {
+			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, radioService.upadte(id, r));
+		
+		}
 
 	}
 
@@ -785,7 +836,18 @@ public class MediaController {
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
 					Map.of("name", "Cette chaine tv existe déja"));
 		}
+		if(liveService.checktop10limit() != null ) {
+			
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
+					Map.of("top10", "les 10 chaines tv en tete sont atteint", "podcast_top10", liveService.checktop10limit()));
+		}
+		else if(liveService.checktoplimit() != null ) {
+			
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
+					Map.of("top", "il y a deja une chaine tv en vedette", "podcast_vedette", liveService.checktoplimit()));
+		}
 		else {
+			
 			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, liveService.create(lt));
 		}
 	}
@@ -804,26 +866,7 @@ public class MediaController {
 			@RequestParam (required = false) Long langue,
 			@RequestParam (required = false) Long pays){
 		
-		if(genre != null && langue == null && pays == null  ) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showByGenre(genre, p));
-		}
-		else if(langue != null && genre == null && pays == null) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showByLangue(langue, p));
-		}
-		else if(pays == null && genre == null && pays == null) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,   liveService.showPage(p));
-		}
-		else if(pays != null && langue != null && genre != null) {
-			 
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showByPaysGenreLangue(genre, langue, pays, p));
-		}
-		else {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showByPays(pays, p));
-		}
+		return fnc.tv_show_page(p, genre, langue, pays);
 	}
 	
 	@Tag(name = "TV SHOW")
@@ -834,31 +877,7 @@ public class MediaController {
 			@RequestParam (required = false) Long langue,
 			@RequestParam (required = false) Long pays){
 			
-		if(genre != null && langue == null && pays == null ) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchByGenre(s, genre, p));
-		}
-		else if(langue != null && genre == null && pays == null) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchbyLangue(s, langue, p));
-		}
-		else if(langue != null && genre != null && pays == null) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchByGenreLangue(s, genre, langue, p));
-		}
-		else if( pays == null && langue == null && genre == null) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.search(s, p));
-		}
-		else if(pays != null && langue != null && genre != null) {
-			
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchByPaysGenreLangue(s, genre, langue, pays, p));
-		}
-		else {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchByPays(s, pays, p));
-		}
+		return fnc.tv_search(s, p, genre, langue, pays);
 	}
 
 	@Tag(name = "TV SHOW")
@@ -874,8 +893,19 @@ public class MediaController {
 			@PathVariable Long id,
 			@Valid @RequestBody LiveTv lt) {
 
-		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, liveService.update(id, lt));
-
+		if(liveService.checktop10limit() != null ) {
+			
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
+					Map.of("top10", "les 10 chaines tv en tete sont atteint", "podcast_top10", liveService.checktop10limit()));
+		}
+		else if(liveService.checktoplimit() != null ) {
+			
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
+					Map.of("top", "il y a deja une chaine tv en vedette", "podcast_vedette", liveService.checktoplimit()));
+		}
+		else {
+			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, liveService.update(id, lt));
+		}
 	}
 	
 	
@@ -1023,6 +1053,16 @@ public class MediaController {
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
 					Map.of("name", "Ce live existe déja"));
 		}
+		else if(lService.checktop10limit() != null ) {
+			
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
+					Map.of("top10", "les 10 lives en tete sont atteint", "podcast_top10", lService.checktop10limit()));
+		}
+		else if(lService.checktoplimit() != null ) {
+			
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
+					Map.of("top", "il y a deja un live en vedette", "podcast_vedette", lService.checktoplimit()));
+		}
 		else {
 			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, lService.create(p) );
 		}
@@ -1060,9 +1100,20 @@ public class MediaController {
 			@PathVariable Long id,
 			@Valid @RequestBody Live l) {
 		
-			//Save du tout
+		if(lService.checktop10limit() != null ) {
+			
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
+					Map.of("top10", "les 10 lives en tete sont atteint", "podcast_top10", lService.checktop10limit()));
+		}
+		else if(lService.checktoplimit() != null ) {
+			
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
+					Map.of("top", "il y a deja un live en vedette", "podcast_vedette", lService.checktoplimit()));
+		}
+		else{
+			
 			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, lService.update(id, l) );
-
+		}
 	}
 	
 	@Tag(name = "Lives")
@@ -1135,6 +1186,16 @@ public class MediaController {
 				return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
 						Map.of("name", "Ce Podcast existe déja"));
 			}
+			else if(podcastservice.checktop10limit() != null ) {
+				
+				return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
+						Map.of("top10", "les 10 podcasts en tete sont atteint", "podcast_top10", podcastservice.checktop10limit()));
+			}
+			else if(podcastservice.checktoplimit() != null ) {
+				
+				return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
+						Map.of("top", "il y a deja un podcast en vedette", "podcast_vedette", podcastservice.checktoplimit()));
+			}
 			else {
 				return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, podcastservice.create(p) );
 			}
@@ -1181,8 +1242,25 @@ public class MediaController {
 				@PathVariable Long id,
 				@Valid @RequestBody Podcast p) {
 
-				//Save du tout
+			if(podcastservice.findByName(p.getName()) != null) {
+				
+				return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
+						Map.of("name", "Ce Podcast existe déja"));
+			}
+			else if(podcastservice.checktop10limit() != null ) {
+				
+				return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
+						Map.of("top10", "les 10 podcasts en tete sont atteint", "podcast_top10", podcastservice.checktop10limit()));
+			}
+			else if(podcastservice.checktoplimit() != null ) {
+				
+				return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
+						Map.of("top", "il y a deja un podcast en vedette", "podcast_vedette", podcastservice.checktoplimit()));
+			}
+			else {
 				return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, podcastservice.upadte(id, p) );
+				
+			}
 
 		}
 		
@@ -1228,27 +1306,10 @@ public class MediaController {
 	public ResponseEntity<Object> showMovieByPage(
 			Pageable p, 
 			@RequestParam (required = false) Long genre ,
-			@RequestParam (required = false) Long langue ){
+			@RequestParam (required = false) Long langue,
+			@RequestParam (required = false) Long pays){
 
-
-		if(langue != null && genre == null) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.showByLangue(langue,p));
-			
-		}
-		else if(genre != null && langue == null) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.showByGenre(genre,p));
-			
-		}
-		else if(genre !=null && langue !=null) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.showByGenreAndLang(genre, langue, p));
-		}
-		else {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.showPages(p));
-		}
+			return fnc.film_show_page(p, genre, langue, pays);
 
 	}
 
@@ -1274,7 +1335,7 @@ public class MediaController {
 	@GetMapping("movies/{id}")
 	public ResponseEntity<Object> showbyIdM(@PathVariable Long id){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.showById(id));
+		return fnc.film_show_by_id(id);
 	}
 
 	@Tag(name = "Movie")
@@ -1283,28 +1344,11 @@ public class MediaController {
 			@RequestParam String s, 
 			Pageable p,
 			@RequestParam (required = false) Long genre ,
-			@RequestParam (required = false) Long langue){
+			@RequestParam (required = false) Long langue,
+			@RequestParam (required = false) Long pays){
 
-		if(langue != null && genre==null) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.searchByLangue(s,langue,p));
-			
-		}
-		else if(genre != null && langue == null) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.searchByGenre(s, genre, p));
-			
-		}
-		else if(genre != null && langue != null) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.searchByGenreAndLang(s, genre, langue, p));
-			
-		}
-		else {
+			return fnc.film_search(s, p, genre, langue, pays);
 		
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.search(s, p));
-		
-		}
 	}
 
 	@Tag(name = "Movie")
@@ -1387,6 +1431,16 @@ public class MediaController {
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
 					Map.of("name", "Cette serie existe déja"));
 		}
+		else if(serieService.checktop10limit() != null ) {
+			
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
+					Map.of("top10", "les 10 series en tete sont atteint", "podcast_top10", serieService.checktop10limit()));
+		}
+		else if(serieService.checktoplimit() != null ) {
+			
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
+					Map.of("top", "il y a deja une serie en vedette", "podcast_vedette", serieService.checktoplimit()));
+		}
 		else {
 			//Save du tout
 			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED , serieService.create(serie));
@@ -1437,8 +1491,19 @@ public class MediaController {
 			@PathVariable Long id,
 			@Valid @RequestBody Serie serie){
 
+		if(serieService.checktop10limit() != null ) {
+			
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
+					Map.of("top10", "les 10 series en tete sont atteint", "podcast_top10", serieService.checktop10limit()));
+		}
+		else if(serieService.checktoplimit() != null ) {
+			
+			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
+					Map.of("top", "il y a deja une serie en vedette", "podcast_vedette", serieService.checktoplimit()));
+		}
+		else {
 			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK , serieService.upadte(id, serie));
-
+		}
 	}
 	
 	@Tag(name = "Serie")
@@ -1728,9 +1793,8 @@ public class MediaController {
 				.toList().size();
 		
 		//Controle du numero de l episode 
-		int nbEp = repEpisode.findByNumero(episode.getNumero())
+		int nbEp = repEpisode.findByNumeroAndIdSerie(episode.getNumero(), episode.getIdSerie())
 				.stream()
-				.filter( e -> e.getNumero() == episode.getNumero() )
 				.toList().size();
 		
 		if(nb>0 ) {
@@ -1768,17 +1832,16 @@ public class MediaController {
     					.toList().size();
     			
     			//Controle du numero de l episode 
-    			int nbEp = repEpisode.findByNumero(episode.getNumero())
+    			int nbEp = repEpisode.findByNumeroAndIdSerie(episode.getNumero(), episode.getIdSerie())
     					.stream()
-    					.filter( e -> e.getNumero() == episode.getNumero() )
     					.toList().size();
     			
     			if(nb>0 && !old_Ep.getName().contains(episode.getName())) {
     				
     				return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
-    						Map.of("name","Pour cette saison ce nom existe déja"));
-    				
+    						Map.of("name","Pour cette saison ce nom existe déja" ));
     			}
+    			
     			else if (nbEp>0 && old_Ep.getNumero() != episode.getNumero()) {
     				
     				return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 

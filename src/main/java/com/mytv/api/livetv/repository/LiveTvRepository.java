@@ -17,7 +17,6 @@ public interface LiveTvRepository extends JpaRepository<LiveTv, Long>{
 	Page<LiveTv> findByNameContainingOrOverviewContaining(String n, String o, Pageable p);
 	List<LiveTv> findByNameContainingOrOverviewContaining(String val, String val2);
 	List<LiveTv> findByTop10True();
-	List<LiveTv> findByTopTrue();
-	
+	LiveTv findByTopTrue();
 
 }

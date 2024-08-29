@@ -3,7 +3,6 @@ package com.mytv.api.radio.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -64,72 +63,6 @@ public class RadioService {
 		refresh();
 		return radioRep.findAll();
 	}
-	
-	public Page<Radio> showPage(Pageable p) {
-		
-		return radioRep.findAll(p);
-	}
-	
-	public Page<Radio> showByLangue(Long id, Pageable p){
-		
-		PageImpl<Radio> res = new PageImpl<Radio>(radioRep.findAll().stream()
-				   .filter(f -> f.getLangue().contains(id)).toList() 
-				   , p
-				   , radioRep.findAll().size());
-			
-			return res;
-		
-	};
-	
-	public Page<Radio> showByCateg(Long id, Pageable p){
-		
-		PageImpl<Radio> res = new PageImpl<Radio>(radioRep.findAll().stream()
-				   .filter(f -> f.getCategories().contains(id)).toList() 
-				   , p
-				   , radioRep.findAll().size());
-			
-			return res;
-		
-	};
-	
-	public Page<Radio> showByPays(Long id, Pageable p){
-		
-		PageImpl<Radio> res = new PageImpl<Radio>(radioRep.findAll().stream()
-				   .filter(f -> f.getCountry().contains(id)).toList() 
-				   , p
-				   , radioRep.findAll().size());
-			
-			return res;
-		
-	};
-	
-	public Page<Radio> showByCategAndLang(Long categ, Long langue, Pageable p){
-		
-		PageImpl<Radio> res = new PageImpl<Radio>(radioRep.findAll().stream()
-				   .filter(f -> f.getLangue().contains(langue))
-				   .filter(f -> f.getCategories().contains(categ))
-				   .toList() 
-				   , p
-				   , radioRep.findAll().size());
-			
-			return res;
-		
-	};
-	
-	public Page<Radio> showByPaysAbdLang(Long pays, Long langue, Pageable p){
-		
-		PageImpl<Radio> res = new PageImpl<Radio>(radioRep.findAll().stream()
-				   .filter(f -> f.getCountry().contains(pays))
-				   .filter(f -> f.getCategories().contains(langue))
-				   .toList() 
-				   , p
-				   , radioRep.findAll().size());
-			
-			return res;
-		
-	};
-	
-	
 	
 	
 	@SuppressWarnings("unused")
@@ -292,87 +225,7 @@ public class RadioService {
 	};
 	
 	
-	public Page<Radio> showByCategAbdLangAndPays(Long categ, Long langue, Long pays, Pageable p){
-		
-		PageImpl<Radio> res = new PageImpl<Radio>(radioRep.findAll().stream()
-				   .filter(f -> f.getLangue().contains(langue))
-				   .filter(f -> f.getCategories().contains(categ))
-				   .filter(f -> f.getCountry().contains(pays))
-				   .toList() 
-				   , p
-				   , radioRep.findAll().size());
-			
-			return res;
-		
-	};
-	
-	public Page<Radio> search(String n, Pageable p) {
 
-		return radioRep.findByNameContainingOrOverviewContaining(n, n, p);
-	}
-	
-	public Page<Radio> searchByLangue(String n, Long langue ,Pageable p) {
-
-		PageImpl<Radio> res = new PageImpl<Radio>(radioRep.findByNameContainingOrOverviewContaining(n, n).stream()
-                .filter(f -> f.getLangue().contains(langue))
-                .collect(Collectors.toList()) 
-				   , p
-				   , radioRep.findAll().size());
-			
-			return res;
-	}
-	
-	public Page<Radio> searchByCateg(String n, Long categ, Pageable p) {
-
-		PageImpl<Radio> res = new PageImpl<Radio>(radioRep.findByNameContainingOrOverviewContaining(n, n).stream()
-                .filter(f -> f.getCategories().contains(categ))
-                .collect(Collectors.toList()) 
-				   , p
-				   , radioRep.findAll().size());
-			
-			return res;
-	}
-	
-	public Page<Radio> searchByPays(String n, Long pays, Pageable p) {
-
-		PageImpl<Radio> res = new PageImpl<Radio>(radioRep.findByNameContainingOrOverviewContaining(n, n).stream()
-                .filter(f -> f.getCountry().contains(pays))
-                .collect(Collectors.toList()) 
-				   , p
-				   , radioRep.findAll().size());
-			
-			return res;
-	}
-
-	public Page<Radio> searchByCategAbdLang(String val, Long categ, Long langue, Pageable p){
-		
-		PageImpl<Radio> res = new PageImpl<Radio>(
-				    radioRep.findByNameContainingOrOverviewContaining(val, val).stream()
-				   .filter(f -> f.getLangue().contains(langue))
-				   .filter(f -> f.getCategories().contains(categ))
-				   .toList() 
-				   , p
-				   , radioRep.findAll().size());
-			
-			return res;
-		
-	};
-	
-	
-	public Page<Radio> searchByCategAbdLangAndPays(String val, Long categ, Long langue, Long pays, Pageable p){
-		
-		PageImpl<Radio> res = new PageImpl<Radio>(
-				    radioRep.findByNameContainingOrOverviewContaining(val, val).stream()
-				   .filter(f -> f.getLangue().contains(langue))
-				   .filter(f -> f.getCategories().contains(categ))
-				   .filter(f -> f.getCountry().contains(pays))
-				   .toList() 
-				   , p
-				   , radioRep.findAll().size());
-			
-			return res;
-		
-	};
 	
 	public Radio upadte( Long id, Radio u) {
 
@@ -419,7 +272,7 @@ public class RadioService {
 	
 	public Radio top(){
 		
-		return radioRep.findByTopTrue().get(0);
+		return radioRep.findByTopTrue();
 	}
 	
 	public Radio Addtop(Long id, boolean status){
@@ -430,4 +283,30 @@ public class RadioService {
 		return r;
 	}
 	
+	
+	public Radio checktoplimit() {
+		
+		if(radioRep.findByTopTrue() != null) {
+			
+			return radioRep.findByTopTrue();
+		}
+		
+		else {
+			
+			return null;
+		}
+	}
+	
+	//Si null la limite n'est pas encore atteinte
+	public List<Radio> checktop10limit() {
+		
+		if(radioRep.findByTop10True().size() <=10) {
+			
+			return null;
+		}
+		else {
+			
+			return radioRep.findByTop10True();
+		}
+	}
 }

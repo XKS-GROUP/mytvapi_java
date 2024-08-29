@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import com.mytv.api.live.model.Live;
 import com.mytv.api.live.repository.LiveRepository;
-
 import lombok.AllArgsConstructor;
 
 @Service
@@ -113,5 +112,32 @@ public class LiveService {
 		return pc;
 		
 	}
+	
+	public Live checktoplimit() {
+		
+		if(rep.findByTopTrue() != null) {
+			
+			return rep.findByTopTrue();
+		}
+		
+		else {
+			
+			return null;
+		}
+	}
+	
+	//Si null la limite n'est pas encore atteinte
+	public List<Live> checktop10limit() {
+		
+		if(rep.findByTop10True().size() <=10) {
+			
+			return null;
+		}
+		else {
+			
+			return rep.findByTop10True();
+		}
+	}
+
 
 }

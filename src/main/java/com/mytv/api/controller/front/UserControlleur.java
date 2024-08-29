@@ -59,7 +59,7 @@ public class UserControlleur {
 	JwtRepository jwtRep;
 	
 	//Affiche info utilisateur
-	@Tag(name = "Profil Abonne")
+	@Tag(name = "Profil Abonne DOWN (gere par firebase maintenant )")
 	@GetMapping("info")
 	public ResponseEntity<Object> retrieveUserProfile(){
 		
@@ -69,7 +69,7 @@ public class UserControlleur {
 	}
 
 	//Update User
-	@Tag(name = "Profil Abonne")
+	@Tag(name = "Profil Abonne DOWN (gere par firebase maintenant )")
 	@PutMapping("update/{id}")
 	public ResponseEntity<Object> updateProfilebyId(@PathVariable Long id, @Valid @RequestBody User u){
 
@@ -86,7 +86,7 @@ public class UserControlleur {
 	}
     
 	//Delete le compte actuel
-	@Tag(name = "Profil Abonne")
+	@Tag(name = "Profil Abonne DOWN (gere par firebase maintenant )")
 	@DeleteMapping("delete/currentAcount")
 	public ResponseEntity<Object> delCurrentProfil(){
 
@@ -102,7 +102,7 @@ public class UserControlleur {
 	}
 	
 	//Delete by id
-	@Tag(name = "Profil Abonne")
+	@Tag(name = "Profil Abonne DOWN (gere par firebase maintenant )")
 	@DeleteMapping("delete/currentAcount/{id}")
 	public ResponseEntity<Object> delCurrentProfileByid(@PathVariable Long id){
 
@@ -119,7 +119,7 @@ public class UserControlleur {
 	//Gestion des profil
 	
 	//List des profils
-	@Tag(name = "Profil Abonne")
+	@Tag(name = "Profil Abonne DOWN (gere par firebase maintenant )")
 	@GetMapping("list-profile")
 	public List<Profil> listProfile(){
 
@@ -127,7 +127,7 @@ public class UserControlleur {
 	}
 	
 	//Creation de pro
-	@Tag(name = "Profil Abonne")
+	@Tag(name = "Profil Abonne DOWN (gere par firebase maintenant )")
 	@PostMapping("profile/create")
 	public ResponseEntity<Object> createProfil(@Valid @RequestBody Profil p){
 		
@@ -157,7 +157,7 @@ public class UserControlleur {
 	
 	
 	//Update pro
-	@Tag(name = "Profil Abonne")
+	@Tag(name = "Profil Abonne DOWN (gere par firebase maintenant )")
 	@PutMapping("profile/update")
 	public ResponseEntity<Object> updateProfil(@PathVariable Long id,  @Valid @RequestBody Profil p){
 		
@@ -173,7 +173,7 @@ public class UserControlleur {
 	}
 	
 	//Delete pro
-	@Tag(name = "Profil Abonne")
+	@Tag(name = "Profil Abonne DOWN (gere par firebase maintenant )")
 	@DeleteMapping("profile/delete/{id}")
 	public ResponseEntity<Object> deleteProfil(@PathVariable Long id){
 
@@ -188,7 +188,7 @@ public class UserControlleur {
 		}
 	}
 
-	@Tag(name = "Profil Abonne")
+	@Tag(name = "Profil Abonne DOWN (gere par firebase maintenant )")
 	@GetMapping("downloads/all")
 	public List<Pays> allDownload(){
 
@@ -196,7 +196,7 @@ public class UserControlleur {
 	}
 
 	//Deconexion
-	@Tag(name = "Profil Abonne")
+	@Tag(name = "Profil Abonne DOWN (gere par firebase maintenant )")
 	@PostMapping("logout")
 	public ResponseEntity<Object> userLogout(HttpServletRequest request){
 
@@ -214,7 +214,7 @@ public class UserControlleur {
 			 return EntityResponse.generateResponse("Deconexion", HttpStatus.OK, usr.getUsername()+" à été deconnecter avec succès" );
 	  }
 	
-	@Tag(name = "Profil Abonne")
+	@Tag(name = "Profil Abonne DOWN (gere par firebase maintenant )")
 	@PostMapping("logout/AllDevice")
 	public ResponseEntity<Object> userLogoutAllDevice(){
 

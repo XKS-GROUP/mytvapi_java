@@ -200,6 +200,7 @@ public class SerieService {
 		g.setGenres(genreRep.findAllById(g.getGenreList()));
 		g.setDirectors(rep_dirs.findAllById(g.getDirectorList()));
 		g.setList_langues(rep_langue.findAllById(g.getLangue()));
+		refresh();
 		return rep.save(g);
 	}
 
@@ -270,7 +271,7 @@ public class SerieService {
 	
 	public Serie top(){
 		
-		return rep.findByTopTrue().get(0);
+		return rep.findByTopTrue();
 	}
 	
 	public Serie Addtop(Long id, boolean status){
@@ -280,5 +281,36 @@ public class SerieService {
 		
 		return r;
 	}
+	
+	
+	public Serie checktoplimit() {
+		
+		if(rep.findByTopTrue() != null) {
+			
+			return rep.findByTopTrue();
+		}
+		
+		else {
+			
+			return null;
+		}
+	}
+	
+	//Si null la limite n'est pas encore atteinte
+	
+	public List<Serie> checktop10limit() {
+		
+		if(rep.findByTop10True().size() <=10) {
+			
+			return null;
+		}
+		else {
+			
+			return rep.findByTop10True();
+		}
+	}
+
+
+	
 
 }

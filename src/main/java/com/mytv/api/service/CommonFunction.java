@@ -8,8 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.amazonaws.services.accessanalyzer.model.ResourceNotFoundException;
 import com.mytv.api.dto.StatusDTO;
@@ -20,8 +18,8 @@ import com.mytv.api.film.service.ServiceFilm;
 import com.mytv.api.intervenant.model.Actor;
 import com.mytv.api.intervenant.model.Director;
 import com.mytv.api.intervenant.model.Podcasteur;
-import com.mytv.api.intervenant.repository.ActorRepository;
 import com.mytv.api.intervenant.repository.DirectorRepository;
+import com.mytv.api.intervenant.service.ActorService;
 import com.mytv.api.intervenant.service.PodcasterService;
 import com.mytv.api.live.model.Live;
 import com.mytv.api.live.service.LiveService;
@@ -58,7 +56,6 @@ import com.mytv.api.security.request.EntityResponse;
 import com.mytv.api.serie.model.Serie;
 import com.mytv.api.serie.service.SerieService;
 
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -120,7 +117,7 @@ public class CommonFunction {
 	private SaisonService saisonService;
 
 	@Autowired
-	private ActorRepository actorRep;
+	private ActorService actorService;
 
 	@Autowired
 	private DirectorRepository directorsRep;
@@ -201,35 +198,39 @@ public class CommonFunction {
 	 */
 	//
 
-	public ResponseEntity<Object> showActor() {
+	public ResponseEntity<Object> actor_show() {
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, actorRep.findAll());
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, actorService.show());
 	}
 
-	public ResponseEntity<Object> showActorPaging(Pageable p) {
+	public ResponseEntity<Object> actor_show_paging(Pageable p, List<Long> pays) {
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, actorRep.findAll(p));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, actorService.filtre_complet(pays, p));
+	}
+	
+	public ResponseEntity<Object> actor_search(Pageable p, String val,List<Long> pays) {
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, actorService.filtre_recherche_complet(val, pays, p));
 	}
 
-	public ResponseEntity<Object> showActorById(long id) {
+	public ResponseEntity<Object> actor_show_by_id(long id) {
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, actorRep.findById(id));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, actorService.showById(null));
 	}
 
-	public ResponseEntity<Object> createActor(Actor a) {
+	public ResponseEntity<Object> actor_create(Actor a) {
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.CREATED, actorRep.save(a));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.CREATED, actorService.create(a));
 	}
 
-	public ResponseEntity<Object> updateActor(Long id, Actor a) {
+	public ResponseEntity<Object> actor_update(Long id, Actor a) {
 
-		a.setIdActor(id);
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, actorRep.save(a));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, actorService.update(id, a));
 
 	}
 
-	public ResponseEntity<Object> deleteActor(Long id) {
-		actorRep.deleteById(id);
+	public ResponseEntity<Object> actor_delete(Long id) {
+		actorService.delete(id);
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, " ");
 
 	}
@@ -736,46 +737,14 @@ public class CommonFunction {
 	}
 
 
-	public ResponseEntity<Object> showLivePages(Pageable p, Long genre, Long langue, Long pays) {
+	public ResponseEntity<Object> tv_show_page(Pageable p, Long genre, Long langue, Long pays) {
 
-		if (genre != null && langue == null && pays == null) {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showByGenre(genre, p));
-		} else if (langue != null && genre == null && pays == null) {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showByLangue(langue, p));
-		} else if (pays == null && genre == null && pays == null) {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showByPays(pays, p));
-		} else if (pays != null && langue != null && genre != null) {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-					liveService.showByPaysGenreLangue(genre, langue, pays, p));
-		} else {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showPage(p));
-		}
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.filtre_complet(genre, langue, pays, p));
 	}
 
-	public ResponseEntity<Object> showLbyNameContainL(String s, Pageable p, Long genre, Long langue, Long pays) {
+	public ResponseEntity<Object> tv_search(String s, Pageable p, Long genre, Long langue, Long pays) {
 
-		if (genre != null && langue == null && pays == null) {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchByGenre(s, genre, p));
-		} else if (langue != null && genre == null && pays == null) {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchbyLangue(s, langue, p));
-		} else if (pays != null && langue == null && genre == null) {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.searchByPays(s, pays, p));
-		} else if (pays != null && langue != null && genre != null) {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-					liveService.searchByPaysGenreLangue(s, genre, langue, pays, p));
-		} else {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.search(s, p));
-		}
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.filtre_recherche_complet(s, genre, langue, pays, p));
 	}
 
 	public ResponseEntity<Object> showbyIdL(Long id) {
@@ -1029,24 +998,10 @@ public class CommonFunction {
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.show());
 	}
 
-	public ResponseEntity<Object> showMovieByPage(Pageable p, Long genre, Long langue) {
+	public ResponseEntity<Object> film_show_page(Pageable p, Long genre, Long langue, Long pays) {
 
-		if (langue != null && genre == null) {
 
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.showByLangue(langue, p));
-
-		} else if (genre != null && langue == null) {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.showByGenre(genre, p));
-
-		} else if (genre != null && langue != null) {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-					filmService.showByGenreAndLang(genre, langue, p));
-		} else {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.showPages(p));
-		}
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.filtre_complet(genre, langue, pays, p));
 
 	}
 
@@ -1062,31 +1017,15 @@ public class CommonFunction {
 
 	}
 
-	public ResponseEntity<Object> showbyIdM(Long id) {
+	public ResponseEntity<Object> film_show_by_id(Long id) {
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.showById(id));
 	}
 
-	public ResponseEntity<Object> search(String s, Pageable p, Long genre, Long langue) {
+	public ResponseEntity<Object> film_search(String s, Pageable p, Long genre, Long langue, Long pays) {
 
-		if (langue != null && genre == null) {
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.filtre_recherche_complet(s, genre, langue, pays, p));
 
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.searchByLangue(s, langue, p));
-
-		} else if (genre != null && langue == null) {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.searchByGenre(s, genre, p));
-
-		} else if (genre != null && langue != null) {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-					filmService.searchByGenreAndLang(s, genre, langue, p));
-
-		} else {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.search(s, p));
-
-		}
 	}
 
 	public ResponseEntity<Object> updateM(Long id, Film film) {

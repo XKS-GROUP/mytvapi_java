@@ -19,7 +19,7 @@ public interface CollectionPodcastRepository extends JpaRepository<ColPodcast, L
 	ColPodcast findByName(String name);
 	Page<ColPodcast> findByName(String name, Pageable p);
 	List<ColPodcast> findByTop10True();
-	List<ColPodcast> findByTopTrue();
+	ColPodcast findByTopTrue();
 	
 	
 	

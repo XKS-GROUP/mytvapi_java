@@ -16,23 +16,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mytv.api.episode.model.ComEpisode;
 import com.mytv.api.episode.model.Episode;
 import com.mytv.api.episode.model.FavEpisode;
 import com.mytv.api.episode.model.LikeEpisode;
 import com.mytv.api.episode.repository.FavEpisodeRepository;
 import com.mytv.api.episode.repository.LikeEpisodeRepository;
-import com.mytv.api.episode.service.ComEpisodeService;
 import com.mytv.api.episode.service.EpisodeService;
 import com.mytv.api.episode.service.FavEpisodeService;
 import com.mytv.api.episode.service.LikeEpisodeService;
-import com.mytv.api.film.model.ComFilm;
 import com.mytv.api.film.model.FavFilm;
 import com.mytv.api.film.model.Film;
 import com.mytv.api.film.model.LikeFilm;
 import com.mytv.api.film.repository.FavFilmRepository;
 import com.mytv.api.film.repository.LikeFilmRepository;
-import com.mytv.api.film.service.ComFilmService;
 import com.mytv.api.film.service.FavFilmService;
 import com.mytv.api.film.service.LikeFilmService;
 import com.mytv.api.film.service.ServiceFilm;
@@ -48,13 +44,11 @@ import com.mytv.api.livetv.repository.FavLiveRepository;
 import com.mytv.api.livetv.repository.LikeLivetvRepository;
 import com.mytv.api.livetv.service.LikeLiveService;
 import com.mytv.api.livetv.service.LiveTvSetvice;
-import com.mytv.api.podcast.model.ComPodcast;
 import com.mytv.api.podcast.model.FavPodcast;
 import com.mytv.api.podcast.model.LikePodcast;
 import com.mytv.api.podcast.model.Podcast;
 import com.mytv.api.podcast.repository.FavPodcastRepository;
 import com.mytv.api.podcast.repository.LikePodcastRepository;
-import com.mytv.api.podcast.service.ComPodcastService;
 import com.mytv.api.podcast.service.FavPodcastService;
 import com.mytv.api.podcast.service.LikePodcastService;
 import com.mytv.api.podcast.service.PodcastService;
@@ -86,24 +80,20 @@ import com.mytv.api.ressource.service.CategoryLrService;
 import com.mytv.api.ressource.service.GenreService;
 import com.mytv.api.ressource.service.LangueService;
 import com.mytv.api.ressource.service.PaysService;
-import com.mytv.api.saison.model.ComSaison;
 import com.mytv.api.saison.model.FavSaison;
 import com.mytv.api.saison.model.LikeSaison;
 import com.mytv.api.saison.model.Saison;
 import com.mytv.api.saison.repository.FavSaisonRepository;
 import com.mytv.api.saison.repository.LikeSaisonRepository;
-import com.mytv.api.saison.service.ComSaisonService;
 import com.mytv.api.saison.service.FavSaisonService;
 import com.mytv.api.saison.service.LikeSaisonService;
 import com.mytv.api.saison.service.SaisonService;
 import com.mytv.api.security.request.EntityResponse;
-import com.mytv.api.serie.model.ComSerie;
 import com.mytv.api.serie.model.FavSerie;
 import com.mytv.api.serie.model.LikeSerie;
 import com.mytv.api.serie.model.Serie;
 import com.mytv.api.serie.repository.FavSerieRepository;
 import com.mytv.api.serie.repository.LikeSerieRepository;
-import com.mytv.api.serie.service.ComSerieService;
 import com.mytv.api.serie.service.FavSerieService;
 import com.mytv.api.serie.service.LikeSerieService;
 import com.mytv.api.serie.service.SerieService;
@@ -205,8 +195,6 @@ public class FrontController {
 	@Autowired
 	private LikePodcastService likepodService;
 	@Autowired
-	private ComPodcastService compodService;
-	@Autowired
 	private LikePodcastRepository likepodRep;
 	@Autowired
 	private FavPodcastRepository favpodRep;
@@ -229,8 +217,6 @@ public class FrontController {
 	@Autowired
 	private LikeFilmService likefilmService;
 	@Autowired
-	private ComFilmService comfilmService;
-	@Autowired
 	private LikeFilmRepository likefilmRep;
 	@Autowired
 	private FavFilmRepository favfilmRep;
@@ -241,8 +227,6 @@ public class FrontController {
 	@Autowired
 	private LikeSerieService likeserieService;
 	@Autowired
-	private ComSerieService comserieService;
-	@Autowired
 	private LikeSerieRepository likeserieRep;
 	@Autowired
 	private FavSerieRepository favserieRep;
@@ -252,8 +236,6 @@ public class FrontController {
 	private FavEpisodeService favepisodeService;
 	@Autowired
 	private LikeEpisodeService likeepisodeService;
-	@Autowired
-	private ComEpisodeService comepisodeService;
 	@Autowired
 	private LikeEpisodeRepository likeepisodeRep;
 	@Autowired
@@ -266,8 +248,6 @@ public class FrontController {
 	private FavSaisonService favsaisonService;
 	@Autowired
 	private LikeSaisonService likesaisonService;
-	@Autowired
-	private ComSaisonService comsaisonService;
 	@Autowired
 	private LikeSaisonRepository likesaisonRep;
 	@Autowired
@@ -622,21 +602,33 @@ public class FrontController {
 	@GetMapping("acteurs")
 	public ResponseEntity<Object> showActor(){
 
-		return fnc.showActor();
+		return fnc.actor_show();
 	}
     
     @Tag(name = "Acteur")
 	@GetMapping("acteurs/all/")
-	public ResponseEntity<Object> showActorPaging(Pageable p){
+	public ResponseEntity<Object> actor_show_paging(
+			@RequestParam (required = false) List<Long> pays,
+			Pageable p){
 
-		return fnc.showActorPaging(p);
+    	return fnc.actor_show_paging(p, pays);
+	}
+    
+    @Tag(name = "Acteur")
+	@GetMapping("acteurs/search/")
+	public ResponseEntity<Object> acteur_search(
+			@RequestParam (required = false) String s,
+			@RequestParam (required = false) List<Long> pays,
+			Pageable p){
+
+    	return fnc.actor_search(p, s, pays) ;
 	}
     
     @Tag(name = "Acteur")
 	@GetMapping("acteurs/{id}")
 	public ResponseEntity<Object> showActorById(@PathVariable long id){
 
-		return fnc.showActorById(id);
+		return fnc.actor_show_by_id(id);
 	}
     
     /*
@@ -871,6 +863,7 @@ public class FrontController {
 	 * 
 	 * 
 	 */
+	
 	@Tag(name = "Podcast Collection")
 	@GetMapping("podcast/collections")
 	public ResponseEntity<Object> showCollection(){
@@ -1046,50 +1039,6 @@ public class FrontController {
 		return fnc.showbyIdP(s, p, categ, langue);
 	}
 
-	//COMMENTAIRES
-	//AFFICHE TOUS LES COMMENTAIRES
-	@Tag(name = "Podcasts")
-	@GetMapping("podcasts/comments/all/")
-	public ResponseEntity<Object> podcastShowAllComment(){
-
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, compodService.show() );
-		
-	}
-	
-	//AFFICHE COMMENTAIRE D UN PODCAST
-	@Tag(name = "Podcasts")
-	@GetMapping("podcasts/comments/byId/{idPod}")
-	public ResponseEntity<Object> podcastShowCommentById(@PathVariable Long idPod){
-		
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-				compodService.findByPodcast(podcastservice.showById(idPod).get())) ;
-		
-	}
-	
-	//ADD COMMENT
-	@Tag(name = "Podcasts")
-	@PostMapping("podcasts/comments/add/{idPod}")
-	public ResponseEntity<Object> LiveAddComment(@PathVariable Long idPod, @RequestBody String com){
-		
-		Podcast l = podcastservice.showById(idPod).get();
-		User u = userService.findCurrentUser();
-		ComPodcast comp = new ComPodcast();
-		comp.setUser(u);
-		comp.setPodcast(l);
-		comp.setContenu(com);
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-				compodService.addCom(comp));
-		
-	}
-	
-	@Tag(name = "Podcasts")
-	@DeleteMapping("podcasts/comments/add/{idCom}")
-	public ResponseEntity<Object> LiveDelComment(@PathVariable Long idCom){
-
-		return EntityResponse.generateResponse("Comentaire Supprimé avec succès", HttpStatus.OK, 
-				compodService.remove(idCom));
-		
-	}
 	
 	//LIKE
 	
@@ -1212,10 +1161,10 @@ public class FrontController {
 	public ResponseEntity<Object> showMovieByPage(
 			Pageable p, 
 			@RequestParam (required = false) Long genre ,
-			@RequestParam (required = false) Long langue ){
+			@RequestParam (required = false) Long langue,
+			@RequestParam (required = false) Long pays){
 
-
-		return fnc.showMovieByPage(p, genre, langue);
+		return fnc.film_show_page(p, genre, langue, pays);
 
 	}
 	
@@ -1224,7 +1173,7 @@ public class FrontController {
 	@GetMapping("films/{id}")
 	public ResponseEntity<Object> showbyIdM(@PathVariable Long id){
 
-		return fnc.showbyIdM(id);
+		return fnc.film_show_by_id(id);
 	}
     
 	@Tag(name = "Films")
@@ -1233,60 +1182,18 @@ public class FrontController {
 			@RequestParam String s, 
 			Pageable p,
 			@RequestParam (required = false) Long genre ,
-			@RequestParam (required = false) Long langue){
+			@RequestParam (required = false) Long langue,
+			@RequestParam (required = false) Long pays){
 
-		return fnc.search(s, p, genre, langue);
+		return fnc.film_search(s, p, genre, langue, pays);
 	}
 	
 ////////////////////////////////////////////////////////////////////////
 /*
  * DEBUT DU MODUL
  */
-	//COM
-		//AFFICHE TOUS LES COMMENTAIRES
-		@Tag(name = "Films")
-		@GetMapping("films/comments/all/")
-		public ResponseEntity<Object> filmShowAllComment(){
 
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-						comfilmService.show() );
-			
-		}
-		
-		//AFFICHE COMMENTAIRE D UN FILM
-		@Tag(name = "Films")
-		@GetMapping("films/comments/show/byIdFilm/{idFilm}")
-		public ResponseEntity<Object> filmShowCommentById(@PathVariable Long idFilm){
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-					comfilmService.findByFilm(filmService.showById(idFilm).get()));
-			
-		}
-		
-		//ADD COMMENT
-		@Tag(name = "Films")
-		@PostMapping("films/comments/add/{idFilm}")
-		public ResponseEntity<Object> filmAddComment(@PathVariable Long idFilm, @RequestBody String com){
-			
-			Film f = filmService.showById(idFilm).get();
-			User u = userService.findCurrentUser();
-			ComFilm comp = new ComFilm();
-			comp.setUser(u);
-			comp.setFilm(f);
-			comp.setContenu(com);
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-					comfilmService.addCom(comp));
-			
-		}
-		
-		@Tag(name = "Films")
-		@DeleteMapping("films/comments/delete/{idCom}")
-		public ResponseEntity<Object> filmDelComment(@PathVariable Long idCom){
 
-			return EntityResponse.generateResponse("Comentaire Supprimé avec succès", HttpStatus.OK, 
-					comfilmService.remove(idCom));
-			
-		}
 		
 		//LIKE
 		
@@ -1476,51 +1383,6 @@ public class FrontController {
 	/*
 	* DEBUT DU MODUL
 	*/
-	//COM
-	//AFFICHE TOUS LES COMMENTAIRES
-	@Tag(name = "Series")
-	@GetMapping("series/comments/all/")
-	public ResponseEntity<Object> serieShowAllComment(){
-	
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-				comserieService.show());
-	
-	}
-	
-	//AFFICHE COMMENTAIRE D UNE SERIE
-	@Tag(name = "Series")
-	@GetMapping("series/comments/show/byId/{idSerie}")
-	public ResponseEntity<Object> serieShowCommentById(@PathVariable Long idSerie){
-	
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-				comserieService.findBySerie(serieService.showById(idSerie).get())) ;
-	
-	}
-	
-	//ADD COMMENT
-	@Tag(name = "Series")
-	@PostMapping("series/comment/all/{idSerie}")
-	public ResponseEntity<Object> serieAddComment(@PathVariable Long idSerie, @RequestBody String com){
-	
-	Serie f = serieService.showById(idSerie).get();
-	User u = userService.findCurrentUser();
-	ComSerie comp = new ComSerie();
-	comp.setUser(u);
-	comp.setSerie(f);
-	comp.setContenu(com);
-	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-				comserieService.addCom(comp));
-	
-	}
-	
-	@Tag(name = "Series")
-	@DeleteMapping("series/comments/delete/{idCom}")
-	public ResponseEntity<Object> serieDelComment(@PathVariable Long idCom){
-	
-	return EntityResponse.generateResponse("Comentaire Supprimé avec succès", HttpStatus.OK, 
-	comserieService.remove(idCom));
-	
-	}
 	
 	//LIKE
 	
@@ -1680,52 +1542,6 @@ public class FrontController {
 	/*
 	* DEBUT DU MODUL
 	*/
-	//COM
-	//AFFICHE TOUS LES COMMENTAIRES
-	@Tag(name = "Episodes")
-	@GetMapping("episodes/comments/all/")
-	public ResponseEntity<Object> episodeShowAllComment(){
-	
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, comepisodeService.show());
-	
-	}
-	
-	//AFFICHE COMMENTAIRE D UN EPISODE
-	@Tag(name = "Episodes")
-	@GetMapping("episodes/comments/show/byId/{idEpisode}")
-	public ResponseEntity<Object> episodeShowCommentById(@PathVariable Long idEpisode){
-	
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-				comepisodeService.findByEpisode(episodeService.showById(idEpisode).get()));
-	
-	}
-	
-	//ADD COMMENT
-	@Tag(name = "Episodes")
-	@PostMapping("episodes/comments/add/{idEpisode}")
-	public ResponseEntity<Object> episodeAddComment(@PathVariable Long idEpisode, @RequestBody String com){
-	
-	Episode f = episodeService.showById(idEpisode).get();
-	User u = userService.findCurrentUser();
-	ComEpisode comp = new ComEpisode();
-	
-	comp.setUser(u);
-	comp.setEpisode(f);
-	comp.setContenu(com);
-	
-	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
-			 comepisodeService.addCom(comp));
-	
-	}
-	
-	@Tag(name = "Episodes")
-	@DeleteMapping("episodes/comments/delete/{idCom}")
-	public ResponseEntity<Object> episodeDelComment(@PathVariable Long idCom){
-	
-	return EntityResponse.generateResponse("Comentaire Supprimé avec succès", HttpStatus.OK, 
-	comepisodeService.remove(idCom));
-	
-	}
 	
 	//LIKE
 	
@@ -1870,52 +1686,6 @@ public class FrontController {
 	/*
 	* DEBUT DU MODUL
 	*/
-	//COM
-	//AFFICHE TOUS LES COMMENTAIRES
-	@Tag(name = "Saison")
-	@GetMapping("saisons/comments/all/")
-	public ResponseEntity<Object> saisonShowAllComment(){
-	
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-				comsaisonService.show());
-	
-	}
-	
-	//AFFICHE COMMENTAIRE D UNE SAISON
-	@Tag(name = "Saison")
-	@GetMapping("saisons/comments/show/byId/{idSaison}")
-	public ResponseEntity<Object> saisonShowCommentById(@PathVariable Long idSaison){
-	
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-				comsaisonService.findBySaison(saisonService.showById(idSaison)));
-	
-	}
-	
-	//ADD COMMENT
-	@Tag(name = "Saison")
-	@PostMapping("saisons/comments/add/{idSaison}")
-	public ResponseEntity<Object> saisonAddComment(@PathVariable Long idSaison, @RequestBody String com){
-	
-	Saison s = saisonService.showById(idSaison);
-	User u = userService.findCurrentUser();
-	ComSaison comp = new ComSaison();
-	
-	comp.setUser(u);
-	comp.setSaison(s);
-	comp.setContenu(com);
-	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-			comsaisonService.addCom(comp));
-	
-	}
-	
-	@Tag(name = "Saison")
-	@DeleteMapping("saisons/comments/delete/{idCom}")
-	public ResponseEntity<Object> saisonDelComment(@PathVariable Long idCom){
-	
-	return EntityResponse.generateResponse("Comentaire Supprimé avec succès", HttpStatus.OK, 
-	comsaisonService.remove(idCom));
-	
-	}
 	
 	//LIKE
 	
@@ -2116,7 +1886,7 @@ public class FrontController {
 			@RequestParam (required = false) Long langue,
 			@RequestParam (required = false) Long pays){
 		
-		return fnc.showLivePages(p, genre, langue, pays);
+		return fnc.tv_show_page(p, genre, langue, pays);
 	}
 	
 	@Tag(name = "TV SHOW")
@@ -2127,7 +1897,7 @@ public class FrontController {
 			@RequestParam (required = false) Long langue,
 			@RequestParam (required = false) Long pays){
 			
-		return fnc.showLbyNameContainL(s, p, genre, langue, pays);
+		return fnc.tv_search(s, p, genre, langue, pays);
 	}
 
 	@Tag(name = "TV SHOW")
@@ -2326,100 +2096,7 @@ public class FrontController {
   	}
     
     
-    /*
-     * 
-     * 
-     * 
-     * SECTION HOME PAGE TOP 10
-     * 
-     * 
-     *  
-     */
-    
-    @Tag(name = "HomePage")
-	@GetMapping("podcast/top10")
-	public ResponseEntity<Object> podcastTop10(){
-
-	  return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,podcastservice.top10());
-	}
-    
-    @Tag(name = "HomePage")
-	@GetMapping("film/top10")
-	public ResponseEntity<Object> filmTop10(){
-
-    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.top10());
-	}
-    
-    @Tag(name = "HomePage")
-	@GetMapping("serie/top10")
-	public ResponseEntity<Object> serieTop10(){
-
-    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.top10() );
-	}
-    
-    @Tag(name = "HomePage")
-	@GetMapping("radio/top10")
-	public ResponseEntity<Object> radioTop10(){
-
-    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.top10());
-		
-	}
-    
-    @Tag(name = "HomePage")
-	@GetMapping("tv/top10")
-	public ResponseEntity<Object> livetvTop10(){
-
-    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.top10());
-		
-	}
-    
-    
-    /*
-     * 
-     * 
-     * 
-     * SECTION HOME PAGE EN VEDETTE
-     * 
-     * 
-     *  
-     */
-    
-    @Tag(name = "HomePage")
-	@GetMapping("podcast/top")
-	public ResponseEntity<Object> podcastTop(){
-
-	  return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,podcastservice.top());
-	}
-    
-    @Tag(name = "HomePage")
-	@GetMapping("film/top")
-	public ResponseEntity<Object> filmTop(){
-
-    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.top());
-	}
-    
-    @Tag(name = "HomePage")
-	@GetMapping("serie/top")
-	public ResponseEntity<Object> serieTop(){
-
-    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.top() );
-	}
-    
-    @Tag(name = "HomePage")
-	@GetMapping("radio/top")
-	public ResponseEntity<Object> radioTop(){
-
-    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.top());
-		
-	}
-    
-    @Tag(name = "HomePage")
-	@GetMapping("tv/top")
-	public ResponseEntity<Object> livetvTop(){
-
-    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.top());
-		
-	}
+  
     
     
 

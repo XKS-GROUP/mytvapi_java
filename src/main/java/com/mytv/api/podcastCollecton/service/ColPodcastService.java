@@ -32,7 +32,6 @@ public class ColPodcastService {
 	@Autowired
 	private LangRepository rep_langue;
 
-
 	public ColPodcast create(ColPodcast p) {
 
 		p.setList_langues(rep_langue.findAllById(p.getLangue()));
@@ -201,7 +200,7 @@ public class ColPodcastService {
 	}
 	
 	
-	public List<ColPodcast> top(){
+	public ColPodcast top(){
 		
 		return rep.findByTopTrue();
 	}
@@ -215,5 +214,30 @@ public class ColPodcastService {
 		
 	}
 	
+	public ColPodcast checktoplimit() {
+		
+		if(rep.findByTopTrue() != null) {
+			
+			return rep.findByTopTrue();
+		}
+		
+		else {
+			
+			return null;
+		}
+	}
+	
+	//Si null la limite n'est pas encore atteinte
+	public List<ColPodcast> checktop10limit() {
+		
+		if(rep.findByTop10True().size() <=10) {
+			
+			return null;
+		}
+		else {
+			
+			return rep.findByTop10True();
+		}
+	}
 
 }

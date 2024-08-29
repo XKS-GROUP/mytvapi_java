@@ -11,6 +11,7 @@ import com.mytv.api.intervenant.model.Actor;
 import com.mytv.api.intervenant.model.Director;
 import com.mytv.api.ressource.model.Genre;
 import com.mytv.api.ressource.model.Language;
+import com.mytv.api.ressource.model.Pays;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -161,5 +162,10 @@ public class Film {
 	List<Long> genreList = new ArrayList<>();
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idGenre",  cascade = CascadeType.ALL)
 	List<Genre> genres;
+	
+	List<Long>  country = new ArrayList<>();
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idPays",  cascade = CascadeType.ALL)
+	List<Pays> list_country = new ArrayList<>();
 
 }
