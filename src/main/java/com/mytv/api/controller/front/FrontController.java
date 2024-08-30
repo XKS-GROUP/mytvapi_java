@@ -91,6 +91,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
+//
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("api/v1/front/")
@@ -206,6 +215,16 @@ public class FrontController {
 	@Autowired
 	WUserService userService;
 	
+	
+	@GetMapping("/me")
+    public String getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            return "Connected user: " + authentication.getName();
+        } else {
+            return "No authenticated user";
+        }
+    }
 
 	
 	/*
@@ -862,6 +881,15 @@ public class FrontController {
 		return fnc.showP();
 		
 	}
+	
+	@Tag(name = "Podcasts")
+	@GetMapping("podcasts/similaire/{id}")
+	public ResponseEntity<Object> podcast_similaire_show(
+			@PathVariable Long id,
+			Pageable p){
+		
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.similaire_show(id, p));
+	}
 
 	@Tag(name = "Podcasts")
 	@GetMapping("podcasts/all/")
@@ -950,6 +978,16 @@ public class FrontController {
 
 		return fnc.showM();
 	}
+	
+	@Tag(name = "Films")
+	@GetMapping("films/similaire/{id}")
+	public ResponseEntity<Object> film_similaire_show(
+			@PathVariable Long id,
+			Pageable p){
+		
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.similaire_show(id, p));
+	}
+
 	
 	@Tag(name = "Films")
 	@GetMapping("films/all/")
@@ -1054,6 +1092,18 @@ public class FrontController {
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.show());
 	}
+	
+	@Tag(name = "Series")
+	@GetMapping("series/similaire/{id}")
+	public ResponseEntity<Object> serie_similaire_show(
+			@PathVariable Long id,
+			Pageable p){
+		
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.similaire_show(id, p));
+		
+	}
+
+	
 	
 	@Tag(name = "Series")
 	@GetMapping("series/all/")
@@ -1438,6 +1488,16 @@ public class FrontController {
 	}
 	
 	@Tag(name = "TV SHOW")
+	@GetMapping("tv/similaire/{id}")
+	public ResponseEntity<Object> tv_similaire_show(
+			@PathVariable Long id,
+			Pageable p){
+		
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.similaire_show(id, p));
+		
+	}
+	
+	@Tag(name = "TV SHOW")
 	@GetMapping("tv/find/byname/{name}")
 	public ResponseEntity<Object> showTV(@PathVariable String name){
 
@@ -1657,6 +1717,15 @@ public class FrontController {
 		return fnc.article_show();
 	}
     
+	@Tag(name = "Article")
+	@GetMapping("articles/similaire/{id}")
+	public ResponseEntity<Object> article_similaire_show(
+			@PathVariable Long id,
+			Pageable p){
+		
+		return fnc.article_similaire_show(id, p);
+	}
+	
     
     @Tag(name = "Article")
 	@GetMapping("articles/{id}")
