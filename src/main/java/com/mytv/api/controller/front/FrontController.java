@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mytv.api.episode.model.Episode;
 import com.mytv.api.episode.model.FavEpisode;
-import com.mytv.api.episode.model.LikeEpisode;
 import com.mytv.api.episode.repository.FavEpisodeRepository;
 import com.mytv.api.episode.repository.LikeEpisodeRepository;
 import com.mytv.api.episode.service.EpisodeService;
@@ -26,11 +25,8 @@ import com.mytv.api.episode.service.FavEpisodeService;
 import com.mytv.api.episode.service.LikeEpisodeService;
 import com.mytv.api.film.model.FavFilm;
 import com.mytv.api.film.model.Film;
-import com.mytv.api.film.model.LikeFilm;
 import com.mytv.api.film.repository.FavFilmRepository;
-import com.mytv.api.film.repository.LikeFilmRepository;
 import com.mytv.api.film.service.FavFilmService;
-import com.mytv.api.film.service.LikeFilmService;
 import com.mytv.api.film.service.ServiceFilm;
 import com.mytv.api.intervenant.model.Actor;
 import com.mytv.api.intervenant.model.Director;
@@ -38,36 +34,25 @@ import com.mytv.api.intervenant.repository.ActorRepository;
 import com.mytv.api.intervenant.repository.DirectorRepository;
 import com.mytv.api.live.service.FavLiveService;
 import com.mytv.api.livetv.model.FavLiveTv;
-import com.mytv.api.livetv.model.LikeLivetv;
 import com.mytv.api.livetv.model.LiveTv;
 import com.mytv.api.livetv.repository.FavLiveRepository;
-import com.mytv.api.livetv.repository.LikeLivetvRepository;
-import com.mytv.api.livetv.service.LikeLiveService;
 import com.mytv.api.livetv.service.LiveTvSetvice;
 import com.mytv.api.podcast.model.FavPodcast;
-import com.mytv.api.podcast.model.LikePodcast;
 import com.mytv.api.podcast.model.Podcast;
 import com.mytv.api.podcast.repository.FavPodcastRepository;
-import com.mytv.api.podcast.repository.LikePodcastRepository;
 import com.mytv.api.podcast.service.FavPodcastService;
-import com.mytv.api.podcast.service.LikePodcastService;
 import com.mytv.api.podcast.service.PodcastService;
 import com.mytv.api.podcastCollecton.model.ColPodcast;
 import com.mytv.api.podcastCollecton.repository.CollectionPodcastRepository;
 import com.mytv.api.podcastCollecton.repository.FavColPodcastRepository;
-import com.mytv.api.podcastCollecton.repository.LikeColPodcastRepository;
 import com.mytv.api.podcastCollecton.service.ColPodcastService;
 import com.mytv.api.podcastCollecton.service.FavColPodcastService;
-import com.mytv.api.podcastCollecton.service.LikeColPodcastService;
 import com.mytv.api.podcastcateg.model.CatPodcast;
 import com.mytv.api.podcastcateg.service.CatPodcastService;
 import com.mytv.api.radio.model.FavRadio;
-import com.mytv.api.radio.model.LikeRadio;
 import com.mytv.api.radio.model.Radio;
 import com.mytv.api.radio.repository.FavRadioRepository;
-import com.mytv.api.radio.repository.LikeRadioRepository;
 import com.mytv.api.radio.service.FavRadioService;
-import com.mytv.api.radio.service.LikeRadioService;
 import com.mytv.api.radio.service.RadioService;
 import com.mytv.api.response.FavoriteAllResponse;
 import com.mytv.api.ressource.model.CategorieLive;
@@ -81,21 +66,15 @@ import com.mytv.api.ressource.service.GenreService;
 import com.mytv.api.ressource.service.LangueService;
 import com.mytv.api.ressource.service.PaysService;
 import com.mytv.api.saison.model.FavSaison;
-import com.mytv.api.saison.model.LikeSaison;
 import com.mytv.api.saison.model.Saison;
 import com.mytv.api.saison.repository.FavSaisonRepository;
-import com.mytv.api.saison.repository.LikeSaisonRepository;
 import com.mytv.api.saison.service.FavSaisonService;
-import com.mytv.api.saison.service.LikeSaisonService;
 import com.mytv.api.saison.service.SaisonService;
 import com.mytv.api.security.request.EntityResponse;
 import com.mytv.api.serie.model.FavSerie;
-import com.mytv.api.serie.model.LikeSerie;
 import com.mytv.api.serie.model.Serie;
 import com.mytv.api.serie.repository.FavSerieRepository;
-import com.mytv.api.serie.repository.LikeSerieRepository;
 import com.mytv.api.serie.service.FavSerieService;
-import com.mytv.api.serie.service.LikeSerieService;
 import com.mytv.api.serie.service.SerieService;
 import com.mytv.api.service.CommonFunction;
 import com.mytv.api.setting.model.SocialSetting;
@@ -110,7 +89,6 @@ import com.mytv.api.util.service.SliderService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import jakarta.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -172,11 +150,7 @@ public class FrontController {
 	
 	//Radio FAV LIKE
 	@Autowired
-	private LikeRadioService likeradioService;
-	@Autowired
 	private FavRadioService favradioService;
-	@Autowired
-	private LikeRadioRepository likeradioRep;
 	@Autowired
 	private FavRadioRepository favradioRep;
 
@@ -184,29 +158,17 @@ public class FrontController {
 	@Autowired
 	private FavLiveService favliveService;
 	@Autowired
-	private LikeLiveService likeliveService;
-	@Autowired
-	private LikeLivetvRepository likeliveRep;
-	@Autowired
 	private FavLiveRepository favliveRep;
 	
 	//PODCAST FAV LIKE COM
 	@Autowired
 	private FavPodcastService favpodService;
 	@Autowired
-	private LikePodcastService likepodService;
-	@Autowired
-	private LikePodcastRepository likepodRep;
-	@Autowired
 	private FavPodcastRepository favpodRep;
 	
 	//COLLECTION PODCAST FAV LIKE COM
 	@Autowired
 	private FavColPodcastService favcolpodService;
-	@Autowired
-	private LikeColPodcastService likecolpodService;
-	@Autowired
-	private LikeColPodcastRepository likecolpodRep;
 	@Autowired
 	private FavColPodcastRepository favcolpodRep;
 	@Autowired
@@ -216,19 +178,11 @@ public class FrontController {
 	@Autowired
 	private FavFilmService favfilmService;
 	@Autowired
-	private LikeFilmService likefilmService;
-	@Autowired
-	private LikeFilmRepository likefilmRep;
-	@Autowired
 	private FavFilmRepository favfilmRep;
 	
 	//SERIE FAV LIKE COM
 	@Autowired
 	private FavSerieService favserieService;
-	@Autowired
-	private LikeSerieService likeserieService;
-	@Autowired
-	private LikeSerieRepository likeserieRep;
 	@Autowired
 	private FavSerieRepository favserieRep;
 	
@@ -247,10 +201,6 @@ public class FrontController {
 	private SaisonService saisonService;
 	@Autowired
 	private FavSaisonService favsaisonService;
-	@Autowired
-	private LikeSaisonService likesaisonService;
-	@Autowired
-	private LikeSaisonRepository likesaisonRep;
 	@Autowired
 	private FavSaisonRepository favsaisonRep;
 	@Autowired
@@ -502,60 +452,7 @@ public class FrontController {
 		return fnc.radio_show_by_id(id);
 	}
 	
-	//LIKE
-	
-	//AFFICHE LIKE PAR RADIO
-	@Tag(name = "Radios")
-	@GetMapping("radios/likes/show/likebyRadio/{idRadio}")
-	public ResponseEntity<Object> radioLikebyRadio(@PathVariable Long idRadio){
-		
-		Radio r = radioService.showById(idRadio).get();
-		
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, likeradioService.findByUser(r));
-	}
-	
-	//AFFICHE NOMBRE LIKE PAR RADIO
-	@Tag(name = "Radios")
-	@GetMapping("radios/like/show/nblikebyRadio/{idRadio}")
-	public ResponseEntity<Object> radioNbLike(@PathVariable Long idRadio){
-		
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, Map.of("nbLike",
-				likeradioService.nbretotalLike(radioService.showById(idRadio).get())));
-	}
-	
-	//ADD LIKE
-	@Tag(name = "Radios")
-	@PostMapping("radios/likes/add/{idRadio}")
-	public ResponseEntity<Object> radioAddLike(@PathVariable Long idRadio){
-		Radio r = radioService.showById(idRadio).get();
-		User u = userService.findCurrentUser();
-		
-		if(likeradioRep.findByUserAndRadio(u, r).isPresent()) {
-			Long id = likeradioRep.findByUserAndRadio(u, r).get().getIdLike();
-			
-			return EntityResponse.generateResponse("VOUS VENEZ DE DISLIKEZ ", HttpStatus.OK, 
-					likeradioService.removeLike(id) );
-		}
-		else {
-			
-			LikeRadio lk = new LikeRadio();
-			lk.setRadio(r);
-			lk.setUser(u);
-			
-			return EntityResponse.generateResponse("VOUS VENEZ DE LIKEZ", HttpStatus.OK, 
-					likeradioService.addLike(lk));
-		}
-	}
-	
-	//DELETE LIKE
-	@Tag(name = "Radios")
-	@DeleteMapping("radios/likes/delete/{idLike}")
-	public ResponseEntity<Object> radioDelLike(@PathVariable Long id){
-		
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, likeradioService.removeLike(id));
-		 
-	}
-	
+
 	/*
 	 * GESTION DES FAVORIES
 	 */
@@ -904,62 +801,6 @@ public class FrontController {
 
 		return fnc.showCollectionById(id);
 	}
-	
-    //LIKE
-	
-  	//AFFICHE LIKE PAR COLLECTION PODCAST
-  	@Tag(name = "Podcast Collection")
-  	@GetMapping("podcast/collections/likes/bycolPodcast/{idCol}")
-  	public ResponseEntity<Object> col_podcast_Likebycol(@PathVariable Long idCol){
-  		
-  		ColPodcast cl =  colpodservice.showById(idCol).get();
-  		
-  		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,"");
-  	}
-  	
-  	//AFFICHE NOMBRE LIKE PAR COLLECTION PODCAST
-  	@Tag(name = "Podcast Collection")
-  	@GetMapping("podcasts/likes/nblikebyPodcast/{idColPod}")
-  	public ResponseEntity<Object> col_podcast_NbLike(@PathVariable Long idColPod){
-  		
-  		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-  				likecolpodService.nbretotalLike(colpodservice.showById(idColPod).get()));
-  	}
-  	
-  	//ADD LIKE
-  	@Tag(name = "Podcast Collection")
-  	@PostMapping("podcast/collections/likes/add/{idColPod}")
-  	public ResponseEntity<Object> col_podcast_AddLike(@PathVariable Long idColPod){
-  		
-  		Podcast l = podcastservice.showById(idColPod).get();
-  		User u = userService.findCurrentUser();
-  		
-  		if(likepodRep.findByUserAndPodcast(u, l).isPresent()) {
-  			Long id = likepodRep.findByUserAndPodcast(u, l).get().getIdLike();
-  			
-  			return EntityResponse.generateResponse("VOUS VENEZ DE DISLIKEZ ", HttpStatus.OK, 
-  					likepodService.removeLike(id) );
-  		}
-  		else {
-  			
-  			LikePodcast lt = new LikePodcast();
-  			lt.setPodcast(l);
-  			lt.setUser(u);
-  			
-  			return EntityResponse.generateResponse("VOUS VENEZ DE LIKEZ", HttpStatus.OK, 
-  					likepodService.addLike(lt));
-  		}
-  	}
-  	
-  	//DELETE LIKE
-  	@Tag(name = "Podcast Collection")
-  	@DeleteMapping("podcast/collections/likes/delete/{idLike}")
-  	public ResponseEntity<Object> col_podcast_DelLike(@PathVariable Long id){
-  		
-  		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
-  				likepodService.removeLike(id));
-  		 
-  	}
   	
   	/*
   	 * GESTION DES FAVORIES
@@ -1050,62 +891,6 @@ public class FrontController {
 	}
 
 	
-	//LIKE
-	
-	//AFFICHE LIKE PAR PODCAST
-	@Tag(name = "Podcasts")
-	@GetMapping("podcasts/likes/byPodcast/{idPod}")
-	public ResponseEntity<Object> podcastLikebyLive(@PathVariable Long idPod){
-		
-		Podcast l = podcastservice.showById(idPod).get();
-		
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-					likepodService.findByPodcast(l));
-	}
-	
-	//AFFICHE NOMBRE LIKE PAR PODCAST
-	@Tag(name = "Podcasts")
-	@GetMapping("podcasts/likes/nblikebyPodcast/{idPodcast}")
-	public ResponseEntity<Object> podcastNbLike(@PathVariable Long idPodcast){
-		
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-				likepodService.nbretotalLike(podcastservice.showById(idPodcast).get()));
-	}
-	
-	//ADD LIKE
-	@Tag(name = "Podcasts")
-	@PostMapping("podcasts/likes/add/{idPod}")
-	public ResponseEntity<Object> podcastAddLike(@PathVariable Long idPod){
-		
-		Podcast l = podcastservice.showById(idPod).get();
-		User u = userService.findCurrentUser();
-		
-		if(likepodRep.findByUserAndPodcast(u, l).isPresent()) {
-			Long id = likepodRep.findByUserAndPodcast(u, l).get().getIdLike();
-			
-			return EntityResponse.generateResponse("VOUS VENEZ DE DISLIKEZ ", HttpStatus.OK, 
-					likepodService.removeLike(id) );
-		}
-		else {
-			
-			LikePodcast lt = new LikePodcast();
-			lt.setPodcast(l);
-			lt.setUser(u);
-			
-			return EntityResponse.generateResponse("VOUS VENEZ DE LIKEZ", HttpStatus.OK, 
-					likepodService.addLike(lt));
-		}
-	}
-	
-	//DELETE LIKE
-	@Tag(name = "Podcasts")
-	@DeleteMapping("podcasts/likes/delete/{idLike}")
-	public ResponseEntity<Object> podcastDelLike(@PathVariable Long id){
-		
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
-				likepodService.removeLike(id));
-		 
-	}
 	
 	/*
 	 * GESTION DES FAVORIES
@@ -1204,64 +989,6 @@ public class FrontController {
  */
 
 
-		
-		//LIKE
-		
-		//AFFICHE LIKE PAR FILM
-		@Tag(name = "Films")
-		@GetMapping("films/likes/show/byfilm/{idfilm}")
-		public ResponseEntity<Object> filmLikebyLive(@PathVariable Long idfilm){
-			
-			Film l = filmService.showById(idfilm).get();
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-					likefilmService.findByFilm(l));
-			
-		}
-		
-		//AFFICHE NOMBRE LIKE PAR PODCAST
-		@Tag(name = "Films")
-		@GetMapping("films/likes/nblikebyFilm/{idfilm}")
-		public ResponseEntity<Object> filmNbLike(@PathVariable Long idfilm){
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-					likepodService.nbretotalLike(podcastservice.showById(idfilm).get()));
-		}
-		
-		//ADD LIKE
-		@Tag(name = "Films")
-		@PostMapping("films/likes/add/{idfilm}")
-		public ResponseEntity<Object> filmAddLike(@PathVariable Long idfilm){
-			
-			Film l = filmService.showById(idfilm).get();
-			User u = userService.findCurrentUser();
-			
-			if(likefilmRep.findByUserAndFilm(u, l).isPresent()) {
-				Long id = likefilmRep.findByUserAndFilm(u, l).get().getIdLike();
-				
-				return EntityResponse.generateResponse("VOUS VENEZ DE DISLIKEZ ", HttpStatus.OK, 
-						likefilmService.removeLike(id) );
-			}
-			else {
-				
-				LikeFilm lt = new LikeFilm();
-				lt.setFilm(l);
-				lt.setUser(u);
-				
-				return EntityResponse.generateResponse("VOUS VENEZ DE LIKEZ", HttpStatus.OK, 
-						likefilmService.addLike(lt));
-			}
-		}
-		
-		//DELETE LIKE
-		@Tag(name = "Films")
-		@DeleteMapping("films/likes/delete/{idLike}")
-		public ResponseEntity<Object> filmDelLike(@PathVariable Long id){
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-					likefilmService.removeLike(id));
-			 
-		}
 		
 		/*
 		 * GESTION DES FAVORIES
@@ -1394,62 +1121,6 @@ public class FrontController {
 	* DEBUT DU MODUL
 	*/
 	
-	//LIKE
-	
-	//AFFICHE LIKE PAR SERIE
-	@Tag(name = "Series")
-	@GetMapping("series/likes/show/likebySerie/{idSerie}")
-	public ResponseEntity<Object> serieLikebyLive(@PathVariable Long idSerie){
-	
-	Serie l = serieService.showById(idSerie).get();
-	
-	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-				likeserieService.findBySerie(l));
-	
-	}
-	
-	//AFFICHE NOMBRE LIKE PAR PODCAST
-	@Tag(name = "Series")
-	@GetMapping("series/likes/show/nblikebySerie/{idSerie}")
-	public ResponseEntity<Object> serieNbLike(@PathVariable Long idSerie){
-	
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-				likeserieService.nbretotalLike(serieService.showById(idSerie).get()));
-	}
-	
-	//ADD LIKE
-	@Tag(name = "Series")
-	@PostMapping("series/likes/add/{idSerie}")
-	public ResponseEntity<Object> serieAddLike(@PathVariable Long idSerie){
-	
-	Serie s = serieService.showById(idSerie).get();
-	User u = userService.findCurrentUser();
-	
-	if(likeserieRep.findByUserAndSerie(u, s).isPresent()) {
-	Long id = likeserieRep.findByUserAndSerie(u, s).get().getIdLike();
-	
-	return EntityResponse.generateResponse("VOUS VENEZ DE DISLIKEZ ", HttpStatus.OK, 
-	likeserieService.removeLike(id) );
-	}
-	else {
-	
-	LikeSerie ls = new LikeSerie();
-	ls.setSerie(s);
-	ls.setUser(u);
-	
-	return EntityResponse.generateResponse("VOUS VENEZ DE LIKEZ", HttpStatus.OK, 
-	   likeserieService.addLike(ls));
-	}
-	}
-	
-	//DELETE LIKE
-	@Tag(name = "Series")
-	@DeleteMapping("series/likes/delete/{idLike}")
-	public ResponseEntity<Object> serieDelLike(@PathVariable Long idLike){
-	
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, likeserieService.removeLike(idLike));
-	
-	}
 	
 	/*
 	* GESTION DES FAVORIES
@@ -1553,63 +1224,6 @@ public class FrontController {
 	* DEBUT DU MODUL
 	*/
 	
-	//LIKE
-	
-	//AFFICHE LIKE PAR EPISODE
-	@Tag(name = "Episodes")
-	@GetMapping("episodes/likes/show/byEpisode/{idEpisode}")
-	public ResponseEntity<Object> episodeLikebyLive(@PathVariable Long idEpisode){
-	
-	Episode l = episodeService.showById(idEpisode).get();
-	
-	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, likeepisodeService.findByEpisode(l));
-	
-	}
-	
-	//AFFICHE NOMBRE LIKE PAR EPISODE
-	@Tag(name = "Episodes")
-	@GetMapping("episodes/likes/show/nblikebyEpisode/{idEpisode}")
-	public ResponseEntity<Object> episodeNbLike(@PathVariable Long idEpisode){
-	
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-				likeepisodeService.nbretotalLike(episodeService.showById(idEpisode).get()));
-	}
-	
-	//ADD LIKE
-	@Tag(name = "Episodes")
-	@PostMapping("episodes/likes/add/{idEpisode}")
-	public ResponseEntity<Object> episodeAddLike(@PathVariable Long idEpisode){
-	
-	Episode ep = episodeService.showById(idEpisode).get();
-	User u = userService.findCurrentUser();
-	
-	if(likeepisodeRep.findByUserAndEpisode(u, ep).isPresent()) {
-	Long id = likeepisodeRep.findByUserAndEpisode(u, ep).get().getIdLike();
-	
-	return EntityResponse.generateResponse("VOUS VENEZ DE DISLIKEZ ", HttpStatus.OK, 
-	likeepisodeService.removeLike(id) );
-	}
-	else {
-	
-	LikeEpisode le = new LikeEpisode();
-	le.setEpisode(ep);
-	le.setUser(u);
-	
-	return EntityResponse.generateResponse("VOUS VENEZ DE LIKEZ", HttpStatus.OK, 
-	likeepisodeService.addLike(le));
-	}
-	}
-	
-	//DELETE LIKE
-	@Tag(name = "Episodes")
-	@DeleteMapping("episodes/likes/delete/{idEpisode}")
-	public ResponseEntity<Object> episodeDelLike(@PathVariable Long idEpisode){
-	
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-				likeepisodeService.removeLike(idEpisode));
-	
-	}
-	
 	/*
 	* GESTION DES FAVORIES
 	*/
@@ -1697,64 +1311,6 @@ public class FrontController {
 	* DEBUT DU MODUL
 	*/
 	
-	//LIKE
-	
-	//AFFICHE LIKE PAR SAISON
-	@Tag(name = "Saison")
-	@GetMapping("saisons/likes/show/bySaison/{idSaison}")
-	public ResponseEntity<Object> saisonLikebySaison(@PathVariable Long idSaison){
-	
-	Saison s = saisonService.showById(idSaison);
-	
-	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-			likesaisonService.findBySaison(s));
-	
-	}
-	
-	//AFFICHE NOMBRE LIKE PAR SAISON
-	@Tag(name = "Saison")
-	@GetMapping("saisons/likes/nblikebySaison/{idSaison}")
-	public ResponseEntity<Object> saisonNbLike(@PathVariable Long idSaison){
-	
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-				likesaisonService.nbretotalLike(saisonService.showById(idSaison)));
-	
-	}
-	
-	//ADD LIKE
-	@Tag(name = "Saison")
-	@PostMapping("saisons/likes/add/{idSaison}")
-	public ResponseEntity<Object> saisonAddLike(@PathVariable Long idSaison){
-	
-	Saison s = saisonService.showById(idSaison);
-	User u = userService.findCurrentUser();
-	
-	if(likesaisonRep.findByUserAndSaison(u, s).isPresent()) {
-	Long id = likesaisonRep.findByUserAndSaison(u, s).get().getIdLike();
-	
-	return EntityResponse.generateResponse("VOUS VENEZ DE DISLIKEZ ", HttpStatus.OK, 
-	likesaisonService.removeLike(id) );
-	}
-	else {
-	
-	LikeSaison ls = new LikeSaison();
-	ls.setSaison(s);
-	ls.setUser(u);
-	
-	return EntityResponse.generateResponse("VOUS VENEZ DE LIKEZ", HttpStatus.OK, 
-	likesaisonService.addLike(ls));
-	}
-	}
-	
-	//DELETE LIKE
-	@Tag(name = "Saison")
-	@DeleteMapping("saisons/likes/delete/{idSaison}")
-	public ResponseEntity<Object> saisonDelLike(@PathVariable Long idSaison){
-	
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-				likeepisodeService.removeLike(idSaison));
-	
-	}
 	
 	/*
 	* GESTION DES FAVORIES
@@ -1920,59 +1476,6 @@ public class FrontController {
 	
 	
 			
-			//LIKE
-			
-			//AFFICHE LIKE PAR 
-			@Tag(name = "TV SHOW")
-			@GetMapping("tv/likes/show/byLive/{idLive}")
-			public ResponseEntity<Object> liveLikebyLive(@PathVariable Long idLive){
-				
-				LiveTv l = liveService.showById(idLive).get();
-				
-				return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, likeliveService.findByLivetv(l));
-			}
-			
-			//AFFICHE NOMBRE LIKE PAR LIVE TV
-			@Tag(name = "TV SHOW")
-			@GetMapping("tv/all/nblikebyLiveTv/{idLivetv}")
-			public ResponseEntity<Object> liveNbLike(@PathVariable Long idLivetv){
-				
-				return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-						likeliveService.nbretotalLike(liveService.showById(idLivetv).get()));
-			}
-			
-			//ADD LIKE
-			@Tag(name = "TV SHOW")
-			@PostMapping("tv/add/{idLive}")
-			public ResponseEntity<Object> liveAddLike(@PathVariable Long idLive){
-				LiveTv l = liveService.showById(idLive).get();
-				User u = userService.findCurrentUser();
-				
-				if(likeliveRep.findByUserAndLivetv(u, l).isPresent()) {
-					Long id = likeliveRep.findByUserAndLivetv(u, l).get().getIdLike();
-					
-					return EntityResponse.generateResponse("VOUS VENEZ DE DISLIKEZ ", HttpStatus.OK, 
-							likeliveService.removeLike(id) );
-				}
-				else {
-					
-					LikeLivetv lt = new LikeLivetv();
-					lt.setLivetv(l);
-					lt.setUser(u);
-					
-					return EntityResponse.generateResponse("VOUS VENEZ DE LIKEZ", HttpStatus.OK, 
-							likeliveService.addLike(lt));
-				}
-			}
-			
-			//DELETE LIKE
-			@Tag(name = "TV SHOW")
-			@DeleteMapping("tv/likes/delete/{idLike}")
-			public ResponseEntity<Object> liveDelLike(@PathVariable Long id){
-				
-				return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,  likeliveService.removeLike(id));
-				 
-			}
 			
 			/*
 			 * GESTION DES FAVORIES
