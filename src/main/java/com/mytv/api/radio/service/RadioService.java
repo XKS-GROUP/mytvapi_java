@@ -64,6 +64,19 @@ public class RadioService {
 		return radioRep.findAll();
 	}
 	
+	public Page<Radio> similaire_show(Long id, Pageable p) {
+		refresh();
+		Radio r =  radioRep.findById(id).get();
+		
+		PageImpl<Radio> res = new PageImpl<Radio>(radioRep.findAll().stream()
+				   .filter(rd -> rd.getCategories().containsAll(r.getCategories()))
+				   .toList()
+				   , p
+				   , radioRep.findAll().size());
+		
+		return res;
+	}
+	
 	
 	@SuppressWarnings("unused")
 	public Page<Radio> filtre_complet(Long categ, Long langue, Long pays, Pageable p){
@@ -272,7 +285,7 @@ public class RadioService {
 	
 	public Radio top(){
 		
-		return radioRep.findByTopTrue();
+		return radioRep.findByTopTrue().get();
 	}
 	
 	public Radio Addtop(Long id, boolean status){
@@ -286,9 +299,9 @@ public class RadioService {
 	
 	public Radio checktoplimit() {
 		
-		if(radioRep.findByTopTrue() != null) {
+		if(radioRep.findByTopTrue().isPresent()) {
 			
-			return radioRep.findByTopTrue();
+			return radioRep.findByTopTrue().get();
 		}
 		
 		else {

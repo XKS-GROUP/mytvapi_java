@@ -73,6 +73,19 @@ public class SerieService {
 		return serie;
 
 	}
+	
+	public Page<Serie> similaire_show(Long id, Pageable p) {
+		
+		refresh();
+		Serie m =  rep.findById(id).get();
+		
+		PageImpl<Serie> res = new PageImpl<Serie>(rep.findAll().stream()
+				   .filter(rd -> rd.getGenreList().containsAll(m.getGenreList()))
+				   .toList() 
+				   , p
+				   , rep.findAll().size());
+		return res;
+	}
 
 	public void refresh() {
 		

@@ -650,6 +650,11 @@ public class CommonFunction {
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.show());
 	}
+	
+	public ResponseEntity<Object> radio_simlaire_show(Long id, Pageable p) {
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, radioService.similaire_show(id, p));
+	}
 
 	public ResponseEntity<Object> radio_show_page(Pageable p, Long categ, Long langue, Long pays) {
 

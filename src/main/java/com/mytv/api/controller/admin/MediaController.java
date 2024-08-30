@@ -148,12 +148,12 @@ public class MediaController {
 	@PostMapping("podcast/collections/create")
 	public ResponseEntity<Object> createCollection(@Valid @RequestBody ColPodcast r){
     	
-    	if(colpodservice.checktop10limit() != null ) {
+    	if(colpodservice.checktop10limit() != null && r.isTop10() ) {
 			
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
 					Map.of("top10", "les 10 collections de podcast en tete sont atteint", "podcast_top10", colpodservice.checktop10limit()));
 		}
-		else if(colpodservice.checktoplimit() != null ) {
+		else if(colpodservice.checktoplimit() != null && r.isTop()) {
 			
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
 					Map.of("top", "il y a deja une collection de podcast en vedette", "podcast_vedette", colpodservice.checktoplimit()));
@@ -740,14 +740,14 @@ public class MediaController {
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
 					Map.of("name",  "Cette radio existe déja"));
 		}
-		else if(radioService.checktop10limit() != null ) {
+		else if(radioService.checktop10limit() != null && r.isTop10() ) {
 			
-			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
+			return EntityResponse.generateResponse("SUCCES", HttpStatus.BAD_REQUEST, 
 					Map.of("top10", "les 10 radios en tete sont atteint", "podcast_top10", radioService.checktop10limit()));
 		}
-		else if(radioService.checktoplimit() != null ) {
+		else if(radioService.checktoplimit() != null && r.isTop()) {
 			
-			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
+			return EntityResponse.generateResponse("SUCCES", HttpStatus.BAD_REQUEST, 
 					Map.of("top", "il y a deja une radio en vedette", "podcast_vedette", radioService.checktoplimit()));
 		}
 		else {
@@ -781,12 +781,12 @@ public class MediaController {
 	public ResponseEntity<Object> updateR(@PathVariable Long id,
 			@Valid @RequestBody Radio r) {
 
-		if(radioService.checktop10limit() != null ) {
+		if(radioService.checktop10limit() != null && r.isTop10()) {
 			
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
 					Map.of("top10", "les 10 radios en tete sont atteint", "podcast_top10", radioService.checktop10limit()));
 		}
-		else if(radioService.checktoplimit() != null ) {
+		else if(radioService.checktoplimit() != null  && r.isTop()) {
 			
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
 					Map.of("top", "il y a deja une radio en vedette", "podcast_vedette", radioService.checktoplimit()));
@@ -836,12 +836,12 @@ public class MediaController {
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
 					Map.of("name", "Cette chaine tv existe déja"));
 		}
-		if(liveService.checktop10limit() != null ) {
+		if(liveService.checktop10limit() != null  && lt.isTop10()) {
 			
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
 					Map.of("top10", "les 10 chaines tv en tete sont atteint", "podcast_top10", liveService.checktop10limit()));
 		}
-		else if(liveService.checktoplimit() != null ) {
+		else if(liveService.checktoplimit() != null && lt.isTop()) {
 			
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
 					Map.of("top", "il y a deja une chaine tv en vedette", "podcast_vedette", liveService.checktoplimit()));
@@ -893,12 +893,12 @@ public class MediaController {
 			@PathVariable Long id,
 			@Valid @RequestBody LiveTv lt) {
 
-		if(liveService.checktop10limit() != null ) {
+		if(liveService.checktop10limit() != null && lt.isTop10()) {
 			
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
 					Map.of("top10", "les 10 chaines tv en tete sont atteint", "podcast_top10", liveService.checktop10limit()));
 		}
-		else if(liveService.checktoplimit() != null ) {
+		else if(liveService.checktoplimit() != null && lt.isTop()) {
 			
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
 					Map.of("top", "il y a deja une chaine tv en vedette", "podcast_vedette", liveService.checktoplimit()));
@@ -1053,12 +1053,12 @@ public class MediaController {
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
 					Map.of("name", "Ce live existe déja"));
 		}
-		else if(lService.checktop10limit() != null ) {
+		else if(lService.checktop10limit() != null && p.isTop10()) {
 			
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
 					Map.of("top10", "les 10 lives en tete sont atteint", "podcast_top10", lService.checktop10limit()));
 		}
-		else if(lService.checktoplimit() != null ) {
+		else if(lService.checktoplimit() != null && p.isTop() ) {
 			
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
 					Map.of("top", "il y a deja un live en vedette", "podcast_vedette", lService.checktoplimit()));
@@ -1100,12 +1100,12 @@ public class MediaController {
 			@PathVariable Long id,
 			@Valid @RequestBody Live l) {
 		
-		if(lService.checktop10limit() != null ) {
+		if(lService.checktop10limit() != null && l.isTop10()) {
 			
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
 					Map.of("top10", "les 10 lives en tete sont atteint", "podcast_top10", lService.checktop10limit()));
 		}
-		else if(lService.checktoplimit() != null ) {
+		else if(lService.checktoplimit() != null && l.isTop() ) {
 			
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
 					Map.of("top", "il y a deja un live en vedette", "podcast_vedette", lService.checktoplimit()));
@@ -1186,12 +1186,12 @@ public class MediaController {
 				return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
 						Map.of("name", "Ce Podcast existe déja"));
 			}
-			else if(podcastservice.checktop10limit() != null ) {
+			else if(podcastservice.checktop10limit() != null && p.isTop10()) {
 				
 				return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
 						Map.of("top10", "les 10 podcasts en tete sont atteint", "podcast_top10", podcastservice.checktop10limit()));
 			}
-			else if(podcastservice.checktoplimit() != null ) {
+			else if(podcastservice.checktoplimit() != null && p.isTop()) {
 				
 				return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
 						Map.of("top", "il y a deja un podcast en vedette", "podcast_vedette", podcastservice.checktoplimit()));
@@ -1247,12 +1247,12 @@ public class MediaController {
 				return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
 						Map.of("name", "Ce Podcast existe déja"));
 			}
-			else if(podcastservice.checktop10limit() != null ) {
+			else if(podcastservice.checktop10limit() != null && p.isTop10() ) {
 				
 				return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
 						Map.of("top10", "les 10 podcasts en tete sont atteint", "podcast_top10", podcastservice.checktop10limit()));
 			}
-			else if(podcastservice.checktoplimit() != null ) {
+			else if(podcastservice.checktoplimit() != null && p.isTop()) {
 				
 				return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
 						Map.of("top", "il y a deja un podcast en vedette", "podcast_vedette", podcastservice.checktoplimit()));
@@ -1431,12 +1431,12 @@ public class MediaController {
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
 					Map.of("name", "Cette serie existe déja"));
 		}
-		else if(serieService.checktop10limit() != null ) {
+		else if(serieService.checktop10limit() != null && serie.isTop10()) {
 			
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
 					Map.of("top10", "les 10 series en tete sont atteint", "podcast_top10", serieService.checktop10limit()));
 		}
-		else if(serieService.checktoplimit() != null ) {
+		else if(serieService.checktoplimit() != null && serie.isTop()) {
 			
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
 					Map.of("top", "il y a deja une serie en vedette", "podcast_vedette", serieService.checktoplimit()));
@@ -1491,12 +1491,12 @@ public class MediaController {
 			@PathVariable Long id,
 			@Valid @RequestBody Serie serie){
 
-		if(serieService.checktop10limit() != null ) {
+		if(serieService.checktop10limit() != null && serie.isTop10()) {
 			
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
 					Map.of("top10", "les 10 series en tete sont atteint", "podcast_top10", serieService.checktop10limit()));
 		}
-		else if(serieService.checktoplimit() != null ) {
+		else if(serieService.checktoplimit() != null && serie.isTop()) {
 			
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, 
 					Map.of("top", "il y a deja une serie en vedette", "podcast_vedette", serieService.checktoplimit()));

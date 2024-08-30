@@ -1,6 +1,7 @@
 package com.mytv.api.radio.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,7 @@ public interface RadioRepository extends JpaRepository<Radio, Long>{
 	Page<Radio> findByNameContainingOrOverviewContaining(String nom, String desc, Pageable p);
 	List<Radio> findByNameContainingOrOverviewContaining(String n, String n2);
 	List<Radio> findByTop10True();
-	Radio findByTopTrue();
+	Optional<Radio> findByTopTrue();
+	//boolean existsByTopTrue();
 
 }

@@ -76,6 +76,19 @@ public class ServiceFilm {
 
 	}
 
+	
+	public Page<Film> similaire_show(Long id, Pageable p) {
+		refresh();
+		Film m =  rep.findById(id).get();
+		
+		PageImpl<Film> res = new PageImpl<Film>(rep.findAll().stream()
+				   .filter(rd -> rd.getGenreList().containsAll(m.getGenreList()))
+				   .toList() 
+				   , p
+				   , rep.findAll().size());
+		return res;
+	}
+	
 	public Film createFilm(Film g) {
 
 		

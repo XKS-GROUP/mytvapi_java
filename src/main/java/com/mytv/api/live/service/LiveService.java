@@ -33,6 +33,18 @@ public class LiveService {
 		return rep.findAll();
 	}
 	
+	public Page<Live> similaire_show(Long id, Pageable p) {
+		Live m =  rep.findById(id).get();
+		
+		PageImpl<Live> res = new PageImpl<Live>(rep.findAll().stream()
+				   .filter(rd -> rd.getIdCats().containsAll(m.getIdCats()))
+				   .toList() 
+				   , p
+				   , rep.findAll().size());
+		return res;
+	}
+	
+	
 	public Page<Live> showPage(Pageable p) {
 
 		return rep.findAll(p);

@@ -63,6 +63,23 @@ public class LiveTvSetvice {
 		return l;
 	}
 	
+	
+	
+	
+	public Page<LiveTv> similaire_show(Long id, Pageable p) {
+		LiveTv m =  rep.findById(id).get();
+		
+		PageImpl<LiveTv> res = new PageImpl<LiveTv>(rep.findAll().stream()
+				   .filter(rd -> rd.getIdcategories().containsAll(m.getIdcategories()))
+				   .toList() 
+				   , p
+				   , rep.findAll().size());
+		return res;
+	}
+	
+	
+	
+	
 	public LiveTvDTO dto(LiveTv l) {
 		
 		LiveTvDTO dto = new LiveTvDTO();

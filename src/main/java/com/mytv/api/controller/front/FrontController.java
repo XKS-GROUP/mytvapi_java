@@ -110,6 +110,7 @@ import com.mytv.api.util.service.SliderService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -461,6 +462,15 @@ public class FrontController {
 	public ResponseEntity<Object> radio_show(){
 
 		return fnc.radio_show();
+	}
+	
+	@Tag(name = "Radios")
+	@GetMapping("radios/similaire/{id}")
+	public ResponseEntity<Object> radio_similaire_show(
+			@PathVariable Long id,
+			Pageable p){
+
+		return fnc.radio_simlaire_show(id, p);
 	}
 	
 	@Tag(name = "Radios")

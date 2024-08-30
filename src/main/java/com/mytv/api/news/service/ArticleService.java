@@ -45,6 +45,18 @@ public class ArticleService {
 		return rep.save(a);
 	}
 	
+	
+	public Page<Article> similaire_show(Long id, Pageable p) {
+		Article m =  rep.findById(id).get();
+		
+		PageImpl<Article> res = new PageImpl<Article>(rep.findAll().stream()
+				   .filter(rd -> rd.getCategories().containsAll(m.getCategories()))
+				   .toList() 
+				   , p
+				   , rep.findAll().size());
+		return res;
+	}
+	
 	public Article findByTitle(String title) {
 		
 		return rep.findByTitle(title);
