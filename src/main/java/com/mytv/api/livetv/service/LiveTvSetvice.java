@@ -48,6 +48,22 @@ public class LiveTvSetvice {
 
 	}
 	
+	
+	
+	public void refresh() {
+		
+		List<LiveTv> l = rep.findAll();
+				
+				for(int i =0; i <  rep.findAll().size(); i++) {
+					
+					  l.get(i).setLangues(rep_langue.findAllById(l.get(i).getLangue()));
+					  l.get(i).setPays(rep_pays.findAllById(l.get(i).getCountry()));
+					  l.get(i).setListCateg(rep_categ.findAllById(l.get(i).getIdcategories()));
+					}
+		
+	}
+	
+	
 	public List<LiveTv> show() {
 		
 		List<LiveTv> l = rep.findAll();
@@ -67,6 +83,8 @@ public class LiveTvSetvice {
 	
 	
 	public Page<LiveTv> similaire_show(Long id, Pageable p) {
+		
+		refresh();
 		LiveTv m =  rep.findById(id).get();
 		
 		PageImpl<LiveTv> res = new PageImpl<LiveTv>(rep.findAll().stream()
@@ -127,6 +145,7 @@ public class LiveTvSetvice {
 	
 	public Page<LiveTv> showPage(Pageable p) {
 
+		refresh();
 		Page<LiveTv> l = rep.findAll(p);
 		
 		l.get().toList().forEach(  
@@ -161,7 +180,7 @@ public class LiveTvSetvice {
 	}
 
 	public Boolean delete(Long id) {
-
+		refresh();
 		rep.deleteById(id);
 
 		return null;
@@ -169,15 +188,14 @@ public class LiveTvSetvice {
 	}
 
 	public Optional<LiveTv> showById(final Long id) {
-
+		refresh();
 		return rep.findById(id);
-
 	}
 	
 	
 	@SuppressWarnings("unused")
 	public Page<LiveTv> filtre_complet(Long categ, Long langue, Long pays, Pageable p){
-		
+		refresh();
 		PageImpl<LiveTv> res = new PageImpl<LiveTv>(rep.findAll().stream()
 				   .toList() 
 				   , p
@@ -256,7 +274,7 @@ public class LiveTvSetvice {
 	
 	@SuppressWarnings("unused")
 	public Page<LiveTv> filtre_recherche_complet(String val,Long categ, Long langue, Long pays, Pageable p){
-		
+		refresh();
 		PageImpl<LiveTv> res = new PageImpl<LiveTv>(rep.findByNameContainingOrOverviewContaining(val, val).stream()
 				   .toList() 
 				   , p
@@ -334,7 +352,7 @@ public class LiveTvSetvice {
 	
 	
 	public LiveTv findByName(String name) {
-		
+		refresh();
 		return rep.findByName(name);
 	}
 	

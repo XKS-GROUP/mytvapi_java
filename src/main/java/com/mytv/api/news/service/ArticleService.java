@@ -47,6 +47,7 @@ public class ArticleService {
 	
 	
 	public Page<Article> similaire_show(Long id, Pageable p) {
+		refresh();
 		Article m =  rep.findById(id).get();
 		
 		PageImpl<Article> res = new PageImpl<Article>(rep.findAll().stream()
@@ -58,17 +59,17 @@ public class ArticleService {
 	}
 	
 	public Article findByTitle(String title) {
-		
+		refresh();
 		return rep.findByTitle(title);
 	}
 	
 	public Page<Article> search(String s, Pageable p){
-		
+		refresh();
 		return rep.findByTitleContainingOrContentContaining(s, s, p);
 	}
 	
 	public Page<Article> filtre_recherche_complet(String s,List<Long> categ, Pageable p){
-		
+		refresh();
 		PageImpl<Article> res = new PageImpl<Article>(
 				rep.findByTitleContainingOrContentContaining(s, s, p).stream()
                    .toList()
@@ -92,7 +93,7 @@ public class ArticleService {
 	}
 	
 	public Page<Article> filtre_complet(List<Long> categ, Pageable p){
-		
+		refresh();
 		PageImpl<Article> res = new PageImpl<Article>(
 				rep.findAll(p).stream()
                    .toList()

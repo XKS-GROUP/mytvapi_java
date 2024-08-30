@@ -368,20 +368,22 @@ public class ServiceFilm {
 		g.setGenres(genreRep.findAllById(g.getGenreList()));
 		g.setDirectors(rep_dirs.findAllById(g.getDirectorList()));
 		g.setList_langues(rep_langue.findAllById(g.getLangue()));
-
+		refresh();
 		return rep.save(g);
 	}
 
 	public Boolean delete(Long id) {
 
+		
 		rep.deleteById(id);
-
+		refresh();
 		return null;
 
 	}
 
-	public Optional<Film> showById(final Long id) {
+	public Optional<Film> showById(Long id) {
 
+		refresh();
 		return rep.findById(id);
 
 	}

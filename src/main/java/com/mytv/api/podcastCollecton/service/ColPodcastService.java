@@ -167,7 +167,7 @@ public class ColPodcastService {
 
 	
 	public Boolean delete(Long id) {
-
+		refresh();
 		rep.deleteById(id);
 
 		return true;
@@ -175,18 +175,18 @@ public class ColPodcastService {
 	}
 
 	public Optional<ColPodcast> showById(final Long id) {
-
+		refresh();
 		return rep.findById(id);
 
 	}
 
 	public ColPodcast findByName(String name) {
-
+		refresh();
 		return rep.findByName(name);
 	}
 	
 	public List<ColPodcast> top10(){
-		
+		refresh();
 		return rep.findByTop10True();
 	}
 	
@@ -201,7 +201,7 @@ public class ColPodcastService {
 	
 	
 	public ColPodcast top(){
-		
+		refresh();
 		return rep.findByTopTrue();
 	}
 	

@@ -266,12 +266,12 @@ public class RadioService {
 
 	public Radio findByName(String name) {
 		
-		
+		refresh();
 		return radioRep.findByName(name);
 	}
 
 	public List<Radio> top10(){
-		
+		refresh();
 		return radioRep.findByTop10True();
 	}
 	
@@ -284,7 +284,7 @@ public class RadioService {
 	}
 	
 	public Radio top(){
-		
+		refresh();
 		return radioRep.findByTopTrue().get();
 	}
 	

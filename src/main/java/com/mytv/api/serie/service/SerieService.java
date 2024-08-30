@@ -109,12 +109,12 @@ public class SerieService {
 	}
 	
 	public Page<Serie> showPage(Pageable p) {
-
+		refresh();
 		return rep.findAll(p);
 	}
 	
 	public Page<Serie> showByLangue(Long id, Pageable p){
-		
+		refresh();
 		
 		PageImpl<Serie> res = new PageImpl<Serie>(
 				rep.findAll().stream()
@@ -129,7 +129,7 @@ public class SerieService {
 	};
 	
 	public Page<Serie> showByGenre(Long id, Pageable p){
-		
+		refresh();
 		PageImpl<Serie> res = new PageImpl<Serie>(
 				rep.findAll().stream()
                 .filter(f -> f.getGenreList().contains(id))
@@ -143,7 +143,7 @@ public class SerieService {
 	};
 	
 	public Page<Serie> showByGenreAndLangue(Long genre, Long langue, Pageable p){
-		
+		refresh();
 		PageImpl<Serie> res = new PageImpl<Serie>(
 				rep.findAll().stream()
                 .filter(f -> f.getGenreList().contains(genre))
@@ -158,12 +158,12 @@ public class SerieService {
 	};
 	
 	public Page<Serie> search(String n, Pageable p) {
-
+		refresh();
 		return rep.findByNameContainingOrOverviewContaining(n, n, p);
 	}
 	
 	public Page<Serie> searchByGenre(String n, Long genre, Pageable p) {
-		
+		refresh();
 		PageImpl<Serie> res = new PageImpl<Serie>(
 				rep.findByNameContainingOrOverviewContaining(n, n)
 				.stream()
@@ -178,7 +178,7 @@ public class SerieService {
 	}
 	
 	public Page<Serie> searchByLangue(String n, Long langue, Pageable p) {
-
+		refresh();
 		PageImpl<Serie> res = new PageImpl<Serie>(
 				rep.findByNameContainingOrOverviewContaining(n, n)
 				.stream()
@@ -192,7 +192,7 @@ public class SerieService {
 	}
 	
 	public Page<Serie> searchByLangueAndGenre(String n, Long langue, Long genre, Pageable p) {
-
+		refresh();
 		PageImpl<Serie> res = new PageImpl<Serie>(
 				rep.findByNameContainingOrOverviewContaining(n, n)
 				.stream()
@@ -265,12 +265,12 @@ public class SerieService {
 	}
 
 	public Serie findByName(String name) {
-		
+		refresh();
 		return rep.findByNameIgnoreCase(name);
 	}
 	
 	public List<Serie> top10(){
-		
+		refresh();
 		return rep.findByTop10True();
 	}
 	

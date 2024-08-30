@@ -219,18 +219,18 @@ public class PodcastService {
 	}
 
 	public Optional<Podcast> showById(final Long id) {
-
+		refresh();
 		return rep.findById(id);
 
 	}
 
 	public Podcast findByName(String name) {
-
+		refresh();
 		return rep.findByName(name);
 	}
 	
 	public List<Podcast> top10(){
-		
+		refresh();
 		return rep.findByTop10True();
 	}
 	
@@ -245,7 +245,7 @@ public class PodcastService {
 	
 	
 	public Podcast top(){
-		
+		refresh();
 		return rep.findByTopTrue();
 	}
 	
