@@ -90,6 +90,8 @@ public class Serie {
 	String vote_average;
 
 	String vote_count;
+	
+	float note;
 
 	@Column(nullable = false, columnDefinition = "boolean default true")
 	boolean status;
