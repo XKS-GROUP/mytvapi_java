@@ -1,8 +1,7 @@
 package com.mytv.api.firebase.filter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
+import com.mytv.api.firebase.model.FirebaseUser;
 import com.mytv.api.firebase.token.FirebaseTokenUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +29,11 @@ public class FirebaseJwtFilter extends OncePerRequestFilter {
 
         final String requestTokenHeader = request.getHeader("Authorization");
 
+        
+        
         String idToken = null;
         FirebaseToken decodedToken = null;
-
+        FirebaseUser user = null;
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             idToken = requestTokenHeader.substring(7);
             try {
@@ -44,8 +45,14 @@ public class FirebaseJwtFilter extends OncePerRequestFilter {
         }
 
         if (decodedToken != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        	
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                    decodedToken.getUid(), null, null);
+            		
+            		new FirebaseUser(decodedToken.getUid() ,decodedToken.getName(), decodedToken.getEmail(), decodedToken.getPicture(), decodedToken.isEmailVerified()),
+            		
+            		new FirebaseUser(decodedToken.getUid() ,decodedToken.getName(), decodedToken.getEmail(), decodedToken.getPicture(), decodedToken.isEmailVerified())
+            		, null);
+            
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }

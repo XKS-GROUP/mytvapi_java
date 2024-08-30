@@ -78,20 +78,24 @@ public class ServiceFilm {
 
 	
 	public Page<Film> similaire_show(Long id, Pageable p) {
+		
 		refresh();
+		
 		Film m =  rep.findById(id).get();
 		
 		PageImpl<Film> res = new PageImpl<Film>(rep.findAll().stream()
-				   .filter(rd -> rd.getGenreList().containsAll(m.getGenreList()))
-				   .toList() 
+				
+				   .filter(rd -> rd.getGenreList().containsAll(m.getGenreList()) )
+				   .toList()
 				   , p
 				   , rep.findAll().size());
-		return res;
+		
+		return res;	
+		
 	}
 	
 	public Film createFilm(Film g) {
 
-		
 			g.setActeurs(rep_actor.findAllById(g.getActeurList()));
 			g.setGenres(genreRep.findAllById(g.getGenreList()));
 			g.setDirectors(rep_dirs.findAllById(g.getDirectorList()));
@@ -204,19 +208,18 @@ public class ServiceFilm {
 		return rep.findAll(p);
 	}
 
-	
 	@SuppressWarnings("unused")
 	public PageImpl<Film> filtre_complet(Long genre, Long langue, Long pays, Pageable p){
 		
 		refresh();
-		PageImpl<Film> res = new PageImpl<Film>(rep.findAll().stream()
+		PageImpl<Film> res = new PageImpl<Film>(rep.findAll(p).stream()
 				   .toList() 
 				   , p
 				   , rep.findAll().size());
 		
 		if(genre != null && langue == null && pays == null) {
 			
-		  return res = new PageImpl<Film>(rep.findAll().stream()
+		  return res = new PageImpl<Film>(rep.findAll(p).stream()
 					   .filter(f -> f.getGenreList().contains(genre))
 					   .toList()
 					   , p
@@ -224,7 +227,7 @@ public class ServiceFilm {
 		}
 		else if(langue != null && genre == null && pays == null) {
 			
-			return res = new PageImpl<Film>(rep.findAll().stream()
+			return res = new PageImpl<Film>(rep.findAll(p).stream()
 					   .filter(f -> f.getLangue().contains(langue))
 					   .toList()
 					   , p
@@ -233,7 +236,7 @@ public class ServiceFilm {
 		}
 		else if(pays != null && genre == null && pays == null) {
 			
-			return res = new PageImpl<Film>(rep.findAll().stream()
+			return res = new PageImpl<Film>(rep.findAll(p).stream()
 					   .filter(f -> f.getCountry().contains(pays))
 					   .toList()
 					   , p
@@ -242,7 +245,7 @@ public class ServiceFilm {
 		}
 		else if(genre != null && langue != null && pays == null) {
 			
-			return res = new PageImpl<Film>(rep.findAll().stream()
+			return res = new PageImpl<Film>(rep.findAll(p).stream()
 					   .filter(f -> f.getGenreList().contains(genre))
 					   .filter(f -> f.getLangue().contains(langue))
 					   .toList()
@@ -252,7 +255,7 @@ public class ServiceFilm {
 		}
 		else if(genre != null && pays != null && langue == null) {
 			
-			return res = new PageImpl<Film>(rep.findAll().stream()
+			return res = new PageImpl<Film>(rep.findAll(p).stream()
 					   .filter(f -> f.getGenreList().contains(genre))
 					   .filter(f -> f.getCountry().contains(pays))
 					   .toList()
@@ -260,7 +263,7 @@ public class ServiceFilm {
 					   , rep.findAll().size());
 		}
 		else if(pays != null && langue != null && genre == null) {
-			return res = new PageImpl<Film>(rep.findAll().stream()
+			return res = new PageImpl<Film>(rep.findAll(p).stream()
 					   .filter(f -> f.getCountry().contains(pays))
 					   .filter(f -> f.getLangue().contains(langue))
 					   .toList()
@@ -269,7 +272,7 @@ public class ServiceFilm {
 		}
 		else if (pays != null && langue != null && genre != null) {
 			
-			return res = new PageImpl<Film>(rep.findAll().stream()
+			return res = new PageImpl<Film>(rep.findAll(p).stream()
 					   .filter(f -> f.getGenreList().contains(genre))
 					   .filter(f -> f.getLangue().contains(langue))
 					   .filter(f -> f.getCountry().contains(pays))
@@ -287,14 +290,14 @@ public class ServiceFilm {
 	public PageImpl<Film> filtre_recherche_complet(String val, Long genre, Long langue, Long pays, Pageable p){
 		
 		refresh();
-		PageImpl<Film> res = new PageImpl<Film>(rep.findByNameContainingOrOverviewContaining(val, val).stream()
+		PageImpl<Film> res = new PageImpl<Film>(rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
 				   .toList() 
 				   , p
 				   , rep.findAll().size());
 		
 		if(genre != null && langue == null && pays == null) {
 			
-		  return res = new PageImpl<Film>(rep.findByNameContainingOrOverviewContaining(val, val).stream()
+		  return res = new PageImpl<Film>(rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
 					   .filter(f -> f.getGenreList().contains(genre))
 					   .toList()
 					   , p
@@ -302,7 +305,7 @@ public class ServiceFilm {
 		}
 		else if(langue != null && genre == null && pays == null) {
 			
-			return res = new PageImpl<Film>(rep.findByNameContainingOrOverviewContaining(val, val).stream()
+			return res = new PageImpl<Film>(rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
 					   .filter(f -> f.getLangue().contains(langue))
 					   .toList()
 					   , p
@@ -311,7 +314,7 @@ public class ServiceFilm {
 		}
 		else if(pays != null && genre == null && pays == null) {
 			
-			return res = new PageImpl<Film>(rep.findByNameContainingOrOverviewContaining(val, val).stream()
+			return res = new PageImpl<Film>(rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
 					   .filter(f -> f.getCountry().contains(pays))
 					   .toList()
 					   , p
@@ -320,7 +323,7 @@ public class ServiceFilm {
 		}
 		else if(genre != null && langue != null && pays == null) {
 			
-			return res = new PageImpl<Film>(rep.findByNameContainingOrOverviewContaining(val, val).stream()
+			return res = new PageImpl<Film>(rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
 					   .filter(f -> f.getGenreList().contains(genre))
 					   .filter(f -> f.getLangue().contains(langue))
 					   .toList()
@@ -330,7 +333,7 @@ public class ServiceFilm {
 		}
 		else if(genre != null && pays != null && langue == null) {
 			
-			return res = new PageImpl<Film>(rep.findByNameContainingOrOverviewContaining(val, val).stream()
+			return res = new PageImpl<Film>(rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
 					   .filter(f -> f.getGenreList().contains(genre))
 					   .filter(f -> f.getCountry().contains(pays))
 					   .toList()
@@ -338,7 +341,7 @@ public class ServiceFilm {
 					   , rep.findAll().size());
 		}
 		else if(pays != null && langue != null && genre == null) {
-			return res = new PageImpl<Film>(rep.findByNameContainingOrOverviewContaining(val, val).stream()
+			return res = new PageImpl<Film>(rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
 					   .filter(f -> f.getCountry().contains(pays))
 					   .filter(f -> f.getLangue().contains(langue))
 					   .toList()
@@ -347,7 +350,7 @@ public class ServiceFilm {
 		}
 		else if (pays != null && langue != null && genre != null) {
 			
-			return res = new PageImpl<Film>(rep.findByNameContainingOrOverviewContaining(val, val).stream()
+			return res = new PageImpl<Film>(rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
 					   .filter(f -> f.getGenreList().contains(genre))
 					   .filter(f -> f.getLangue().contains(langue))
 					   .filter(f -> f.getCountry().contains(pays))
@@ -389,7 +392,7 @@ public class ServiceFilm {
 	}
 
 	public Film findByName(String name) {
-		
+		refresh();
 		return rep.findByName(name);
 	}
 	

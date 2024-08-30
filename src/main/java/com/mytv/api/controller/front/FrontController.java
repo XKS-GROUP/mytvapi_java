@@ -216,10 +216,12 @@ public class FrontController {
 	WUserService userService;
 	
 	
-	@GetMapping("/me")
+	@GetMapping("/me/pro")
     public String getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        
         if (authentication != null && authentication.isAuthenticated()) {
+        	
             return "Connected user: " + authentication.getName();
         } else {
             return "No authenticated user";
