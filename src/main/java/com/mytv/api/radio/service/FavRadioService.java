@@ -7,10 +7,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.mytv.api.firebase.model.FirebaseUser;
 import com.mytv.api.radio.model.FavRadio;
 import com.mytv.api.radio.model.Radio;
 import com.mytv.api.radio.repository.FavRadioRepository;
-import com.mytv.api.user.model.User;
 
 import lombok.AllArgsConstructor;
 
@@ -37,9 +37,9 @@ public class FavRadioService {
 		return favRadioRep.findAll(p);
 	}
 	
-	public List<FavRadio> findByUser(User u) {
+	public List<FavRadio> findByUser(FirebaseUser u) {
 		
-		return favRadioRep.findByUser(u) ;
+		return favRadioRep.findByUser(u);
 	}
 	
 	public List<FavRadio> findByUser(Radio r) {

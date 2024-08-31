@@ -13,6 +13,6 @@ public class FirebaseUser {
 	String username;
 	String email;
 	String picture;
-	boolean isEmailVerified;
+	boolean emailVerified;
 
 }

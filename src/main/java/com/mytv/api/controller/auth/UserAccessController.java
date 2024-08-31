@@ -192,37 +192,6 @@ public class UserAccessController {
 	}
 	
 	
-	//Route Ajout Abonné
-	@PostMapping("abonne-register")
-	public ResponseEntity<Object> registerA(@Valid @RequestBody UserRegisterRequestDTO request){
-
-		if(userService.findByUsername(request.getUsername()) != null){
-
-			return EntityResponse.generateResponse("le nom "+request.getUsername()+" existe deja ", HttpStatus.BAD_REQUEST, 
-					Map.of("username", " ce nom existe déja "));
-		}
-		else if (userService.findByUserEmail(request.getEmail()) !=null) {
-
-			return EntityResponse.generateResponse("Cette adresse email "+request.getEmail()+"existe deja ", HttpStatus.BAD_REQUEST, 
-					Map.of("email", " cette adresse email existe déja"));
-		}
-		
-		/*else if (userService.findByUserPhone(request.getPhone()) !=null) {
-
-			return EntityResponse.generateResponse("Ce numéro de telephone "+request.getPhone()+" existe deja ", HttpStatus.BAD_REQUEST, " phone : ce numéro de téléphone existe déja");
-		}*/
-
-		else {
-
-			request.setPassword(passwordEncoder.encode(request.getPassword()));
-			
-			return EntityResponse.generateResponse("Abonée enregistre avec succès", HttpStatus.CREATED, 
-					userService.createAbonne(request));
-		}
-
-
-	}
-
 	//Activation un uttilisateur apres envoi du code
 	@PostMapping("activation/{email}")
     public ResponseEntity<Object> activation(

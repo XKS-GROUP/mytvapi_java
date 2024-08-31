@@ -8,12 +8,12 @@ import org.springframework.stereotype.Repository;
 
 import com.mytv.api.episode.model.Episode;
 import com.mytv.api.episode.model.FavEpisode;
-import com.mytv.api.user.model.User;
+import com.mytv.api.firebase.model.FirebaseUser;
 
 @Repository
 public interface FavEpisodeRepository extends JpaRepository<FavEpisode, Long>{
 
-	List<FavEpisode> findByUser(User u);
+	List<FavEpisode> findByUser(FirebaseUser u);
 	List<FavEpisode> findByEpisode(Episode episode);
-	Optional<FavEpisode> findByUserAndEpisode(User user, Episode episode);
+	Optional<FavEpisode> findByUserAndEpisode(FirebaseUser user, Episode episode);
 }

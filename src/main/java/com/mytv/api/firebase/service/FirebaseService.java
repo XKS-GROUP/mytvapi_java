@@ -6,8 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
-import com.google.firebase.auth.UserRecord;
 
 import com.mytv.api.user.repository.UserRepository;
 
@@ -21,10 +22,19 @@ public class FirebaseService {
 	@Autowired
 	UserRepository userRepository;
 	
-	
-	public void getUser() {
-
-		System.out.println("Info firebase .................. : " + UserRecord.class);
-	}
+	public Authentication getUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        
+        
+        
+        if (authentication != null && authentication.isAuthenticated()) {
+        	
+            return authentication;
+            
+        } else {
+        	
+            return authentication;
+        }
+    }
 	
 }

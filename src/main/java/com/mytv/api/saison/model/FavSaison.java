@@ -3,10 +3,11 @@ package com.mytv.api.saison.model;
 import java.sql.Date;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.type.SqlTypes;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.mytv.api.user.model.User;
+import com.mytv.api.firebase.model.FirebaseUser;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -37,10 +38,8 @@ public class FavSaison {
 	@UpdateTimestamp
 	Date dateMaj;
 	
-	@JsonIgnore
-	@ManyToOne
-	@JoinColumn(name = "user_id", insertable = true, updatable = true)
-	private User user;
+	@JdbcTypeCode(SqlTypes.JSON)
+	private FirebaseUser user;
 
 	@ManyToOne
 	@JoinColumn(name = "idSaison", insertable = true, updatable = true)

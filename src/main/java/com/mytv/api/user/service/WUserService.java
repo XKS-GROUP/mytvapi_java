@@ -12,13 +12,16 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.mytv.api.dto.UserDTO;
+import com.mytv.api.firebase.model.FirebaseUser;
 import com.mytv.api.security.config.SecurityPrincipal;
 import com.mytv.api.security.request.UserRegisterRequestDTO;
 import com.mytv.api.user.model.Profil;
@@ -154,52 +157,6 @@ public class WUserService implements UserDetailsService {
 
 			return "Un nouvel utilisateur , un mail a été envoyer a l adresse mail "+user.getEmail().toString();
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			return e.getCause().getMessage();
-		}
-
-	}
-	
-	
-	//creation d'un abonne
-	public String createAbonne(UserRegisterRequestDTO request) {
-		try {
-			User user = (User) dtoMapperRequestDtoToUser(request);
-
-			user.setRole("ABONNE");
-			user = userRepository.save(user);
-			
-			if (roleService.findRoleByName("ROLE_USER") == null ) {
-							
-							Role r = new Role();
-							r.setName("ROLE_USER");
-							
-							roleService.save(r);
-							addUserRole(user, roleService.findRoleByName("ROLE_USER"));
-			}
-			else {
-				
-				if (!request.getRoleList().isEmpty()) {
-					for (String role : request.getRoleList()) {
-						Role existingRole = roleService.findRoleByName("ROLE_" + role.toUpperCase());
-						if(existingRole != null) {
-							addUserRole(user, existingRole);
-						}
-					}
-				} else {
-					addUserRole(user, roleService.findRoleByName("ROLE_USER"));
-				}
-			}
-			//Envoi du mail pour la validation de son compte
-			
-			Profil pro = new Profil();
-			pro.setProfilName(user.getUsername());
-			pro.setUtilisateur(user);
-			pro.setImg_path("defaulf.png");
-			proRep.save(pro);
-			validationService.enregistrer(user);
-			return "Un nouvel utilisateur , un mail a été envoyer a l adresse mail "+user.getEmail().toString();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return e.getCause().getMessage();

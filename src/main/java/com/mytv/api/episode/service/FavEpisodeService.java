@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import com.mytv.api.episode.model.Episode;
 import com.mytv.api.episode.model.FavEpisode;
 import com.mytv.api.episode.repository.FavEpisodeRepository;
-import com.mytv.api.user.model.User;
+import com.mytv.api.firebase.model.FirebaseUser;
 
 import lombok.AllArgsConstructor;
 
@@ -37,7 +37,7 @@ public class FavEpisodeService {
 		return favepisodeRep.findAll(p);
 	}
 	
-	public List<FavEpisode> findByUser(User u) {
+	public List<FavEpisode> findByUser(FirebaseUser u) {
 		
 		return favepisodeRep.findByUser(u) ;
 	}

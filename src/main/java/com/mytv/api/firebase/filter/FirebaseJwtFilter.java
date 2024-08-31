@@ -33,7 +33,6 @@ public class FirebaseJwtFilter extends OncePerRequestFilter {
         
         String idToken = null;
         FirebaseToken decodedToken = null;
-        FirebaseUser user = null;
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             idToken = requestTokenHeader.substring(7);
             try {

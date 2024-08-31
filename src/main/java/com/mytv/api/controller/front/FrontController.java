@@ -28,6 +28,7 @@ import com.mytv.api.film.model.Film;
 import com.mytv.api.film.repository.FavFilmRepository;
 import com.mytv.api.film.service.FavFilmService;
 import com.mytv.api.film.service.ServiceFilm;
+import com.mytv.api.firebase.model.FirebaseUser;
 import com.mytv.api.intervenant.model.Actor;
 import com.mytv.api.intervenant.model.Director;
 import com.mytv.api.intervenant.repository.ActorRepository;
@@ -79,7 +80,6 @@ import com.mytv.api.serie.service.SerieService;
 import com.mytv.api.service.CommonFunction;
 import com.mytv.api.setting.model.SocialSetting;
 import com.mytv.api.setting.service.SettingService;
-import com.mytv.api.user.model.User;
 import com.mytv.api.user.service.WUserService;
 import com.mytv.api.util.model.Publicite;
 import com.mytv.api.util.model.Slider;
@@ -94,9 +94,6 @@ import lombok.AllArgsConstructor;
 //
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 
 
@@ -217,14 +214,18 @@ public class FrontController {
 	
 	
 	@GetMapping("/me/pro")
-    public String getCurrentUser() {
+    public Authentication getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        
+        
         
         if (authentication != null && authentication.isAuthenticated()) {
         	
-            return "Connected user: " + authentication.getName();
+            return authentication;
+            
         } else {
-            return "No authenticated user";
+        	
+            return authentication;
         }
     }
 
@@ -480,10 +481,11 @@ public class FrontController {
 	//FAVORIES
 	@Tag(name = "Radios")
 	@PostMapping("radios/favories/add/{idRadio}")
-	public ResponseEntity<Object> radioShowFavorie(@PathVariable Long idRadio){
+	public ResponseEntity<Object> radif_show_favorie(@PathVariable Long idRadio){
     
 		Radio r = radioService.showById(idRadio).get();
-		User u = userService.findCurrentUser();
+		FirebaseUser u = (FirebaseUser) getCurrentUser().getPrincipal();
+		
 		
 		if(favradioRep.findByUserAndRadio(u, r).isPresent()) {
 			Long id = favradioRep.findByUserAndRadio(u, r).get().getIdFav();
@@ -494,6 +496,7 @@ public class FrontController {
 		else {
 			
 			FavRadio fr = new FavRadio();
+			fr.setUid(u.getUid());
 			fr.setRadio(r);
 			fr.setUser(u);
 			
@@ -508,7 +511,7 @@ public class FrontController {
 	public ResponseEntity<Object> radioFavorieAll(){
 
 		return EntityResponse.generateResponse("Liste des radios favorie", HttpStatus.OK, 
-				favradioService.findByUser(userService.findCurrentUser()));
+				favradioService.findByUser( (FirebaseUser) getCurrentUser()));
 	}
 	
 	@Tag(name = "Radios")
@@ -824,7 +827,11 @@ public class FrontController {
 	}
   	
   	/*
+  	 * 
+  	 * 
   	 * GESTION DES FAVORIES
+  	 * 
+  	 * 
   	 */
   	//FAVORIES
   	
@@ -833,7 +840,7 @@ public class FrontController {
   	public ResponseEntity<Object> col_podcast_show_fav(@PathVariable Long idColPod){
       
   		Podcast l = podcastservice.showById(idColPod).get();
-  		User u = userService.findCurrentUser();
+  		FirebaseUser u = (FirebaseUser) getCurrentUser().getPrincipal();
   		
   		if(favpodRep.findByUserAndPodcast(u, l).isPresent()) {
   			
@@ -857,8 +864,7 @@ public class FrontController {
   	@GetMapping("podcast/collections/favories/all/")
   	public ResponseEntity<Object> col_podcast_fav_all(){
 
-  		return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK, 
-  				favpodService.findByUser(userService.findCurrentUser()));
+  		return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK, " ");
   	}
   	
   	@Tag(name = "Podcast Collection")
@@ -932,14 +938,14 @@ public class FrontController {
 	public ResponseEntity<Object> podcastShowFavorie(@PathVariable Long idPod){
     
 		Podcast l = podcastservice.showById(idPod).get();
-		User u = userService.findCurrentUser();
+		FirebaseUser u = (FirebaseUser) getCurrentUser().getPrincipal();	
 		
 		if(favpodRep.findByUserAndPodcast(u, l).isPresent()) {
 			
 			Long id = favpodRep.findByUserAndPodcast(u, l).get().getIdFav();
 			
 			return EntityResponse.generateResponse("RETIRER DES FAVORIES ", HttpStatus.OK, 
-					favpodService.remove(id) );
+					favpodService.remove(id));
 		}
 		else {
 			
@@ -956,8 +962,7 @@ public class FrontController {
 	@GetMapping("podcasts/favories/all/")
 	public ResponseEntity<Object> podcastFavorieAll(){
 
-		return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK, 
-				favpodService.findByUser(userService.findCurrentUser()));
+		return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK," ");
 	}
 	
 	@Tag(name = "Podcasts")
@@ -1040,7 +1045,8 @@ public class FrontController {
 		public ResponseEntity<Object> filmShowFavorie(@PathVariable Long idfilm){
 	    
 			Film l = filmService.showById(idfilm).get();
-			User u = userService.findCurrentUser();
+			
+			FirebaseUser u = (FirebaseUser) getCurrentUser().getPrincipal();
 			
 			if(favfilmRep.findByUserAndFilm(u, l).isPresent()) {
 				
@@ -1064,8 +1070,7 @@ public class FrontController {
 		@GetMapping("films/favories/all/")
 		public ResponseEntity<Object> filmAllFavorie(){
 
-			return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK, 
-					favfilmService.findByUser(userService.findCurrentUser()));
+			return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK," ");
 		}
 		
 		@Tag(name = "Films")
@@ -1081,7 +1086,6 @@ public class FrontController {
  * FIN DU MODULE		
  */
 ////////////////////////////////////////////////////////////////////////////////////		
-	
 		
 	
 	/*
@@ -1184,7 +1188,7 @@ public class FrontController {
 	public ResponseEntity<Object> serieShowFavorie(@PathVariable Long idSerie){
 	
 	Serie l = serieService.showById(idSerie).get();
-	User u = userService.findCurrentUser();
+	FirebaseUser u = (FirebaseUser) getCurrentUser().getPrincipal();
 	
 	if(favserieRep.findByUserAndSerie(u, l).isPresent()) {
 	
@@ -1208,8 +1212,7 @@ public class FrontController {
 	@GetMapping("series/favories/all/")
 	public ResponseEntity<Object> serieFavorieAll(){
 	
-	return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK, 
-	favserieService.findByUser(userService.findCurrentUser()));
+	return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK, " ");
 	}
 	
 	@Tag(name = "Series")
@@ -1286,7 +1289,7 @@ public class FrontController {
 	public ResponseEntity<Object> episodeShowFavorie(@PathVariable Long idEpisode){
 	
 	Episode ep = episodeService.showById(idEpisode).get();
-	User u = userService.findCurrentUser();
+	FirebaseUser u = (FirebaseUser) getCurrentUser().getPrincipal();
 	
 	if(favepisodeRep.findByUserAndEpisode(u, ep).isPresent()) {
 	
@@ -1310,8 +1313,7 @@ public class FrontController {
 	@GetMapping("episodes/favories/all/")
 	public ResponseEntity<Object> episodeAddFavorie(){
 	
-	return EntityResponse.generateResponse("Liste des episodes favorie", HttpStatus.OK, 
-	favepisodeService.findByUser(userService.findCurrentUser()));
+	return EntityResponse.generateResponse("Liste des episodes favorie", HttpStatus.OK, "  ");
 	}
 	
 	@Tag(name = "Episodes")
@@ -1374,7 +1376,7 @@ public class FrontController {
 	public ResponseEntity<Object> saisonAddFavorie(@PathVariable Long idSaison){
 	
 	Saison s = saisonService.showById(idSaison);
-	User u = userService.findCurrentUser();
+	FirebaseUser u = (FirebaseUser) getCurrentUser().getPrincipal();
 	
 	if(favsaisonRep.findByUserAndSaison(u, s).isPresent()) {
 	
@@ -1398,8 +1400,7 @@ public class FrontController {
 	@GetMapping("saisons/favories/all/")
 	public ResponseEntity<Object> saisonAllFavorie(){
 	
-	return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK, 
-	favepisodeService.findByUser(userService.findCurrentUser()));
+	return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK, " ");
 	}
 	
 	@Tag(name = "Saison")
@@ -1418,15 +1419,17 @@ public class FrontController {
 	
 	public ResponseEntity<Object> allFavorite(){
 		
-		List<FavFilm> film= favfilmService.findByUser(userService.findCurrentUser()); 
+		FirebaseUser u = (FirebaseUser) getCurrentUser();
 		
-		List<FavSerie> serie= favserieService.findByUser(userService.findCurrentUser());
+		List<FavFilm> film= favfilmService.findByUser(u); 
 		
-		List<FavRadio> radio = favradioService.findByUser(userService.findCurrentUser());
+		List<FavSerie> serie= favserieService.findByUser(u);
 		
-		List<FavPodcast> podcast = favpodService.findByUser(userService.findCurrentUser());
+		List<FavRadio> radio = favradioService.findByUser(u);
 		
-		List<FavLiveTv> livetv = favliveService.findByUser(userService.findCurrentUser());
+		List<FavPodcast> podcast = favpodService.findByUser(u);
+		
+		List<FavLiveTv> livetv = favliveService.findByUser(u);
 		
 		FavoriteAllResponse fav = new FavoriteAllResponse(film, serie, radio, podcast, livetv );
 		
@@ -1549,7 +1552,7 @@ public class FrontController {
 			public ResponseEntity<Object> liveShowFavorie(@PathVariable Long idLive){
 	        
 				LiveTv l = liveService.showById(idLive).get();
-				User u = userService.findCurrentUser();
+				FirebaseUser u = (FirebaseUser) getCurrentUser().getPrincipal();	
 				
 				if(favliveRep.findByUserAndLivetv(u, l).isPresent()) {
 					
@@ -1573,8 +1576,7 @@ public class FrontController {
 			@GetMapping("tv/favories/all/")
 			public ResponseEntity<Object> liveAddFavorie(){
 	    
-				return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK, 
-						favliveService.findByUser(userService.findCurrentUser()));
+				return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK," ");
 			}
 			
 			@Tag(name = "TV SHOW")
