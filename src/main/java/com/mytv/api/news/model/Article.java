@@ -14,6 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -65,5 +66,8 @@ public class Article {
 	
 	@Column(nullable = false, columnDefinition = "TEXT")
 	String media;
+	
+	@Transient
+	boolean favorie;
 	
 }

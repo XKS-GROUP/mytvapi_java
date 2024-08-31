@@ -17,6 +17,7 @@ import com.mytv.api.ressource.repository.LangRepository;
 import com.mytv.api.ressource.service.GenreService;
 import com.mytv.api.ressource.service.SerieGenre;
 import com.mytv.api.serie.model.Serie;
+import com.mytv.api.serie.repository.FavSerieRepository;
 import com.mytv.api.serie.repository.GenreRepository;
 import com.mytv.api.serie.repository.SerieGenreRepository;
 import com.mytv.api.serie.repository.SerieRepository;
@@ -37,6 +38,9 @@ public class SerieService {
 	
 	@Autowired
 	SerieGenreRepository serieGenreRep;
+	
+	@Autowired
+	FavSerieRepository rep_fav_serie;
 	
 	@Autowired
 	GenreService genreService;
@@ -88,6 +92,17 @@ public class SerieService {
 	}
 
 	public void refresh() {
+		
+		rep_fav_serie.findAll().forEach(
+				
+				f -> {
+					
+					f.getSerie().setFavorie(true);
+					
+				}
+				
+			);
+		
 		
 	       List<Serie> l = rep.findAll();
 			

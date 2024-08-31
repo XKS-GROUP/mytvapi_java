@@ -1,4 +1,4 @@
-package com.mytv.api.live.service;
+package com.mytv.api.livetv.service;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import com.mytv.api.firebase.model.FirebaseUser;
 import com.mytv.api.livetv.model.FavLiveTv;
 import com.mytv.api.livetv.model.LiveTv;
-import com.mytv.api.livetv.repository.FavLiveRepository;
+import com.mytv.api.livetv.repository.FavLivetvRepository;
 
 import lombok.AllArgsConstructor;
 
@@ -19,7 +19,7 @@ import lombok.AllArgsConstructor;
 public class FavLiveService {
 
 	@Autowired
-	FavLiveRepository favLiveRep;
+	FavLivetvRepository favLiveRep;
 	
 	
 	public FavLiveTv addFav(FavLiveTv fl) {

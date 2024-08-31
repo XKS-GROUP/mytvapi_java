@@ -1,12 +1,12 @@
-package com.mytv.api.episode.model;
+package com.mytv.api.news.model;
 
 import java.sql.Date;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.mytv.api.user.model.User;
+import com.mytv.api.firebase.model.FirebaseUser;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,24 +24,21 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LikeEpisode {
-    
+public class FavArticle {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long idLike;
+	Long idFav;
 
 	@CreationTimestamp
-	Date datePub;
+	Date dateAdd;
 	
-	@UpdateTimestamp
-	Date dateMaj;
+	String uid;
 	
-	@JsonIgnore
+	@JdbcTypeCode(SqlTypes.JSON)
+	private FirebaseUser user;
+	
 	@ManyToOne
-	@JoinColumn(name = "user_id", insertable = true, updatable = true)
-	private User user;
-
-	@ManyToOne
-	@JoinColumn(name = "idEpisode", insertable = true, updatable = true)
-	private Episode episode;
+	@JoinColumn(name = "id", insertable = true, updatable = true)
+	private Article article;
+	
 }

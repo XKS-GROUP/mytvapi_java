@@ -34,6 +34,8 @@ public class FavEpisode {
 	@CreationTimestamp
 	Date dateAdd;
 	
+	String uid;
+	
 	@JdbcTypeCode(SqlTypes.JSON)
 	private FirebaseUser user;
 	

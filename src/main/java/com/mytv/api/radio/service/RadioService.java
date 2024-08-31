@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.mytv.api.radio.model.Radio;
+import com.mytv.api.radio.repository.FavRadioRepository;
 import com.mytv.api.radio.repository.RadioRepository;
 import com.mytv.api.ressource.repository.CategoryLrRepository;
 import com.mytv.api.ressource.repository.LangRepository;
@@ -28,6 +29,9 @@ public class RadioService {
 	private RadioRepository radioRep;
 	
 	@Autowired
+	private FavRadioRepository rep_fav_radio;
+	
+	@Autowired
 	private PaysRepository rep_pays;
 	
 	@Autowired
@@ -38,6 +42,16 @@ public class RadioService {
 	
 	public void refresh() {
 		
+		rep_fav_radio.findAll().forEach(
+				
+				f -> {
+					
+					f.getRadio().setFavorie(true);
+				}
+				
+			);
+		
+		//Refresh les list d'objet
 	       List<Radio> l = radioRep.findAll();
 			
 			l.forEach(  
@@ -77,11 +91,10 @@ public class RadioService {
 		return res;
 	}
 	
-	
 	@SuppressWarnings("unused")
 	public Page<Radio> filtre_complet(Long categ, Long langue, Long pays, Pageable p){
 		
-		//refresh();
+		refresh();
 		PageImpl<Radio> res = new PageImpl<Radio>(radioRep.findAll(p).stream()
 				   .toList() 
 				   , p
@@ -157,10 +170,9 @@ public class RadioService {
 		
 	};
 	
-	
 	@SuppressWarnings("unused")
 	public Page<Radio> filtre_recherche_complet(String val, Long categ, Long langue, Long pays, Pageable p){
-		//refresh();
+		refresh();
 		PageImpl<Radio> res = new PageImpl<Radio>(radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
 				   .toList() 
 				   , p
@@ -237,7 +249,13 @@ public class RadioService {
 		
 	};
 	
-	
+	public Radio chekFav(Long idRadio) {
+		
+		 
+		
+		
+		return null;
+	}
 
 	
 	public Radio upadte( Long id, Radio u) {

@@ -33,6 +33,8 @@ public class FavPodcast {
 	@CreationTimestamp
 	Date dateAdd;
 	
+	String uid;
+	
 	@JdbcTypeCode(SqlTypes.JSON)
 	private FirebaseUser user;
 	

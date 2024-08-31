@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.mytv.api.dto.LiveTvDTO;
 import com.mytv.api.livetv.model.LiveTv;
+import com.mytv.api.livetv.repository.FavLivetvRepository;
 import com.mytv.api.livetv.repository.LiveTvRepository;
 import com.mytv.api.ressource.repository.CategoryLrRepository;
 import com.mytv.api.ressource.repository.LangRepository;
@@ -30,6 +31,8 @@ public class LiveTvSetvice {
 	
 	@Autowired
 	private PaysRepository rep_pays;
+	
+	@Autowired FavLivetvRepository rep_fav_livetv;
 	
 	@Autowired
 	private CategoryLrRepository rep_categ;
@@ -51,6 +54,15 @@ public class LiveTvSetvice {
 	
 	
 	public void refresh() {
+		
+		rep_fav_livetv.findAll().forEach(
+				
+				f -> {
+					
+					f.getLivetv().setFavorie(true);
+				}
+				
+			);
 		
 		List<LiveTv> l = rep.findAll();
 				

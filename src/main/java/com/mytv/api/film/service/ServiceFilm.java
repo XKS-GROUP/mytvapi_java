@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.mytv.api.film.model.Film;
 import com.mytv.api.film.model.FilmGenre;
+import com.mytv.api.film.repository.FavFilmRepository;
 import com.mytv.api.film.repository.FilmRepository;
 import com.mytv.api.intervenant.repository.ActorRepository;
 import com.mytv.api.intervenant.repository.DirectorRepository;
@@ -30,6 +31,9 @@ public class ServiceFilm {
 
 	@Autowired
 	private FilmRepository rep;
+	
+	@Autowired
+	private FavFilmRepository rep_fav_film;
 
 	@Autowired
 	FilmGenreRepository filmGenreRep;
@@ -183,6 +187,15 @@ public class ServiceFilm {
 	}
 
 	public void refresh() {
+		
+		rep_fav_film.findAll().forEach(
+				
+				f -> {
+					
+					f.getFilm().setFavorie(true);
+				}
+				
+			);
 		
 	       List<Film> l = rep.findAll();
 			

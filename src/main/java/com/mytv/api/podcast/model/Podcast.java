@@ -20,6 +20,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -99,5 +100,8 @@ public class Podcast {
 	
 	@Column(nullable = true, columnDefinition = "boolean default false")
 	boolean top;
+	
+	@Transient
+	boolean favorie;
 
 }

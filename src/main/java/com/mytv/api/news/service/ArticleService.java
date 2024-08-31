@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.mytv.api.news.model.Article;
 import com.mytv.api.news.repository.ArticleRepository;
 import com.mytv.api.news.repository.CategArticleRepository;
+import com.mytv.api.news.repository.FavArticleRepository;
 
 import lombok.AllArgsConstructor;
 
@@ -21,11 +22,24 @@ public class ArticleService {
 	@Autowired
 	ArticleRepository rep;
 	
+	@Autowired
 	CategArticleRepository rep_cat;
 	
+	@Autowired
+	FavArticleRepository rep_fav_article;
 	
 	public void refresh() {
 		
+		
+		rep_fav_article.findAll().forEach(
+				
+				f -> {
+					
+					f.getArticle().setFavorie(true);
+					
+				}
+				
+			);
 	       List<Article> l = rep.findAll();
 			
 			l.forEach(  

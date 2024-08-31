@@ -33,9 +33,10 @@ public class FavLiveTv {
 	@CreationTimestamp
 	Date dateAdd;
 	
+	String uid;
+	
 	@JdbcTypeCode(SqlTypes.JSON)
 	private FirebaseUser user;
-	
 	
 	@ManyToOne
 	@JoinColumn(name = "idLiveTv", insertable = true, updatable = true)

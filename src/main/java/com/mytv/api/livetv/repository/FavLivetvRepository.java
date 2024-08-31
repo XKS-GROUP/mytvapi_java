@@ -11,7 +11,7 @@ import com.mytv.api.livetv.model.FavLiveTv;
 import com.mytv.api.livetv.model.LiveTv;
 
 @Repository
-public interface FavLiveRepository extends JpaRepository<FavLiveTv, Long>{
+public interface FavLivetvRepository extends JpaRepository<FavLiveTv, Long>{
 	
 	List<FavLiveTv> findByUser(FirebaseUser u);
 	List<FavLiveTv> findByLivetv(LiveTv l);

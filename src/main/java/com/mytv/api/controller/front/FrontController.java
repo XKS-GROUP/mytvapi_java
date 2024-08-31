@@ -19,10 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mytv.api.episode.model.Episode;
 import com.mytv.api.episode.model.FavEpisode;
 import com.mytv.api.episode.repository.FavEpisodeRepository;
-import com.mytv.api.episode.repository.LikeEpisodeRepository;
 import com.mytv.api.episode.service.EpisodeService;
 import com.mytv.api.episode.service.FavEpisodeService;
-import com.mytv.api.episode.service.LikeEpisodeService;
 import com.mytv.api.film.model.FavFilm;
 import com.mytv.api.film.model.Film;
 import com.mytv.api.film.repository.FavFilmRepository;
@@ -33,11 +31,16 @@ import com.mytv.api.intervenant.model.Actor;
 import com.mytv.api.intervenant.model.Director;
 import com.mytv.api.intervenant.repository.ActorRepository;
 import com.mytv.api.intervenant.repository.DirectorRepository;
-import com.mytv.api.live.service.FavLiveService;
 import com.mytv.api.livetv.model.FavLiveTv;
 import com.mytv.api.livetv.model.LiveTv;
-import com.mytv.api.livetv.repository.FavLiveRepository;
+import com.mytv.api.livetv.repository.FavLivetvRepository;
+import com.mytv.api.livetv.service.FavLiveService;
 import com.mytv.api.livetv.service.LiveTvSetvice;
+import com.mytv.api.news.model.Article;
+import com.mytv.api.news.model.FavArticle;
+import com.mytv.api.news.repository.FavArticleRepository;
+import com.mytv.api.news.service.ArticleService;
+import com.mytv.api.news.service.FavArticleService;
 import com.mytv.api.podcast.model.FavPodcast;
 import com.mytv.api.podcast.model.Podcast;
 import com.mytv.api.podcast.repository.FavPodcastRepository;
@@ -152,7 +155,12 @@ public class FrontController {
 	@Autowired
 	PubliciteService pubService;
 	
-	
+	@Autowired
+	ArticleService artService;
+	@Autowired
+	FavArticleRepository rep_fav_article;
+	@Autowired
+	FavArticleService fav_art_service;
 	
 	//Radio FAV LIKE
 	@Autowired
@@ -164,7 +172,7 @@ public class FrontController {
 	@Autowired
 	private FavLiveService favliveService;
 	@Autowired
-	private FavLiveRepository favliveRep;
+	private FavLivetvRepository favliveRep;
 	
 	//PODCAST FAV LIKE COM
 	@Autowired
@@ -192,17 +200,13 @@ public class FrontController {
 	@Autowired
 	private FavSerieRepository favserieRep;
 	
-	//EPISODE FAV LIKE COM
+	//EPISODE FAV COM
 	@Autowired
 	private FavEpisodeService favepisodeService;
 	@Autowired
-	private LikeEpisodeService likeepisodeService;
-	@Autowired
-	private LikeEpisodeRepository likeepisodeRep;
-	@Autowired
 	private FavEpisodeRepository favepisodeRep;
 	
-	//SAISON FAV LIKE COM
+	//SAISON FAV  COM
 	@Autowired
 	private SaisonService saisonService;
 	@Autowired
@@ -854,7 +858,7 @@ public class FrontController {
   			FavPodcast fl = new FavPodcast();
   			fl.setPodcast(l);
   			fl.setUser(u);
-  			
+  			fl.setUid(u.getUid());
   			return EntityResponse.generateResponse("AJOUTEZ AUX FAVORIES", HttpStatus.OK, 
   					favpodService.addFav(fl));
   		}
@@ -952,6 +956,7 @@ public class FrontController {
 			FavPodcast fl = new FavPodcast();
 			fl.setPodcast(l);
 			fl.setUser(u);
+			fl.setUid(u.getUid());
 			
 			return EntityResponse.generateResponse("AJOUTEZ AUX FAVORIES", HttpStatus.OK, 
 					favpodService.addFav(fl));
@@ -1060,6 +1065,7 @@ public class FrontController {
 				FavFilm fl = new FavFilm();
 				fl.setFilm(l);
 				fl.setUser(u);
+				fl.setUid(u.getUid());
 				
 				return EntityResponse.generateResponse("AJOUTEZ AUX FAVORIES", HttpStatus.OK, 
 						favfilmService.addFav(fl));
@@ -1202,6 +1208,7 @@ public class FrontController {
 	FavSerie fl = new FavSerie();
 	fl.setSerie(l);
 	fl.setUser(u);
+	fl.setUid(u.getUid());
 	
 	return EntityResponse.generateResponse("AJOUTEZ AUX FAVORIES", HttpStatus.OK, 
 	favserieService.addFav(fl));
@@ -1303,6 +1310,7 @@ public class FrontController {
 	FavEpisode fe = new FavEpisode();
 	fe.setEpisode(ep);
 	fe.setUser(u);
+	fe.setUid(u.getUid());
 	
 	return EntityResponse.generateResponse("AJOUTEZ AUX FAVORIES", HttpStatus.OK, 
 	favepisodeService.addFav(fe));
@@ -1390,7 +1398,7 @@ public class FrontController {
 	FavSaison fe = new FavSaison();
 	fe.setSaison(s);
 	fe.setUser(u);
-	
+	fe.setUid(u.getUid());
 	return EntityResponse.generateResponse("AJOUTEZ AUX FAVORIES", HttpStatus.OK, 
 	favsaisonService.addFav(fe));
 	}
@@ -1566,6 +1574,7 @@ public class FrontController {
 					FavLiveTv fl = new FavLiveTv();
 					fl.setLivetv(l);
 					fl.setUser(u);
+					fl.setUid(u.getUid());
 					
 					return EntityResponse.generateResponse("AJOUTEZ AUX FAVORIES", HttpStatus.OK, 
 							favliveService.addFav(fl));
@@ -1758,6 +1767,55 @@ public class FrontController {
 
     	return fnc.article_show_Paging(categ, p);
 	}
+    
+	/*
+	 * GESTION DES FAVORIES
+	 */
+	//FAVORIES
+	
+    @Tag(name = "Article")
+    @PostMapping("articles/favories/add/{idPod}")
+	public ResponseEntity<Object> article_favorie_add(@PathVariable Long idPod){
+    
+		Article l = artService.showById(idPod);
+		FirebaseUser u = (FirebaseUser) getCurrentUser().getPrincipal();	
+		
+		if(rep_fav_article.findByUserAndArticle(u, l).isPresent()) {
+			
+			Long id = rep_fav_article.findByUserAndArticle(u, l).get().getIdFav();
+			
+			return EntityResponse.generateResponse("RETIRER DES FAVORIES ", HttpStatus.OK, 
+					fav_art_service.remove(id));
+		}
+		else {
+			
+			FavArticle fl = new FavArticle();
+			fl.setArticle(l);
+			fl.setUser(u);
+			fl.setUid(u.getUid());
+			
+			return EntityResponse.generateResponse("AJOUTEZ AUX FAVORIES", HttpStatus.OK, 
+					fav_art_service.addFav(fl));
+		}
+	}
+	
+    @Tag(name = "Article")
+	@GetMapping("articles/favories/all/")
+	public ResponseEntity<Object> article_favorie_all(){
+
+		return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK," ");
+	}
+	
+    @Tag(name = "Article")
+	@DeleteMapping("articles/favories/all/{idFavorie}")
+	public ResponseEntity<Object> article_favorie_by_id(@PathVariable Long idFav){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+				favpodService.remove(idFav));
+		
+	}
+    
+    
   	/*
   	 * 
   	 * OPERATION SUR LES SETTING

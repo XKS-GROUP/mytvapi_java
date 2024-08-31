@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.mytv.api.intervenant.repository.PodcasterRepository;
 import com.mytv.api.podcast.model.Podcast;
+import com.mytv.api.podcast.repository.FavPodcastRepository;
 import com.mytv.api.podcast.repository.PodcastRepository;
 import com.mytv.api.podcastcateg.repository.CatPodcastRepository;
 import com.mytv.api.ressource.repository.LangRepository;
@@ -30,6 +31,9 @@ public class PodcastService {
 
 	@Autowired
 	private PodcasterRepository rep_podcasteur;
+	
+	@Autowired
+	private FavPodcastRepository rep_fav_podcast;
 	
 	@Autowired
 	private CatPodcastRepository  rep_categ;
@@ -95,6 +99,17 @@ public class PodcastService {
 	 */
 	
 	public void refresh() {
+		
+	
+		rep_fav_podcast.findAll().forEach(
+				
+				f -> {
+					
+					f.getPodcast().setFavorie(true);
+				}
+				
+			);
+		
 		
        List<Podcast> l = rep.findAll();
 		

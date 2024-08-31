@@ -38,6 +38,8 @@ public class FavSaison {
 	@UpdateTimestamp
 	Date dateMaj;
 	
+	String uid;
+	
 	@JdbcTypeCode(SqlTypes.JSON)
 	private FirebaseUser user;
 

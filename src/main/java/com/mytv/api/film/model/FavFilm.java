@@ -33,6 +33,7 @@ public class FavFilm {
 	@CreationTimestamp
 	Date dateAdd;
 	
+	String uid;
 	
 	@JdbcTypeCode(SqlTypes.JSON)
 	private FirebaseUser user;
