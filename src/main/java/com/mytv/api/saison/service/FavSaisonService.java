@@ -23,38 +23,39 @@ public class FavSaisonService {
 	FavSaisonRepository favSaisonRep;
 	
 	public FavSaison addFav(FavSaison ls) {
-		
+		refresh();
+		ls.getSaison().setFavorie(true);
 		return favSaisonRep.save(ls);
 	}
 	
 	public List<FavSaison> show(){
-		
+		refresh();
 		return favSaisonRep.findAll();
 	}
 	
 	public Page<FavSaison> showPage(Pageable p){
-		
+		refresh();
 		return favSaisonRep.findAll(p);
 	}
 	
 	public List<FavSaison> findByUser(FirebaseUser u) {
-		
+		refresh();
 		return favSaisonRep.findByUser(u);
 	}
 	
 	public List<FavSaison> findBySaison(Saison s) {
-		
+		refresh();
 		return favSaisonRep.findBySaison(s);
 	}
 	
 	public Long nbretotalLike(Saison s) {
-		
+		refresh();
 		return (long) favSaisonRep.findBySaison(s).size();
 	}
 	
 	
 	public boolean remove(Long id) {
-		
+		refresh();
 		favSaisonRep.deleteById(id);
 		 
 		return true;

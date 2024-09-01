@@ -25,6 +25,7 @@ public class FavEpisodeService {
 	
 	public FavEpisode addFav(FavEpisode fe) {
 		refresh();
+		fe.getEpisode().setFavorie(true);
 		return favepisodeRep.save(fe);
 	}
 	

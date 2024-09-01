@@ -83,7 +83,7 @@ public class CommonFunction {
 
 	// Pour le lives tv
 	@Autowired
-	private LiveTvSetvice liveService;
+	private LiveTvSetvice livetvService;
 
 	// Pour les lives evenement
 	@Autowired
@@ -720,26 +720,26 @@ public class CommonFunction {
 
 	public ResponseEntity<Object> createL(LiveTv lt) {
 
-		if (liveService.findByName(lt.getName()) != null) {
+		if (livetvService.findByName(lt.getName()) != null) {
 
 			return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, Map.of("name", "Cette chaine tv existe déja"));
 		} else {
-			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, liveService.create(lt));
+			return EntityResponse.generateResponse("SUCCES", HttpStatus.CREATED, livetvService.create(lt));
 		}
 	}
 
 	public ResponseEntity<Object> showL() {
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.show());
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, livetvService.show());
 	}
 	
 	public ResponseEntity<Object> livetv_find_by_name(String name) {
 
-		if(liveService.findByName(name) == null) {
+		if(livetvService.findByName(name) == null) {
 			return EntityResponse.generateResponse("ERREUR ", HttpStatus.BAD_REQUEST, Map.of("message", "Cette chaine n existe pas"));
 		}else {
 			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.findByName(name));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, livetvService.findByName(name));
 			
 		}
 	}
@@ -747,36 +747,36 @@ public class CommonFunction {
 
 	public ResponseEntity<Object> tv_show_page(Pageable p, Long genre, Long langue, Long pays) {
 
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.filtre_complet(genre, langue, pays, p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, livetvService.filtre_complet(genre, langue, pays, p));
 	}
 
 	public ResponseEntity<Object> tv_search(String s, Pageable p, Long genre, Long langue, Long pays) {
 
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.filtre_recherche_complet(s, genre, langue, pays, p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, livetvService.filtre_recherche_complet(s, genre, langue, pays, p));
 	}
 
 	public ResponseEntity<Object> showbyIdL(Long id) {
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showById(id));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, livetvService.showById(id));
 	}
 
 	public ResponseEntity<Object> updateL(Long id, LiveTv lt) {
 
-		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, liveService.update(id, lt));
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, livetvService.update(id, lt));
 
 	}
 
 	public ResponseEntity<Object> updateStatusL(Long id, StatusDTO status) {
 
-		LiveTv lt = liveService.showById(id).get();
+		LiveTv lt = livetvService.showById(id).get();
 		lt.setStatus(status.getStatus());
-		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, liveService.update(id, lt));
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, livetvService.update(id, lt));
 
 	}
 
 	public ResponseEntity<Object> deleteL(Long id) {
 
-		liveService.delete(id);
+		livetvService.delete(id);
 
 		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, true);
 	}

@@ -96,7 +96,7 @@ public class ContactController {
         if(suggestion.getEmail().isEmpty()) {
        	 
         	return EntityResponse.generateResponse("ERREUR ", HttpStatus.CONFLICT, 
-        			Map.of("message", "ce compte ne dispose pas d'adresse email"));
+        			Map.of("message", " ce compte ne dispose pas d'adresse email "));
         }
         else{
         	
@@ -106,6 +106,5 @@ public class ContactController {
         			Map.of("message", "envoyé avec succes"));
         }
     }
-	
 	
 }

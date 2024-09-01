@@ -59,7 +59,6 @@ import com.mytv.api.radio.model.Radio;
 import com.mytv.api.radio.repository.FavRadioRepository;
 import com.mytv.api.radio.service.FavRadioService;
 import com.mytv.api.radio.service.RadioService;
-import com.mytv.api.response.FavoriteAllResponse;
 import com.mytv.api.ressource.model.CategorieLive;
 import com.mytv.api.ressource.model.CategoryRL;
 import com.mytv.api.ressource.model.Genre;
@@ -218,7 +217,8 @@ public class FrontController {
 	WUserService userService;
 	
 	
-	@GetMapping("/me/pro")
+	@Tag(name = "Profil Abonne")
+    @GetMapping("user/info")
     public Authentication getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         
@@ -317,6 +317,67 @@ public class FrontController {
         }).toArray());
     }
     
+	
+	
+	@Tag(name = "Profil Abonne")
+    @GetMapping("user/favories/")
+    public <R> Object favorie_user(@RequestParam (required = false) List<String> resources) {
+    	
+		FirebaseUser u = (FirebaseUser) getCurrentUser().getPrincipal();
+		
+		String uid = u.getUid();
+		List<FavFilm> films = favfilmService.findByUid(uid);
+    	
+    	List<FavRadio> radios = favradioService.findByUid(uid);
+    	
+    	Object articles = fav_art_service.findByUid(uid);
+    	
+    	List<FavPodcast> podcasts =  favpodService.findByUid(uid);
+    	
+    	Object colpodcasts = favcolpodService.findByUid(uid);
+    	
+    	List<FavLiveTv> liveTv = favlivetvService.findByUid(uid);
+
+    	List<FavSerie> series = favserieService.findByUid(uid);
+    	
+    	Object saisons = favsaisonService.findByUid(uid);
+    	
+    	Object episodes = favepisodeService.findByUid(uid);
+
+    	
+        if (resources == null || resources.isEmpty()) {
+        	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
+        			
+        			Map.of( "film", films, "serie", series,"saison",saisons,"episode", episodes, "liveTv", liveTv, "podcast",podcasts,
+        					"colpodcast", colpodcasts, "radio", radios, "article", articles));
+        }
+        
+        return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, resources.stream().map(res -> {
+            switch (res.toLowerCase()) {
+	            case "film":
+	                return Map.of("film", films);
+	            case "serie":
+	                return Map.of("serie", series);
+                case "saison":
+                    return Map.of("saison",saisons);
+                case "episode":
+                    return Map.of("episode", episodes);
+                case "liveTv":
+                	return Map.of("liveTv", liveTv);
+                case "podcast":
+                	return Map.of("podcast",podcasts);
+                case "colpodcast":
+                	return Map.of("colpodcast", colpodcasts);
+                case "radio":
+                	return Map.of("radio", radios);
+                case "article":
+                	return Map.of("article", articles);
+                
+                default:
+                	return Map.of("erreurs", "Ressource inconnue: " + res);
+            }
+        }).toArray());
+    }
     
     /*
      * 
@@ -1279,7 +1340,7 @@ public class FrontController {
 			favserieService.findByUid( u.getUid() ));
 	}
 	
-	@Tag(name = "Serie")
+	@Tag(name = "Series")
 	@GetMapping("series/favories/show/{id}")
 	public ResponseEntity<Object> serie_favorie_show_by_id( @PathVariable Long id){
 		
@@ -1506,32 +1567,6 @@ public class FrontController {
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
 				favsaisonService.remove(idFav));
 	
-	}
-	
-	
-	//Multi Media
-	@Tag(name = "Profil Abonne")
-	@GetMapping("user/favories/")
-	
-	public ResponseEntity<Object> allFavorite(){
-		
-		System.out.println(" APPPPPPPPPPPP  "+getCurrentUser());
-		
-		FirebaseUser u = (FirebaseUser) getCurrentUser();
-		
-		List<FavFilm> film= favfilmService.findByUid(u.getUid()); 
-		
-		List<FavSerie> serie= favserieService.findByUid(u.getUid());
-		
-		List<FavRadio> radio = favradioService.findByUid(u.getUid());
-		
-		List<FavPodcast> podcast = favpodService.findByUid(u.getUid());
-		
-		List<FavLiveTv> livetv = favlivetvService.findByUid(u.getUid());
-		
-		FavoriteAllResponse fav = new FavoriteAllResponse(film, serie, radio, podcast, livetv );
-		
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, fav);
 	}
 	
 	

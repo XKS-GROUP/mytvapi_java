@@ -28,6 +28,7 @@ public class FavSerieService {
 	
 	public FavSerie addFav(FavSerie ls) {
 		refresh();
+		ls.getSerie().setFavorie(true);
 		return favSerieRep.save(ls);
 	}
 	

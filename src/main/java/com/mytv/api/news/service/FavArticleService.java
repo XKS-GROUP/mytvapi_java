@@ -23,9 +23,9 @@ public class FavArticleService {
 	@Autowired
 	FavArticleRepository rep;
 	
-	
 	public FavArticle addFav(FavArticle fp) {
 		refresh();
+		fp.getArticle().setFavorie(true);
 		return rep.save(fp);
 	}
 	

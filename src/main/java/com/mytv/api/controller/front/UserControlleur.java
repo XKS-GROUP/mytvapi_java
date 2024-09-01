@@ -55,16 +55,6 @@ public class UserControlleur {
 	
 	
 	
-	//Affiche info utilisateur
-	@Tag(name = "Profil Abonne")
-	@GetMapping("info")
-	public ResponseEntity<Object> retrieveUserProfile(){
-		
-		FirebaseUser u = (FirebaseUser) firbaseService.getUser();
-		
-		return EntityResponse.generateResponse("Abonne Profil Info : "+u.getUsername(), HttpStatus.OK, 
-				(FirebaseUser) firbaseService.getUser() );
-	}
 
 	//Gestion des profil
 	

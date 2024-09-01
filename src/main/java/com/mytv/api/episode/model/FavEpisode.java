@@ -39,7 +39,6 @@ public class FavEpisode {
 	@JdbcTypeCode(SqlTypes.JSON)
 	private FirebaseUser user;
 	
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "idEpisode", insertable = true, updatable = true)
 	private Episode episode;

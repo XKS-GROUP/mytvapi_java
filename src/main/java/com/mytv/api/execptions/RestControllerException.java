@@ -80,7 +80,7 @@ public class RestControllerException {
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<Object> NullPointerException(NullPointerException ex) {
 
-        return EntityResponse.generateResponse("Authentication", HttpStatus.BAD_REQUEST, Map.of("message", ex.getMessage()));
+        return EntityResponse.generateResponse("ATTENTION", HttpStatus.BAD_REQUEST, Map.of("message", ex.getMessage()));
     }
     
     
