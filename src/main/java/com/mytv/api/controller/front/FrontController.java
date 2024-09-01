@@ -222,8 +222,6 @@ public class FrontController {
     public Authentication getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         
-        
-        
         if (authentication != null && authentication.isAuthenticated()) {
         	
             return authentication;
@@ -1668,7 +1666,7 @@ public class FrontController {
 					fl.setUser(u);
 					fl.setUid(u.getUid());
 					
-					return EntityResponse.generateResponse("AJOUTE AUX FAVORIES AVEC SUCCES", HttpStatus.OK, 
+					return EntityResponse.generateResponse("AJOUTE AUX FAVORIES AVEC SUCCES", HttpStatus.CREATED, 
 							favlivetvService.addFav(fl));
 				}
 			}

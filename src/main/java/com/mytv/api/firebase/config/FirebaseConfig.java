@@ -24,6 +24,7 @@ public class FirebaseConfig {
                 .build();
 
             return FirebaseApp.initializeApp(options);
+            
         } else {
         	
             return FirebaseApp.getInstance();

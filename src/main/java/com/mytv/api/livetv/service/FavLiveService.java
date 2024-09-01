@@ -25,6 +25,7 @@ public class FavLiveService {
 	
 	public FavLiveTv addFav(FavLiveTv fl) {
 		refresh();
+		fl.getLivetv().setFavorie(true);
 		return favLiveRep.save(fl);
 	}
 	
