@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.mytv.api.firebase.model.FirebaseUser;
@@ -58,5 +59,44 @@ public class FavSaisonService {
 		 
 		return true;
 		
+	}
+	
+	public void refresh() {
+		
+		//Si l user est un abonne
+		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().isEmpty()) {
+			
+			//Retirer les favories de tous les users
+			favSaisonRep.findAll().forEach(
+					
+					f -> {
+						
+						f.getSaison().setFavorie(false);
+					}
+					
+				);
+			
+			FirebaseUser u = (FirebaseUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			
+			//Afficher que les favories du l utilisateur actuelle
+			favSaisonRep.findByUid(u.getUid()).forEach(
+					
+					f -> {
+						
+						f.getSaison().setFavorie(true);
+					}
+					
+				);
+		}
+	}
+
+	public Object findByid(Long id) {
+		refresh();
+		return favSaisonRep.findById(id);
+	}
+
+	public Object findByUid(String uid) {
+		refresh();
+		return favSaisonRep.findByUid(uid);
 	}
 }

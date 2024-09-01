@@ -7,9 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.mytv.api.firebase.model.FirebaseUser;
 import com.mytv.api.saison.model.Saison;
+import com.mytv.api.saison.repository.FavSaisonRepository;
 import com.mytv.api.saison.repository.SeasonRepository;
 import com.mytv.api.serie.model.Serie;
 
@@ -29,15 +32,17 @@ public class SaisonService{
 	}
 
 	public List<Saison> show() {
+		refresh();
 		return seasRep.findAll();
 	}
 	
 	public Page<Saison> showPage(Pageable p) {
+		refresh();
 		return seasRep.findAll(p);
 	}
 	
 	public Page<Saison> showByLangue(Long id, Pageable p){
-		
+		refresh();
 		PageImpl<Saison> res = new PageImpl<Saison>(seasRep.findAll().stream()
 				   .filter(f -> f.getLangue().contains(id)).toList() 
 				   , p
@@ -48,16 +53,18 @@ public class SaisonService{
 	};
 	
 	public Page<Saison> showBySerie(Serie serie, Pageable p) {
+		refresh();
 		return seasRep.findByIdSerie(serie, p);
 	}
 	
 	public Page<Saison> showByidSerie(Long idSerie, Pageable p) {
+		refresh();
 		return seasRep.findBySerieRef(idSerie, p);
 	}
 	
 	
 	public Page<Saison> showByLangueAndSerie(Long langue, Long serie, Pageable p){
-		
+		refresh();
 		PageImpl<Saison> res = new PageImpl<Saison>(seasRep.findAll().stream()
 				   .filter(f -> f.getLangue().contains(langue))
 				   .filter(f -> f.getSerieRef() == serie)
@@ -70,11 +77,12 @@ public class SaisonService{
 	};
 	
 	public Page<Saison> search(String n, Pageable p) {
+		refresh();
 		return seasRep.findByNameContainingOrOverviewContaining(n, n, p);
 	}
 	
 	public Page<Saison> searchByLangue(String n, Long langue, Pageable p) {
-		
+		refresh();
 		PageImpl<Saison> res = new PageImpl<Saison>(seasRep.findByNameContainingOrOverviewContaining(n, n, p).stream()
                 .filter(f -> f.getLangue().contains(langue))
                 .collect(Collectors.toList()) 
@@ -85,7 +93,7 @@ public class SaisonService{
 	}
 	
 	public Page<Saison> searchBySerie(String n, Long serie, Pageable p) {
-		
+		refresh();
 		PageImpl<Saison> res = new PageImpl<Saison>(seasRep.findByNameContainingOrOverviewContaining(n, n, p).stream()
                 .filter(f -> f.getSerieRef() == serie)
                 .collect(Collectors.toList()) 
@@ -96,7 +104,7 @@ public class SaisonService{
 	}
 	
 	public Page<Saison> searchByLangueAndSerie(String val, Long langue, Long serie, Pageable p){
-		
+		refresh();
 		PageImpl<Saison> res = new PageImpl<Saison>(seasRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
 				   .filter(f -> f.getLangue().contains(langue))
 				   .filter(f -> f.getSerieRef() == serie)
@@ -109,14 +117,15 @@ public class SaisonService{
 	};
 
 	public Saison showById(Long id) {
-		
+		refresh();
 		return seasRep.findById(id).get();
 	}
 
 	public Saison update(Long id, Saison p) {
-
+		refresh();
 		p.setIdSaison(id);
 	   // p.setSerieRef(p.getIdSerie().getIdSerie());
+		
 		return seasRep.save(p);
 		
 	}
@@ -127,8 +136,41 @@ public class SaisonService{
 	}
 
 	public Saison findByName(String name) {
-
+		refresh();
 		return seasRep.findByName(name);
+	}
+	
+	@Autowired
+	FavSaisonRepository rep_fav_saison;
+	public void refresh() {
+		
+		//Si l user est un abonne
+				if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().isEmpty()) {
+					
+					
+					//Retirer les favories de tous les users
+					rep_fav_saison.findAll().forEach(
+							
+							f -> {
+								
+								f.getSaison().setFavorie(false);
+							}
+							
+						);
+					
+					
+					FirebaseUser u = (FirebaseUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+					
+					//Afficher que les favories du l utilisateur actuelle
+					rep_fav_saison.findByUid(u.getUid()).forEach(
+							
+							f -> {
+								
+								f.getSaison().setFavorie(true);
+							}
+							
+						);
+				}
 	}
 
 }

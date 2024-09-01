@@ -16,4 +16,5 @@ public interface FavArticleRepository extends JpaRepository<FavArticle, Long> {
 	List<FavArticle> findByUser(FirebaseUser u);
 	List<FavArticle> findByArticle(Article art);
 	Optional<FavArticle> findByUserAndArticle(FirebaseUser u, Article p);
+	List<FavArticle> findByUid(String uid);
 }

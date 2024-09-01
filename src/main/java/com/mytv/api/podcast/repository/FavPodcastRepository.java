@@ -16,4 +16,5 @@ public interface FavPodcastRepository extends JpaRepository<FavPodcast, Long>{
 	List<FavPodcast> findByUser(FirebaseUser u);
 	List<FavPodcast> findByPodcast(Podcast p);
 	Optional<FavPodcast> findByUserAndPodcast(FirebaseUser u, Podcast p);
+	List<FavPodcast> findByUid(String uid);
 }

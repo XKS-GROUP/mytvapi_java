@@ -16,5 +16,6 @@ public interface FavFilmRepository  extends JpaRepository<FavFilm, Long>{
 	List<FavFilm> findByUser(FirebaseUser u);
 	List<FavFilm> findByFilm(Film film);
 	Optional<FavFilm> findByUserAndFilm(FirebaseUser user, Film film);
+	List<FavFilm> findByUid(String uid);
 	
 }

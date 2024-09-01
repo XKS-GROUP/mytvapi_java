@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.mytv.api.firebase.model.FirebaseUser;
 import com.mytv.api.intervenant.repository.PodcasterRepository;
 import com.mytv.api.podcast.model.Podcast;
 import com.mytv.api.podcast.repository.FavPodcastRepository;
@@ -101,14 +103,33 @@ public class PodcastService {
 	public void refresh() {
 		
 	
-		rep_fav_podcast.findAll().forEach(
-				
-				f -> {
+		//Si l user est un abonne
+		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().isEmpty()) {
+			
+			
+			//Retirer les favories de tous les users
+			rep_fav_podcast.findAll().forEach(
 					
-					f.getPodcast().setFavorie(true);
-				}
-				
-			);
+					f -> {
+						
+						f.getPodcast().setFavorie(false);
+					}
+					
+				);
+			
+			
+			FirebaseUser u = (FirebaseUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			
+			//Afficher que les favories du l utilisateur actuelle
+			rep_fav_podcast.findByUid(u.getUid()).forEach(
+					
+					f -> {
+						
+						f.getPodcast().setFavorie(true);
+					}
+					
+				);
+		}
 		
 		
        List<Podcast> l = rep.findAll();

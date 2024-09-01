@@ -16,5 +16,6 @@ public interface FavSaisonRepository extends JpaRepository<FavSaison, Long>{
 	List<FavSaison> findByUser(FirebaseUser u);
 	List<FavSaison> findBySaison(Saison s);
 	Optional<FavSaison> findByUserAndSaison(FirebaseUser u, Saison s);
+	List<FavSaison> findByUid(String uid);
 
 }

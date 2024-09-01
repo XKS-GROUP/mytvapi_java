@@ -7,11 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.mytv.api.firebase.model.FirebaseUser;
 import com.mytv.api.intervenant.repository.PodcasterRepository;
 import com.mytv.api.podcastCollecton.model.ColPodcast;
 import com.mytv.api.podcastCollecton.repository.CollectionPodcastRepository;
+import com.mytv.api.podcastCollecton.repository.FavColPodcastRepository;
 import com.mytv.api.podcastcateg.repository.CatPodcastRepository;
 import com.mytv.api.ressource.repository.LangRepository;
 
@@ -31,6 +34,9 @@ public class ColPodcastService {
 	
 	@Autowired
 	private LangRepository rep_langue;
+	
+	@Autowired
+	private FavColPodcastRepository rep_fav_colpodcast;
 
 	public ColPodcast create(ColPodcast p) {
 
@@ -49,6 +55,35 @@ public class ColPodcastService {
 	 */
 	public void refresh() {
 		
+		
+		//Si l user est un abonne
+		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().isEmpty()) {
+			
+			
+			//Retirer les favories de tous les users
+			rep_fav_colpodcast.findAll().forEach(
+					
+					f -> {
+						
+						f.getColpodcast().setFavorie(false);
+					}
+					
+				);
+			
+			FirebaseUser u = (FirebaseUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+			//Afficher que les favories du l utilisateur actuelle
+			rep_fav_colpodcast.findByUid(u.getUid()).forEach(
+					
+					f -> {
+						
+						f.getColpodcast().setFavorie(true);
+					}
+					
+				);
+		}
+		
+	   //
        List<ColPodcast> l = rep.findAll();
 		
 		l.forEach(  

@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.mytv.api.firebase.model.FirebaseUser;
 import com.mytv.api.radio.model.Radio;
 import com.mytv.api.radio.repository.FavRadioRepository;
 import com.mytv.api.radio.repository.RadioRepository;
@@ -40,16 +42,37 @@ public class RadioService {
 	@Autowired
 	private LangRepository rep_langue;
 	
+	
 	public void refresh() {
 		
-		rep_fav_radio.findAll().forEach(
-				
-				f -> {
+		//Si l user est un abonne
+		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().isEmpty()) {
+			
+			
+			//Retirer les favories de tous les users
+			rep_fav_radio.findAll().forEach(
 					
-					f.getRadio().setFavorie(true);
-				}
-				
-			);
+					f -> {
+						
+						f.getRadio().setFavorie(false);
+					}
+					
+				);
+			
+			
+			FirebaseUser u = (FirebaseUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			
+			//Afficher que les favories du l utilisateur actuelle
+			rep_fav_radio.findByUid(u.getUid()).forEach(
+					
+					f -> {
+						
+						f.getRadio().setFavorie(true);
+					}
+					
+				);
+		}
+		
 		
 		//Refresh les list d'objet
 	       List<Radio> l = radioRep.findAll();
@@ -250,10 +273,7 @@ public class RadioService {
 	};
 	
 	public Radio chekFav(Long idRadio) {
-		
 		 
-		
-		
 		return null;
 	}
 
@@ -265,6 +285,7 @@ public class RadioService {
 		u.setList_country(rep_pays.findAllById(u.getCountry()));
 		u.setList_categories(rep_categ.findAllById(u.getCategories()));
 
+		refresh();
 		return radioRep.save(u);
 	}
 

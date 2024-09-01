@@ -15,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -47,4 +48,6 @@ public class FavSaison {
 	@JoinColumn(name = "idSaison", insertable = true, updatable = true)
 	private Saison saison;
 	
+	@Transient
+	boolean favorie;
 }

@@ -8,12 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.mytv.api.film.model.Film;
 import com.mytv.api.film.model.FilmGenre;
 import com.mytv.api.film.repository.FavFilmRepository;
 import com.mytv.api.film.repository.FilmRepository;
+import com.mytv.api.firebase.model.FirebaseUser;
 import com.mytv.api.intervenant.repository.ActorRepository;
 import com.mytv.api.intervenant.repository.DirectorRepository;
 import com.mytv.api.ressource.model.Genre;
@@ -188,14 +190,33 @@ public class ServiceFilm {
 
 	public void refresh() {
 		
-		rep_fav_film.findAll().forEach(
-				
-				f -> {
+		//Si l user est un abonne
+		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().isEmpty()) {
+			
+			
+			//Retirer les favories de tous les users
+			rep_fav_film.findAll().forEach(
 					
-					f.getFilm().setFavorie(true);
-				}
-				
-			);
+					f -> {
+						
+						f.getFilm().setFavorie(false);
+					}
+					
+				);
+			
+			
+			FirebaseUser u = (FirebaseUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			
+			//Afficher que les favories du l utilisateur actuelle
+			rep_fav_film.findByUid(u.getUid()).forEach(
+					
+					f -> {
+						
+						f.getFilm().setFavorie(true);
+					}
+					
+				);
+		}
 		
 	       List<Film> l = rep.findAll();
 			
@@ -217,7 +238,7 @@ public class ServiceFilm {
 	}
 
 	public Page<Film> showPages(Pageable p) {
-
+		refresh();
 		return rep.findAll(p);
 	}
 
@@ -410,7 +431,7 @@ public class ServiceFilm {
 	}
 	
 	public List<Film> top10(){
-		
+		refresh();
 		return rep.findByTop10True();
 	}
 	
@@ -418,12 +439,12 @@ public class ServiceFilm {
 		
 		Film r =  rep.findById(id).get();
 		r.setTop10(status);
-		
+		refresh();
 		return r;
 	}
 	
 	public Film top(){
-		
+		refresh();
 		return rep.findByTopTrue();
 	}
 	
@@ -431,12 +452,12 @@ public class ServiceFilm {
 		
 		Film r =  rep.findById(id).get();
 		r.setTop10(status);
-		
+		refresh();
 		return r;
 	}
 	
 	public Film checktoplimit() {
-		
+		refresh();
 		if(rep.findByTopTrue() != null) {
 			
 			return rep.findByTopTrue();
@@ -450,7 +471,7 @@ public class ServiceFilm {
 	
 	//Si null la limite n'est pas encore atteinte
 	public List<Film> checktop10limit() {
-		
+		refresh();
 		if(rep.findByTop10True().size() <=10) {
 			
 			return null;

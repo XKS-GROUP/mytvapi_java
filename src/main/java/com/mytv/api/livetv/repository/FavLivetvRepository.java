@@ -16,5 +16,6 @@ public interface FavLivetvRepository extends JpaRepository<FavLiveTv, Long>{
 	List<FavLiveTv> findByUser(FirebaseUser u);
 	List<FavLiveTv> findByLivetv(LiveTv l);
 	Optional<FavLiveTv> findByUserAndLivetv(FirebaseUser u, LiveTv l);
+	List<FavLiveTv> findByUid(String uid);
 	
 }

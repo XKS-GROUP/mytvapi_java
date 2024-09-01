@@ -16,5 +16,6 @@ public interface FavSerieRepository extends JpaRepository<FavSerie, Long> {
 	List<FavSerie> findByUser(FirebaseUser u);
 	List<FavSerie> findBySerie(Serie s);
 	Optional<FavSerie> findByUserAndSerie(FirebaseUser user, Serie serie);
+	List<FavSerie> findByUid(String uid);
 	
 }

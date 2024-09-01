@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.mytv.api.firebase.model.FirebaseUser;
 import com.mytv.api.intervenant.repository.ActorRepository;
 import com.mytv.api.intervenant.repository.DirectorRepository;
 import com.mytv.api.ressource.model.Genre;
@@ -92,16 +94,33 @@ public class SerieService {
 	}
 
 	public void refresh() {
-		
-		rep_fav_serie.findAll().forEach(
-				
-				f -> {
+		//Si l user est un abonne
+		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().isEmpty()) {
+			
+			
+			//Retirer les favories de tous les users
+			rep_fav_serie.findAll().forEach(
 					
-					f.getSerie().setFavorie(true);
+					f -> {
+						
+						f.getSerie().setFavorie(false);
+					}
 					
-				}
-				
-			);
+				);
+			
+			
+			FirebaseUser u = (FirebaseUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			
+			//Afficher que les favories du l utilisateur actuelle
+			rep_fav_serie.findByUid(u.getUid()).forEach(
+					
+					f -> {
+						
+						f.getSerie().setFavorie(true);
+					}
+					
+				);
+		}
 		
 		
 	       List<Serie> l = rep.findAll();
@@ -309,7 +328,6 @@ public class SerieService {
 		
 		return r;
 	}
-	
 	
 	public Serie checktoplimit() {
 		

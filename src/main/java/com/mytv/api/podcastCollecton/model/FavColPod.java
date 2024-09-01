@@ -32,6 +32,8 @@ public class FavColPod {
 
 	@CreationTimestamp
 	Date dateAdd;
+	
+	String uid;
 
 	@JdbcTypeCode(SqlTypes.JSON)
 	private FirebaseUser user;
@@ -39,5 +41,6 @@ public class FavColPod {
 	@ManyToOne
 	@JoinColumn(name = "idColPd", insertable = true, updatable = true)
 	private ColPodcast colpodcast;
+	
 	
 }

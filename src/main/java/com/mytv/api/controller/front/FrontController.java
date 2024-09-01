@@ -47,6 +47,7 @@ import com.mytv.api.podcast.repository.FavPodcastRepository;
 import com.mytv.api.podcast.service.FavPodcastService;
 import com.mytv.api.podcast.service.PodcastService;
 import com.mytv.api.podcastCollecton.model.ColPodcast;
+import com.mytv.api.podcastCollecton.model.FavColPod;
 import com.mytv.api.podcastCollecton.repository.CollectionPodcastRepository;
 import com.mytv.api.podcastCollecton.repository.FavColPodcastRepository;
 import com.mytv.api.podcastCollecton.service.ColPodcastService;
@@ -168,19 +169,19 @@ public class FrontController {
 	@Autowired
 	private FavRadioRepository favradioRep;
 
-	//LIVETV FAV LIKE
+	//LIVETV FAV
 	@Autowired
-	private FavLiveService favliveService;
+	private FavLiveService favlivetvService;
 	@Autowired
-	private FavLivetvRepository favliveRep;
+	private FavLivetvRepository favlivetvRep;
 	
-	//PODCAST FAV LIKE COM
+	//PODCAST FAV 
 	@Autowired
 	private FavPodcastService favpodService;
 	@Autowired
 	private FavPodcastRepository favpodRep;
 	
-	//COLLECTION PODCAST FAV LIKE COM
+	//COLLECTION PODCAST FAV 
 	@Autowired
 	private FavColPodcastService favcolpodService;
 	@Autowired
@@ -188,13 +189,13 @@ public class FrontController {
 	@Autowired
 	private ColPodcastService colpodservice;
 	
-	//FILM FAV LIKE COM
+	//FILM FAV 
 	@Autowired
 	private FavFilmService favfilmService;
 	@Autowired
 	private FavFilmRepository favfilmRep;
 	
-	//SERIE FAV LIKE COM
+	//SERIE FAV 
 	@Autowired
 	private FavSerieService favserieService;
 	@Autowired
@@ -233,6 +234,20 @@ public class FrontController {
         }
     }
 
+    public FirebaseUser getUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        
+        
+        if (authentication != null && authentication.isAuthenticated()) {
+        	FirebaseUser u = (FirebaseUser) SecurityContextHolder.getContext().getAuthentication();
+            return u ;
+            
+        } else {
+        	
+        	FirebaseUser u = (FirebaseUser) SecurityContextHolder.getContext().getAuthentication();
+            return u ;
+        }
+    }
 	
 	/*
      * 
@@ -490,11 +505,12 @@ public class FrontController {
 		Radio r = radioService.showById(idRadio).get();
 		FirebaseUser u = (FirebaseUser) getCurrentUser().getPrincipal();
 		
+		r.setFavorie(true);
 		
 		if(favradioRep.findByUserAndRadio(u, r).isPresent()) {
 			Long id = favradioRep.findByUserAndRadio(u, r).get().getIdFav();
 			
-			return EntityResponse.generateResponse("RETIREZ DES FAVORIES ", HttpStatus.OK, 
+			return EntityResponse.generateResponse("RETIREZ DES FAVORIES AVEC SUCCES", HttpStatus.OK, 
 					favradioService.remove(id) );
 		}
 		else {
@@ -504,7 +520,7 @@ public class FrontController {
 			fr.setRadio(r);
 			fr.setUser(u);
 			
-			return EntityResponse.generateResponse("AJOUTEZ AUX FAVORIES", HttpStatus.OK, 
+			return EntityResponse.generateResponse("AJOUTE AUX FAVORIES AVEC SUCCES", HttpStatus.CREATED, 
 					favradioService.addFav(fr));
 		}
 	}
@@ -514,12 +530,23 @@ public class FrontController {
 	@GetMapping("radios/favories/all/")
 	public ResponseEntity<Object> radioFavorieAll(){
 
-		return EntityResponse.generateResponse("Liste des radios favorie", HttpStatus.OK, 
-				favradioService.findByUser( (FirebaseUser) getCurrentUser()));
+		FirebaseUser u = (FirebaseUser) getCurrentUser().getPrincipal();
+		
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, 
+				favradioService.findByUid(u.getUid()));
 	}
 	
 	@Tag(name = "Radios")
-	@DeleteMapping("radios/favories/{idFavorie}")
+	@GetMapping("radios/favories/show/{id}")
+	public ResponseEntity<Object> radio_favorie_show_by_id( @PathVariable Long id){
+
+		
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, 
+				favradioService.findByid(id));
+	}
+	
+	@Tag(name = "Radios")
+	@DeleteMapping("radios/favories/delete/{idFavorie}")
 	public boolean radioDelFavorie(@PathVariable Long idFav){
 
 		return favradioService.remove(idFav);
@@ -843,40 +870,49 @@ public class FrontController {
   	@PostMapping("podcast/collections/favories/add/{idColPod}")
   	public ResponseEntity<Object> col_podcast_show_fav(@PathVariable Long idColPod){
       
-  		Podcast l = podcastservice.showById(idColPod).get();
+  		ColPodcast l = colpodservice.showById(idColPod).get();
   		FirebaseUser u = (FirebaseUser) getCurrentUser().getPrincipal();
   		
-  		if(favpodRep.findByUserAndPodcast(u, l).isPresent()) {
+  		if(favcolpodRep.findByUserAndColpodcast(u, l).isPresent()) {
   			
-  			Long id = favpodRep.findByUserAndPodcast(u, l).get().getIdFav();
+  			Long id = favcolpodRep.findByUserAndColpodcast(u, l).get().getIdFav();
   			
   			return EntityResponse.generateResponse("RETIRER DES FAVORIES ", HttpStatus.OK, 
-  					favpodService.remove(id) );
+  					favcolpodService.remove(id) );
   		}
   		else {
   			
-  			FavPodcast fl = new FavPodcast();
-  			fl.setPodcast(l);
+  			FavColPod fl = new FavColPod();
+  			fl.setColpodcast(l);
   			fl.setUser(u);
   			fl.setUid(u.getUid());
-  			return EntityResponse.generateResponse("AJOUTEZ AUX FAVORIES", HttpStatus.OK, 
-  					favpodService.addFav(fl));
+  			return EntityResponse.generateResponse("AJOUTE AUX FAVORIES AVEC SUCCES", HttpStatus.CREATED, 
+  					favcolpodService.addFav(fl));
   		}
   	}
   	
   	@Tag(name = "Podcast Collection")
   	@GetMapping("podcast/collections/favories/all/")
   	public ResponseEntity<Object> col_podcast_fav_all(){
-
-  		return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK, " ");
+  		FirebaseUser u = (FirebaseUser) getCurrentUser().getPrincipal();
+  		return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK, 
+  				favcolpodService.findByUid( u.getUid() ));
   	}
   	
+	@Tag(name = "Podcast Collection")
+	@GetMapping("podcast/collections/favories/show/{id}")
+	public ResponseEntity<Object> pod_col_favorie_show_by_id( @PathVariable Long id){
+
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, 
+				favcolpodService.findByid(id));
+	}
+  	
   	@Tag(name = "Podcast Collection")
-  	@DeleteMapping("podcast/collections/favories/all/{idFavorie}")
+  	@DeleteMapping("podcast/collections/favories/delete/{idFavorie}")
   	public ResponseEntity<Object> col_podcast_supp_fav(@PathVariable Long idFav){
 
   		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-  				favpodService.remove(idFav));
+  				favcolpodService.remove(idFav));
   		
   	}
     
@@ -958,7 +994,7 @@ public class FrontController {
 			fl.setUser(u);
 			fl.setUid(u.getUid());
 			
-			return EntityResponse.generateResponse("AJOUTEZ AUX FAVORIES", HttpStatus.OK, 
+			return EntityResponse.generateResponse("AJOUTE AUX FAVORIES AVEC SUCCES", HttpStatus.CREATED, 
 					favpodService.addFav(fl));
 		}
 	}
@@ -967,14 +1003,25 @@ public class FrontController {
 	@GetMapping("podcasts/favories/all/")
 	public ResponseEntity<Object> podcastFavorieAll(){
 
-		return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK," ");
+		FirebaseUser u = (FirebaseUser) getCurrentUser().getPrincipal();
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK,
+				
+				favpodService.findByUid( u.getUid() ));
 	}
 	
 	@Tag(name = "Podcasts")
-	@DeleteMapping("podcasts/favories/all/{idFavorie}")
+	@GetMapping("podcast/favories/show/{id}")
+	public ResponseEntity<Object> podcast_favorie_show_by_id( @PathVariable Long id){
+
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, 
+				favpodService.findByid(id));
+	}
+	
+	@Tag(name = "Podcasts")
+	@DeleteMapping("podcasts/favories/delete/{idFavorie}")
 	public ResponseEntity<Object> podcastDelFavorie(@PathVariable Long idFav){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK,
 				favpodService.remove(idFav));
 		
 	}
@@ -1067,7 +1114,7 @@ public class FrontController {
 				fl.setUser(u);
 				fl.setUid(u.getUid());
 				
-				return EntityResponse.generateResponse("AJOUTEZ AUX FAVORIES", HttpStatus.OK, 
+				return EntityResponse.generateResponse("AJOUTE AUX FAVORIES AVEC SUCCES", HttpStatus.CREATED, 
 						favfilmService.addFav(fl));
 			}
 		}
@@ -1076,8 +1123,19 @@ public class FrontController {
 		@GetMapping("films/favories/all/")
 		public ResponseEntity<Object> filmAllFavorie(){
 
-			return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK," ");
+			FirebaseUser u = (FirebaseUser) getCurrentUser().getPrincipal();
+			return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK,
+					favfilmService.findByUid( u.getUid() ));
 		}
+		
+		@Tag(name = "Films")
+		@GetMapping("films/favories/show/{id}")
+		public ResponseEntity<Object> film_favorie_show_by_id( @PathVariable Long id){
+
+			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, 
+					favfilmService.findByid(id));
+		}
+		
 		
 		@Tag(name = "Films")
 		@DeleteMapping("films/favories/delete/{idFavorie}")
@@ -1193,39 +1251,48 @@ public class FrontController {
 	@PostMapping("series/favories/add/{idSerie}")
 	public ResponseEntity<Object> serieShowFavorie(@PathVariable Long idSerie){
 	
-	Serie l = serieService.showById(idSerie).get();
-	FirebaseUser u = (FirebaseUser) getCurrentUser().getPrincipal();
-	
-	if(favserieRep.findByUserAndSerie(u, l).isPresent()) {
-	
-	Long id = favserieRep.findByUserAndSerie(u, l).get().getIdFav();
-	
-	return EntityResponse.generateResponse("RETIRER DES FAVORIES ", HttpStatus.OK, 
-	favfilmService.remove(id) );
-	}
-	else {
-	
-	FavSerie fl = new FavSerie();
-	fl.setSerie(l);
-	fl.setUser(u);
-	fl.setUid(u.getUid());
-	
-	return EntityResponse.generateResponse("AJOUTEZ AUX FAVORIES", HttpStatus.OK, 
-	favserieService.addFav(fl));
-	}
+		Serie l = serieService.showById(idSerie).get();
+		FirebaseUser u = (FirebaseUser) getCurrentUser().getPrincipal();
+		
+		if(favserieRep.findByUserAndSerie(u, l).isPresent()) {
+		
+			Long id = favserieRep.findByUserAndSerie(u, l).get().getIdFav();
+			
+			return EntityResponse.generateResponse("RETIRER DES FAVORIES ", HttpStatus.OK, 
+					favserieService.remove(id) );
+		}
+		else {
+		
+			FavSerie fl = new FavSerie();
+			fl.setSerie(l);
+			fl.setUser(u);
+			fl.setUid(u.getUid());
+			
+			return EntityResponse.generateResponse("AJOUTE AUX FAVORIES AVEC SUCCES", HttpStatus.CREATED, 
+					favserieService.addFav(fl));
+		}
 	}
 	
 	@Tag(name = "Series")
 	@GetMapping("series/favories/all/")
 	public ResponseEntity<Object> serieFavorieAll(){
+		FirebaseUser u = (FirebaseUser) getCurrentUser().getPrincipal();
+	return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK, 
+			favserieService.findByUid( u.getUid() ));
+	}
 	
-	return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK, " ");
+	@Tag(name = "Serie")
+	@GetMapping("series/favories/show/{id}")
+	public ResponseEntity<Object> serie_favorie_show_by_id( @PathVariable Long id){
+		
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, 
+				favserieService.findByid(id));
 	}
 	
 	@Tag(name = "Series")
 	@DeleteMapping("series/favories/delete/{idFavorie}")
 	public ResponseEntity<Object> serieDelFavorie(@PathVariable Long idFav){
-	
+		
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, favserieService.remove(idFav));
 	
 	}
@@ -1295,34 +1362,45 @@ public class FrontController {
 	@PostMapping("episodes/favories/add/{idEpisode}")
 	public ResponseEntity<Object> episodeShowFavorie(@PathVariable Long idEpisode){
 	
-	Episode ep = episodeService.showById(idEpisode).get();
-	FirebaseUser u = (FirebaseUser) getCurrentUser().getPrincipal();
-	
-	if(favepisodeRep.findByUserAndEpisode(u, ep).isPresent()) {
-	
-	Long id = favepisodeRep.findByUserAndEpisode(u, ep).get().getIdFav();
-	
-	return EntityResponse.generateResponse("RETIRER DES FAVORIES ", HttpStatus.OK, 
-	favepisodeService.remove(id) );
-	}
-	else {
-	
-	FavEpisode fe = new FavEpisode();
-	fe.setEpisode(ep);
-	fe.setUser(u);
-	fe.setUid(u.getUid());
-	
-	return EntityResponse.generateResponse("AJOUTEZ AUX FAVORIES", HttpStatus.OK, 
-	favepisodeService.addFav(fe));
-	}
+			Episode ep = episodeService.showById(idEpisode).get();
+			FirebaseUser u = (FirebaseUser) getCurrentUser().getPrincipal();
+			
+			if(favepisodeRep.findByUserAndEpisode(u, ep).isPresent()) {
+			
+			Long id = favepisodeRep.findByUserAndEpisode(u, ep).get().getIdFav();
+			
+			return EntityResponse.generateResponse("RETIRER DES FAVORIES ", HttpStatus.OK, 
+			favepisodeService.remove(id) );
+		}
+		else {
+		
+			FavEpisode fe = new FavEpisode();
+			fe.setEpisode(ep);
+			fe.setUser(u);
+			fe.setUid(u.getUid());
+			
+			return EntityResponse.generateResponse("AJOUTE AUX FAVORIES AVEC SUCCES", HttpStatus.CREATED, 
+		    favepisodeService.addFav(fe));
+		}
 	}
 	
 	@Tag(name = "Episodes")
 	@GetMapping("episodes/favories/all/")
-	public ResponseEntity<Object> episodeAddFavorie(){
-	
-	return EntityResponse.generateResponse("Liste des episodes favorie", HttpStatus.OK, "  ");
+	public ResponseEntity<Object> episode_add_favorie(){
+		
+			FirebaseUser u = (FirebaseUser) getCurrentUser().getPrincipal();
+		return EntityResponse.generateResponse("Liste des episodes favorie", HttpStatus.OK, 
+				favepisodeService.findByUid( u.getUid() ));
 	}
+	
+	@Tag(name = "Episodes")
+	@GetMapping("episodes/favories/show/{id}")
+	public ResponseEntity<Object> episode_favorie_show_by_id( @PathVariable Long id){
+
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, 
+				favepisodeService.findByid(id));
+	}
+	
 	
 	@Tag(name = "Episodes")
 	@DeleteMapping("episodes/favories/delete/{idFavorie}")
@@ -1382,33 +1460,45 @@ public class FrontController {
 	@Tag(name = "Saison")
 	@PostMapping("saisons/favories/add/{idSaison}")
 	public ResponseEntity<Object> saisonAddFavorie(@PathVariable Long idSaison){
-	
-	Saison s = saisonService.showById(idSaison);
-	FirebaseUser u = (FirebaseUser) getCurrentUser().getPrincipal();
-	
-	if(favsaisonRep.findByUserAndSaison(u, s).isPresent()) {
-	
-	Long id = favsaisonRep.findByUserAndSaison(u, s).get().getIdFavSaison();
-	
-	return EntityResponse.generateResponse("RETIRER DES FAVORIES ", HttpStatus.OK, 
-	favsaisonService.remove(id) );
-	}
-	else {
-	
-	FavSaison fe = new FavSaison();
-	fe.setSaison(s);
-	fe.setUser(u);
-	fe.setUid(u.getUid());
-	return EntityResponse.generateResponse("AJOUTEZ AUX FAVORIES", HttpStatus.OK, 
-	favsaisonService.addFav(fe));
-	}
+		
+			Saison s = saisonService.showById(idSaison);
+			FirebaseUser u = (FirebaseUser) getCurrentUser().getPrincipal();
+			
+			if(favsaisonRep.findByUserAndSaison(u, s).isPresent()) {
+			
+			Long id = favsaisonRep.findByUserAndSaison(u, s).get().getIdFavSaison();
+			
+			return EntityResponse.generateResponse("RETIRER DES FAVORIES ", HttpStatus.OK, 
+					favsaisonService.remove(id) );
+		}
+		else {
+		
+			FavSaison fe = new FavSaison();
+			fe.setSaison(s);
+			fe.setUser(u);
+			fe.setUid(u.getUid());
+			
+			return EntityResponse.generateResponse("AJOUTE AUX FAVORIES AVEC SUCCES", HttpStatus.CREATED, 
+					favsaisonService.addFav(fe));
+		}
 	}
 	
 	@Tag(name = "Saison")
 	@GetMapping("saisons/favories/all/")
 	public ResponseEntity<Object> saisonAllFavorie(){
+		
+		FirebaseUser u = (FirebaseUser) getCurrentUser().getPrincipal();
+		return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK, 
+				favsaisonService.findByUid( u.getUid()));
+	}
 	
-	return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK, " ");
+	@Tag(name = "Saison")
+	@GetMapping("saisons/favories/show/{id}")
+	public ResponseEntity<Object> saison_favorie_show_by_id( @PathVariable Long id){
+
+		
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, 
+				favsaisonService.findByid(id));
 	}
 	
 	@Tag(name = "Saison")
@@ -1423,21 +1513,23 @@ public class FrontController {
 	
 	//Multi Media
 	@Tag(name = "Profil Abonne")
-	@GetMapping("user/favories/all/")
+	@GetMapping("user/favories/")
 	
 	public ResponseEntity<Object> allFavorite(){
 		
+		System.out.println(" APPPPPPPPPPPP  "+getCurrentUser());
+		
 		FirebaseUser u = (FirebaseUser) getCurrentUser();
 		
-		List<FavFilm> film= favfilmService.findByUser(u); 
+		List<FavFilm> film= favfilmService.findByUid(u.getUid()); 
 		
-		List<FavSerie> serie= favserieService.findByUser(u);
+		List<FavSerie> serie= favserieService.findByUid(u.getUid());
 		
-		List<FavRadio> radio = favradioService.findByUser(u);
+		List<FavRadio> radio = favradioService.findByUid(u.getUid());
 		
-		List<FavPodcast> podcast = favpodService.findByUser(u);
+		List<FavPodcast> podcast = favpodService.findByUid(u.getUid());
 		
-		List<FavLiveTv> livetv = favliveService.findByUser(u);
+		List<FavLiveTv> livetv = favlivetvService.findByUid(u.getUid());
 		
 		FavoriteAllResponse fav = new FavoriteAllResponse(film, serie, radio, podcast, livetv );
 		
@@ -1562,12 +1654,12 @@ public class FrontController {
 				LiveTv l = liveService.showById(idLive).get();
 				FirebaseUser u = (FirebaseUser) getCurrentUser().getPrincipal();	
 				
-				if(favliveRep.findByUserAndLivetv(u, l).isPresent()) {
+				if(favlivetvRep.findByUserAndLivetv(u, l).isPresent()) {
 					
-					Long id = favliveRep.findByUserAndLivetv(u, l).get().getIdFav();
+					Long id = favlivetvRep.findByUserAndLivetv(u, l).get().getIdFav();
 					
 					return EntityResponse.generateResponse("RETIRER DES FAVORIES ", HttpStatus.OK, 
-							favliveService.remove(id) );
+							favlivetvService.remove(id) );
 				}
 				else {
 					
@@ -1576,23 +1668,32 @@ public class FrontController {
 					fl.setUser(u);
 					fl.setUid(u.getUid());
 					
-					return EntityResponse.generateResponse("AJOUTEZ AUX FAVORIES", HttpStatus.OK, 
-							favliveService.addFav(fl));
+					return EntityResponse.generateResponse("AJOUTE AUX FAVORIES AVEC SUCCES", HttpStatus.OK, 
+							favlivetvService.addFav(fl));
 				}
 			}
 			
 			@Tag(name = "TV SHOW")
 			@GetMapping("tv/favories/all/")
 			public ResponseEntity<Object> liveAddFavorie(){
-	    
-				return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK," ");
+				FirebaseUser u = (FirebaseUser) getCurrentUser().getPrincipal();
+				return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK, 
+						favlivetvService.findByUid( u.getUid() ));
 			}
 			
 			@Tag(name = "TV SHOW")
-			@DeleteMapping("tv/favories/show/{idFavorie}")
+			@GetMapping("tv/favories/show/{id}")
+			public ResponseEntity<Object> tv_favorie_show_by_id( @PathVariable Long id){
+				
+				return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, 
+						favlivetvService.findByid(id));
+			}
+			
+			@Tag(name = "TV SHOW")
+			@DeleteMapping("tv/favories/delete/{idFavorie}")
 			public boolean liveDelFavorie(@PathVariable Long idFav){
 
-				return favradioService.remove(idFav);
+				return favlivetvService.remove(idFav);
 				
 			}
 		
@@ -1794,7 +1895,7 @@ public class FrontController {
 			fl.setUser(u);
 			fl.setUid(u.getUid());
 			
-			return EntityResponse.generateResponse("AJOUTEZ AUX FAVORIES", HttpStatus.OK, 
+			return EntityResponse.generateResponse("AJOUTEZ AUX FAVORIES AVEC SUCCES", HttpStatus.CREATED, 
 					fav_art_service.addFav(fl));
 		}
 	}
@@ -1802,16 +1903,27 @@ public class FrontController {
     @Tag(name = "Article")
 	@GetMapping("articles/favories/all/")
 	public ResponseEntity<Object> article_favorie_all(){
+    	
+    	FirebaseUser u = (FirebaseUser) getCurrentUser().getPrincipal();
+		return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK,
+				fav_art_service.findByUid(u.getUid()));
+	}
+    
+	@Tag(name = "Article")
+	@GetMapping("articles/favories/show/{id}")
+	public ResponseEntity<Object> article_favorie_show_by_id( @PathVariable Long id){
 
-		return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK," ");
+		
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, 
+				fav_art_service.findById(id));
 	}
 	
     @Tag(name = "Article")
-	@DeleteMapping("articles/favories/all/{idFavorie}")
+	@DeleteMapping("articles/favories/delete/{idFavorie}")
 	public ResponseEntity<Object> article_favorie_by_id(@PathVariable Long idFav){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-				favpodService.remove(idFav));
+				fav_art_service.remove(idFav));
 		
 	}
     

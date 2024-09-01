@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.mytv.api.dto.LiveTvDTO;
+import com.mytv.api.firebase.model.FirebaseUser;
 import com.mytv.api.livetv.model.LiveTv;
 import com.mytv.api.livetv.repository.FavLivetvRepository;
 import com.mytv.api.livetv.repository.LiveTvRepository;
@@ -52,17 +54,37 @@ public class LiveTvSetvice {
 	}
 	
 	
-	
+	@Autowired
+	FavLivetvRepository rep_fav_tv;
 	public void refresh() {
 		
-		rep_fav_livetv.findAll().forEach(
-				
-				f -> {
+		//Si l user est un abonne
+		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().isEmpty()) {
+			
+			//Retirer les favories de tous les users
+			rep_fav_tv.findAll().forEach(
 					
-					f.getLivetv().setFavorie(true);
-				}
-				
-			);
+					f -> {
+						
+						f.getLivetv().setFavorie(false);
+					}
+					
+				);
+			
+			FirebaseUser u = (FirebaseUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+			System.out.println("Les favories de "+u.getUsername());
+			
+			//Afficher que les favories du l utilisateur actuelle
+			rep_fav_tv.findByUid(u.getUid()).forEach(
+					
+					f -> {
+						
+						f.getLivetv().setFavorie(true);
+					}
+					
+				);
+		}
 		
 		List<LiveTv> l = rep.findAll();
 				

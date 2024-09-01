@@ -14,6 +14,7 @@ import com.mytv.api.firebase.model.FirebaseUser;
 public interface FavEpisodeRepository extends JpaRepository<FavEpisode, Long>{
 
 	List<FavEpisode> findByUser(FirebaseUser u);
+	List<FavEpisode> findByUid(String uid);
 	List<FavEpisode> findByEpisode(Episode episode);
 	Optional<FavEpisode> findByUserAndEpisode(FirebaseUser user, Episode episode);
 }

@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.mytv.api.firebase.model.FirebaseUser;
 import com.mytv.api.news.model.Article;
 import com.mytv.api.news.repository.ArticleRepository;
 import com.mytv.api.news.repository.CategArticleRepository;
@@ -30,25 +32,44 @@ public class ArticleService {
 	
 	public void refresh() {
 		
-		
-		rep_fav_article.findAll().forEach(
-				
-				f -> {
+		//Si l user est un abonne
+		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().isEmpty()) {
+			
+			
+			//Retirer les favories de tous les users
+			rep_fav_article.findAll().forEach(
 					
-					f.getArticle().setFavorie(true);
+					f -> {
+						
+						f.getArticle().setFavorie(false);
+					}
+					
+				);
+			
+			
+			FirebaseUser u = (FirebaseUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+			//Afficher que les favories du l utilisateur actuelle
+			rep_fav_article.findByUid(u.getUid()).forEach(
+					
+					f -> {
+						
+						f.getArticle().setFavorie(true);
+					}
+					
+				);
+		}
+		
+	   //Reaficher les objets categories	
+       List<Article> l = rep.findAll();
+		
+		l.forEach(  
+				
+				g -> {
+					
+					g.setList_categories(rep_cat.findAllById(g.getCategories()));
 					
 				}
-				
-			);
-	       List<Article> l = rep.findAll();
-			
-			l.forEach(  
-					
-					g -> {
-						
-						g.setList_categories(rep_cat.findAllById(g.getCategories()));
-						
-					}
 			);
 		}
 	
