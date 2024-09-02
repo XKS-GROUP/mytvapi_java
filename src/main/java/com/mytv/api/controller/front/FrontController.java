@@ -1,5 +1,6 @@
 package com.mytv.api.controller.front;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -326,25 +327,55 @@ public class FrontController {
 		FirebaseUser u = (FirebaseUser) getCurrentUser().getPrincipal();
 		
 		String uid = u.getUid();
-		List<FavFilm> films = favfilmService.findByUid(uid);
+		
+		List<Film> films = new ArrayList<>();  
+		favfilmService.findByUid(uid).forEach(
+				
+					f -> films.add(f.getFilm())
+				);
+		
+    	List<Radio> radios = new ArrayList<>();
+    	favradioService.findByUid(uid).forEach(
+    			
+    				r -> radios.add(r.getRadio())
+    			);
     	
-    	List<FavRadio> radios = favradioService.findByUid(uid);
+    	List<Article> articles = new ArrayList<>();
+    	fav_art_service.findByUid(uid).forEach(
+    			
+    				a -> articles.add(a.getArticle())
+    			
+    			);
     	
-    	Object articles = fav_art_service.findByUid(uid);
+    	List<Podcast> podcasts = new ArrayList<>();
+    	favpodService.findByUid(uid).forEach(
+    			
+    			   p -> podcasts.add(p.getPodcast())
+    			);
     	
-    	List<FavPodcast> podcasts =  favpodService.findByUid(uid);
+    	List<ColPodcast> colpodcasts = new ArrayList<>();
+    	favcolpodService.findByUid(uid).forEach(
+    			
+    			    c -> colpodcasts.add(c.getColpodcast())
+    			);
     	
-    	Object colpodcasts = favcolpodService.findByUid(uid);
-    	
-    	List<FavLiveTv> liveTv = favlivetvService.findByUid(uid);
+    	List<LiveTv> liveTv = new ArrayList<>();
+    	favlivetvService.findByUid(uid).forEach(
+    				
+    				l -> liveTv.add(l.getLivetv())
+    			
+    			);
 
-    	List<FavSerie> series = favserieService.findByUid(uid);
+    	List<Serie> series = new ArrayList<>();
+    	favserieService.findByUid(uid).forEach(
+    			
+    				s -> series.add(s.getSerie())
+    			);
     	
     	Object saisons = favsaisonService.findByUid(uid);
     	
     	Object episodes = favepisodeService.findByUid(uid);
 
-    	
         if (resources == null || resources.isEmpty()) {
         	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
         			
@@ -974,8 +1005,6 @@ public class FrontController {
   				favcolpodService.remove(idFav));
   		
   	}
-    
-    
 	
 	/*
 	 * GESTION DES PODCASTS

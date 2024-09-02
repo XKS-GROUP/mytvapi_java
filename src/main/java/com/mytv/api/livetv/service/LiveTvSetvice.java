@@ -391,7 +391,7 @@ public class LiveTvSetvice {
 	}
 	
 	public List<LiveTv> top10(){
-		
+		refresh();
 		return rep.findByTop10True();
 	}
 	
@@ -399,13 +399,13 @@ public class LiveTvSetvice {
 		
 		LiveTv lv =  rep.findById(id).get();
 		lv.setTop10(status);
-		
+		refresh();
 		return lv;
 		
 	}
 	
     public LiveTv top(){
-		
+    	refresh();
 		return rep.findByTopTrue();
 	}
 	
@@ -413,13 +413,13 @@ public class LiveTvSetvice {
 		
 		LiveTv lv =  rep.findById(id).get();
 		lv.setTop(status);
-		
+		refresh();
 		return lv;
 	}
 	
 	
 	public LiveTv checktoplimit() {
-		
+		refresh();
 		if(rep.findByTopTrue() != null) {
 			
 			return rep.findByTopTrue();
@@ -433,7 +433,7 @@ public class LiveTvSetvice {
 	
 	//Si null la limite n'est pas encore atteinte
 	public List<LiveTv> checktop10limit() {
-		
+		refresh();
 		if(rep.findByTop10True().size() <=10) {
 			
 			return null;

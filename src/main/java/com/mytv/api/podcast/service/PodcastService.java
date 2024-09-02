@@ -56,19 +56,21 @@ public class PodcastService {
 	
 	
 	public Page<Podcast> similaire_show(Long id, Pageable p) {
-		Podcast m =  rep.findById(id).get();
 		
+		Podcast m =  rep.findById(id).get();
 		PageImpl<Podcast> res = new PageImpl<Podcast>(rep.findAll().stream()
 				   .filter(rd -> rd.getCategories().containsAll(m.getCategories()))
 				   .toList() 
 				   , p
 				   , rep.findAll().size());
+		
+		refresh();
 		return res;
 	}
 	
 	
 	public Podcast checktoplimit() {
-		
+		refresh();
 		if(rep.findByTopTrue() != null) {
 			
 			return rep.findByTopTrue();
@@ -83,7 +85,7 @@ public class PodcastService {
 	//Si null la limite n'est pas encore atteinte
 	
 	public List<Podcast> checktop10limit() {
-		
+		refresh();
 		if(rep.findByTop10True().size() <=10) {
 			
 			return null;
@@ -242,12 +244,12 @@ public class PodcastService {
 		p.setList_langues(rep_langue.findAllById(p.getLangue()));
 		p.setList_podcasteur(rep_podcasteur.findAllById(p.getIdPodcasteur()));
 		p.setList_categories(rep_categ.findAllById(p.getCategories()));
-
+		refresh();
 		return rep.save(p);
 	}
 
 	public Boolean delete(Long id) {
-
+		refresh();
 		rep.deleteById(id);
 
 		return true;
@@ -274,7 +276,7 @@ public class PodcastService {
 		
 		Podcast pc =  rep.findById(id).get();
 		pc.setTop10(status);
-		
+		refresh();
 		return pc;
 		
 	}
@@ -289,7 +291,7 @@ public class PodcastService {
 		
 		Podcast pc =  rep.findById(id).get();
 		pc.setTop10(status);
-		
+		refresh();
 		return pc;
 		
 	}

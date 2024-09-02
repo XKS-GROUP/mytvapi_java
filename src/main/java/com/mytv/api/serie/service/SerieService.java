@@ -317,7 +317,7 @@ public class SerieService {
 	}
 	
 	public Serie top(){
-		
+		refresh();
 		return rep.findByTopTrue();
 	}
 	
@@ -325,7 +325,7 @@ public class SerieService {
 		
 		Serie r =  rep.findById(id).get();
 		r.setTop10(status);
-		
+		refresh();
 		return r;
 	}
 	

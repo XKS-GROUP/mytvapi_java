@@ -96,7 +96,7 @@ public class FavArticleService {
 		return rep.findById(id);
 	}
 
-	public Object findByUid(String uid) {
+	public List<FavArticle> findByUid(String uid) {
 		refresh();
 		return rep.findByUid(uid);
 	}

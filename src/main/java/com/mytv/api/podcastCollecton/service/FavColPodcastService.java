@@ -93,7 +93,7 @@ public class FavColPodcastService {
 		return rep.findById(id);
 	}
 
-	public Object findByUid(String uid) {
+	public List<FavColPod> findByUid(String uid) {
 		refresh();
 		return rep.findByUid(uid);
 	}

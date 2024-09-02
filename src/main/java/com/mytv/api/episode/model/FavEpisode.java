@@ -6,7 +6,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mytv.api.firebase.model.FirebaseUser;
 
 import jakarta.persistence.Entity;
