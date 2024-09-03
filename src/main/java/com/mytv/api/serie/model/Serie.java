@@ -58,7 +58,7 @@ public class Serie {
 	Date addDate;
 
 	@JsonFormat(pattern="dd-MM-yyyy")
-	Date releaseDate;
+	private Date releaseDate;
 
 	String IMDbRating;
 

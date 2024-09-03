@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mytv.api.intervenant.model.Actor;
 import com.mytv.api.intervenant.model.Director;
@@ -60,7 +61,8 @@ public class Film {
 	@CreatedDate
 	Date addDate;
 
-	Date releaseDate;
+	@JsonFormat(pattern="dd-MM-yyyy")
+	private Date releaseDate;
 	
 	String epoque;
 

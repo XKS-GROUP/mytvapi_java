@@ -32,6 +32,9 @@ public class Slider {
 	private String overview;
 	
 	@Column(nullable = true  ,columnDefinition = "TEXT")
+	private String button_text;
+	
+	@Column(nullable = true  ,columnDefinition = "TEXT")
 	private String target_url;
 	
 	@Column(nullable = true  ,columnDefinition = "TEXT")

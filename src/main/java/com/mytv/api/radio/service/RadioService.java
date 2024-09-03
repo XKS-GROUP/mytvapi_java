@@ -98,7 +98,16 @@ public class RadioService {
 
 	public List<Radio> show() {
 		refresh();
-		return radioRep.findAll();
+		
+		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().isEmpty()) {
+			
+			return radioRep.findAll();
+			
+		}
+		else {
+			return radioRep.findAll();
+		}
+		
 	}
 	
 	public Page<Radio> similaire_show(Long id, Pageable p) {
