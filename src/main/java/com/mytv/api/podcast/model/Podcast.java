@@ -4,10 +4,15 @@ package com.mytv.api.podcast.model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import org.springframework.data.annotation.CreatedDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mytv.api.intervenant.model.Podcasteur;
 import com.mytv.api.podcastcateg.model.CatPodcast;
 import com.mytv.api.ressource.model.Language;
@@ -67,12 +72,17 @@ public class Podcast {
 	@Column(columnDefinition = "TEXT")
 	String poster_path;
 
+	
 	@NotNull(message="Un podcast doit forcement avoir une categorie")
-	List <Long> categories = new ArrayList<>();
+	Set <Long> categories = new HashSet<>();
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idCatPod",  cascade = CascadeType.ALL)
 	List<CatPodcast> list_categories = new ArrayList<>();
 
+	@JsonIgnore
+	@JdbcTypeCode(SqlTypes.JSON)
+	List<CatPodcast> categ;
+	
 	@Column(nullable = false, columnDefinition = "boolean default true")
 	boolean status;
 	

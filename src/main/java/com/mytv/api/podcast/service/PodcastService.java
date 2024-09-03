@@ -54,20 +54,20 @@ public class PodcastService {
 	}
 	
 	
-	
 	public Page<Podcast> similaire_show(Long id, Pageable p) {
 		
 		Podcast m =  rep.findById(id).get();
-		PageImpl<Podcast> res = new PageImpl<Podcast>(rep.findAll().stream()
-				   .filter(rd -> rd.getCategories().containsAll(m.getCategories()))
-				   .toList() 
-				   , p
-				   , rep.findAll().size());
 		
-		refresh();
+		PageImpl<Podcast> res = new PageImpl<Podcast>(rep.findAll().stream() 
+				   .filter(rd -> rd.getCategories().containsAll(m.getCategories())) 
+				   .toList() 
+        		   , p 
+				   , rep.findAll().size()); 
+		
+		//return rep.findDistinctByCategIn(m.getList_categories(), p);
+		
 		return res;
 	}
-	
 	
 	public Podcast checktoplimit() {
 		refresh();

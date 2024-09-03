@@ -32,10 +32,10 @@ public class Slider {
 	private String overview;
 	
 	@Column(nullable = true  ,columnDefinition = "TEXT")
-	private String backdrop_path;
+	private String target_url;
 	
-	@Column(nullable = true, columnDefinition = "boolean default false")
-	private boolean typeVideo;
+	@Column(nullable = true  ,columnDefinition = "TEXT")
+	private String backdrop_path;
 	
 	@Column(nullable = true  ,columnDefinition = "TEXT")
 	private String video_path;

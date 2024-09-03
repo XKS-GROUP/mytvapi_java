@@ -49,7 +49,6 @@ public class FavArticleService {
 		return rep.findByArticle(p);
 	}
 	
-	
 	public boolean remove(Long id) {
 		refresh();
 		rep.deleteById(id);
@@ -57,7 +56,6 @@ public class FavArticleService {
 		return true;
 		
 	}
-	
 	
 	public void refresh() {
 		

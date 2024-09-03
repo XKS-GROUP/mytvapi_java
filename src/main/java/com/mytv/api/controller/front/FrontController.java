@@ -495,8 +495,6 @@ public class FrontController {
     	
     	List<Episode> episodes = episodeService.show();
     	
-
-    	
         if (media == null || media.isEmpty()) {
         	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
         			

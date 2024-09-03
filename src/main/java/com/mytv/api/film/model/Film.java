@@ -73,9 +73,6 @@ public class Film {
 	float recette;
 	
 	@Column( columnDefinition = "TEXT")
-	String classification;
-	
-	@Column( columnDefinition = "TEXT")
 	String prix;
 
 	@Column(columnDefinition = "TEXT")
