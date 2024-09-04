@@ -21,14 +21,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 
 @Entity
 @NoArgsConstructor
@@ -59,11 +57,11 @@ public class LiveTv implements Serializable {
 	@Column(columnDefinition = "TEXT")
 	String tvLogo_path;
 
-	@NotEmpty(message="ce champ ne peut pas etre vide, un liveTv doit avoir une categorie")
+	@NotNull(message="ce champ ne peut pas etre vide, un liveTv doit avoir une categorie")
 	@Column(nullable = false)
 	List <Long>  idcategories= new ArrayList<>();
 
-	@NotEmpty(message="ce champ ne peut pas etre vide, un liveTv doit avoir un status qui permet de le rendre visible ou pas")
+	@NotNull(message="ce champ ne peut pas etre vide, un liveTv doit avoir un status qui permet de le rendre visible ou pas")
 	@Column(nullable = false, columnDefinition = "boolean default false")
 	boolean status;
 
@@ -82,7 +80,7 @@ public class LiveTv implements Serializable {
 	@Column(columnDefinition = "TEXT")
 	String tvEmbedCode;
 
-	@NotEmpty(message="Ce champ ne peut pas etre vide")
+	@NotNull(message="Ce champ ne peut pas etre vide")
 	@Column(nullable = false)
 	List<Long>  country = new ArrayList<>();
 	

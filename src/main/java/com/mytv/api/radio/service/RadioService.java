@@ -118,7 +118,9 @@ public class RadioService {
 				   .filter(rd -> rd.getCategories().containsAll(r.getCategories()))
 				   .toList()
 				   , p
-				   , radioRep.findAll().size());
+				   , radioRep.findAll().stream()
+				   .filter(rd -> rd.getCategories().containsAll(r.getCategories()))
+				   .toList().size());
 		
 		return res;
 	}
@@ -133,12 +135,19 @@ public class RadioService {
 				   , radioRep.findAll().size());
 		
 		if(categ != null && langue == null && pays == null) {
-			
-		  return res = new PageImpl<Radio>(radioRep.findAll(p).stream()
+			System.out.println("radio dedans"+radioRep.findAll(p).stream().filter(f -> f.getCategories().contains(categ))
+					   .toList());
+		  
+			int z = radioRep.findAll(p).stream()
+					   .filter(f -> f.getCategories().contains(categ))
+					   .toList().size();
+			System.out.println("radio dedans = "+z +"et categ =" + categ);
+			return res = new PageImpl<Radio>(radioRep.findAll(p).stream()
 					   .filter(f -> f.getCategories().contains(categ))
 					   .toList()
 					   , p
-					   , radioRep.findAll().size());
+					   , z
+				  );
 		}
 		else if(langue != null && categ == null && pays == null) {
 			
@@ -146,7 +155,9 @@ public class RadioService {
 					   .filter(f -> f.getLangue().contains(langue))
 					   .toList()
 					   , p
-					   , radioRep.findAll().size());
+					   , radioRep.findAll(p).stream()
+					   .filter(f -> f.getLangue().contains(langue))
+					   .toList().size());
 			
 			
 		}
@@ -156,7 +167,9 @@ public class RadioService {
 					   .filter(f -> f.getCountry().contains(pays))
 					   .toList()
 					   , p
-					   , radioRep.findAll().size());
+					   , radioRep.findAll(p).stream()
+					   .filter(f -> f.getCountry().contains(pays))
+					   .toList().size());
 			
 		}
 		else if(categ != null && langue != null && pays == null) {
@@ -166,7 +179,10 @@ public class RadioService {
 					   .filter(f -> f.getLangue().contains(langue))
 					   .toList()
 					   , p
-					   , radioRep.findAll().size());
+					   , radioRep.findAll(p).stream()
+					   .filter(f -> f.getCategories().contains(categ))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .toList().size());
 			
 		}
 		else if(categ != null && pays != null && langue == null) {
@@ -176,7 +192,10 @@ public class RadioService {
 					   .filter(f -> f.getCountry().contains(pays))
 					   .toList()
 					   , p
-					   , radioRep.findAll().size());
+					   , radioRep.findAll(p).stream()
+					   .filter(f -> f.getCategories().contains(categ))
+					   .filter(f -> f.getCountry().contains(pays))
+					   .toList().size());
 		}
 		else if(pays != null && langue != null && categ == null) {
 			return res = new PageImpl<Radio>(radioRep.findAll(p).stream()
@@ -184,7 +203,10 @@ public class RadioService {
 					   .filter(f -> f.getLangue().contains(langue))
 					   .toList()
 					   , p
-					   , radioRep.findAll().size());
+					   , radioRep.findAll(p).stream()
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .toList().size());
 		}
 		else if (pays != null && langue != null && categ != null) {
 			
@@ -194,7 +216,11 @@ public class RadioService {
 					   .filter(f -> f.getCountry().contains(pays))
 					   .toList()
 					   , p
-					   , radioRep.findAll().size());
+					   , radioRep.findAll(p).stream()
+					   .filter(f -> f.getCategories().contains(categ))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f -> f.getCountry().contains(pays))
+					   .toList().size());
 		}
 		else {
 			return res;
@@ -208,7 +234,7 @@ public class RadioService {
 		PageImpl<Radio> res = new PageImpl<Radio>(radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
 				   .toList() 
 				   , p
-				   , radioRep.findAll().size());
+				   , radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream().toList().size());
 		
 		
 		if(categ != null && langue == null && pays == null) {
@@ -217,7 +243,9 @@ public class RadioService {
 					   .filter(f -> f.getCategories().contains(categ))
 					   .toList()
 					   , p
-					   , radioRep.findAll().size());
+					   , radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getCategories().contains(categ))
+					   .toList().size());
 		}
 		else if(langue != null && categ == null && pays == null) {
 			
@@ -225,7 +253,9 @@ public class RadioService {
 					   .filter(f -> f.getLangue().contains(langue))
 					   .toList()
 					   , p
-					   , radioRep.findAll().size());
+					   , radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getLangue().contains(langue))
+					   .toList().size());
 			
 			
 		}
@@ -235,7 +265,9 @@ public class RadioService {
 					   .filter(f -> f.getCountry().contains(pays))
 					   .toList()
 					   , p
-					   , radioRep.findAll().size());
+					   , radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getCountry().contains(pays))
+					   .toList().size());
 			
 		}
 		else if(categ != null && langue != null && pays == null) {
@@ -245,7 +277,10 @@ public class RadioService {
 					   .filter(f -> f.getLangue().contains(langue))
 					   .toList()
 					   , p
-					   , radioRep.findAll().size());
+					   , radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getCategories().contains(categ))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .toList().size());
 			
 		}
 		else if(categ != null && pays != null && langue == null) {
@@ -255,7 +290,10 @@ public class RadioService {
 					   .filter(f -> f.getCountry().contains(pays))
 					   .toList()
 					   , p
-					   , radioRep.findAll().size());
+					   , radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getCategories().contains(categ))
+					   .filter(f -> f.getCountry().contains(pays))
+					   .toList().size());
 		}
 		else if(pays != null && langue != null && categ == null) {
 			return res = new PageImpl<Radio>(radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
@@ -263,7 +301,10 @@ public class RadioService {
 					   .filter(f -> f.getLangue().contains(langue))
 					   .toList()
 					   , p
-					   , radioRep.findAll().size());
+					   , radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .toList().size());
 		}
 		else if (pays != null && langue != null && categ != null) {
 			
@@ -273,10 +314,14 @@ public class RadioService {
 					   .filter(f -> f.getCountry().contains(pays))
 					   .toList()
 					   , p
-					   , radioRep.findAll().size());
+					   , radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getCategories().contains(categ))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f -> f.getCountry().contains(pays))
+					   .toList().size());
 		}
 		else {
-			return res;
+			return res ;
 		}
 		
 	};

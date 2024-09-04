@@ -257,7 +257,9 @@ public class ServiceFilm {
 					   .filter(f -> f.getGenreList().contains(genre))
 					   .toList()
 					   , p
-					   , rep.findAll().size());
+					   , rep.findAll(p).stream()
+					   .filter(f -> f.getGenreList().contains(genre))
+					   .toList().size());
 		}
 		else if(langue != null && genre == null && pays == null) {
 			
@@ -265,7 +267,9 @@ public class ServiceFilm {
 					   .filter(f -> f.getLangue().contains(langue))
 					   .toList()
 					   , p
-					   , rep.findAll().size());
+					   , rep.findAll(p).stream()
+					   .filter(f -> f.getLangue().contains(langue))
+					   .toList().size());
 			
 		}
 		else if(pays != null && genre == null && pays == null) {
@@ -274,7 +278,9 @@ public class ServiceFilm {
 					   .filter(f -> f.getCountry().contains(pays))
 					   .toList()
 					   , p
-					   , rep.findAll().size());
+					   , rep.findAll(p).stream()
+					   .filter(f -> f.getCountry().contains(pays))
+					   .toList().size());
 			
 		}
 		else if(genre != null && langue != null && pays == null) {
@@ -284,7 +290,10 @@ public class ServiceFilm {
 					   .filter(f -> f.getLangue().contains(langue))
 					   .toList()
 					   , p
-					   , rep.findAll().size());
+					   , rep.findAll(p).stream()
+					   .filter(f -> f.getGenreList().contains(genre))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .toList().size());
 			
 		}
 		else if(genre != null && pays != null && langue == null) {
@@ -294,7 +303,10 @@ public class ServiceFilm {
 					   .filter(f -> f.getCountry().contains(pays))
 					   .toList()
 					   , p
-					   , rep.findAll().size());
+					   , rep.findAll(p).stream()
+					   .filter(f -> f.getGenreList().contains(genre))
+					   .filter(f -> f.getCountry().contains(pays))
+					   .toList().size());
 		}
 		else if(pays != null && langue != null && genre == null) {
 			return res = new PageImpl<Film>(rep.findAll(p).stream()
@@ -302,7 +314,10 @@ public class ServiceFilm {
 					   .filter(f -> f.getLangue().contains(langue))
 					   .toList()
 					   , p
-					   , rep.findAll().size());
+					   , rep.findAll(p).stream()
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .toList().size());
 		}
 		else if (pays != null && langue != null && genre != null) {
 			
@@ -312,13 +327,132 @@ public class ServiceFilm {
 					   .filter(f -> f.getCountry().contains(pays))
 					   .toList()
 					   , p
-					   , rep.findAll().size());
+					   , rep.findAll(p).stream()
+					   .filter(f -> f.getGenreList().contains(genre))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f -> f.getCountry().contains(pays))
+					   .toList().size());
 		}
 		else {
 			return res;
 		}
 		
 	};
+	
+	
+	
+	@SuppressWarnings("unused")
+	public PageImpl<Film> filtre_complet_front(Long genre, Long langue, Long pays, Pageable p){
+		
+		refresh();
+		PageImpl<Film> res = new PageImpl<Film>(rep.findAll(p).stream()
+				.filter(f -> f.isStatus())
+				   .toList() 
+				   , p
+				   , rep.findAll().size());
+		
+		if(genre != null && langue == null && pays == null) {
+			
+		  return res = new PageImpl<Film>(rep.findAll(p).stream()
+					   .filter(f -> f.getGenreList().contains(genre))
+					   .filter(f -> f.isStatus())
+					   .toList()
+					   , p
+					   , rep.findAll(p).stream()
+					   .filter(f -> f.getGenreList().contains(genre))
+					   .filter(f -> f.isStatus())
+					   .toList().size());
+		}
+		else if(langue != null && genre == null && pays == null) {
+			
+			return res = new PageImpl<Film>(rep.findAll(p).stream()
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f -> f.isStatus())
+					   .toList()
+					   , p
+					   , rep.findAll(p).stream()
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f -> f.isStatus())
+					   .toList().size());
+			
+		}
+		else if(pays != null && genre == null && pays == null) {
+			
+			return res = new PageImpl<Film>(rep.findAll(p).stream()
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f -> f.isStatus())
+					   .toList()
+					   , p
+					   , rep.findAll(p).stream()
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f -> f.isStatus())
+					   .toList().size());
+			
+		}
+		else if(genre != null && langue != null && pays == null) {
+			
+			return res = new PageImpl<Film>(rep.findAll(p).stream()
+					   .filter(f -> f.getGenreList().contains(genre))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f -> f.isStatus())
+					   .toList()
+					   , p
+					   , rep.findAll(p).stream()
+					   .filter(f -> f.getGenreList().contains(genre))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f -> f.isStatus())
+					   .toList().size());
+			
+		}
+		else if(genre != null && pays != null && langue == null) {
+			
+			return res = new PageImpl<Film>(rep.findAll(p).stream()
+					   .filter(f -> f.getGenreList().contains(genre))
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f -> f.isStatus())
+					   .toList()
+					   , p
+					   , rep.findAll(p).stream()
+					   .filter(f -> f.getGenreList().contains(genre))
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f -> f.isStatus())
+					   .toList().size());
+		}
+		else if(pays != null && langue != null && genre == null) {
+			return res = new PageImpl<Film>(rep.findAll(p).stream()
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f -> f.isStatus())
+					   .toList()
+					   , p
+					   , rep.findAll(p).stream()
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f -> f.isStatus())
+					   .toList().size());
+		}
+		else if (pays != null && langue != null && genre != null) {
+			
+			return res = new PageImpl<Film>(rep.findAll(p).stream()
+					   .filter(f -> f.getGenreList().contains(genre))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f -> f.isStatus())
+					   .toList()
+					   , p
+					   , rep.findAll(p).stream()
+					   .filter(f -> f.getGenreList().contains(genre))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f -> f.isStatus())
+					   .toList().size());
+		}
+		else {
+			return res;
+		}
+		
+	};
+	
 	
 	@SuppressWarnings("unused")
 	public PageImpl<Film> filtre_recherche_complet(String val, Long genre, Long langue, Long pays, Pageable p){
@@ -327,7 +461,8 @@ public class ServiceFilm {
 		PageImpl<Film> res = new PageImpl<Film>(rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
 				   .toList() 
 				   , p
-				   , rep.findAll().size());
+				   , rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+				   .toList() .size());
 		
 		if(genre != null && langue == null && pays == null) {
 			
@@ -335,7 +470,9 @@ public class ServiceFilm {
 					   .filter(f -> f.getGenreList().contains(genre))
 					   .toList()
 					   , p
-					   , rep.findAll().size());
+					   , rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getGenreList().contains(genre))
+					   .toList().size());
 		}
 		else if(langue != null && genre == null && pays == null) {
 			
@@ -343,7 +480,9 @@ public class ServiceFilm {
 					   .filter(f -> f.getLangue().contains(langue))
 					   .toList()
 					   , p
-					   , rep.findAll().size());
+					   , rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getLangue().contains(langue))
+					   .toList().size());
 			
 		}
 		else if(pays != null && genre == null && pays == null) {
@@ -352,7 +491,9 @@ public class ServiceFilm {
 					   .filter(f -> f.getCountry().contains(pays))
 					   .toList()
 					   , p
-					   , rep.findAll().size());
+					   , rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getCountry().contains(pays))
+					   .toList().size());
 			
 		}
 		else if(genre != null && langue != null && pays == null) {
@@ -372,7 +513,10 @@ public class ServiceFilm {
 					   .filter(f -> f.getCountry().contains(pays))
 					   .toList()
 					   , p
-					   , rep.findAll().size());
+					   , rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getGenreList().contains(genre))
+					   .filter(f -> f.getCountry().contains(pays))
+					   .toList().size());
 		}
 		else if(pays != null && langue != null && genre == null) {
 			return res = new PageImpl<Film>(rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
@@ -380,7 +524,10 @@ public class ServiceFilm {
 					   .filter(f -> f.getLangue().contains(langue))
 					   .toList()
 					   , p
-					   , rep.findAll().size());
+					   , rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .toList().size());
 		}
 		else if (pays != null && langue != null && genre != null) {
 			
@@ -390,13 +537,130 @@ public class ServiceFilm {
 					   .filter(f -> f.getCountry().contains(pays))
 					   .toList()
 					   , p
-					   , rep.findAll().size());
+					   , rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getGenreList().contains(genre))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f -> f.getCountry().contains(pays))
+					   .toList().size());
 		}
 		else {
 			return res;
 		}
 		
 	};
+	
+	
+	@SuppressWarnings("unused")
+	public PageImpl<Film> filtre_recherche_complet_front(String val, Long genre, Long langue, Long pays, Pageable p){
+		
+		refresh();
+		PageImpl<Film> res = new PageImpl<Film>(rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+				   .filter(f -> f.isStatus())
+				   .toList() 
+				   , p
+				   , rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+				   .filter(f -> f.isStatus())
+				   .toList().size());
+		
+		if(genre != null && langue == null && pays == null) {
+			
+		  return res = new PageImpl<Film>(rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getGenreList().contains(genre))
+					   .filter(f -> f.isStatus())
+					   .toList()
+					   , p
+					   , rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getGenreList().contains(genre))
+					   .filter(f -> f.isStatus())
+					   .toList().size());
+		}
+		else if(langue != null && genre == null && pays == null) {
+			
+			return res = new PageImpl<Film>(rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f -> f.isStatus())
+					   .toList()
+					   , p
+					   , rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f -> f.isStatus())
+					   .toList().size());
+			
+		}
+		else if(pays != null && genre == null && pays == null) {
+			
+			return res = new PageImpl<Film>(rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f -> f.isStatus())
+					   .toList()
+					   , p
+					   , rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f -> f.isStatus())
+					   .toList().size());
+			
+		}
+		else if(genre != null && langue != null && pays == null) {
+			
+			return res = new PageImpl<Film>(rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getGenreList().contains(genre))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f -> f.isStatus())
+					   .toList()
+					   , p
+					   , rep.findAll().size());
+			
+		}
+		else if(genre != null && pays != null && langue == null) {
+			
+			return res = new PageImpl<Film>(rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getGenreList().contains(genre))
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f -> f.isStatus())
+					   .toList()
+					   , p
+					   , rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getGenreList().contains(genre))
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f -> f.isStatus())
+					   .toList().size());
+		}
+		else if(pays != null && langue != null && genre == null) {
+			return res = new PageImpl<Film>(rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f -> f.isStatus())
+					   .toList()
+					   , p
+					   , rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f -> f.isStatus())
+					   .toList().size());
+		}
+		else if (pays != null && langue != null && genre != null) {
+			
+			return res = new PageImpl<Film>(rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getGenreList().contains(genre))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f -> f.isStatus())
+					   .toList()
+					   , p
+					   , rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getGenreList().contains(genre))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f -> f.isStatus())
+					   .toList().size());
+		}
+		else {
+			return res;
+		}
+		
+	};
+	
+	
 	
 	public Film upadte(final Long id, Film g) {
 

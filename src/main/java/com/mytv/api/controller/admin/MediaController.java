@@ -97,13 +97,10 @@ public class MediaController {
 	private EpisodeService episodeService;
 	@Autowired
 	private CatPodcastService catpodService;
-
     @Autowired
     private CategorieLiveRepository catLiveRep;
-    
     @Autowired
     private ColPodcastService colpodservice;
-    
     @Autowired
     private SaisonService saisonService;
     
@@ -908,7 +905,6 @@ public class MediaController {
 		}
 	}
 	
-	
 	@Tag(name = "TV SHOW")
 	@PutMapping(path="tv/update/status/{id}")
 	public  ResponseEntity<Object> updateStatusL(
@@ -920,8 +916,6 @@ public class MediaController {
 		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, liveService.update(id, lt));
 	}
 	
-	
-
 	@Tag(name = "TV SHOW")
 	@DeleteMapping(path="tv/delete/{id}")
 	public ResponseEntity<Object> deleteL (@PathVariable Long id) {
@@ -957,7 +951,6 @@ public class MediaController {
 		}
 	}
 
-
 	@Tag(name = "Categorie Lives")
 	@GetMapping("lives/categs")
 	public ResponseEntity<Object> showCL(){
@@ -972,7 +965,6 @@ public class MediaController {
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
 				categliveService.showPaging(p) );
 	}
-
 
 	@Tag(name = "Categorie Lives")
 	@GetMapping("lives/categs/{id}")
@@ -990,6 +982,8 @@ public class MediaController {
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, categliveService.upadte(id, u));
 
 	}
+	
+	
 	@Tag(name = "Categorie Lives")
 	@PutMapping(path="lives/categ/update/status/{id}")
 	public ResponseEntity<Object> updatStatuseCL(
@@ -1011,7 +1005,6 @@ public class MediaController {
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, true);
 	}
-
 
 
 	/*
@@ -1068,7 +1061,6 @@ public class MediaController {
 		}
 
 	}
-
 
 	@Tag(name = "Lives")
 	@GetMapping("lives/{id}")

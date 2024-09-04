@@ -482,9 +482,21 @@ public class CommonFunction {
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.show());
 	}
 
+	public ResponseEntity<Object> showG_f() {
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
+				genreService.show().stream().filter( a -> a.isStatus() ) );
+	}
+	
+	
 	public ResponseEntity<Object> showPage(Pageable p) {
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.showByPages(p));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.showByPages(p) );
+	}
+	
+	public ResponseEntity<Object> showPage_f(Pageable p) {
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.showByPages(p).stream().filter( a -> a.isStatus() ));
 	}
 
 	public ResponseEntity<Object> showByName(String s, Pageable p) {
@@ -492,13 +504,31 @@ public class CommonFunction {
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.showByName(s, p));
 	}
 
+	public ResponseEntity<Object> showByName_f(String s, Pageable p) {
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.showByName(s, p).stream().filter( a -> a.isStatus() ));
+	}
+	
 	public ResponseEntity<Object> showByNameContain(String s, Pageable p) {
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.findByNameContain(s, p));
 
 	}
+	
+	public ResponseEntity<Object> showByNameContain_f(String s, Pageable p) {
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
+				genreService.findByNameContain(s, p).stream().filter( a -> a.isStatus()) );
+
+	}
 
 	public ResponseEntity<Object> showbyIdG(Long id) {
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.showById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("aucune donne avec id= " + id)));
+	}
+	
+	public ResponseEntity<Object> showbyIdG_f(Long id) {
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, genreService.showById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("aucune donne avec id= " + id)));
@@ -549,12 +579,24 @@ public class CommonFunction {
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catLrService.show());
 	}
+	
+	public ResponseEntity<Object> showCRL_f() {
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catLrService.show().stream().filter( a -> a.isStatus())  );
+	}
 
 	public ResponseEntity<Object> showCRLPaging(Pageable p) {
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catLrService.showPaging(p));
 	}
 
+	public ResponseEntity<Object> showCRLPaging_f(Pageable p) {
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
+				catLrService.showPaging(p).stream().filter( a -> a.isStatus()) );
+	}
+	
+	
 	public ResponseEntity<Object> showbyIdCRL(Long id) {
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catLrService.showById(id));
@@ -609,9 +651,19 @@ public class CommonFunction {
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catpodService.show());
 	}
 
+	public ResponseEntity<Object> showCP_f() {
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catpodService.show().stream().filter( a -> a.isStatus()));
+	}
+	
 	public ResponseEntity<Object> showCP(Pageable p) {
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catpodService.showPaging(p));
+	}
+	
+	public ResponseEntity<Object> showCP_f(Pageable p) {
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, catpodService.showPaging(p).stream().filter( a -> a.isStatus()) );
 	}
 
 	public ResponseEntity<Object> showbyIdCP(Long id) {
