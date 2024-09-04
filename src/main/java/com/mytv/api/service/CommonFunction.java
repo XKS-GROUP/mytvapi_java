@@ -218,7 +218,7 @@ public class CommonFunction {
 
 	public ResponseEntity<Object> actor_show_by_id(long id) {
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, actorService.showById(null));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, actorService.showById(id));
 	}
 
 	public ResponseEntity<Object> actor_create(Actor a) {

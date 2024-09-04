@@ -27,6 +27,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -73,7 +74,7 @@ public class Podcast {
 	String poster_path;
 
 	
-	@NotNull(message="Un podcast doit forcement avoir une categorie")
+	@NotEmpty(message = "au moins un genre doit etre selectionné")
 	Set <Long> categories = new HashSet<>();
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idCatPod",  cascade = CascadeType.ALL)
@@ -95,7 +96,7 @@ public class Podcast {
 	@Column(columnDefinition = "TEXT")
 	String streamLink;
 	
-	@NotNull(message = "ce champ ne peut etre vide, au moins une langue est requise")
+	@NotEmpty(message = "ce champ ne peut etre vide, au moins une langue est requise")
 	@Column(nullable = false)
 	List<Long>  langue = new ArrayList<>();
 	

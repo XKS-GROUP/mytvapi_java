@@ -49,15 +49,16 @@ public class Episode {
 	@NotBlank(message = "Ce champ ne peut etre vide")
 	@Column(nullable = false, columnDefinition = "TEXT")
 	String overview;
-
 	
 	@ManyToOne(cascade = CascadeType.DETACH)
 	@JoinColumn(name = "idSaison")
 	@JsonBackReference
 	Saison idSaison;
 	
+	@NotNull(message = " la saison reference est requise")
 	long saisonRef;
 	
+	@NotNull(message = "la serie reference est requis")
 	long idSerie;
 	
 	@CreatedDate

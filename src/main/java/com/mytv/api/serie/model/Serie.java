@@ -45,10 +45,11 @@ public class Serie {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long idSerie;
 
-	@NotBlank(message = "une serie doit forcement avoir un nom ")
+	@NotBlank(message = "une serie doit avoir un nom ")
 	@Column(nullable = false, columnDefinition = "TEXT")
 	String name;
 
+	@NotBlank(message = "une serie doit avoir une description ")
 	@Column(nullable = false, columnDefinition = "TEXT")
 	String overview;
 
@@ -81,7 +82,8 @@ public class Serie {
 
 	@Column(columnDefinition = "TEXT")
 	String poster_path;
-
+	
+	@NotBlank(message = "une langue est requise")
 	List<Long> Langue;
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idLang",  cascade = CascadeType.ALL)
 	List<Language> list_langues = new ArrayList<>();
@@ -108,6 +110,7 @@ public class Serie {
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idDirector",  cascade = CascadeType.ALL)
 	List<Director> directors;
 
+	@NotBlank(message = "au moins un genre est requis")
 	List<Long> genreList = new ArrayList<>();
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idGenre",  cascade = CascadeType.ALL)
 	List<Genre> genres;

@@ -24,6 +24,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -150,7 +151,8 @@ public class Film {
 	Boolean adult;
 	
 	String duration;
-
+	
+	
 	List <Long> acteurList = new ArrayList<>();
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idActor",  cascade = CascadeType.ALL)
 	List<Actor> acteurs;
@@ -159,12 +161,13 @@ public class Film {
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idDirector",  cascade = CascadeType.ALL)
 	List<Director> directors;
 
+	@NotEmpty(message = "au moins un genre doit etre selectionné")
 	List<Long> genreList = new ArrayList<>();
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idGenre",  cascade = CascadeType.ALL)
 	List<Genre> genres;
 	
+	@NotEmpty(message = "au moins un pays doit etre selectionné")
 	List<Long>  country = new ArrayList<>();
-	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idPays",  cascade = CascadeType.ALL)
 	List<Pays> list_country = new ArrayList<>();
 	

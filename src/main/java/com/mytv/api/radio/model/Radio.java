@@ -20,6 +20,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -43,8 +44,9 @@ public class Radio {
 
 	@NotBlank(message = "ce champ ne peut etre vide, une radio doit obligatoirement avoir un nom")
 	@Column(nullable = false)
-	String name ;
+	String name;
 	
+	@NotEmpty(message = "ce champ ne peut etre vide, au moins une categorie est requise")
 	@Column(nullable = false)
 	List <Long> categories = new ArrayList<>();
 	
@@ -55,11 +57,11 @@ public class Radio {
 	@Column(columnDefinition = "TEXT", nullable = false)
 	String overview;
 	
-	@NotNull(message = "un logo est requis pour une radio")
+	@NotBlank(message = "un logo est requis pour une radio")
 	@Column(columnDefinition = "TEXT")
 	String logo_path;
 
-	@NotNull(message = "une image miniature est requise pour une radio")
+	@NotBlank(message = "une image miniature est requise pour une radio")
 	@Column(columnDefinition = "TEXT")
 	String backdrop_path;
 
@@ -74,16 +76,16 @@ public class Radio {
 	@Column(nullable = false, columnDefinition = "TEXT")
 	String streamLink;
 	
-	@NotNull(message = "ce champ ne peut etre vide, une radio doit etre représenter par un pays")
+	@NotBlank(message = "ce champ ne peut etre vide, une radio doit etre représenter par un pays")
 	@Column(nullable = false)
 	List<Long>  country = new ArrayList<>();
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idPays",  cascade = CascadeType.ALL)
 	List<Pays> list_country = new ArrayList<>();
 	
-	@NotNull(message = "ce champ ne peut etre vide, une radio doit avoir au moins une langue")
+	@NotBlank(message = "ce champ ne peut etre vide, une radio doit avoir au moins une langue")
 	@Column(nullable = false)
-	List<Long>  langue = new ArrayList<>();
+	List<Long> langue = new ArrayList<>();
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idLang",  cascade = CascadeType.ALL)
 	List<Language> list_langues;
