@@ -21,6 +21,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -71,7 +72,7 @@ public class ColPodcast {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idCatPod",  cascade = CascadeType.ALL)
 	List<CatPodcast> list_categories = new ArrayList<>();
 	
-	@NotNull(message = "ce champ ne peut etre vide, au moins une langue est requise")
+	@NotEmpty(message = "ce champ ne peut etre vide, au moins une langue est requise")
 	@Column(nullable = false)
 	List<Long>  langue = new ArrayList<>();
 	

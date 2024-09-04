@@ -24,6 +24,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -83,7 +84,7 @@ public class Serie {
 	@Column(columnDefinition = "TEXT")
 	String poster_path;
 	
-	@NotBlank(message = "une langue est requise")
+	@NotEmpty(message = "une langue est requise")
 	List<Long> Langue;
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idLang",  cascade = CascadeType.ALL)
 	List<Language> list_langues = new ArrayList<>();
@@ -110,7 +111,7 @@ public class Serie {
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idDirector",  cascade = CascadeType.ALL)
 	List<Director> directors;
 
-	@NotBlank(message = "au moins un genre est requis")
+	@NotEmpty(message = "au moins un genre est requis")
 	List<Long> genreList = new ArrayList<>();
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idGenre",  cascade = CascadeType.ALL)
 	List<Genre> genres;

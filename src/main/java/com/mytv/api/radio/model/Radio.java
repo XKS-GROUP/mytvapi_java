@@ -76,14 +76,14 @@ public class Radio {
 	@Column(nullable = false, columnDefinition = "TEXT")
 	String streamLink;
 	
-	@NotBlank(message = "ce champ ne peut etre vide, une radio doit etre représenter par un pays")
+	@NotEmpty(message = "ce champ ne peut etre vide, une radio doit etre représenter par un pays")
 	@Column(nullable = false)
 	List<Long>  country = new ArrayList<>();
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idPays",  cascade = CascadeType.ALL)
 	List<Pays> list_country = new ArrayList<>();
 	
-	@NotBlank(message = "ce champ ne peut etre vide, une radio doit avoir au moins une langue")
+	@NotEmpty(message = "ce champ ne peut etre vide, une radio doit avoir au moins une langue")
 	@Column(nullable = false)
 	List<Long> langue = new ArrayList<>();
 	

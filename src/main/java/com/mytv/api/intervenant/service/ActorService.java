@@ -57,7 +57,7 @@ public class ActorService {
 	
 	
 	public Page<Actor> filtre_complet(List<Long> pays, Pageable p){
-		refresh();
+		 refresh();
 		 PageImpl<Actor> res = new PageImpl<Actor>(rep.findAll().stream()
 				   .filter(a -> a.getPays().containsAll(pays)).toList() 
 				   , p

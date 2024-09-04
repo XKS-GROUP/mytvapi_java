@@ -16,6 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -56,6 +57,7 @@ public class Article {
 	
 	Long idUser;
 	
+	@NotEmpty(message= "doit avoir au moins une categorie")
 	List<Long> categories;
 	
 	@Column(nullable = false, columnDefinition = "boolean default false")

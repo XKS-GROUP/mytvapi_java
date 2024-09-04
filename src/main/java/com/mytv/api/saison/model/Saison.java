@@ -24,7 +24,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -81,7 +81,7 @@ public class Saison {
 	
 	List<Long> idEpisodes = new ArrayList<>();
 	
-	@NotNull(message = "ce champ ne peut etre vide, au moins une langue est requise")
+	@NotEmpty(message = "ce champ ne peut etre vide, au moins une langue est requise")
 	@Column(nullable = false)
 	List<Long>  langue = new ArrayList<>();
 	
