@@ -56,6 +56,8 @@ public class LiveTv implements Serializable {
 
 	@Column(columnDefinition = "TEXT")
 	String tvLogo_path;
+	
+	String backdrop_path;
 
 	@NotNull(message="ce champ ne peut pas etre vide, un liveTv doit avoir une categorie")
 	@Column(nullable = false)
