@@ -1,6 +1,5 @@
 package com.mytv.api.service;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -1492,11 +1491,20 @@ public class CommonFunction {
 		
 	}
 	
-	public ResponseEntity<Object> article_show_Paging(List<Long> categ, Pageable p){
+	
+	
+	public ResponseEntity<Object> article_show_Paging(Long categ, Pageable p){
 
     	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, artService.filtre_complet(categ, p));
     	
 	}
+	
+	public ResponseEntity<Object> article_show_Paging_front(Long categ, Pageable p){
+
+    	return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, artService.filtre_complet_front(categ, p));
+    	
+	}
+	
     
 	public ResponseEntity<Object> article_show_byid(long id){
 
@@ -1512,7 +1520,7 @@ public class CommonFunction {
 
 	public ResponseEntity<Object> article_search_filtre(
 			String s,
-			List<Long> categ,
+			Long categ,
 			Pageable p
 			
 			){
@@ -1520,6 +1528,19 @@ public class CommonFunction {
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, artService.filtre_recherche_complet(s, categ, p));
 		
 	}
+	
+	
+	public ResponseEntity<Object> article_search_filtre_front(
+			String s,
+			Long categ,
+			Pageable p
+			
+			){
+		
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, artService.filtre_recherche_complet_front(s, categ, p));
+		
+	}
+	
 	
 	public ResponseEntity<Object> article_create(Article a){
 		

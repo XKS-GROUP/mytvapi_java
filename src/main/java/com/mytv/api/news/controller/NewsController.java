@@ -126,7 +126,7 @@ public class NewsController {
     @Tag(name = "Article")
 	@GetMapping("articles/all/")
 	public ResponseEntity<Object> article_show_Paging(
-			@RequestParam (required = false) List<Long> categ,
+			@RequestParam (required = false) Long categ,
 			Pageable p){
 
     	return fnc.article_show_Paging(categ, p);
@@ -171,7 +171,7 @@ public class NewsController {
 	public ResponseEntity<Object> showbyNameContain(
 			@RequestParam String s,
 			Pageable p,
-			@RequestParam (required = false) List<Long> categ
+			@RequestParam (required = false) Long categ
 			){
 		
 		return fnc.article_search_filtre(s, categ, p);

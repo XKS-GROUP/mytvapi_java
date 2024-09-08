@@ -69,12 +69,25 @@ public class ActorService {
 	
 	public Object filtre_recherche_complet(String val, Long pays, Pageable p) {
 		refresh();
-		 PageImpl<Actor> res = new PageImpl<Actor>(rep.findByFistNameContainingAndLastNameContaining(val, val)  .stream()
-				   .filter(a -> a.getPays().contains(pays)).toList() 
+		
+		if(pays==null) {
+			
+		 PageImpl<Actor> res = new PageImpl<Actor>(rep.findByFistNameContainingAndLastNameContaining(val, val).stream()
+				   .toList() 
 				   , p
 				   , rep.findAll().size());
 			
 			return res;
+		}
+		else {
+			
+			PageImpl<Actor> res = new PageImpl<Actor>(rep.findByFistNameContainingAndLastNameContaining(val, val).stream()
+					   .filter(a -> a.getPays().contains(pays)).toList() 
+					   , p
+					   , rep.findAll().size());
+				
+				return res;
+		}
 	}
 
 	public Actor update(Long id, Actor p) {

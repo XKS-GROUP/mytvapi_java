@@ -20,9 +20,9 @@ public class Main {
 
 	public static void main(String[] args) throws Exception, URISyntaxException {
 		
-		SpringApplication.run(Main.class, args);
+		  SpringApplication.run(Main.class, args);
 		
-	    }
+	 }
 
 	@Bean
 	PasswordEncoder passwordEncoder() {

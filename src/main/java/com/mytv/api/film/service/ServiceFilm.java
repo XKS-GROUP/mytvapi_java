@@ -58,9 +58,6 @@ public class ServiceFilm {
 	private LangRepository rep_langue;
 	
 	
-	@Autowired
-	private AlgoliaConfig algoClient;
-	
 	//SearchIndex<Film> index = algoClient.searchClient().init ;
 	
 
@@ -85,9 +82,10 @@ public class ServiceFilm {
 					}
 					
 				}
-			var resp = algoClient.searchClient().saveObject("film", film);
 			
-			algoClient.searchClient().waitForTask("film", resp.getTaskID());
+			//var resp = algoClient.searchClient().saveObject("film", film);
+			
+			//algoClient.searchClient().waitForTask("film", resp.getTaskID());
 			
 			return film;
 

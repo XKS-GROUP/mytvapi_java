@@ -103,22 +103,24 @@ public class ArticleService {
 		return rep.findByTitleContainingOrContentContaining(s, s, p);
 	}
 	
-	public Page<Article> filtre_recherche_complet(String s,List<Long> categ, Pageable p){
+	public Page<Article> filtre_recherche_complet(String s,Long categ, Pageable p){
 		refresh();
 		PageImpl<Article> res = new PageImpl<Article>(
 				rep.findByTitleContainingOrContentContaining(s, s, p).stream()
                    .toList()
 				   , p
-				   , rep.findAll().size());
+				   , rep.findByTitleContainingOrContentContaining(s, s, p).stream()
+                   .toList().size());
 		
 		
 		if(categ != null) {
 			
 			return res = new PageImpl<Article>(
 					 rep.findByTitleContainingOrContentContaining(s, s, p).stream()
-	                 .filter(f -> f.getCategories().containsAll(categ)).toList()
-					   , p
-					   , rep.findAll().size());
+	                 .filter(f -> f.getCategories().contains(categ)).toList()
+				   , p
+				   , rep.findByTitleContainingOrContentContaining(s, s, p).stream()
+	                 .filter(f -> f.getCategories().contains(categ)).toList().size());
 		}
 		else {
 
@@ -127,7 +129,39 @@ public class ArticleService {
 		
 	}
 	
-	public Page<Article> filtre_complet(List<Long> categ, Pageable p){
+	public Page<Article> filtre_recherche_complet_front(String s,Long categ, Pageable p){
+		refresh();
+		PageImpl<Article> res = new PageImpl<Article>(
+				rep.findByTitleContainingOrContentContaining(s, s, p).stream()
+				   .filter(f -> f.isStatus())
+                   .toList()
+				   , p
+				   , rep.findByTitleContainingOrContentContaining(s, s, p).stream()
+				   .filter(f -> f.isStatus())
+                   .toList().size());
+		
+		
+		if(categ != null) {
+			
+			return res = new PageImpl<Article>(
+					 rep.findByTitleContainingOrContentContaining(s, s, p).stream()
+	                 .filter(f -> f.getCategories().contains(categ))
+	                 .filter(f -> f.isStatus())
+	                 .toList()
+					   , p
+					   , rep.findByTitleContainingOrContentContaining(s, s, p).stream()
+		                 .filter(f -> f.getCategories().contains(categ))
+		                 .filter(f -> f.isStatus())
+		                 .toList().size());
+		}
+		else {
+
+			return res;
+		}
+		
+	}
+	
+	public Page<Article> filtre_complet(Long categ, Pageable p){
 		refresh();
 		PageImpl<Article> res = new PageImpl<Article>(
 				rep.findAll(p).stream()
@@ -139,7 +173,7 @@ public class ArticleService {
 			
 			return res = new PageImpl<Article>(
 					rep.findAll(p).stream()
-	                .filter(f -> f.getCategories().containsAll(categ)).toList()
+	                .filter(f -> f.getCategories().contains(categ)).toList()
 					   , p
 					   , rep.findAll().size());
 			
@@ -150,6 +184,40 @@ public class ArticleService {
 		}
 		
 	}
+	
+	public Page<Article> filtre_complet_front(Long categ, Pageable p){
+		refresh();
+		PageImpl<Article> res = new PageImpl<Article>(
+				rep.findAll(p).stream()
+				.filter(f -> f.isStatus())
+                   .toList()
+				   , p
+				   , rep.findAll(p).stream()
+					.filter(f -> f.isStatus())
+	                   .toList().size());
+		
+		if(categ != null) {
+			
+			return res = new PageImpl<Article>(
+					rep.findAll(p).stream()
+	                .filter(f -> f.getCategories().contains(categ))
+	                .filter(f -> f.isStatus())
+	                .toList()
+	                
+					   , p
+					   , rep.findAll(p).stream()
+		                .filter(f -> f.getCategories().contains(categ))
+		                .filter(f -> f.isStatus())
+		                .toList().size());
+			
+		}
+		else {
+
+			return res;
+		}
+		
+	}
+
 	
 	public Article update(Long id, Article a) {
 		

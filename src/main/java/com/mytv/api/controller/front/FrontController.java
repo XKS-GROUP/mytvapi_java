@@ -1896,19 +1896,19 @@ public class FrontController {
 	public ResponseEntity<Object> showbyNameContain(
 			@RequestParam String s,
 			Pageable p,
-			@RequestParam (required = false) List<Long> categ
+			@RequestParam (required = false) Long categ
 			){
 		
-		return fnc.article_search_filtre(s, categ, p);
+		return fnc.article_search_filtre_front(s, categ, p);
 	}
     
     @Tag(name = "Article")
 	@GetMapping("articles/all/")
 	public ResponseEntity<Object> article_show_Paging(
-			@RequestParam (required = false) List<Long> categ,
+			@RequestParam (required = false) Long categ,
 			Pageable p){
 
-    	return fnc.article_show_Paging(categ, p);
+    	return fnc.article_show_Paging_front(categ, p);
 	}
     
 	/*
