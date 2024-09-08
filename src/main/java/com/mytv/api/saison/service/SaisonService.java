@@ -76,6 +76,145 @@ public class SaisonService{
 			return res;
 	};
 	
+	
+	
+	public Page<Saison> filtre_complet_front(Long serie, Long langue, Pageable p){
+		
+		if(serie == null && langue ==null) {
+			 PageImpl<Saison> res = new PageImpl<Saison>(seasRep.findAll().stream()
+					   .filter(f -> !f.getEpisodes().isEmpty())
+					   .filter(f-> f.isStatus())
+					   .toList() 
+					   , p
+					   , seasRep.findAll().stream()
+					   .filter(f -> !f.getEpisodes().isEmpty())
+					   .filter(f-> f.isStatus())
+					   .toList() .size());
+				
+				return res;
+		}
+		else if (serie != null && langue ==null){
+			 PageImpl<Saison> res = new PageImpl<Saison>(seasRep.findAll().stream()
+					   .filter(f -> f.getSerieRef() == serie)
+					   .filter(f -> !f.getEpisodes().isEmpty())
+					   .filter(f-> f.isStatus())
+					   .toList() 
+					   , p
+					   , seasRep.findAll().stream()
+					   .filter(f -> f.getSerieRef() == serie)
+					   .filter(f -> !f.getEpisodes().isEmpty())
+					   .filter(f-> f.isStatus())
+					   .toList().size());
+				
+				return res;
+		}
+		else if( langue != null && serie ==null ) {
+			
+			 PageImpl<Saison> res = new PageImpl<Saison>(seasRep.findAll().stream()
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f -> !f.getEpisodes().isEmpty())
+					   .filter(f-> f.isStatus())
+					   .toList() 
+					   , p
+					   , seasRep.findAll().stream()
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f -> !f.getEpisodes().isEmpty())
+					   .filter(f-> f.isStatus())
+					   .toList().size());
+				
+				return res;
+		}
+		else {
+			
+			 PageImpl<Saison> res = new PageImpl<Saison>(seasRep.findAll().stream()
+					 .filter(f -> f.getSerieRef() == serie)
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f -> !f.getEpisodes().isEmpty())
+					   .filter(f-> f.isStatus())
+					   .toList() 
+					   , p
+					   , seasRep.findAll().stream()
+					   .filter(f -> f.getSerieRef() == serie)
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f -> !f.getEpisodes().isEmpty())
+					   .filter(f-> f.isStatus())
+					   .toList().size());
+				
+				return res;
+		}
+		
+	}
+	
+	public Page<Saison> filtre_recherche_complet_front(String n,Long serie, Long langue, Pageable p){
+		
+		if(serie == null && langue ==null) {
+			 PageImpl<Saison> res = new PageImpl<Saison>(seasRep.findByNameContainingOrOverviewContaining(n, n, p).stream()
+					   .filter(f -> !f.getEpisodes().isEmpty())
+					   .filter(f-> f.isStatus())
+					   .toList() 
+					   , p
+					   , seasRep.findByNameContainingOrOverviewContaining(n, n, p).stream()
+					   .filter(f -> !f.getEpisodes().isEmpty())
+					   .filter(f-> f.isStatus())
+					   .toList() .size());
+				
+				return res;
+		}
+		else if (serie != null && langue ==null){
+			 PageImpl<Saison> res = new PageImpl<Saison>(seasRep.findByNameContainingOrOverviewContaining(n, n, p).stream()
+					   .filter(f -> f.getSerieRef() == serie)
+					   .filter(f -> !f.getEpisodes().isEmpty())
+					   .filter(f-> f.isStatus())
+					   .toList() 
+					   , p
+					   , seasRep.findByNameContainingOrOverviewContaining(n, n, p).stream()
+					   .filter(f -> f.getSerieRef() == serie)
+					   .filter(f -> !f.getEpisodes().isEmpty())
+					   .filter(f-> f.isStatus())
+					   .toList().size());
+				
+				return res;
+		}
+		else if( langue != null && serie ==null ) {
+			
+			 PageImpl<Saison> res = new PageImpl<Saison>(seasRep.findByNameContainingOrOverviewContaining(n, n, p).stream()
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f -> !f.getEpisodes().isEmpty())
+					   .filter(f-> f.isStatus())
+					   .toList() 
+					   , p
+					   , seasRep.findByNameContainingOrOverviewContaining(n, n, p).stream()
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f -> !f.getEpisodes().isEmpty())
+					   .filter(f-> f.isStatus())
+					   .toList().size());
+				
+				return res;
+		}
+		else {
+			
+			 PageImpl<Saison> res = new PageImpl<Saison>(seasRep.findByNameContainingOrOverviewContaining(n, n, p).stream()
+					 .filter(f -> f.getSerieRef() == serie)
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f -> !f.getEpisodes().isEmpty())
+					   .filter(f-> f.isStatus())
+					   .toList() 
+					   , p
+					   , seasRep.findByNameContainingOrOverviewContaining(n, n, p).stream()
+					   .filter(f -> f.getSerieRef() == serie)
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f -> !f.getEpisodes().isEmpty())
+					   .filter(f-> f.isStatus())
+					   .toList().size());
+				
+				return res;
+		}
+		
+	}
+	
+	
+	
+	
 	public Page<Saison> search(String n, Pageable p) {
 		refresh();
 		return seasRep.findByNameContainingOrOverviewContaining(n, n, p);

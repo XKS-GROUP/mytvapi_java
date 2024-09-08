@@ -44,7 +44,6 @@ public class JWTRequestFilter extends OncePerRequestFilter {
 
 			final String requestTokenHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 			
-			//String tok = requestTokenHeader.split(" ")[1].trim();
 			
 			if (requestTokenHeader == null || requestTokenHeader == "" || requestTokenHeader.isBlank() || requestTokenHeader.isEmpty() || !requestTokenHeader.startsWith("Bearer ")) {
 				
@@ -58,7 +57,6 @@ public class JWTRequestFilter extends OncePerRequestFilter {
 				//Executer avant chaque requete
 				String jwtToken = requestTokenHeader.split(" ")[1].trim();
 				
-				//Date dt = jwtTokenUtil.getExpirationDateFromToken(jwtToken);
 				
 				String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
 				UserDetails userValueObject = userDetailsService.loadUserByUsername(username);
@@ -67,14 +65,6 @@ public class JWTRequestFilter extends OncePerRequestFilter {
 				
 				User usr = userService.findByUserEmail(username);
 				
-				/*if(dt.toInstant().isAfter(Instant.now()) ) {
-			    	
-					response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-		            response.getWriter().write("Le token JWT a expiré.");
-		            chain.doFilter(request, response);
-		            return;
-			    }
-			    else */
 				if (jwtTokenUtil.validateToken(jwtToken, userValueObject) && !jwtRep.findByValue(jwtToken).isEmpty() && usr.isValide()) {
 					
 			    	

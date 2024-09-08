@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.algolia.search.SearchIndex;
+import com.mytv.api.config.AlgoliaConfig;
 import com.mytv.api.film.model.Film;
 import com.mytv.api.film.model.FilmGenre;
 import com.mytv.api.film.repository.FavFilmRepository;
@@ -55,6 +57,12 @@ public class ServiceFilm {
 	@Autowired
 	private LangRepository rep_langue;
 	
+	
+	@Autowired
+	private AlgoliaConfig algoClient;
+	
+	//SearchIndex<Film> index = algoClient.searchClient().init ;
+	
 
 	public Film create(Film g) {
 
@@ -77,7 +85,10 @@ public class ServiceFilm {
 					}
 					
 				}
-
+			var resp = algoClient.searchClient().saveObject("film", film);
+			
+			algoClient.searchClient().waitForTask("film", resp.getTaskID());
+			
 			return film;
 
 	}
@@ -237,9 +248,31 @@ public class ServiceFilm {
 		return rep.findAll();
 	}
 
+	public List<Film> show_f() {
+
+		refresh();
+		return rep.findAll().stream().filter(
+				
+				f->f.isStatus()
+				
+				).toList();
+	} 
+	
 	public Page<Film> showPages(Pageable p) {
 		refresh();
 		return rep.findAll(p);
+	}
+	
+	public Page<Film> showPages_front(Pageable p) {
+		refresh();
+		
+		PageImpl<Film> res = new PageImpl<Film>(rep.findAll(p).stream()
+				.filter(f-> f.isStatus())
+				   .toList() 
+				   , p
+				   , rep.findAll().size());
+		
+		return res;
 	}
 
 	@SuppressWarnings("unused")
@@ -340,7 +373,6 @@ public class ServiceFilm {
 	};
 	
 	
-	
 	@SuppressWarnings("unused")
 	public PageImpl<Film> filtre_complet_front(Long genre, Long langue, Long pays, Pageable p){
 		
@@ -349,7 +381,8 @@ public class ServiceFilm {
 				.filter(f -> f.isStatus())
 				   .toList() 
 				   , p
-				   , rep.findAll().size());
+				   , rep.findAll(p).stream()
+					.filter(f -> f.isStatus()).toList().size());
 		
 		if(genre != null && langue == null && pays == null) {
 			

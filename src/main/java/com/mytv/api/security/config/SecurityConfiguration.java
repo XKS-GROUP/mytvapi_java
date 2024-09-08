@@ -91,18 +91,7 @@ public class SecurityConfiguration {
 
       http.addFilterBefore(firebaseFilter, UsernamePasswordAuthenticationFilter.class);
 
-      
       return http.build();
-		/*
-		
-		httpSecurity.securityMatcher("api/v1/front/**").authorizeHttpRequests(auth -> {
-			auth.anyRequest()
-			.hasRole("USER");
-		}).addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-
-		return httpSecurity.build();
-		
-		*/
 	}
 
 	@Bean

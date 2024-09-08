@@ -99,16 +99,19 @@ public class RadioService {
 	public List<Radio> show() {
 		refresh();
 		
-		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().isEmpty()) {
-			
-			return radioRep.findAll();
-			
-		}
-		else {
-			return radioRep.findAll();
-		}
+		return radioRep.findAll();
 		
 	}
+	
+	public List<Radio> show_front() {
+		refresh();
+		
+		return radioRep.findAll().stream().filter(
+				f-> f.isStatus()
+				).toList() ;
+		
+	}
+	
 	
 	public Page<Radio> similaire_show(Long id, Pageable p) {
 		refresh();
@@ -228,6 +231,125 @@ public class RadioService {
 		
 	};
 	
+	
+	@SuppressWarnings("unused")
+	public Page<Radio> filtre_complet_front(Long categ, Long langue, Long pays, Pageable p){
+		
+		refresh();
+		PageImpl<Radio> res = new PageImpl<Radio>(radioRep.findAll(p).stream()
+				   .filter(f-> f.isStatus())
+				   .toList() 
+				   , p
+				   , radioRep.findAll().stream()
+				     .filter(f-> f.isStatus()).toList().size());
+		
+		if(categ != null && langue == null && pays == null) {
+		  
+			int z = radioRep.findAll(p).stream()
+					   .filter(f -> f.getCategories().contains(categ))
+					   .filter(f-> f.isStatus())
+					   .toList().size();
+			return res = new PageImpl<Radio>(radioRep.findAll(p).stream()
+					   .filter(f -> f.getCategories().contains(categ))
+					   .filter(f-> f.isStatus())
+					   .toList()
+					   , p
+					   , z
+				  );
+		}
+		else if(langue != null && categ == null && pays == null) {
+			
+			return res = new PageImpl<Radio>(radioRep.findAll(p).stream()
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f-> f.isStatus())
+					   .toList()
+					   , p
+					   , radioRep.findAll(p).stream()
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f-> f.isStatus())
+					   .toList().size());
+			
+			
+		}
+		else if(pays != null && categ == null && pays == null) {
+			
+			return res = new PageImpl<Radio>(radioRep.findAll(p).stream()
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f-> f.isStatus())
+					   .toList()
+					   , p
+					   , radioRep.findAll(p).stream()
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f-> f.isStatus())
+					   .toList().size());
+			
+		}
+		else if(categ != null && langue != null && pays == null) {
+			
+			return res = new PageImpl<Radio>(radioRep.findAll(p).stream()
+					   .filter(f -> f.getCategories().contains(categ))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f-> f.isStatus())
+					   .toList()
+					   , p
+					   , radioRep.findAll(p).stream()
+					   .filter(f -> f.getCategories().contains(categ))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f-> f.isStatus())
+					   .toList().size());
+			
+		}
+		else if(categ != null && pays != null && langue == null) {
+			
+			return res = new PageImpl<Radio>(radioRep.findAll(p).stream()
+					   .filter(f -> f.getCategories().contains(categ))
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f-> f.isStatus())
+					   .toList()
+					   , p
+					   , radioRep.findAll(p).stream()
+					   .filter(f -> f.getCategories().contains(categ))
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f-> f.isStatus())
+					   .toList().size());
+		}
+		else if(pays != null && langue != null && categ == null) {
+			return res = new PageImpl<Radio>(radioRep.findAll(p).stream()
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f-> f.isStatus())
+					   .toList()
+					   , p
+					   , radioRep.findAll(p).stream()
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f-> f.isStatus())
+					   .toList().size());
+		}
+		else if (pays != null && langue != null && categ != null) {
+			
+			return res = new PageImpl<Radio>(radioRep.findAll(p).stream()
+					   .filter(f -> f.getCategories().contains(categ))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f-> f.isStatus())
+					   .toList()
+					   , p
+					   , radioRep.findAll(p).stream()
+					   .filter(f -> f.getCategories().contains(categ))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f-> f.isStatus())
+					   .toList().size());
+		}
+		else {
+			return res;
+		}
+		
+	};
+	
+	
+	
 	@SuppressWarnings("unused")
 	public Page<Radio> filtre_recherche_complet(String val, Long categ, Long langue, Long pays, Pageable p){
 		refresh();
@@ -326,12 +448,129 @@ public class RadioService {
 		
 	};
 	
+	
+	@SuppressWarnings("unused")
+	public Page<Radio> filtre_recherche_complet_front(String val, Long categ, Long langue, Long pays, Pageable p){
+		refresh();
+		PageImpl<Radio> res = new PageImpl<Radio>(radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+				   .filter(f-> f.isStatus())
+				   .toList() 
+				   , p
+				   , radioRep.findByNameContainingOrOverviewContaining(val, val, p)
+				   .stream()
+				   .filter(f-> f.isStatus())
+				   .toList().size());
+		
+		
+		if(categ != null && langue == null && pays == null) {
+			
+		  return res = new PageImpl<Radio>(radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getCategories().contains(categ))
+					   .filter(f-> f.isStatus())
+					   .toList()
+					   , p
+					   , radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getCategories().contains(categ))
+					   .filter(f-> f.isStatus())
+					   .toList().size());
+		}
+		else if(langue != null && categ == null && pays == null) {
+			
+			return res = new PageImpl<Radio>(radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f-> f.isStatus())
+					   .toList()
+					   , p
+					   , radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f-> f.isStatus())
+					   .toList().size());
+			
+			
+		}
+		else if(pays != null && categ == null && pays == null) {
+			
+			return res = new PageImpl<Radio>(radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f-> f.isStatus())
+					   .toList()
+					   , p
+					   , radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f-> f.isStatus())
+					   .toList().size());
+			
+		}
+		else if(categ != null && langue != null && pays == null) {
+			
+			return res = new PageImpl<Radio>(radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getCategories().contains(categ))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f-> f.isStatus())
+					   .toList()
+					   , p
+					   , radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getCategories().contains(categ))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f-> f.isStatus())
+					   .toList().size());
+			
+		}
+		else if(categ != null && pays != null && langue == null) {
+			
+			return res = new PageImpl<Radio>(radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getCategories().contains(categ))
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f-> f.isStatus())
+					   .toList()
+					   , p
+					   , radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getCategories().contains(categ))
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f-> f.isStatus())
+					   .toList().size());
+		}
+		else if(pays != null && langue != null && categ == null) {
+			return res = new PageImpl<Radio>(radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f-> f.isStatus())
+					   .toList()
+					   , p
+					   , radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f-> f.isStatus())
+					   .toList().size());
+		}
+		else if (pays != null && langue != null && categ != null) {
+			
+			return res = new PageImpl<Radio>(radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getCategories().contains(categ))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f-> f.isStatus())
+					   .toList()
+					   , p
+					   , radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getCategories().contains(categ))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f-> f.isStatus())
+					   .toList().size());
+		}
+		else {
+			return res ;
+		}
+		
+	};
+	
+	
 	public Radio chekFav(Long idRadio) {
 		 
 		return null;
 	}
 
-	
 	public Radio upadte( Long id, Radio u) {
 
 		u.setIdRadio(id);

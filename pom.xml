@@ -93,10 +93,26 @@
 		</dependency>
 		
 		<dependency>
+		  <groupId>com.algolia</groupId>
+		  <artifactId>algoliasearch</artifactId>
+		  <version>4.2.4</version>
+		</dependency>
+		
+		<dependency>
+		  <groupId>com.algolia</groupId>
+		  <artifactId>algoliasearch-java-net</artifactId>
+		  <version>3.16.5</version>
+		</dependency>
+
+
+		<dependency>
 		    <groupId>com.google.firebase</groupId>
 		    <artifactId>firebase-admin</artifactId>
 		    <version>9.1.1</version>
 		</dependency>
+		
+
+
 
 
 	</dependencies>

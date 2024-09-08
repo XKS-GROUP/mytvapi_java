@@ -152,6 +152,14 @@ public class PodcastService {
 		refresh();
 		return rep.findAll();
 	}
+	
+	public List<Podcast> show_front() {
+		refresh();
+		return rep.findAll().stream().filter(
+				f-> f.isStatus()
+				).toList();
+	}
+
 
 	public Page<Podcast> showPage(Pageable p) {
 		refresh();
@@ -192,6 +200,235 @@ public class PodcastService {
 			return res;
 		
 	};
+	
+	public Page<Podcast> filtre_complet(Long genre, Long langue, Pageable p){
+		
+		
+		if(genre != null && langue !=null) {
+			 PageImpl<Podcast> res = new PageImpl<Podcast>(rep.findAll().stream()
+					 .filter(f -> f.getCategories().contains(genre))
+					 .filter(f -> f.getLangue().contains(langue))
+					   .toList() 
+					   , p
+					   , rep.findAll().stream()
+						 .filter(f -> f.getCategories().contains(genre))
+						 .filter(f -> f.getLangue().contains(langue))
+						  .toList() .size());
+				
+				return res;
+		}
+		else if (genre != null && langue ==null){
+			 PageImpl<Podcast> res = new PageImpl<Podcast>(rep.findAll().stream()
+					   .filter(f -> f.getCategories().contains(genre))
+					   .toList() 
+					   , p
+					   , rep.findAll().stream()
+					   .filter(f -> f.getCategories().contains(genre))
+					   .toList() .size());
+				
+				return res;
+		}
+		else if( langue != null && genre ==null ) {
+			
+			 PageImpl<Podcast> res = new PageImpl<Podcast>(rep.findAll().stream()
+					   .filter(f -> f.getLangue().contains(langue))
+					   .toList() 
+					   , p
+					   , rep.findAll().stream()
+					   .filter(f -> f.getLangue().contains(langue))
+					   .toList().size());
+				
+				return res;
+		}
+		else {
+			
+			 PageImpl<Podcast> res = new PageImpl<Podcast>(rep.findAll().stream()
+					   .toList() 
+					   , p
+					   , rep.findAll().stream()
+					   .toList().size());
+				
+				return res;
+		}
+		
+	}
+	
+	public Page<Podcast> filtre_complet_front(Long genre, Long langue, Pageable p){
+		
+		if(genre == null && langue ==null) {
+			 PageImpl<Podcast> res = new PageImpl<Podcast>(rep.findAll().stream()
+					   .filter(f-> f.isStatus())
+					   .toList() 
+					   , p
+					   , rep.findAll().stream()
+					   .filter(f-> f.isStatus())
+					   .toList() .size());
+				
+				return res;
+		}
+		else if (genre != null && langue ==null){
+			 PageImpl<Podcast> res = new PageImpl<Podcast>(rep.findAll().stream()
+					   .filter(f -> f.getCategories().contains(genre))
+					   .filter(f-> f.isStatus())
+					   .toList() 
+					   , p
+					   , rep.findAll().stream()
+					   .filter(f -> f.getCategories().contains(genre))
+					   .filter(f-> f.isStatus())
+					   .toList().size());
+				
+				return res;
+		}
+		else if( langue != null && genre ==null ) {
+			
+			 PageImpl<Podcast> res = new PageImpl<Podcast>(rep.findAll().stream()
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f-> f.isStatus())
+					   .toList() 
+					   , p
+					   , rep.findAll().stream()
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f-> f.isStatus())
+					   .toList().size());
+				
+				return res;
+		}
+		else {
+			
+			 PageImpl<Podcast> res = new PageImpl<Podcast>(rep.findAll().stream()
+					   .filter(f -> f.getCategories().contains(genre))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f-> f.isStatus())
+					   .toList() 
+					   , p
+					   , rep.findAll().stream()
+					   .filter(f -> f.getCategories().contains(genre))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f-> f.isStatus())
+					   .toList().size());
+				
+				return res;
+		}
+		
+	}
+	
+	
+	public Page<Podcast> filtre_recherche_complet(String s, Long genre, Long langue, Pageable p){
+		
+		
+		if(genre != null && langue !=null) {
+			 PageImpl<Podcast> res = new PageImpl<Podcast>(rep.findByNameContainingOrOverviewContaining(s, s, p).stream()
+					   .filter(f -> f.getCategories().contains(genre))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .toList() 
+					   , p
+					   , rep.findByNameContainingOrOverviewContaining(s, s, p).stream()
+					   .filter(f -> f.getCategories().contains(genre))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .toList().size());
+				
+				return res;
+		}
+		else if (genre != null && langue ==null){
+			 PageImpl<Podcast> res = new PageImpl<Podcast>(rep.findByNameContainingOrOverviewContaining(s, s, p).stream()
+					   .filter(f -> f.getCategories().contains(genre))
+					   .toList() 
+					   , p
+					   , rep.findByNameContainingOrOverviewContaining(s, s, p).stream()
+					   .filter(f -> f.getCategories().contains(genre))
+					   .toList().size());
+				
+				return res;
+		}
+		else if( langue != null && genre ==null ) {
+			
+			 PageImpl<Podcast> res = new PageImpl<Podcast>(rep.findByNameContainingOrOverviewContaining(s, s, p).stream()
+					   .filter(f -> f.getLangue().contains(langue))
+					   .toList() 
+					   , p
+					   , rep.findByNameContainingOrOverviewContaining(s, s, p).stream()
+					   .filter(f -> f.getLangue().contains(langue))
+					   .toList().size());
+				
+				return res;
+		}
+		else {
+			
+			 PageImpl<Podcast> res = new PageImpl<Podcast>(rep.findByNameContainingOrOverviewContaining(s, s, p).stream()
+					   .toList() 
+					   , p
+					   , rep.findByNameContainingOrOverviewContaining(s, s, p).stream()
+					   .toList().size());
+				
+				return res;
+		}
+		
+	}
+	
+	public Page<Podcast> filtre_recherche_complet_front(String s, Long genre, Long langue, Pageable p){
+		
+		
+		if(genre != null && langue !=null) {
+			 PageImpl<Podcast> res = new PageImpl<Podcast>(rep.findByNameContainingOrOverviewContaining(s, s, p).stream()
+					   .filter(f -> f.getCategories().contains(genre))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f->f.isStatus())
+					   .toList() 
+					   , p
+					   , rep.findByNameContainingOrOverviewContaining(s, s, p).stream()
+					   .filter(f -> f.getCategories().contains(genre))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f->f.isStatus())
+					   .toList() 
+					   .size());
+				
+				return res;
+		}
+		else if (genre != null && langue ==null){
+			 PageImpl<Podcast> res = new PageImpl<Podcast>(rep.findByNameContainingOrOverviewContaining(s, s, p).stream()
+					   .filter(f -> f.getCategories().contains(genre))
+					   .filter(f->f.isStatus())
+					   .toList() 
+					   , p
+					   , rep.findByNameContainingOrOverviewContaining(s, s, p).stream()
+					   .filter(f -> f.getCategories().contains(genre))
+					   .filter(f->f.isStatus())
+					   .toList().size());
+				
+				return res;
+		}
+		else if( langue != null && genre ==null ) {
+			
+			 PageImpl<Podcast> res = new PageImpl<Podcast>(rep.findByNameContainingOrOverviewContaining(s, s, p).stream()
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f->f.isStatus())
+					   .toList() 
+					   , p
+					   , rep.findByNameContainingOrOverviewContaining(s, s, p).stream()
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f->f.isStatus())
+					   .toList().size());
+				
+				return res;
+		}
+		else {
+			
+			 PageImpl<Podcast> res = new PageImpl<Podcast>(rep.findByNameContainingOrOverviewContaining(s, s, p).stream()
+					   .filter(f->f.isStatus())
+					   .toList() 
+					   , p
+					   , rep.findByNameContainingOrOverviewContaining(s, s, p).stream()
+					   .filter(f->f.isStatus())
+					   .toList().size());
+				
+				return res;
+		}
+		
+	}
+	
+
+	
+	
 	
 	//public List<Podcast> 
 	
@@ -251,7 +488,6 @@ public class PodcastService {
 	public Boolean delete(Long id) {
 		refresh();
 		rep.deleteById(id);
-
 		return true;
 
 	}

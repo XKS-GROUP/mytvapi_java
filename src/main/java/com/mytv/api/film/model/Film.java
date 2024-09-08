@@ -166,7 +166,6 @@ public class Film {
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idGenre",  cascade = CascadeType.ALL)
 	List<Genre> genres;
 	
-	@NotEmpty(message = "au moins un pays doit etre selectionné")
 	List<Long>  country = new ArrayList<>();
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idPays",  cascade = CascadeType.ALL)
 	List<Pays> list_country = new ArrayList<>();

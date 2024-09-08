@@ -540,7 +540,8 @@ public class FrontController {
 	@GetMapping("radios")
 	public ResponseEntity<Object> radio_show(){
 
-		return fnc.radio_show();
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK,
+				radioService.show_front());
 	}
 	
 	@Tag(name = "Radios")
@@ -559,7 +560,8 @@ public class FrontController {
 			@RequestParam (required = false) Long langue,
 			@RequestParam (required = false) Long pays){
 		
-		return fnc.radio_show_page(p, categ, langue, pays);
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK,
+				radioService.filtre_complet_front(categ, langue, pays, p));
 	}
 	
 	@Tag(name = "Radios")
@@ -571,7 +573,8 @@ public class FrontController {
 			@RequestParam (required = false) Long langue,
 			@RequestParam (required = false) Long pays){
 		
-		return fnc.radio_search(s, categ, langue, pays, p);
+		return EntityResponse.generateResponse("RETIREZ DES FAVORIES AVEC SUCCES", HttpStatus.OK,
+				radioService.filtre_recherche_complet_front(s, categ, langue, pays, p));
 	}
 
 	@Tag(name = "Radios")
@@ -1010,10 +1013,11 @@ public class FrontController {
 	
 	@Tag(name = "Podcasts")
 	@GetMapping("podcasts")
-	public ResponseEntity<Object> showP(){
-
-		return fnc.showP();
+	public ResponseEntity<Object> podcast_show(){
 		
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+				podcastservice.show_front()
+				);
 	}
 	
 	@Tag(name = "Podcasts")
@@ -1031,7 +1035,8 @@ public class FrontController {
 			@RequestParam (required = false) Long categ ,
 			@RequestParam (required = false) Long langue){
 		
-		return fnc.showPodcastByPage(p, categ, langue);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
+				podcastservice.filtre_complet_front(categ, langue, p));
 	}
 
 	@Tag(name = "Podcasts")
@@ -1049,7 +1054,8 @@ public class FrontController {
 			@RequestParam (required = false) Long categ ,
 			@RequestParam (required = false) Long langue){
 		
-		return fnc.showbyIdP(s, p, categ, langue);
+		 return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
+				podcastservice.filtre_recherche_complet_front(s, categ, langue, p));
 	}
 
 	
@@ -1121,7 +1127,7 @@ public class FrontController {
 	@GetMapping("films")
 	public ResponseEntity<Object> showM(){
 
-		return fnc.showM();
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.show_f());
 	}
 	
 	@Tag(name = "Films")
@@ -1136,13 +1142,15 @@ public class FrontController {
 	
 	@Tag(name = "Films")
 	@GetMapping("films/all/")
-	public ResponseEntity<Object> showMovieByPage(
+	public ResponseEntity<Object> film_show_page(
 			Pageable p, 
 			@RequestParam (required = false) Long genre ,
 			@RequestParam (required = false) Long langue,
 			@RequestParam (required = false) Long pays){
 
-		return fnc.film_show_page(p, genre, langue, pays);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
+				
+				filmService.filtre_complet_front(genre, langue, pays, p));
 
 	}
 	
@@ -1163,7 +1171,8 @@ public class FrontController {
 			@RequestParam (required = false) Long langue,
 			@RequestParam (required = false) Long pays){
 
-		return fnc.film_search(s, p, genre, langue, pays);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
+				filmService.filtre_recherche_complet_front(s, genre, langue, pays, p));
 	}
 	
 ////////////////////////////////////////////////////////////////////////
@@ -1210,7 +1219,7 @@ public class FrontController {
 		public ResponseEntity<Object> filmAllFavorie(){
 
 			FirebaseUser u = (FirebaseUser) getCurrentUser().getPrincipal();
-			return EntityResponse.generateResponse("Liste des livetv favorie", HttpStatus.OK,
+			return EntityResponse.generateResponse("Liste des films favorie", HttpStatus.OK,
 					favfilmService.findByUid( u.getUid() ));
 		}
 		
@@ -1244,9 +1253,9 @@ public class FrontController {
 	//Series
 	@Tag(name = "Series")
 	@GetMapping("series")
-	public ResponseEntity<Object> showS(){
+	public ResponseEntity<Object> serie_show(){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.show());
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.show_front());
 	}
 	
 	@Tag(name = "Series")
@@ -1263,64 +1272,33 @@ public class FrontController {
 	
 	@Tag(name = "Series")
 	@GetMapping("series/all/")
-	public ResponseEntity<Object> showSerieByPage(Pageable p,
+	public ResponseEntity<Object> serie_show_filtre(Pageable p,
 			@RequestParam (required = false) Long genre ,
 			@RequestParam (required = false) Long langue){
 		
-		if(genre != null && langue ==null) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.showByGenre(genre, p));
-			
-		}
-		else if (langue != null && genre == null) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.showByLangue(langue, p));
-		}
-		else if (langue != null && genre != null) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.showByGenreAndLangue(genre, langue, p));
-		}
-		else {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.showPage(p));
-			
-		}
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.filtre_complet(genre, langue, p));
 	}
 
 	@Tag(name = "Series")
 	@GetMapping("series/{id}")
-	public ResponseEntity<Object> showbyIdS(@PathVariable Long id){
+	public ResponseEntity<Object> serie_show_by_id(@PathVariable Long id){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
 				serieService.showById(id));
 	}
+	
 	@Tag(name = "Series")
 	@GetMapping("series/search/")
-	public ResponseEntity<Object> showbyIdS(
+	public ResponseEntity<Object> serie_search_filtre(
 			@RequestParam String s, 
 			Pageable p,
 			@RequestParam (required = false) Long genre ,
 			@RequestParam (required = false) Long langue){
 		
-		if(genre != null && langue ==null ) {
+		
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
+					serieService.filtre_recherche_complet_front(s, genre, langue, p));
 			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.searchByGenre(s, genre, p));
-			
-		}
-		else if (langue != null && genre==null) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.searchByLangue(s, langue, p));
-		}
-		else if(langue != null && genre !=null) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.searchByLangueAndGenre(s, langue, genre, p));
-			
-		}
-		else {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.search(s, p));
-			
-		}
 	}
 	////////////////////////////////////////////////////////////////////////
 	/*
@@ -1510,7 +1488,8 @@ public class FrontController {
 			@RequestParam (required = false) Long langue,
 			@RequestParam (required = false) Long serie ){
 		
-		return fnc.showSaisonPage(p, langue, serie);
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, 
+				 saisonService.filtre_complet_front(serie, langue, p));
 	}
 
 	@Tag(name = "Saison")
@@ -1528,7 +1507,8 @@ public class FrontController {
 			@RequestParam (required = false) Long serie,
 			Pageable p){
 		
-		return fnc.showbyNameC(s, langue, serie, p);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
+				saisonService.filtre_recherche_complet_front(s, serie, langue, p));
 		
 	}
 	
@@ -1647,9 +1627,9 @@ public class FrontController {
 
 	@Tag(name = "TV SHOW")
 	@GetMapping("tv")
-	public ResponseEntity<Object> showTV(){
+	public ResponseEntity<Object> tv_show(){
 
-		return fnc.showL();
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.show_front());
 	}
 	
 	@Tag(name = "TV SHOW")
@@ -1677,7 +1657,8 @@ public class FrontController {
 			@RequestParam (required = false) Long langue,
 			@RequestParam (required = false) Long pays){
 		
-		return fnc.tv_show_page(p, genre, langue, pays);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+				liveService.filtre_complet_front(genre, langue, pays, p));
 	}
 	
 	@Tag(name = "TV SHOW")
@@ -1688,7 +1669,8 @@ public class FrontController {
 			@RequestParam (required = false) Long langue,
 			@RequestParam (required = false) Long pays){
 			
-		return fnc.tv_search(s, p, genre, langue, pays);
+		return  EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+				   liveService.filtre_recherche_complet_front(s, genre, langue, pays, p));
 	}
 
 	@Tag(name = "TV SHOW")

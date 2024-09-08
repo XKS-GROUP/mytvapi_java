@@ -45,6 +45,8 @@ public class FirebaseJwtFilter extends OncePerRequestFilter {
 
         if (decodedToken != null && SecurityContextHolder.getContext().getAuthentication() == null) {
         	
+        	
+        	
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
             		
             		new FirebaseUser(decodedToken.getUid() ,decodedToken.getName(), decodedToken.getEmail(), decodedToken.getPicture(), decodedToken.isEmailVerified()),

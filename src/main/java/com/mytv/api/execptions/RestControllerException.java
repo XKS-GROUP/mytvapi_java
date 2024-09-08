@@ -41,7 +41,7 @@ public class RestControllerException {
 
     @ExceptionHandler(value = {Exception.class})
     public ResponseEntity<Object> handleEX(Exception ex, WebRequest request) {
-        return EntityResponse.generateResponse("ERREUR",  HttpStatus.BAD_REQUEST, Map.of("message",ex.getMessage()));
+        return EntityResponse.generateResponse("ERREUR",  HttpStatus.BAD_REQUEST, Map.of("message",ex.getCause()));
     }
 
     @ExceptionHandler(value = {ForbiddenException.class})
