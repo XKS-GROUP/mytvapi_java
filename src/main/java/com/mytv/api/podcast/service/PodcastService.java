@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.mytv.api.config.AlgoliaConfig;
 import com.mytv.api.firebase.model.FirebaseUser;
 import com.mytv.api.intervenant.repository.PodcasterRepository;
 import com.mytv.api.podcast.model.Podcast;
@@ -42,6 +43,9 @@ public class PodcastService {
 	
 	@Autowired
 	private LangRepository rep_langue;
+	
+	@Autowired
+	private AlgoliaConfig algoClient;
 
 	public Podcast create(Podcast p) {
 
@@ -49,8 +53,11 @@ public class PodcastService {
 		p.setList_podcasteur(rep_podcasteur.findAllById(p.getIdPodcasteur()));
 		p.setList_categories(rep_categ.findAllById(p.getCategories()));
 		
+		var resp = algoClient.searchClient().saveObject("podcast", p);
+		
+		algoClient.searchClient().waitForTask("podcast", resp.getTaskID());
+		
 		return rep.save(p);
-
 	}
 	
 	
@@ -131,6 +138,8 @@ public class PodcastService {
 					}
 					
 				);
+			
+			
 		}
 		
 		
@@ -145,6 +154,8 @@ public class PodcastService {
 				}
 				
 		);
+		
+		algoClient.searchClient().saveObjects("podcast", l);
 	}
 	
 	
@@ -427,8 +438,6 @@ public class PodcastService {
 	}
 	
 
-	
-	
 	
 	//public List<Podcast> 
 	

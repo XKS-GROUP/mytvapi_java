@@ -4,6 +4,8 @@ package com.mytv.api.film.service;
 import java.util.List;
 import java.util.Optional;
 
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -11,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import com.algolia.search.SearchIndex;
 import com.mytv.api.config.AlgoliaConfig;
 import com.mytv.api.film.model.Film;
 import com.mytv.api.film.model.FilmGenre;
@@ -57,8 +58,10 @@ public class ServiceFilm {
 	@Autowired
 	private LangRepository rep_langue;
 	
+	@Autowired
+	private AlgoliaConfig algoClient;
 	
-	//SearchIndex<Film> index = algoClient.searchClient().init ;
+	//SearchIndex<Film> index = algoClient.searchClient().init();
 	
 
 	public Film create(Film g) {
@@ -83,9 +86,9 @@ public class ServiceFilm {
 					
 				}
 			
-			//var resp = algoClient.searchClient().saveObject("film", film);
+			var resp = algoClient.searchClient().saveObject("film", film);
 			
-			//algoClient.searchClient().waitForTask("film", resp.getTaskID());
+			algoClient.searchClient().waitForTask("film", resp.getTaskID());
 			
 			return film;
 

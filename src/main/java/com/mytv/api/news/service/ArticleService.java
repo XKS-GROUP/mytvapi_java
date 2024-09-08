@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.mytv.api.config.AlgoliaConfig;
 import com.mytv.api.firebase.model.FirebaseUser;
 import com.mytv.api.news.model.Article;
 import com.mytv.api.news.repository.ArticleRepository;
@@ -29,6 +30,9 @@ public class ArticleService {
 	
 	@Autowired
 	FavArticleRepository rep_fav_article;
+	
+	@Autowired
+	private AlgoliaConfig algoClient;
 	
 	public void refresh() {
 		
@@ -71,12 +75,19 @@ public class ArticleService {
 					
 				}
 			);
+		
+		 algoClient.searchClient().saveObjects("article", l);
+		
 		}
 	
 	public Article create(Article a) {
 		
 		a.setList_categories(rep_cat.findAllById(a.getCategories()));
 		refresh();
+		
+		var resp = algoClient.searchClient().saveObject("article", a);
+		
+		algoClient.searchClient().waitForTask("article", resp.getTaskID());
 		return rep.save(a);
 	}
 	

@@ -17,7 +17,6 @@ public class AlgoliaConfig {
     @Value("${algolia.admin-api-key}")
     private String apiKey;
     
-    
     @Bean
     public SearchClient searchClient() {
     	return new SearchClient(applicationId, apiKey);

@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.mytv.api.config.AlgoliaConfig;
 import com.mytv.api.firebase.model.FirebaseUser;
 import com.mytv.api.radio.model.Radio;
 import com.mytv.api.radio.repository.FavRadioRepository;
@@ -41,6 +42,10 @@ public class RadioService {
 	
 	@Autowired
 	private LangRepository rep_langue;
+	
+	@Autowired
+	private AlgoliaConfig algoClient;
+	
 	
 	
 	public void refresh() {
@@ -84,13 +89,21 @@ public class RadioService {
 						p.setList_categories(rep_categ.findAllById(p.getCategories()));
 					}
 			);
-		}
+			
+			algoClient.searchClient().saveObjects("radio", l);
+	
+	}
 
 	public Radio create(Radio g) {
 
 		g.setList_langues(rep_langue.findAllById(g.getLangue()));
 		g.setList_country(rep_pays.findAllById(g.getCountry()));
 		g.setList_categories(rep_categ.findAllById(g.getCategories()));
+		
+		
+		var resp = algoClient.searchClient().saveObject("radio", g);
+		
+		algoClient.searchClient().waitForTask("radio", resp.getTaskID());
 		
 		return radioRep.save(g);
 

@@ -53,7 +53,7 @@ public class Actor {
 	String imageUrl;
 
 	@NotBlank(message = "Ce champ ne peut etre vide")
-	@Column(nullable = false)
+	@Column(nullable = false, columnDefinition = "TEXT")
 	String biography;
 
 	@NotEmpty(message = "Ce champ ne peut etre vide")

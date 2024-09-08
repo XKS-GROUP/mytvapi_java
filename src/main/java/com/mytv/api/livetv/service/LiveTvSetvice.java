@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.mytv.api.config.AlgoliaConfig;
 import com.mytv.api.dto.LiveTvDTO;
 import com.mytv.api.firebase.model.FirebaseUser;
 import com.mytv.api.livetv.model.LiveTv;
@@ -41,6 +42,9 @@ public class LiveTvSetvice {
 	
 	@Autowired
 	private LangRepository rep_langue;
+	
+	@Autowired
+	private AlgoliaConfig algoClient;
 
 	public LiveTv create(LiveTv g) {
 
@@ -48,6 +52,11 @@ public class LiveTvSetvice {
 		g.setLangues(rep_langue.findAllById(g.getLangue()));
 		g.setPays(rep_pays.findAllById(g.getCountry()));
 		g.setListCateg(rep_categ.findAllById(g.getCountry()));
+		
+		
+		var resp = algoClient.searchClient().saveObject("livetv", g);
+		
+		algoClient.searchClient().waitForTask("livetv", resp.getTaskID());
 		
 		return rep.save(g);
 
@@ -95,6 +104,7 @@ public class LiveTvSetvice {
 					  l.get(i).setListCateg(rep_categ.findAllById(l.get(i).getIdcategories()));
 					}
 		
+				algoClient.searchClient().saveObjects("livetv", l);
 	}
 	
 	
@@ -428,10 +438,6 @@ public class LiveTvSetvice {
 		}
 		
 	};
-	
-	
-	
-	
 	
 	
 	

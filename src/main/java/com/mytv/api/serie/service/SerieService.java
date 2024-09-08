@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.mytv.api.config.AlgoliaConfig;
 import com.mytv.api.firebase.model.FirebaseUser;
 import com.mytv.api.intervenant.repository.ActorRepository;
 import com.mytv.api.intervenant.repository.DirectorRepository;
@@ -56,6 +57,9 @@ public class SerieService {
 	@Autowired
 	private LangRepository rep_langue;
 
+	@Autowired
+	private AlgoliaConfig algoClient;
+	
 	public Serie create(Serie g) {
 		
 		g.setActeurs(rep_actor.findAllById(g.getActeurList()));
@@ -71,11 +75,15 @@ public class SerieService {
 			for (Long gr : g.getGenreList()) {
 				
 					addSerieGenreId(g.getIdSerie(), gr);
-
 			 }
 				
 		}
 
+		
+		var resp = algoClient.searchClient().saveObject("serie", serie);
+		
+		algoClient.searchClient().waitForTask("serie", resp.getTaskID());
+		
 		return serie;
 
 	}
@@ -134,6 +142,8 @@ public class SerieService {
 						g.setList_langues(rep_langue.findAllById(g.getLangue()));
 					}
 			);
+			
+			algoClient.searchClient().saveObjects("serie", l);
 		}
 	
 	public List<Serie> show() {
