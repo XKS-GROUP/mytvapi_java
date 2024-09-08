@@ -40,6 +40,12 @@ public class EpisodeService {
 		return rep.findAll();
 	}
 	
+	public List<Episode> show_front() {
+		refresh();
+		return rep.findAll().stream()
+				.filter(f ->f.isStatus()).toList();
+	}
+	
 	public List<Episode> showBySaison(Saison idSaison) {
 		refresh();
 		return rep.findByIdSaison(idSaison);

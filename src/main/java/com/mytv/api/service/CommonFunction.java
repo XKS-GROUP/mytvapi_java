@@ -8,8 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import com.amazonaws.services.accessanalyzer.model.ResourceNotFoundException;
 import com.mytv.api.dto.StatusDTO;
@@ -58,7 +56,6 @@ import com.mytv.api.security.request.EntityResponse;
 import com.mytv.api.serie.model.Serie;
 import com.mytv.api.serie.service.SerieService;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -206,12 +203,12 @@ public class CommonFunction {
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, actorService.show());
 	}
 
-	public ResponseEntity<Object> actor_show_paging(Pageable p, List<Long> pays) {
+	public ResponseEntity<Object> actor_show_paging(Pageable p, Long pays) {
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, actorService.filtre_complet(pays, p));
 	}
 	
-	public ResponseEntity<Object> actor_search(Pageable p, String val,List<Long> pays) {
+	public ResponseEntity<Object> actor_search(Pageable p, String val, Long pays) {
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, actorService.filtre_recherche_complet(val, pays, p));
 	}

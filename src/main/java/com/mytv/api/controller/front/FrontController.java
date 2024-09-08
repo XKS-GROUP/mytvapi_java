@@ -661,7 +661,7 @@ public class FrontController {
     @Tag(name = "Acteur")
 	@GetMapping("acteurs/all/")
 	public ResponseEntity<Object> actor_show_paging(
-			@RequestParam (required = false) List<Long> pays,
+			@RequestParam (required = false) Long pays,
 			Pageable p){
 
     	return fnc.actor_show_paging(p, pays);
@@ -671,7 +671,7 @@ public class FrontController {
 	@GetMapping("acteurs/search/")
 	public ResponseEntity<Object> acteur_search(
 			@RequestParam (required = false) String s,
-			@RequestParam (required = false) List<Long> pays,
+			@RequestParam (required = false) Long pays,
 			Pageable p){
 
     	return fnc.actor_search(p, s, pays) ;
