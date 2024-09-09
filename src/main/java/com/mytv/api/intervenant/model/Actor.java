@@ -14,6 +14,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -53,6 +54,7 @@ public class Actor {
 	String imageUrl;
 
 	@NotBlank(message = "Ce champ ne peut etre vide")
+	@Lob
 	@Column(nullable = false, columnDefinition = "TEXT")
 	String biography;
 

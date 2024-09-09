@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -33,11 +34,33 @@ public class PubliciteService {
 		return rep.findAll();
 	}
 	
+	public List<Publicite> show_front() {
+
+		return rep.findAll().stream()
+				.filter( f ->f.isStatus()).toList();
+		
+	}
+	
 	public Page<Publicite> showPage(Pageable p) {
 
 		return rep.findAll(p);
 	}
 
+	public Page<Publicite> showPage_front(Pageable p) {
+
+		PageImpl<Publicite> res = new PageImpl<Publicite>(
+				   rep.findAll(p).stream()
+				  .filter(s -> s.isStatus())
+				  .toList()  
+				  , p 
+				  , rep.findAll(p).stream()
+				  .filter(s -> s.isStatus())
+				  .toList().
+				  size());
+		
+			return res;
+	}
+	
 	public Publicite update(final Long id, Publicite u) {
 
 		u.setIdPublicite(id);
@@ -65,6 +88,7 @@ public class PubliciteService {
 		
 		return rep.findByNameContaining(name, p);
 	}
+	
 	
 	public Publicite findByName(String name) {
 		

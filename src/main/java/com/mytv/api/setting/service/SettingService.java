@@ -6,12 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mytv.api.setting.model.AdmodSetting;
+import com.mytv.api.setting.model.Cms;
 import com.mytv.api.setting.model.FirebaseSetting;
 import com.mytv.api.setting.model.R2cloudSetting;
 import com.mytv.api.setting.model.Setting;
 import com.mytv.api.setting.model.SocialSetting;
 import com.mytv.api.setting.model.TmdbSetting;
 import com.mytv.api.setting.repository.AdmodSettingRepository;
+import com.mytv.api.setting.repository.CmsRepository;
 import com.mytv.api.setting.repository.FirebaseRepository;
 import com.mytv.api.setting.repository.R2SettingRepository;
 import com.mytv.api.setting.repository.SettingRepository;
@@ -41,6 +43,55 @@ public class SettingService {
 	
 	@Autowired
 	SettingRepository settingRep;
+	
+	@Autowired
+	CmsRepository cmsRep;
+	
+	
+	
+	
+	
+	
+	/*
+	 * 
+	 * paramettre ADMOD
+	 * 
+	 * 
+	 */
+	public Cms add_cms(Cms r) {
+		
+		if(settingRep.findAll().isEmpty()) {
+			return cmsRep.save(r);
+		}
+		else {
+			//Je recupere l id u paramettre existant 
+			Long id = cmsRep.findAll().get(0).getId();
+			r.setId(id);
+			return cmsRep.save(r);
+		}
+	}
+	
+	public Cms show_byId_cms(Long id) {
+		
+		return cmsRep.findById(id).get();
+	}
+	
+	public Cms update_cms(Long id, Cms r) {
+		
+		r.setId(id);
+		return cmsRep.save(r);
+	}
+	
+	public void delete_cms(Long id) {
+		
+		cmsRep.deleteById(id);
+	
+	}
+	
+	public List<Cms> list_cms() {
+		
+		return cmsRep.findAll();
+	}
 	
 	
 	

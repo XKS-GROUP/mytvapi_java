@@ -5,16 +5,13 @@ import java.util.List;
 import java.util.Optional;
 
 
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import com.algolia.api.SearchClient;
 import com.mytv.api.config.AlgoliaConfig;
 import com.mytv.api.film.model.Film;
 import com.mytv.api.film.model.FilmGenre;

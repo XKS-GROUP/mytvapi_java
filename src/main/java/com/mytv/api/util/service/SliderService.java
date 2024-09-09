@@ -35,10 +35,29 @@ public class SliderService {
 		return rep.findAll();
 	}
 	
+	public List<Slider> show_front() {
+
+		return rep.findAll().stream().filter(
+				f -> f.isStatus()
+				).toList();
+	}
+	
+	
 	public Page<Slider> showPage(Pageable p) {
 
 		return rep.findAll(p);
 	}
+	
+	public Page<Slider> showPage_front(Pageable p) {
+		
+		PageImpl<Slider> res = new PageImpl<Slider>(rep.findAll().stream()
+				  .filter(s -> s.isStatus()).toList() 
+				  , p
+				  , rep.findAll().size());
+		
+		return res;
+	}
+	
 	public Page<Slider> showByName(String n, Pageable p) {
 
 		return rep.findByNameContaining(n, p);
@@ -75,8 +94,21 @@ public class SliderService {
 				  , rep.findAll().size());
 		
 			return res;
-			
 		
 	};
+	
+	
+	public Page<Slider> showPageByTarget_front(String pg, Pageable p){
+		
+	    PageImpl<Slider> res = new PageImpl<Slider>(rep.findAll().stream()
+			  .filter(s -> s.getPosition().containsKey(pg))
+			  .filter( s -> s.isStatus())
+			  .toList() 
+			  , p
+			  , rep.findAll().size());
+	
+		return res;
+	
+};
 	
 }

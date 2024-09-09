@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mytv.api.security.request.EntityResponse;
 import com.mytv.api.setting.model.AdmodSetting;
+import com.mytv.api.setting.model.Cms;
 import com.mytv.api.setting.model.FirebaseSetting;
 import com.mytv.api.setting.model.R2cloudSetting;
 import com.mytv.api.setting.model.Setting;
@@ -52,15 +53,23 @@ public class SettingControlleur {
 	@PostMapping("setting/general/add")
 	public ResponseEntity<Object> Add_general( @Valid @RequestBody Setting s){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.add_setting(s));
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, settingService.add_setting(s));
+	}
+	
+	@Tag(name = "Setting")
+	@PostMapping("setting/cms/add")
+	public ResponseEntity<Object> Add_cms( @Valid @RequestBody Cms s){
+
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, settingService.add_cms(s));
 	}
 	
 	@Tag(name = "Setting")
 	@PostMapping("setting/firebase/add")
 	public ResponseEntity<Object> Add_firebase( @Valid @RequestBody FirebaseSetting s){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.add_firebase(s));
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, settingService.add_firebase(s));
 	}
+	
 	
 	@Tag(name = "Setting")
 	@PostMapping("setting/admob/add")
@@ -97,6 +106,13 @@ public class SettingControlleur {
 	public ResponseEntity<Object> update_general(@PathVariable Long id, @Valid @RequestBody Setting s){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.add_setting(s));
+	}
+	
+	@Tag(name = "Setting")
+	@PutMapping("setting/cms/update/{id}")
+	public ResponseEntity<Object> update_cms(@PathVariable Long id, @Valid @RequestBody Cms s){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.add_cms(s));
 	}
 	
 	@Tag(name = "Setting")
@@ -144,6 +160,13 @@ public class SettingControlleur {
 	}
 	
 	@Tag(name = "Setting")
+	@GetMapping("setting/cms/{id}")
+	public ResponseEntity<Object> show_cms(@PathVariable Long id){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.show_byId_cms(id));
+	}
+	
+	@Tag(name = "Setting")
 	@GetMapping("setting/firebase/{id}")
 	public ResponseEntity<Object> show_firebase(@PathVariable Long id){
 
@@ -186,6 +209,14 @@ public class SettingControlleur {
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.list_setting());
 	}
+	
+	@Tag(name = "Setting")
+	@GetMapping("setting/cms/show")
+	public ResponseEntity<Object> show_cms(){
+
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.list_cms());
+	}
+	
 	
 	@Tag(name = "Setting")
 	@GetMapping("setting/firebase/show")

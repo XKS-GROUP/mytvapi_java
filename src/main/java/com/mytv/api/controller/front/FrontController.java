@@ -1754,14 +1754,14 @@ public class FrontController {
 	@GetMapping("pub")
 	public ResponseEntity<Object> showPub(){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, pubService.show());
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, pubService.show_front());
 	}
     
 	@Tag(name = "Publicité")
 	@GetMapping("pub/all/")
 	public ResponseEntity<Object> showPubPaging(Pageable p){
 
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, pubService.showPage(p));
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, pubService.showPage_front(p));
 		
 	}
 	
@@ -1780,7 +1780,7 @@ public class FrontController {
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, pubService.showById(id));
 	}
-	
+//////////////////////	
 	 
     /*
      * 	Slider
@@ -1791,8 +1791,8 @@ public class FrontController {
   	@Tag(name = "Slider")
   	@GetMapping("slider")
       public ResponseEntity<Object> showSlider(){
-
-  		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, sliderService.show());
+  		
+  		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, sliderService.show_front());
   	}
   	
   	@Tag(name = "Slider")
@@ -1802,11 +1802,11 @@ public class FrontController {
 
   		if(page != null) {
 			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, sliderService.showPage(p));
+			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, sliderService.showPage_front(p));
 		}
 		else {
 
-  		  return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, sliderService.showPageByTarget(page,p));
+  		    return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, sliderService.showPageByTarget_front(page,p));
 		}
   	}
   	
@@ -1986,6 +1986,13 @@ public class FrontController {
   		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.show_byId_setting(id));
   	}
   	
+	@Tag(name = "Setting")
+  	@GetMapping("setting/cms/{id}")
+  	public ResponseEntity<Object> show_cms(@PathVariable Long id){
+
+  		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.show_byId_cms(id));
+  	}
+  	
   	@Tag(name = "Setting")
   	@GetMapping("setting/firebase/{id}")
   	public ResponseEntity<Object> show_firebase(@PathVariable Long id){
@@ -2027,6 +2034,13 @@ public class FrontController {
   	public ResponseEntity<Object> show_general(){
 
   		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.list_setting());
+  	}
+  	
+  	@Tag(name = "Setting")
+  	@GetMapping("setting/cms/show")
+  	public ResponseEntity<Object> show_cms(){
+
+  		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.list_cms());
   	}
   	
   	@Tag(name = "Setting")
