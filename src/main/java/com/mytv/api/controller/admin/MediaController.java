@@ -501,28 +501,28 @@ public class MediaController {
 	@Tag(name = "Genre FILM SERIE")
 	@PostMapping(path="genres/create")
 
-	public ResponseEntity<Object> create(@Valid @RequestBody Genre g) {
+	public ResponseEntity<Object> genre_film_create(@Valid @RequestBody Genre g) {
 		
 		return fnc.create(g);
 	}
 
 	@Tag(name = "Genre FILM SERIE")
 	@GetMapping("genres")
-	public ResponseEntity<Object> showG(){
+	public ResponseEntity<Object> genre_film_show(){
 
 		return fnc.showG();
 	}
 
 	@Tag(name = "Genre FILM SERIE")
 	@GetMapping("genres/all/")
-	public ResponseEntity<Object> showPage(Pageable p){
+	public ResponseEntity<Object> genre_film_show_page(Pageable p){
 
 		return fnc.showPage(p);
 	}
 
 	@Tag(name = "Genre FILM SERIE")
 	@GetMapping("genres/search/")
-	public ResponseEntity<Object> showByName(
+	public ResponseEntity<Object> genre_film_search(
 			@RequestParam String s, 
 			Pageable p){
 
@@ -531,7 +531,7 @@ public class MediaController {
 
 	@Tag(name = "Genre FILM SERIE")
 	@GetMapping("genres/search/contain/")
-	public ResponseEntity<Object> showByNameContain(
+	public ResponseEntity<Object> genre_film_search_complet(
 			@RequestParam String s, 
 			Pageable p){
 
@@ -555,14 +555,14 @@ public class MediaController {
 	
 	@Tag(name = "Genre FILM SERIE")
 	@PutMapping("genres/update/status/{id}")
-	public ResponseEntity<Object> updateG(@PathVariable Long id, @Valid @RequestBody StatusDTO status ){
+	public ResponseEntity<Object> genre_film_update(@PathVariable Long id, @Valid @RequestBody StatusDTO status ){
 
 		return fnc.updateG(id, status);
 	}
 
 	@Tag(name = "Genre FILM SERIE")
 	@DeleteMapping(path="genres/delete/{id}")
-	public ResponseEntity<Object> deleteG (@PathVariable Long id) {
+	public ResponseEntity<Object> genre_film_delete (@PathVariable Long id) {
 
 		return fnc.deleteG(id);
 	}
@@ -1287,14 +1287,14 @@ public class MediaController {
 
 	@Tag(name = "Movie")
 	@GetMapping("movies")
-	public ResponseEntity<Object> showM(){
+	public ResponseEntity<Object> film_show(){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.show());
 	}
 	
 	@Tag(name = "Movie")
 	@GetMapping("movies/all/")
-	public ResponseEntity<Object> showMovieByPage(
+	public ResponseEntity<Object> film_show_page(
 			Pageable p, 
 			@RequestParam (required = false) Long genre ,
 			@RequestParam (required = false) Long langue,
@@ -1306,7 +1306,7 @@ public class MediaController {
 
 	@Tag(name = "Movie")
 	@PostMapping(path="movies/create")
-	public ResponseEntity<Object> createM(
+	public ResponseEntity<Object> film_create(
 			@RequestBody Film film) {
 
 		if(filmService.findByName(film.getName()) != null) {
@@ -1324,14 +1324,14 @@ public class MediaController {
 
 	@Tag(name = "Movie")
 	@GetMapping("movies/{id}")
-	public ResponseEntity<Object> showbyIdM(@PathVariable Long id){
+	public ResponseEntity<Object> film_show_by_id(@PathVariable Long id){
 
 		return fnc.film_show_by_id(id);
 	}
 
 	@Tag(name = "Movie")
 	@GetMapping("movies/search/")
-	public ResponseEntity<Object> search(
+	public ResponseEntity<Object> film_search(
 			@RequestParam String s, 
 			Pageable p,
 			@RequestParam (required = false) Long genre ,
@@ -1344,7 +1344,7 @@ public class MediaController {
 
 	@Tag(name = "Movie")
 	@PutMapping(path="movies/update/{id}")
-	public ResponseEntity<Object> updateM(@PathVariable Long id,
+	public ResponseEntity<Object> film_update(@PathVariable Long id,
 			@Valid @RequestBody Film film)  {
 		
 		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, filmService.upadte(id, film));
@@ -1353,7 +1353,7 @@ public class MediaController {
 	
 	@Tag(name = "Movie")
 	@PutMapping(path="movies/update/status/{id}")
-	public ResponseEntity<Object> updateM(@PathVariable Long id,
+	public ResponseEntity<Object> film_update_status(@PathVariable Long id,
 			@Valid @RequestBody StatusDTO status)  {
 		Film film = filmService.showById(id).get();
 		film.setStatus(status.getStatus());
@@ -1363,7 +1363,7 @@ public class MediaController {
 
 	@Tag(name = "Movie")
 	@DeleteMapping(path="movies/delete/{id}")
-	public ResponseEntity<Object> deleteM (@PathVariable Long id) {
+	public ResponseEntity<Object> film_delete (@PathVariable Long id) {
 
 		filmService.delete(id);
         
@@ -1667,48 +1667,26 @@ public class MediaController {
 	//Episodes
 	@Tag(name = "Episode")
 	@GetMapping("episodes")
-    public ResponseEntity<Object> showE(){
+    public ResponseEntity<Object> episode_show(){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.show());
 	}
 	
 	@Tag(name = "Episode")
 	@GetMapping("episodes/all/")
-    public ResponseEntity<Object> showE(
+    public ResponseEntity<Object> episode_show_page(
     		Pageable p,
     		@RequestParam (required = false) Long serie,
     		@RequestParam (required = false) Long saison,
 			@RequestParam (required = false) Long langue){
 		
-		if(langue != null && serie == null && saison == null) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showByLangue(langue, p));
-		}
-		else if(saison != null && langue == null && serie==null) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showBySaison(saison, p));
-		}
-		else if(serie != null && langue == null && saison == null) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showBySerie(serie, p));
-		}
-		else if(serie != null && saison != null && langue == null ) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showBySaisonAndSerie(serie, saison, p));
-		}
-		else if(serie != null && langue != null && saison != null) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showBySaisonAndLangueAndSerie(serie, langue, saison, p));
-		}
-		else {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showPage(p));
-		}
+		
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.filtre_complet(saison, serie, langue, p));
 	}
 	
 	@Tag(name = "Episode")
 	@GetMapping("episodes/bySaison/{idSaison}")
-    public ResponseEntity<Object> showE(@PathVariable Long idSaison){
+    public ResponseEntity<Object> episode_show_by_id_saison(@PathVariable Long idSaison){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showBySaison(saisonService.showById(idSaison)));
 	}
@@ -1729,42 +1707,10 @@ public class MediaController {
 			@RequestParam (required = false) Long saison,
 			@RequestParam (required = false) Long langue){
 		
-		if(langue != null && saison == null && serie == null) {
-			
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.searchByLangue(s, langue, p));
-			
-		}
-		else if(saison != null && langue == null && serie == null) {
-			
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.searchBySaison(s, saison, p));
-			
-		}
-		
-		else if(serie != null && langue == null && saison == null) {
-			
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.searchBySerie(s, serie, p));
-			
-		}
-		
-		else if(serie != null && saison != null && langue == null ) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.searchBySaisonAndSerie(s, serie, saison, p));
-		}
-		
-		else if(serie != null && langue != null && saison != null) {
-			
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.searchBySaisonAndLangueAndSerie(s, serie, langue, saison, p)); 
-		}
-		
-		else {
 
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.search(s, p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
+					episodeService.filtre_recherche_complet(s, saison, serie, langue, p));
     	
-		}
 	}
     
     

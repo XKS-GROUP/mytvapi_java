@@ -1304,35 +1304,6 @@ public class CommonFunction {
 	 * 
 	 */
 
-	public ResponseEntity<Object> showE() {
-
-		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.show());
-	}
-
-	public ResponseEntity<Object> showE(Pageable p, Long serie, Long saison, Long langue) {
-
-		if (langue != null && serie == null && saison == null) {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showByLangue(langue, p));
-		} else if (saison != null && langue == null && serie == null) {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showBySaison(saison, p));
-		} else if (serie != null && langue == null && saison == null) {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showBySerie(serie, p));
-		} else if (serie != null && saison != null && langue == null) {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-					episodeService.showBySaisonAndSerie(serie, saison, p));
-		} else if (serie != null && langue != null && saison != null) {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-					episodeService.showBySaisonAndLangueAndSerie(serie, langue, saison, p));
-		} else {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showPage(p));
-		}
-	}
 
 	public ResponseEntity<Object> showE(Long idSaison) {
 
@@ -1345,44 +1316,6 @@ public class CommonFunction {
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.showById(id));
 	}
 
-	public ResponseEntity<Object> searchEp(String s, Pageable p, Long serie, Long saison, Long langue) {
-
-		if (langue != null && saison == null && serie == null) {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-					episodeService.searchByLangue(s, langue, p));
-
-		} else if (saison != null && langue == null && serie == null) {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-					episodeService.searchBySaison(s, saison, p));
-
-		}
-
-		else if (serie != null && langue == null && saison == null) {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.searchBySerie(s, serie, p));
-
-		}
-
-		else if (serie != null && saison != null && langue == null) {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-					episodeService.searchBySaisonAndSerie(s, serie, saison, p));
-		}
-
-		else if (serie != null && langue != null && saison != null) {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
-					episodeService.searchBySaisonAndLangueAndSerie(s, serie, langue, saison, p));
-		}
-
-		else {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, episodeService.search(s, p));
-
-		}
-	}
 
 	public ResponseEntity<Object> createE(Episode episode) {
 

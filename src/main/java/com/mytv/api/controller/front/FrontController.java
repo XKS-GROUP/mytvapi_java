@@ -1376,39 +1376,42 @@ public class FrontController {
 	//Episodes
 	@Tag(name = "Episodes")
 	@GetMapping("episodes")
-    public ResponseEntity<Object> showE(){
+    public ResponseEntity<Object> episode_show(){
 
-		return fnc.showE();
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+				episodeService.show_front());
 	}
 	
 	@Tag(name = "Episodes")
 	@GetMapping("episodes/all/")
-    public ResponseEntity<Object> showE(
+    public ResponseEntity<Object> episode_show_by_page(
     		Pageable p,
     		@RequestParam (required = false) Long serie,
     		@RequestParam (required = false) Long saison,
 			@RequestParam (required = false) Long langue){
 		
-		return fnc.showE(p, serie, saison, langue);
+		 return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+				episodeService.filtre_complet_front(saison, serie, langue, p));
 	}
 	
 	@Tag(name = "Episodes")
 	@GetMapping("episodes/{id}")
-	public ResponseEntity<Object> showbyIdE(@PathVariable Long id){
+	public ResponseEntity<Object> episode_show_by_id(@PathVariable Long id){
 
 		return fnc.showbyIdE(id);
 	}
 	
 	@Tag(name = "Episodes")
 	@GetMapping("episodes/search/")
-	public ResponseEntity<Object> searchEp(
+	public ResponseEntity<Object> episode_search(
 			@RequestParam String s, 
 			Pageable p,
 			@RequestParam (required = false) Long serie,
 			@RequestParam (required = false) Long saison,
 			@RequestParam (required = false) Long langue){
 		
-		return fnc.searchEp(s, p, serie, saison, langue);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+				episodeService.filtre_recherche_complet_front(s,saison, serie, langue, p));
 	}
 
 	
@@ -1483,7 +1486,7 @@ public class FrontController {
 	//SAISON
 	@Tag(name = "Saison")
 	@GetMapping("saisons/all/")
-	public ResponseEntity<Object> showSaisonPage(
+	public ResponseEntity<Object> saison_show_page(
 			Pageable p,
 			@RequestParam (required = false) Long langue,
 			@RequestParam (required = false) Long serie ){
@@ -1494,14 +1497,14 @@ public class FrontController {
 
 	@Tag(name = "Saison")
 	@GetMapping("saisons/show/{id}")
-	public ResponseEntity<Object> showbyId(@PathVariable Long id){
+	public ResponseEntity<Object> saison_show_by_id(@PathVariable Long id){
 
 		return fnc.showbyIdCL(id);
 	}
 	
 	@Tag(name = "Saison")
 	@GetMapping("saisons/search/")
-	public ResponseEntity<Object> showbyNameC(
+	public ResponseEntity<Object> saison_search(
 			@RequestParam String s, 
 			@RequestParam (required = false) Long langue,
 			@RequestParam (required = false) Long serie,

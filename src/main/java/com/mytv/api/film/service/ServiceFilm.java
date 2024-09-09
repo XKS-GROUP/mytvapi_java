@@ -241,6 +241,8 @@ public class ServiceFilm {
 						g.setList_langues(rep_langue.findAllById(g.getLangue()));
 					}
 			);
+			
+			algoClient.searchClient().saveObjects("film", l);
 		}
 	
 	public List<Film> show() {

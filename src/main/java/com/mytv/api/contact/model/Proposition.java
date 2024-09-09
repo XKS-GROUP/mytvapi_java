@@ -38,6 +38,9 @@ public class Proposition {
 
     @NotBlank(message = "Le flux du media est obligatoire")
     private String flux;
+    
+    @Column(columnDefinition = "TEXT")
+    private String logo;
 
     private String nom_responable;
     
