@@ -30,6 +30,9 @@ public class Proposition {
     @NotBlank(message = "Le nom est obligatoire")
     private String nom;
     
+    @NotBlank(message = "un objet est requis ")
+    private String objet;
+    
     @Email(message = "L'email doit être valide")
     @NotBlank(message = "L'email est obligatoire")
     private String email;
