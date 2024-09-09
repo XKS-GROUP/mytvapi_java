@@ -90,7 +90,7 @@ public class RadioService {
 					}
 			);
 			
-			algoClient.searchClient().saveObjects("radio", l);
+			algoClient.searchClient().saveObjects("radio", l.stream().filter(g ->g.isStatus()).toList());
 	
 	}
 

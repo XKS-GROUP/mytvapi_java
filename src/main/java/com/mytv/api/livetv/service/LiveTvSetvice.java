@@ -104,7 +104,7 @@ public class LiveTvSetvice {
 					  l.get(i).setListCateg(rep_categ.findAllById(l.get(i).getIdcategories()));
 					}
 		
-				algoClient.searchClient().saveObjects("livetv", l);
+				algoClient.searchClient().saveObjects("livetv", l.stream().filter(g ->g.isStatus()).toList());
 	}
 	
 	

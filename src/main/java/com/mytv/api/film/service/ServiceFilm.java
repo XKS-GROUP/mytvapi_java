@@ -243,7 +243,7 @@ public class ServiceFilm {
 					}
 			);
 			
-			algoClient.searchClient().saveObjects("film", l);
+			algoClient.searchClient().saveObjects("film", l.stream().filter(g ->g.isStatus()).toList());
 		}
 	
 	public List<Film> show() {

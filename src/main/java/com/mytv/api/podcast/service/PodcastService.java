@@ -155,7 +155,7 @@ public class PodcastService {
 				
 		);
 		
-		algoClient.searchClient().saveObjects("podcast", l);
+		algoClient.searchClient().saveObjects("podcast", l.stream().filter(g ->g.isStatus()).toList());
 	}
 	
 	
