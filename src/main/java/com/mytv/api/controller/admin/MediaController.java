@@ -1296,7 +1296,7 @@ public class MediaController {
 	@GetMapping("movies/all/")
 	public ResponseEntity<Object> film_show_page(
 			Pageable p, 
-			@RequestParam (required = false) Long genre ,
+			@RequestParam (required = false) Long genre,
 			@RequestParam (required = false) Long langue,
 			@RequestParam (required = false) Long pays){
 
@@ -1334,7 +1334,7 @@ public class MediaController {
 	public ResponseEntity<Object> film_search(
 			@RequestParam String s, 
 			Pageable p,
-			@RequestParam (required = false) Long genre ,
+			@RequestParam (required = false) Long genre,
 			@RequestParam (required = false) Long langue,
 			@RequestParam (required = false) Long pays){
 

@@ -499,7 +499,7 @@ public class ServiceFilm {
 				   .toList() 
 				   , p
 				   , rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
-				   .toList() .size());
+				   .toList().size());
 		
 		if(genre != null && langue == null && pays == null) {
 			

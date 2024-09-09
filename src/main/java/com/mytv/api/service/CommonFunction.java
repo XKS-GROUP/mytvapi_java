@@ -1056,8 +1056,8 @@ public class CommonFunction {
 
 	public ResponseEntity<Object> film_show_page(Pageable p, Long genre, Long langue, Long pays) {
 
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.filtre_complet(genre, langue, pays, p));
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+					filmService.filtre_complet(genre, langue, pays, p));
 
 	}
 
