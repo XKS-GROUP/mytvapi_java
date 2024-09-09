@@ -1,6 +1,6 @@
 package com.mytv.api.news.model;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -50,10 +50,10 @@ public class Article {
 	
 	@CreationTimestamp
     @Column(updatable = false)
-	LocalDateTime  publishDate;
+	Date  publishDate;
 	
 	@UpdateTimestamp
-	LocalDateTime  updateDate;
+	Date  updateDate;
 	
 	Long idUser;
 	
