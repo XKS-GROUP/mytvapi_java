@@ -720,7 +720,8 @@ public class MediaController {
 			@RequestParam (required = false) Long langue,
 			@RequestParam (required = false) Long pays){
 		
-		    return fnc.radio_show_page(p, categ, langue, pays);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
+				radioService.filtre_complet(categ, langue, pays, p));
 		
 	}
 
@@ -767,7 +768,8 @@ public class MediaController {
 			@RequestParam (required = false) Long langue,
 			@RequestParam (required = false) Long pays){
 		
-			return fnc.radio_search(s, categ, langue, pays, p);
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
+					radioService.filtre_recherche_complet(s, categ, langue, pays, p));
 		
 	}
 
@@ -1389,24 +1391,8 @@ public class MediaController {
 			@RequestParam (required = false) Long genre ,
 			@RequestParam (required = false) Long langue){
 		
-		if(genre != null && langue ==null) {
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.filtre_complet(genre, langue, p));
 			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.showByGenre(genre, p));
-			
-		}
-		else if (langue != null && genre == null) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.showByLangue(langue, p));
-		}
-		else if (langue != null && genre != null) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.showByGenreAndLangue(genre, langue, p));
-		}
-		else {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.showPage(p));
-			
-		}
 	}
 	
 
@@ -1453,25 +1439,8 @@ public class MediaController {
 			@RequestParam (required = false) Long genre ,
 			@RequestParam (required = false) Long langue){
 		
-		if(genre != null && langue ==null ) {
+			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.filtre_recherche_complet(s, genre, langue, p));
 			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.searchByGenre(s, genre, p));
-			
-		}
-		else if (langue != null && genre==null) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.searchByLangue(s, langue, p));
-		}
-		else if(langue != null && genre !=null) {
-			
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.searchByLangueAndGenre(s, langue, genre, p));
-			
-		}
-		else {
-
-			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, serieService.search(s, p));
-			
-		}
 	}
 
 	@Tag(name = "Serie")

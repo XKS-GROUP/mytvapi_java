@@ -115,4 +115,5 @@ public class Podcast {
 	@Transient
 	boolean favorie;
 
+	String objectID;
 }

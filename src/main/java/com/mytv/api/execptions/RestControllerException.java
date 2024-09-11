@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSendException;
@@ -121,9 +122,16 @@ public class RestControllerException {
     @ExceptionHandler(MailSendException .class)
     public ResponseEntity<Object> signatureExceptionS(MailSendException ex) {
 
-        return EntityResponse.generateResponse("Envoi de mail", HttpStatus.BAD_REQUEST,Map.of("message", "Envoi de mail impossible, l'hote configuré est non joingnable"));
+        return EntityResponse.generateResponse("Envoi de mail", HttpStatus.BAD_REQUEST,
+        		Map.of("message", "Envoi de mail impossible, l'hote configuré est non joingnable"));
     }
     
+    @ExceptionHandler(PropertyReferenceException.class)
+    public ResponseEntity<Object> proprieteErreur(PropertyReferenceException ex) {
+
+        return EntityResponse.generateResponse("ATTENTION ", HttpStatus.BAD_REQUEST,
+        		Map.of("message", "la propriété ( "+ex.getPropertyName()+" ) rajoute n existe pas pour cette route"));
+    }
     
 //    @ExceptionHandler(value = MethodArgumentNotValidException.class)
 //    public ResponseEntity<Object> erreurCode(MethodArgumentNotValidException ex) {

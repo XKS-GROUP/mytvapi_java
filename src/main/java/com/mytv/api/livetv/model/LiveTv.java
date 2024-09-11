@@ -111,4 +111,6 @@ public class LiveTv implements Serializable {
 	@Transient
 	boolean favorie;
 	
+	String objectID;
+	
 }

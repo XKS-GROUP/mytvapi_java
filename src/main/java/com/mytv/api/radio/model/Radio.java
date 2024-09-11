@@ -102,4 +102,6 @@ public class Radio {
 	@Transient
 	boolean favorie;
 	
+	String objectID;
+	
 }

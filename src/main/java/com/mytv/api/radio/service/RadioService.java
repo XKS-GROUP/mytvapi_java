@@ -360,16 +360,23 @@ public class RadioService {
 	};
 	
 	
-	
 	@SuppressWarnings("unused")
 	public Page<Radio> filtre_recherche_complet(String val, Long categ, Long langue, Long pays, Pageable p){
 		refresh();
-		PageImpl<Radio> res = new PageImpl<Radio>(radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+		PageImpl<Radio> res = new PageImpl<Radio>(radioRep.findAll(p).stream()
 				   .toList() 
 				   , p
-				   , radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream().toList().size());
+				   , radioRep.findAll().stream()
+				   .toList().size());
 		
-		
+		if (val ==null || val.isEmpty() || val.isBlank()) {
+			
+		  return  res = new PageImpl<Radio>(radioRep.findAll(p).stream()
+					   .toList() 
+					   , p
+					   , radioRep.findAll().stream()
+					   .toList().size());
+		}
 		if(categ != null && langue == null && pays == null) {
 			
 		  return res = new PageImpl<Radio>(radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
@@ -463,16 +470,20 @@ public class RadioService {
 	@SuppressWarnings("unused")
 	public Page<Radio> filtre_recherche_complet_front(String val, Long categ, Long langue, Long pays, Pageable p){
 		refresh();
-		PageImpl<Radio> res = new PageImpl<Radio>(radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
-				   .filter(f-> f.isStatus())
+		PageImpl<Radio> res = new PageImpl<Radio>(radioRep.findAll(p).stream()
 				   .toList() 
 				   , p
-				   , radioRep.findByNameContainingOrOverviewContaining(val, val, p)
-				   .stream()
-				   .filter(f-> f.isStatus())
+				   , radioRep.findAll().stream()
 				   .toList().size());
 		
-		
+		if (val ==null || val.isEmpty() || val.isBlank()) {
+			
+			  return  res = new PageImpl<Radio>(radioRep.findAll(p).stream()
+						   .toList() 
+						   , p
+						   , radioRep.findAll().stream()
+						   .toList().size());
+			}
 		if(categ != null && langue == null && pays == null) {
 			
 		  return res = new PageImpl<Radio>(radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()

@@ -371,22 +371,100 @@ public class SerieService {
 		
 	}
 	
+	
+	public Page<Serie> filtre_recherche_complet(String n,Long genre, Long langue, Pageable p){
+		
+		
+		if(n==null || n.isEmpty() || n.isBlank()) {
+				
+				PageImpl<Serie> res = new PageImpl<Serie>(rep.findAll(p).stream()
+						   .toList() 
+						   , p
+						   , rep.findAll().stream()
+						   .toList().size());
+				
+				return res;
+		}
+		if(genre != null && langue !=null) {
+			 PageImpl<Serie> res = new PageImpl<Serie>(rep.findByNameContainingOrOverviewContaining(n, n).stream()
+					 .filter(f -> f.getGenreList().contains(genre))
+					 .filter(f -> f.getLangue().contains(langue))
+					   .toList() 
+					   , p
+					   , rep.findAll().stream()
+					   .filter(f -> f.getGenreList().contains(genre))
+						 .filter(f -> f.getLangue().contains(langue))
+						  .toList() .size());
+				
+				return res;
+		}
+		else if (genre != null && langue ==null){
+			 PageImpl<Serie> res = new PageImpl<Serie>(rep.findByNameContainingOrOverviewContaining(n, n).stream()
+					 .filter(f -> f.getGenreList().contains(genre))
+					   .toList() 
+					   , p
+					   ,rep.findByNameContainingOrOverviewContaining(n, n).stream()
+					   .filter(f -> f.getGenreList().contains(genre))
+					   .toList() .size());
+				
+				return res;
+		}
+		else if( langue != null && genre ==null ) {
+			
+			 PageImpl<Serie> res = new PageImpl<Serie>(rep.findByNameContainingOrOverviewContaining(n, n).stream()
+					   .filter(f -> f.getLangue().contains(langue))
+					   .toList() 
+					   , p
+					   , rep.findByNameContainingOrOverviewContaining(n, n).stream()
+					   .filter(f -> f.getLangue().contains(langue))
+					   .toList().size());
+				
+				return res;
+		}
+		else {
+			
+			 PageImpl<Serie> res = new PageImpl<Serie>(rep.findByNameContainingOrOverviewContaining(n, n).stream()
+					 .filter(f -> !f.getIdSaison().isEmpty())
+					   .toList() 
+					   , p
+					   , rep.findByNameContainingOrOverviewContaining(n, n).stream()
+					   .filter(f -> !f.getIdSaison().isEmpty())
+					   .toList().size());
+				
+				return res;
+		}
+		
+	}
+	
+	
 	public Page<Serie> filtre_recherche_complet_front(String n,Long genre, Long langue, Pageable p){
 		
 		
+		if(n==null || n.isEmpty() || n.isBlank()) {
+				
+				PageImpl<Serie> res = new PageImpl<Serie>(rep.findAll(p).stream()
+						.filter(f ->f.isStatus())
+						   .toList() 
+						   , p
+						   , rep.findAll().stream()
+						   .filter(f ->f.isStatus())
+						   .toList().size());
+				
+				return res;
+		}
 		if(genre != null && langue !=null) {
 			 PageImpl<Serie> res = new PageImpl<Serie>(rep.findByNameContainingOrOverviewContaining(n, n).stream()
 					 .filter(f -> f.getGenreList().contains(genre))
 					 .filter(f -> f.getLangue().contains(langue))
 					 .filter(f -> !f.getIdSaison().isEmpty())
-					 .filter(f -> f.isStatus())
+					 .filter(f ->f.isStatus())
 					   .toList() 
 					   , p
 					   , rep.findAll().stream()
 					   .filter(f -> f.getGenreList().contains(genre))
 						 .filter(f -> f.getLangue().contains(langue))
 						 .filter(f -> !f.getIdSaison().isEmpty())
-						 .filter(f -> f.isStatus())
+						 .filter(f ->f.isStatus())
 						  .toList() .size());
 				
 				return res;
@@ -395,13 +473,13 @@ public class SerieService {
 			 PageImpl<Serie> res = new PageImpl<Serie>(rep.findByNameContainingOrOverviewContaining(n, n).stream()
 					 .filter(f -> f.getGenreList().contains(genre))
 					 .filter(f -> !f.getIdSaison().isEmpty())
-					 .filter(f -> f.isStatus())
+					 .filter(f ->f.isStatus())
 					   .toList() 
 					   , p
 					   ,rep.findByNameContainingOrOverviewContaining(n, n).stream()
 					   .filter(f -> f.getGenreList().contains(genre))
 					   .filter(f -> !f.getIdSaison().isEmpty())
-					   .filter(f -> f.isStatus())
+					   .filter(f ->f.isStatus())
 					   .toList() .size());
 				
 				return res;
@@ -411,13 +489,13 @@ public class SerieService {
 			 PageImpl<Serie> res = new PageImpl<Serie>(rep.findByNameContainingOrOverviewContaining(n, n).stream()
 					   .filter(f -> f.getLangue().contains(langue))
 					   .filter(f -> !f.getIdSaison().isEmpty())
-					   .filter(f -> f.isStatus())
+					   .filter(f ->f.isStatus())
 					   .toList() 
 					   , p
 					   , rep.findByNameContainingOrOverviewContaining(n, n).stream()
 					   .filter(f -> f.getLangue().contains(langue))
 					   .filter(f -> !f.getIdSaison().isEmpty())
-					   .filter(f -> f.isStatus())
+					   .filter(f ->f.isStatus())
 					   .toList().size());
 				
 				return res;
@@ -426,12 +504,12 @@ public class SerieService {
 			
 			 PageImpl<Serie> res = new PageImpl<Serie>(rep.findByNameContainingOrOverviewContaining(n, n).stream()
 					 .filter(f -> !f.getIdSaison().isEmpty())
-					 .filter(f -> f.isStatus())
+					 .filter(f ->f.isStatus())
 					   .toList() 
 					   , p
 					   , rep.findByNameContainingOrOverviewContaining(n, n).stream()
 					   .filter(f -> !f.getIdSaison().isEmpty())
-					   .filter(f -> f.isStatus())
+					   .filter(f ->f.isStatus())
 					   .toList().size());
 				
 				return res;

@@ -35,7 +35,8 @@ public class LiveTvSetvice {
 	@Autowired
 	private PaysRepository rep_pays;
 	
-	@Autowired FavLivetvRepository rep_fav_livetv;
+	@Autowired 
+	FavLivetvRepository rep_fav_livetv;
 	
 	@Autowired
 	private CategoryLrRepository rep_categ;
@@ -447,7 +448,8 @@ public class LiveTvSetvice {
 		PageImpl<LiveTv> res = new PageImpl<LiveTv>(rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
 				   .toList() 
 				   , p
-				   , rep.findAll().size());
+				   , rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+				   .toList().size());
 		
 		if(categ != null && langue == null && pays == null) {
 			
@@ -455,7 +457,9 @@ public class LiveTvSetvice {
 					   .filter(f -> f.getIdcategories().contains(categ))
 					   .toList()
 					   , p
-					   , rep.findAll().size());
+					   , rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getIdcategories().contains(categ))
+					   .toList().size());
 		}
 		else if(langue != null && categ == null && pays == null) {
 			
@@ -463,7 +467,9 @@ public class LiveTvSetvice {
 					   .filter(f -> f.getLangue().contains(langue))
 					   .toList()
 					   , p
-					   , rep.findAll().size());
+					   , rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getLangue().contains(langue))
+					   .toList().size());
 			
 			
 		}
@@ -473,7 +479,9 @@ public class LiveTvSetvice {
 					   .filter(f -> f.getCountry().contains(pays))
 					   .toList()
 					   , p
-					   , rep.findAll().size());
+					   , rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getCountry().contains(pays))
+					   .toList().size());
 			
 		}
 		else if(categ != null && langue != null && pays == null) {
@@ -483,7 +491,10 @@ public class LiveTvSetvice {
 					   .filter(f -> f.getLangue().contains(langue))
 					   .toList()
 					   , p
-					   , rep.findAll().size());
+					   ,rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getCountry().contains(categ))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .toList().size());
 			
 		}
 		else if(categ != null && pays != null && langue == null) {
@@ -493,7 +504,10 @@ public class LiveTvSetvice {
 					   .filter(f -> f.getCountry().contains(pays))
 					   .toList()
 					   , p
-					   , rep.findAll().size());
+					   , rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getIdcategories().contains(categ))
+					   .filter(f -> f.getCountry().contains(pays))
+					   .toList().size());
 		}
 		else if(pays != null && langue != null && categ == null) {
 			return res = new PageImpl<LiveTv>(rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
@@ -501,7 +515,10 @@ public class LiveTvSetvice {
 					   .filter(f -> f.getLangue().contains(langue))
 					   .toList()
 					   , p
-					   , rep.findAll().size());
+					   ,rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .toList().size());
 		}
 		else if (pays != null && langue != null && categ != null) {
 			
@@ -511,7 +528,11 @@ public class LiveTvSetvice {
 					   .filter(f -> f.getCountry().contains(pays))
 					   .toList()
 					   , p
-					   , rep.findAll().size());
+					   , rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getIdcategories().contains(categ))
+					   .filter(f -> f.getLangue().contains(langue))
+					   .filter(f -> f.getCountry().contains(pays))
+					   .toList().size());
 		}
 		else {
 			return res;
@@ -564,7 +585,10 @@ public class LiveTvSetvice {
 					   .filter(f -> f.isStatus())
 					   .toList()
 					   , p
-					   , rep.findAll().size());
+					   , rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.getCountry().contains(pays))
+					   .filter(f -> f.isStatus())
+					   .toList().size());
 			
 		}
 		else if(categ != null && langue != null && pays == null) {

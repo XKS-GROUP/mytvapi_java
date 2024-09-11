@@ -34,7 +34,6 @@ public class ActorService {
 			  
 			  );
 		
-		
 	}
 	
 	public Actor create(Actor p) {
@@ -55,36 +54,59 @@ public class ActorService {
 		return rep.findAll(p);
 	}
 	
-	
 	public Page<Actor> filtre_complet(Long pays, Pageable p){
 		 refresh();
-		 PageImpl<Actor> res = new PageImpl<Actor>(rep.findAll().stream()
-				   .filter(a -> a.getPays().contains(pays)).toList() 
-				   , p
-				   , rep.findAll().size());
-			
+		 
+		 if(pays==null) {
+				
+			 PageImpl<Actor> res = new PageImpl<Actor>(rep.findAll(p).stream()
+					   .toList() 
+					   , p
+					   , rep.findAll().stream()
+					   .toList().size());
+				
+				return res;
+			}
+			else {
+			 PageImpl<Actor> res = new PageImpl<Actor>(rep.findAll(p).stream()
+					   .filter(a -> a.getPays().contains(pays)).toList() 
+					   , p
+					   , rep.findAll().stream().toList().size());
+				
 			return res;
+			
+			}
 		
 	};
 	
 	public Object filtre_recherche_complet(String val, Long pays, Pageable p) {
 		refresh();
-		
-		if(pays==null) {
+		if(val == null || val.isEmpty() || val.isBlank()) {
+			PageImpl<Actor> res = new PageImpl<Actor>(rep.findAll(p).stream()
+					   .toList() 
+					   , p
+					   , rep.findAll().stream()
+					   .toList().size());
+				
+				return res;
+		}
+		else if(pays==null) {
 			
-		 PageImpl<Actor> res = new PageImpl<Actor>(rep.findByFistNameContainingAndLastNameContaining(val, val).stream()
+		 PageImpl<Actor> res = new PageImpl<Actor>(rep.findByFistNameContainingAndLastNameContaining(val, val, p).stream()
 				   .toList() 
 				   , p
-				   , rep.findAll().size());
+				   , rep.findAll().stream()
+				   .toList().size());
 			
 			return res;
 		}
 		else {
 			
-			PageImpl<Actor> res = new PageImpl<Actor>(rep.findByFistNameContainingAndLastNameContaining(val, val).stream()
+			PageImpl<Actor> res = new PageImpl<Actor>(rep.findByFistNameContainingAndLastNameContaining(val, val, p).stream()
 					   .filter(a -> a.getPays().contains(pays)).toList() 
 					   , p
-					   , rep.findAll().size());
+					   , rep.findByFistNameContainingAndLastNameContaining(val, val).stream()
+					   .filter(a -> a.getPays().contains(pays)).toList().size());
 				
 				return res;
 		}
@@ -103,7 +125,6 @@ public class ActorService {
 
 	}
 
-
 	public Boolean delete(Long id) {
 
 		rep.deleteById(id);
@@ -111,6 +132,5 @@ public class ActorService {
 		return true;
 
 	}
-
 
 }

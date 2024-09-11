@@ -72,4 +72,6 @@ public class Article {
 	@Transient
 	boolean favorie;
 	
+	String objectID;
+	
 }

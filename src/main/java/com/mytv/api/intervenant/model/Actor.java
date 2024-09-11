@@ -36,6 +36,8 @@ public class Actor {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long idActor;
+	
+	String objectID;
 
 	@NotBlank(message = "Ce champ ne puis etre vide")
 	@Column(nullable = false)

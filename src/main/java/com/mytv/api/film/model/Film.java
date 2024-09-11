@@ -172,4 +172,6 @@ public class Film {
 	
 	@Transient
 	boolean favorie;
+	
+	String objectID;
 }

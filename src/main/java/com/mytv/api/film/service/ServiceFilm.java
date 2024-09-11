@@ -172,12 +172,14 @@ public class ServiceFilm {
 			l.forEach(  
 					
 					g -> {
+						
 						g.setActeurs(rep_actor.findAllById(g.getActeurList()));
 						g.setGenres(genreRep.findAllById(g.getGenreList()));
 						g.setDirectors(rep_dirs.findAllById(g.getDirectorList()));
 						g.setList_langues(rep_langue.findAllById(g.getLangue()));
 					}
 			);
+			
 			
 		}
 	
@@ -436,6 +438,14 @@ public class ServiceFilm {
 				   , rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
 				   .toList().size());
 		
+		if(val==null || val.isEmpty() || val.isBlank()) {
+			
+			return  res = new PageImpl<Film>(rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .toList() 
+					   , p
+					   , rep.findAll().stream()
+					   .toList().size());
+		}
 		if(genre != null && langue == null && pays == null) {
 			
 		  return res = new PageImpl<Film>(rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
@@ -534,6 +544,16 @@ public class ServiceFilm {
 				   .filter(f -> f.isStatus())
 				   .toList().size());
 		
+		if(val==null || val.isEmpty() || val.isBlank()) {
+			
+			return  res = new PageImpl<Film>(rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .filter(f -> f.isStatus())
+					   .toList() 
+					   , p
+					   , rep.findAll().stream()
+					   .filter(f -> f.isStatus())
+					   .toList().size());
+		}
 		if(genre != null && langue == null && pays == null) {
 			
 		  return res = new PageImpl<Film>(rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
