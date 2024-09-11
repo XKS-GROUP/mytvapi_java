@@ -143,7 +143,6 @@ public class SerieService {
 					}
 			);
 			
-			algoClient.searchClient().saveObjects("serie", l);
 		}
 	
 	public List<Serie> show() {
@@ -443,7 +442,7 @@ public class SerieService {
 
 	
 	
-	public Serie upadte(Long id, Serie g) {
+	public Serie update(Long id, Serie g) {
 
 		g.setIdSerie(id);
 		g.setActeurs(rep_actor.findAllById(g.getActeurList()));
@@ -451,6 +450,7 @@ public class SerieService {
 		g.setDirectors(rep_dirs.findAllById(g.getDirectorList()));
 		g.setList_langues(rep_langue.findAllById(g.getLangue()));
 		refresh();
+		algoClient.refreshSerie();
 		return rep.save(g);
 	}
 

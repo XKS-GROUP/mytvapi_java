@@ -104,7 +104,6 @@ public class LiveTvSetvice {
 					  l.get(i).setListCateg(rep_categ.findAllById(l.get(i).getIdcategories()));
 					}
 		
-				algoClient.searchClient().saveObjects("livetv", l.stream().filter(g ->g.isStatus()).toList());
 	}
 	
 	
@@ -235,13 +234,14 @@ public class LiveTvSetvice {
 
 		old.setIdLiveTv(id);
 		show();
+		algoClient.refreshLivetv();
 		return rep.save(old);
 	}
 
 	public Boolean delete(Long id) {
 		refresh();
 		rep.deleteById(id);
-
+		algoClient.refreshLivetv();
 		return null;
 
 	}

@@ -93,13 +93,13 @@ public class LiveTv implements Serializable {
 	@CreatedDate
 	Date addDate;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idLang",  cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idLang",  cascade = CascadeType.ALL)
 	List<Language> langues = new ArrayList<>();
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idPays",  cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idPays",  cascade = CascadeType.ALL)
 	List<Pays> pays = new ArrayList<>();
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idcat",  cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idcat",  cascade = CascadeType.ALL)
 	List<CategoryRL> listCateg = new ArrayList<>();
 	
 	@Column(nullable = true, columnDefinition = "boolean default false")

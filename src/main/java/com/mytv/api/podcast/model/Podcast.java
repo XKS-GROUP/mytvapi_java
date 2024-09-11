@@ -60,7 +60,7 @@ public class Podcast {
 	
 	List <Long> idPodcasteur;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "id",  cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "id",  cascade = CascadeType.ALL)
 	List<Podcasteur> list_podcasteur;
 	
 	@NotBlank(message="ce champ ne peut etre vide, un podcast doit forcement avoir une description")
@@ -77,7 +77,7 @@ public class Podcast {
 	@NotEmpty(message = "au moins un genre doit etre selectionné")
 	Set <Long> categories = new HashSet<>();
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idCatPod",  cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idCatPod",  cascade = CascadeType.ALL)
 	List<CatPodcast> list_categories = new ArrayList<>();
 
 	@JsonIgnore
@@ -100,7 +100,7 @@ public class Podcast {
 	@Column(nullable = false)
 	List<Long>  langue = new ArrayList<>();
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idLang",  cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idLang",  cascade = CascadeType.ALL)
 	List<Language> list_langues;
 	
 	@CreatedDate

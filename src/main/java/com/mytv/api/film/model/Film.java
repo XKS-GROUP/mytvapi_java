@@ -167,7 +167,7 @@ public class Film {
 	List<Genre> genres;
 	
 	List<Long>  country = new ArrayList<>();
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idPays",  cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idPays",  cascade = CascadeType.ALL)
 	List<Pays> list_country = new ArrayList<>();
 	
 	@Transient

@@ -708,8 +708,7 @@ public class MediaController {
 	
 	@Tag(name = "Radio")
 	@GetMapping("radios")
-	public ResponseEntity<Object> showR(){
-		
+	public ResponseEntity<Object> radio_show(){
 		
 		return fnc.radio_show();
 	}
@@ -761,7 +760,7 @@ public class MediaController {
 
 	@Tag(name = "Radio")
 	@GetMapping("radios/search/")
-	public ResponseEntity<Object> showbyNameContain(
+	public ResponseEntity<Object> radio_search(
 			@RequestParam String s,
 			Pageable p,
 			@RequestParam (required = false) Long categ ,
@@ -774,7 +773,7 @@ public class MediaController {
 
 	@Tag(name = "Radio")
 	@PutMapping(path="radios/update/{id}")
-	public ResponseEntity<Object> updateR(@PathVariable Long id,
+	public ResponseEntity<Object> radio_update(@PathVariable Long id,
 			@Valid @RequestBody Radio r) {
 
 		if(radioService.checktop10limit() != null && r.isTop10()) {
@@ -788,27 +787,26 @@ public class MediaController {
 					Map.of("top", "il y a deja une radio en vedette", "podcast_vedette", radioService.checktoplimit()));
 		}
 		else {
-			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, radioService.upadte(id, r));
-		
+			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, radioService.update(id, r));
 		}
 
 	}
 
 	@Tag(name = "Radio")
 	@PutMapping(path="radios/update/status/{id}")
-	public ResponseEntity<Object> updateStatusR(@PathVariable Long id,
+	public ResponseEntity<Object> radio_status_update(@PathVariable Long id,
 			@Valid @RequestBody StatusDTO status) {
 
 		Radio r = radioService.showById(id).get();
 		r.setStatus(status.getStatus());
 		
-		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, radioService.upadte(id, r));
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, radioService.update(id, r));
 
 	}
 	
 	@Tag(name = "Radio")
 	@DeleteMapping(path="radios/delete/{id}")
-	public ResponseEntity<Object> deleteR (@PathVariable Long id) {
+	public ResponseEntity<Object> radio_delete (@PathVariable Long id) {
 
 		radioService.delete(id);
 
@@ -824,7 +822,7 @@ public class MediaController {
 
 	@Tag(name = "TV SHOW")
 	@PostMapping(path="tv/create")
-	public ResponseEntity<Object> createL(
+	public ResponseEntity<Object> tv_create(
 			@Valid @RequestBody LiveTv lt) {
 
 		if(liveService.findByName(lt.getName()) != null) {
@@ -850,14 +848,14 @@ public class MediaController {
 
 	@Tag(name = "TV SHOW")
 	@GetMapping("tv")
-	public ResponseEntity<Object> showL(){
+	public ResponseEntity<Object> tv_show(){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.show());
 	}
 	
 	@Tag(name = "TV SHOW")
 	@GetMapping("tv/all/")
-	public ResponseEntity<Object> showLivePages(Pageable p,
+	public ResponseEntity<Object> tv_show_page(Pageable p,
 			@RequestParam (required = false) Long genre ,
 			@RequestParam (required = false) Long langue,
 			@RequestParam (required = false) Long pays){
@@ -867,7 +865,7 @@ public class MediaController {
 	
 	@Tag(name = "TV SHOW")
 	@GetMapping("tv/search/")
-	public ResponseEntity<Object> showLbyNameContainL(
+	public ResponseEntity<Object> tv_search(
 			@RequestParam String s, Pageable p,
 			@RequestParam (required = false) Long genre ,
 			@RequestParam (required = false) Long langue,
@@ -878,7 +876,7 @@ public class MediaController {
 
 	@Tag(name = "TV SHOW")
 	@GetMapping("tv/{id}")
-	public ResponseEntity<Object> showbyIdL(@PathVariable Long id){
+	public ResponseEntity<Object> tv_show_by_id(@PathVariable Long id){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.showById(id));
 	}
@@ -906,7 +904,7 @@ public class MediaController {
 	
 	@Tag(name = "TV SHOW")
 	@PutMapping(path="tv/update/status/{id}")
-	public  ResponseEntity<Object> updateStatusL(
+	public  ResponseEntity<Object> tv_update(
 			@PathVariable Long id,
 			@Valid @RequestBody StatusDTO status) {
 
@@ -917,7 +915,7 @@ public class MediaController {
 	
 	@Tag(name = "TV SHOW")
 	@DeleteMapping(path="tv/delete/{id}")
-	public ResponseEntity<Object> deleteL (@PathVariable Long id) {
+	public ResponseEntity<Object> tv_delete (@PathVariable Long id) {
 
 		liveService.delete(id);
 
@@ -935,7 +933,7 @@ public class MediaController {
 
 	@PostMapping(path="lives/categ/create")
 
-	public ResponseEntity<Object> createCP(
+	public ResponseEntity<Object> categ_live_create(
 			@Valid @RequestBody CategorieLive u) {
 		
 		if(catLiveRep.findByName(u.getName()) != null) {
@@ -952,14 +950,14 @@ public class MediaController {
 
 	@Tag(name = "Categorie Lives")
 	@GetMapping("lives/categs")
-	public ResponseEntity<Object> showCL(){
+	public ResponseEntity<Object> categ_live_show(){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, categliveService.show());
 	}
 	
 	@Tag(name = "Categorie Lives")
 	@GetMapping("lives/categs/all/")
-	public ResponseEntity<Object> showCL(Pageable p){
+	public ResponseEntity<Object> categ_live_show_page(Pageable p){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
 				categliveService.showPaging(p) );
@@ -967,14 +965,14 @@ public class MediaController {
 
 	@Tag(name = "Categorie Lives")
 	@GetMapping("lives/categs/{id}")
-	public ResponseEntity<Object> showbyIdCL(@PathVariable Long id){
+	public ResponseEntity<Object> categ_live_show_by_id(@PathVariable Long id){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, categliveService.showById(id));
 	}
 
 	@Tag(name = "Categorie Lives")
 	@PutMapping(path="lives/categ/update/{id}")
-	public ResponseEntity<Object> updateCL(
+	public ResponseEntity<Object> categ_live_update(
 
 			@PathVariable Long id,
 			@Valid @RequestBody CategorieLive u){
@@ -985,7 +983,7 @@ public class MediaController {
 	
 	@Tag(name = "Categorie Lives")
 	@PutMapping(path="lives/categ/update/status/{id}")
-	public ResponseEntity<Object> updatStatuseCL(
+	public ResponseEntity<Object> categ_live_status_update(
 
 			@PathVariable Long id,
 			@Valid @RequestBody StatusDTO status){
@@ -1015,14 +1013,14 @@ public class MediaController {
 
 	@Tag(name = "Lives")
 	@GetMapping("lives")
-	public ResponseEntity<Object> showLives(){
+	public ResponseEntity<Object> live_show(){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, lService.show());
 	}
 	
 	@Tag(name = "Lives")
 	@GetMapping("lives/all/")
-	public ResponseEntity<Object> showLivesByPage(
+	public ResponseEntity<Object> live_show_page(
 		Pageable p,
 		@RequestParam (required = false) Long categ ){
 	
@@ -1037,7 +1035,7 @@ public class MediaController {
 
 	@Tag(name = "Lives")
 	@PostMapping(path="lives/create")
-	public ResponseEntity<Object> createLives(
+	public ResponseEntity<Object> live_create(
 			@Valid @RequestBody Live p){
 
 		if(lService.findByName(p.getName()) != null) {
@@ -1063,7 +1061,7 @@ public class MediaController {
 
 	@Tag(name = "Lives")
 	@GetMapping("lives/{id}")
-	public ResponseEntity<Object> showbyIdLives(@PathVariable Long id){
+	public ResponseEntity<Object> live_show_by_id(@PathVariable Long id){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, lService.showById(id));
 	}
@@ -1087,7 +1085,7 @@ public class MediaController {
 
 	@Tag(name = "Lives")
 	@PutMapping(path="lives/update/{id}")
-	public ResponseEntity<Object> updateLives(
+	public ResponseEntity<Object> live_update(
 			@PathVariable Long id,
 			@Valid @RequestBody Live l) {
 		
@@ -1109,7 +1107,7 @@ public class MediaController {
 	
 	@Tag(name = "Lives")
 	@PutMapping(path="lives/update/status/{id}")
-	public ResponseEntity<Object> updateLives(
+	public ResponseEntity<Object> live_status_update(
 			@PathVariable Long id,
 			@Valid @RequestBody StatusDTO status) {
 		
@@ -1122,7 +1120,7 @@ public class MediaController {
 
 	@Tag(name = "Lives")
 	@DeleteMapping(path="lives/delete/{id}")
-	public ResponseEntity<Object> deleteLives (@PathVariable Long id) {
+	public ResponseEntity<Object> live_delete (@PathVariable Long id) {
 
 		lService.delete(id);
 
@@ -1138,14 +1136,14 @@ public class MediaController {
 
 		@Tag(name = "Podcast")
 		@GetMapping("podcasts")
-		public ResponseEntity<Object> showP(){
+		public ResponseEntity<Object> podcast_show(){
 
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.show());
 		}
 		
 		@Tag(name = "Podcast")
 		@GetMapping("podcasts/all/")
-		public ResponseEntity<Object> showPodcastByPage(Pageable p,
+		public ResponseEntity<Object> podcast_show_page(Pageable p,
 				@RequestParam (required = false) Long categ ,
 				@RequestParam (required = false) Long langue){
 			
@@ -1169,7 +1167,7 @@ public class MediaController {
 
 		@Tag(name = "Podcast")
 		@PostMapping(path="podcasts/create")
-		public ResponseEntity<Object> createP(
+		public ResponseEntity<Object> podcast_create(
 				@Valid @RequestBody Podcast p){
 
 			if(podcastservice.findByName(p.getName()) != null) {
@@ -1196,14 +1194,14 @@ public class MediaController {
 
 		@Tag(name = "Podcast")
 		@GetMapping("podcasts/{id}")
-		public ResponseEntity<Object> showbyIdP(@PathVariable Long id){
+		public ResponseEntity<Object> podcast_show_by_id(@PathVariable Long id){
 
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, podcastservice.showById(id));
 		}
 
 		@Tag(name = "Podcast")
 		@GetMapping("podcasts/search/")
-		public ResponseEntity<Object> showbyIdP(
+		public ResponseEntity<Object> podcast_search(
 				@RequestParam String s, 
 				Pageable p,
 				@RequestParam (required = false) Long categ ,
@@ -1229,7 +1227,7 @@ public class MediaController {
 
 		@Tag(name = "Podcast")
 		@PutMapping(path="podcasts/update/{id}")
-		public ResponseEntity<Object> updateP(
+		public ResponseEntity<Object> podcast_update(
 				@PathVariable Long id,
 				@Valid @RequestBody Podcast p) {
 
@@ -1249,7 +1247,7 @@ public class MediaController {
 						Map.of("top", "il y a deja un podcast en vedette", "podcast_vedette", podcastservice.checktoplimit()));
 			}
 			else {
-				return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, podcastservice.upadte(id, p) );
+				return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, podcastservice.update(id, p) );
 				
 			}
 
@@ -1257,20 +1255,20 @@ public class MediaController {
 		
 		@Tag(name = "Podcast")
 		@PutMapping(path="podcasts/update/status/{id}")
-		public ResponseEntity<Object> updateStatusPodcast(
+		public ResponseEntity<Object> podcast_update_status(
 				@PathVariable Long id,
 				@Valid @RequestBody StatusDTO status) {
 
 
 			Podcast p = podcastservice.showById(id).get();
 			p.setStatus(status.getStatus());
-			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, podcastservice.upadte(id, p) );
+			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, podcastservice.update(id, p) );
 
 		}
 
 		@Tag(name = "Podcast")
 		@DeleteMapping(path="podcasts/delete/{id}")
-		public ResponseEntity<Object> deleteP (@PathVariable Long id) {
+		public ResponseEntity<Object> podcast_delete (@PathVariable Long id) {
 
 			podcastservice.delete(id);
 
@@ -1347,7 +1345,7 @@ public class MediaController {
 	public ResponseEntity<Object> film_update(@PathVariable Long id,
 			@Valid @RequestBody Film film)  {
 		
-		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, filmService.upadte(id, film));
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, filmService.update(id, film));
 
 	}
 	
@@ -1357,7 +1355,7 @@ public class MediaController {
 			@Valid @RequestBody StatusDTO status)  {
 		Film film = filmService.showById(id).get();
 		film.setStatus(status.getStatus());
-		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, filmService.upadte(id, film));
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, filmService.update(id, film));
 
 	}
 
@@ -1493,7 +1491,7 @@ public class MediaController {
 					Map.of("top", "il y a deja une serie en vedette", "podcast_vedette", serieService.checktoplimit()));
 		}
 		else {
-			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK , serieService.upadte(id, serie));
+			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK , serieService.update(id, serie));
 		}
 	}
 	
@@ -1505,7 +1503,7 @@ public class MediaController {
 
 			Serie serie = serieService.showById(id).get();
 			serie.setStatus(status.getStatus());
-			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK , serieService.upadte(id, serie));
+			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK , serieService.update(id, serie));
 
 	}
 

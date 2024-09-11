@@ -76,8 +76,6 @@ public class ArticleService {
 				}
 			);
 		
-		 algoClient.searchClient().saveObjects("article", l);
-		
 		}
 	
 	public Article create(Article a) {
@@ -235,6 +233,7 @@ public class ArticleService {
 		a.setId(id);
 		a.setList_categories(rep_cat.findAllById(a.getCategories()));
 		refresh();
+		algoClient.refreshArticle();
 		return rep.save(a);
 	}
 	

@@ -62,9 +62,6 @@ public class ServiceFilm {
 	@Autowired
 	private AlgoliaConfig algoClient;
 	
-	//SearchIndex<Film> index = algoClient.searchClient().init();
-	
-
 	public Film create(Film g) {
 
 			g.setActeurs(rep_actor.findAllById(g.getActeurList()));
@@ -113,67 +110,6 @@ public class ServiceFilm {
 		
 	}
 	
-	public Film createFilm(Film g) {
-
-			g.setActeurs(rep_actor.findAllById(g.getActeurList()));
-			g.setGenres(genreRep.findAllById(g.getGenreList()));
-			g.setDirectors(rep_dirs.findAllById(g.getDirectorList()));
-			g.setList_langues(rep_langue.findAllById(g.getLangue()));
-			//Recuperation de la liste des genres
-			//Teste de chaque valeur, si il n existe pas ce genre sera creer
-			Film film = rep.save(g);
-
-			if (!g.getGenreList().isEmpty()){
-
-				for (Long gr : g.getGenreList()) {
-						
-					
-						Genre existingGenre = genreRep.findById(gr).get();
-
-					if(existingGenre != null) {
-
-						addFilmGenre(g, existingGenre);
-
-					}
-					else {
-
-						Genre ngr = new Genre();
-						ngr.setName("AUCUN");
-						if(genreRep.findByName(ngr.getName()) != null ) {
-							
-							addFilmGenre(g, genreRep.findByName(ngr.getName()));
-						}
-						else {
-							genreRep.save(ngr);
-							addFilmGenre(g, ngr);
-						}
-						
-
-					}/**/
-
-				}
-
-			}
-
-			else {
-				
-				Genre ngr = new Genre();
-				ngr.setName("AUCUN");
-				if(genreRep.findByName(ngr.getName()) != null ) {
-					
-					addFilmGenre(g, genreRep.findByName(ngr.getName()));
-				}
-				else {
-					genreRep.save(ngr);
-					addFilmGenre(g, ngr);
-				}
-				addFilmGenre(g, genreRep.findByName("AUCUN"));
-			}
-
-			return film;
-
-	}
-
 	//Lier  films   genres
 	public void addFilmGenre(Film film, Genre genre) {
 
@@ -243,7 +179,6 @@ public class ServiceFilm {
 					}
 			);
 			
-			algoClient.searchClient().saveObjects("film", l.stream().filter(g ->g.isStatus()).toList());
 		}
 	
 	public List<Film> show() {
@@ -699,7 +634,7 @@ public class ServiceFilm {
 	
 	
 	
-	public Film upadte(final Long id, Film g) {
+	public Film update( Long id, Film g) {
 
 		g.setIdFilm(id);
 		g.setActeurs(rep_actor.findAllById(g.getActeurList()));
@@ -707,6 +642,8 @@ public class ServiceFilm {
 		g.setDirectors(rep_dirs.findAllById(g.getDirectorList()));
 		g.setList_langues(rep_langue.findAllById(g.getLangue()));
 		refresh();
+		
+		algoClient.refreshFilm();
 		return rep.save(g);
 	}
 
@@ -715,6 +652,7 @@ public class ServiceFilm {
 		
 		rep.deleteById(id);
 		refresh();
+		algoClient.refreshFilm();
 		return null;
 
 	}

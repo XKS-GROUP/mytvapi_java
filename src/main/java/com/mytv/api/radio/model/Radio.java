@@ -50,7 +50,7 @@ public class Radio {
 	@Column(nullable = false)
 	List <Long> categories = new ArrayList<>();
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idcat",  cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idcat",  cascade = CascadeType.ALL)
 	List<CategoryRL> list_categories = new ArrayList<>();
 
 	@NotBlank(message = "ce champ ne peut etre vide, une description est requise pour une radio")
@@ -80,14 +80,14 @@ public class Radio {
 	@Column(nullable = false)
 	List<Long>  country = new ArrayList<>();
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idPays",  cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idPays",  cascade = CascadeType.ALL)
 	List<Pays> list_country = new ArrayList<>();
 	
 	@NotEmpty(message = "ce champ ne peut etre vide, une radio doit avoir au moins une langue")
 	@Column(nullable = false)
 	List<Long> langue = new ArrayList<>();
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idLang",  cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idLang",  cascade = CascadeType.ALL)
 	List<Language> list_langues;
 	
 	@CreatedDate

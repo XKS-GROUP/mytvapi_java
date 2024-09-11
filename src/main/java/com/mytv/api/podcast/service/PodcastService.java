@@ -155,7 +155,6 @@ public class PodcastService {
 				
 		);
 		
-		algoClient.searchClient().saveObjects("podcast", l.stream().filter(g ->g.isStatus()).toList());
 	}
 	
 	
@@ -290,6 +289,7 @@ public class PodcastService {
 				
 				return res;
 		}
+		
 		else if( langue != null && genre ==null ) {
 			
 			 PageImpl<Podcast> res = new PageImpl<Podcast>(rep.findAll().stream()
@@ -484,19 +484,21 @@ public class PodcastService {
 		
 	};
 
-	public Podcast upadte(final Long id, Podcast p) {
+	public Podcast update(final Long id, Podcast p) {
 
 		p.setIdPodcast(id);
 		p.setList_langues(rep_langue.findAllById(p.getLangue()));
 		p.setList_podcasteur(rep_podcasteur.findAllById(p.getIdPodcasteur()));
 		p.setList_categories(rep_categ.findAllById(p.getCategories()));
 		refresh();
+		algoClient.refreshPodcast();
 		return rep.save(p);
 	}
 
 	public Boolean delete(Long id) {
 		refresh();
 		rep.deleteById(id);
+		algoClient.refreshPodcast();
 		return true;
 
 	}

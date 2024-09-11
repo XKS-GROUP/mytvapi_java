@@ -90,8 +90,6 @@ public class RadioService {
 					}
 			);
 			
-			algoClient.searchClient().saveObjects("radio", l.stream().filter(g ->g.isStatus()).toList());
-	
 	}
 
 	public Radio create(Radio g) {
@@ -584,7 +582,7 @@ public class RadioService {
 		return null;
 	}
 
-	public Radio upadte( Long id, Radio u) {
+	public Radio update( Long id, Radio u) {
 
 		u.setIdRadio(id);
 		u.setList_langues(rep_langue.findAllById(u.getLangue()));
@@ -592,14 +590,16 @@ public class RadioService {
 		u.setList_categories(rep_categ.findAllById(u.getCategories()));
 
 		refresh();
+		algoClient.refreshRadio();
 		return radioRep.save(u);
 	}
 
 	public Boolean delete(Long id) {
 
-		refresh();
+		
 		radioRep.deleteById(id);
-
+		refresh();
+		algoClient.refreshRadio();
 		return null;
 	}
 

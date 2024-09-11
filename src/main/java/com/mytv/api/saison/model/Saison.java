@@ -85,7 +85,7 @@ public class Saison {
 	@Column(nullable = false)
 	List<Long>  langue = new ArrayList<>();
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idSaison", cascade = CascadeType.DETACH)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idSaison", cascade = CascadeType.DETACH)
 	@JsonManagedReference
 	List<Episode> episodes;
 	

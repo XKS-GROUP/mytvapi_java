@@ -63,7 +63,7 @@ public class Article {
 	@Column(nullable = false, columnDefinition = "boolean default false")
 	boolean status;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "id",  cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "id",  cascade = CascadeType.ALL)
 	List<CategArticle> list_categories;
 	
 	@Column(nullable = false, columnDefinition = "TEXT")

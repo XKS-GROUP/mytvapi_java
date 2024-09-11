@@ -739,7 +739,7 @@ public class CommonFunction {
 	public ResponseEntity<Object> updateR(Long id, Radio r) {
 
 		// Save du tout
-		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, radioService.upadte(id, r));
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, radioService.update(id, r));
 
 	}
 
@@ -748,7 +748,7 @@ public class CommonFunction {
 		Radio r = radioService.showById(id).get();
 		r.setStatus(status.getStatus());
 
-		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, radioService.upadte(id, r));
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, radioService.update(id, r));
 
 	}
 
@@ -1024,7 +1024,7 @@ public class CommonFunction {
 	public ResponseEntity<Object> updateP(Long id, Podcast p) {
 
 		// Save du tout
-		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, podcastservice.upadte(id, p));
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, podcastservice.update(id, p));
 
 	}
 
@@ -1032,7 +1032,7 @@ public class CommonFunction {
 
 		Podcast p = podcastservice.showById(id).get();
 		p.setStatus(status.getStatus());
-		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, podcastservice.upadte(id, p));
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, podcastservice.update(id, p));
 
 	}
 
@@ -1086,14 +1086,14 @@ public class CommonFunction {
 
 	public ResponseEntity<Object> updateM(Long id, Film film) {
 
-		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, filmService.upadte(id, film));
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, filmService.update(id, film));
 
 	}
 
 	public ResponseEntity<Object> updateM(Long id, StatusDTO status) {
 		Film film = filmService.showById(id).get();
 		film.setStatus(status.getStatus());
-		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, filmService.upadte(id, film));
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, filmService.update(id, film));
 
 	}
 
@@ -1176,7 +1176,7 @@ public class CommonFunction {
 
 	public ResponseEntity<Object> updateS(Long id, Serie serie) {
 
-		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, serieService.upadte(id, serie));
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, serieService.update(id, serie));
 
 	}
 
@@ -1184,7 +1184,7 @@ public class CommonFunction {
 
 		Serie serie = serieService.showById(id).get();
 		serie.setStatus(status.getStatus());
-		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, serieService.upadte(id, serie));
+		return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, serieService.update(id, serie));
 
 	}
 
