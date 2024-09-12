@@ -374,6 +374,7 @@ public class SerieService {
 	
 	public Page<Serie> filtre_recherche_complet(String n,Long genre, Long langue, Pageable p){
 		
+		System.out.println("filtre de recherche");
 		
 		if(n==null || n.isEmpty() || n.isBlank()) {
 				
@@ -424,11 +425,9 @@ public class SerieService {
 		else {
 			
 			 PageImpl<Serie> res = new PageImpl<Serie>(rep.findByNameContainingOrOverviewContaining(n, n).stream()
-					 .filter(f -> !f.getIdSaison().isEmpty())
 					   .toList() 
 					   , p
 					   , rep.findByNameContainingOrOverviewContaining(n, n).stream()
-					   .filter(f -> !f.getIdSaison().isEmpty())
 					   .toList().size());
 				
 				return res;

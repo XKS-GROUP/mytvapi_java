@@ -873,7 +873,7 @@ public class MediaController {
 			@RequestParam (required = false) Long langue,
 			@RequestParam (required = false) Long pays){
 			
-		return fnc.tv_search(s, p, genre, langue, pays);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, liveService.filtre_recherche_complet(s, genre, langue, pays, p));
 	}
 
 	@Tag(name = "TV SHOW")

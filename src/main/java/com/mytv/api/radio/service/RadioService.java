@@ -363,10 +363,10 @@ public class RadioService {
 	@SuppressWarnings("unused")
 	public Page<Radio> filtre_recherche_complet(String val, Long categ, Long langue, Long pays, Pageable p){
 		refresh();
-		PageImpl<Radio> res = new PageImpl<Radio>(radioRep.findAll(p).stream()
+		PageImpl<Radio> res = new PageImpl<Radio>(radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
 				   .toList() 
 				   , p
-				   , radioRep.findAll().stream()
+				   , radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
 				   .toList().size());
 		
 		if (val ==null || val.isEmpty() || val.isBlank()) {
@@ -461,7 +461,7 @@ public class RadioService {
 					   .toList().size());
 		}
 		else {
-			return res ;
+			return res;
 		}
 		
 	};
@@ -470,10 +470,10 @@ public class RadioService {
 	@SuppressWarnings("unused")
 	public Page<Radio> filtre_recherche_complet_front(String val, Long categ, Long langue, Long pays, Pageable p){
 		refresh();
-		PageImpl<Radio> res = new PageImpl<Radio>(radioRep.findAll(p).stream()
+		PageImpl<Radio> res = new PageImpl<Radio>(radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
 				   .toList() 
 				   , p
-				   , radioRep.findAll().stream()
+				   , radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
 				   .toList().size());
 		
 		if (val ==null || val.isEmpty() || val.isBlank()) {
