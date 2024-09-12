@@ -116,8 +116,7 @@ public class AlgoliaConfig {
 					g.setList_langues(rep_langue.findAllById(g.getLangue()));
 				}
 		);
-    	searchClient().deleteIndex("film");
-    	searchClient().saveObjects("film", films);
+    	searchClient().replaceAllObjects("film", films, 50);
     	
     	
     	
@@ -134,8 +133,7 @@ public class AlgoliaConfig {
 				
 		);
     	
-        searchClient().deleteIndex("podcast");
-		searchClient().saveObjects("podcast", podcasts);
+		searchClient().replaceAllObjects("podcast", podcasts, 50);
 		
 		//Chargement Live tv
 		List<LiveTv> livetvs = livetvRep.findAll().stream().filter(g ->g.isStatus()).toList();
@@ -149,8 +147,7 @@ public class AlgoliaConfig {
 				  }
 				);
 			
-		searchClient().deleteIndex("livetv");
-		searchClient().saveObjects("livetv", livetvs);
+		searchClient().replaceAllObjects("livetv", livetvs, 50);
 		
 		
 		//Chargement Radio 
@@ -164,8 +161,7 @@ public class AlgoliaConfig {
 					p.setList_categories(rep_categ.findAllById(p.getCategories()));
 				}
 		);
-		searchClient().deleteIndex("radio");
-		searchClient().saveObjects("radio", radios);
+		searchClient().replaceAllObjects("radio", radios, 50);
 		
 		//Chargement Article
 		List<Article> articles = articleRep.findAll().stream().filter(g ->g.isStatus()).toList();
@@ -178,8 +174,7 @@ public class AlgoliaConfig {
 					
 				}
 			);
-		searchClient().deleteIndex("article");
-		searchClient().saveObjects("article", articles);
+		searchClient().replaceAllObjects("radio", radios, 50);
 		
 		
 		//Chargement serie
@@ -196,8 +191,7 @@ public class AlgoliaConfig {
 					g.setList_langues(rep_langue.findAllById(g.getLangue()));
 				}
 		);
-		searchClient().deleteIndex("serie");
-		searchClient().saveObjects("serie", series);
+		searchClient().replaceAllObjects("serie", series, 50);
 		
 		//Chargement acteurs
 		
@@ -208,8 +202,7 @@ public class AlgoliaConfig {
 		  p -> p.setList_pays(rep_pays.findAllById(p.getPays()))
 		  
 		  );
-		searchClient().deleteIndex("acteur");
-		searchClient().saveObjects("acteur", acteurs);
+		searchClient().replaceAllObjects("acteur", acteurs, 50);
 
     }
     
