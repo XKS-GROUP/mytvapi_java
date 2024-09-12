@@ -435,7 +435,7 @@ public class ServiceFilm {
 		PageImpl<Film> res = new PageImpl<Film>(rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
 				   .toList() 
 				   , p
-				   , rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+				   , rep.findAll(p).stream()
 				   .toList().size());
 		
 		if(genre != null && langue == null && pays == null) {
@@ -532,7 +532,7 @@ public class ServiceFilm {
 				   .filter(f -> f.isStatus())
 				   .toList() 
 				   , p
-				   , rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+				   , rep.findAll(p).stream()
 				   .filter(f -> f.isStatus())
 				   .toList().size());
 		

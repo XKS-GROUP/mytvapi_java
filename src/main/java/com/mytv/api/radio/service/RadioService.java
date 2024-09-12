@@ -366,7 +366,7 @@ public class RadioService {
 		PageImpl<Radio> res = new PageImpl<Radio>(radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
 				   .toList() 
 				   , p
-				   , radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+				   , radioRep.findAll(p).stream()
 				   .toList().size());
 		
 		
@@ -466,7 +466,7 @@ public class RadioService {
 		PageImpl<Radio> res = new PageImpl<Radio>(radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
 				   .toList() 
 				   , p
-				   , radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+				   , radioRep.findAll(p).stream()
 				   .toList().size());
 		
 		if(categ != null && langue == null && pays == null) {

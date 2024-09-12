@@ -118,7 +118,7 @@ public class ArticleService {
 				rep.findByTitleContainingOrContentContaining(s, s, p).stream()
                    .toList()
 				   , p
-				   , rep.findByTitleContainingOrContentContaining(s, s, p).stream()
+				   , rep.findAll(p).stream()
                    .toList().size());
 		
 		
@@ -145,7 +145,7 @@ public class ArticleService {
 				   .filter(f -> f.isStatus())
                    .toList()
 				   , p
-				   , rep.findByTitleContainingOrContentContaining(s, s, p).stream()
+				   , rep.findAll(p).stream()
 				   .filter(f -> f.isStatus())
                    .toList().size());
 		

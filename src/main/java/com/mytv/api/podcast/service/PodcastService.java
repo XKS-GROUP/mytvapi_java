@@ -60,7 +60,6 @@ public class PodcastService {
 		return rep.save(p);
 	}
 	
-	
 	public Page<Podcast> similaire_show(Long id, Pageable p) {
 		
 		Podcast m =  rep.findById(id).get();
