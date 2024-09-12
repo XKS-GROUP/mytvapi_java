@@ -121,7 +121,6 @@ public class ArticleService {
 				   , rep.findAll(p).stream()
                    .toList().size());
 		
-		
 		if(categ != null) {
 			
 			return res = new PageImpl<Article>(

@@ -370,7 +370,11 @@ public class RadioService {
 				   .toList().size());
 		
 		
-		if(categ != null && langue == null && pays == null) {
+		if(val==null || val.isBlank() ||val.isEmpty()) {
+			System.out.println(" Declanche le truc papa");
+			return filtre_complet(categ, langue, pays, p);
+		}
+		else if(categ != null && langue == null && pays == null) {
 			
 		  return res = new PageImpl<Radio>(radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
 					   .filter(f -> f.getCategories().contains(categ))
@@ -469,7 +473,11 @@ public class RadioService {
 				   , radioRep.findAll(p).stream()
 				   .toList().size());
 		
-		if(categ != null && langue == null && pays == null) {
+		if(val==null || val.isBlank() ||val.isEmpty()) {
+			
+			return filtre_complet_front(categ, langue, pays, p);
+		}
+		else if(categ != null && langue == null && pays == null) {
 			
 		  return res = new PageImpl<Radio>(radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
 					   .filter(f -> f.getCategories().contains(categ))

@@ -451,7 +451,12 @@ public class LiveTvSetvice {
 				   , rep.findAll(p).stream()
 				   .toList().size());
 		
-		if(categ != null && langue == null && pays == null) {
+		
+		if(val==null || val.isBlank() ||val.isEmpty()) {
+			
+			return filtre_complet(categ, langue, pays, p);
+		}
+		else if(categ != null && langue == null && pays == null) {
 			
 		  return res = new PageImpl<LiveTv>(rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
 					   .filter(f -> f.getIdcategories().contains(categ))
@@ -552,7 +557,11 @@ public class LiveTvSetvice {
 				   .filter(f -> f.isStatus())
 				   .toList() .size());
 		
-		if(categ != null && langue == null && pays == null) {
+		if(val==null || val.isBlank() ||val.isEmpty()) {
+			
+			return filtre_complet(categ, langue, pays, p);
+		}
+		else if(categ != null && langue == null && pays == null) {
 			
 		  return res = new PageImpl<LiveTv>(rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
 					   .filter(f -> f.getIdcategories().contains(categ))
@@ -687,7 +696,6 @@ public class LiveTvSetvice {
 		refresh();
 		return lv;
 	}
-	
 	
 	public LiveTv checktoplimit() {
 		refresh();

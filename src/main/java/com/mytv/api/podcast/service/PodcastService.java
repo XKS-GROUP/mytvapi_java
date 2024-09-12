@@ -326,7 +326,11 @@ public class PodcastService {
 	
 	public Page<Podcast> filtre_recherche_complet(String s, Long genre, Long langue, Pageable p){
 		
-		if(genre != null && langue !=null) {
+		
+		if(s==null || s.isBlank() ||s.isEmpty()) {
+			return filtre_complet(genre, langue, p);
+		}
+		else if(genre != null && langue !=null) {
 			 PageImpl<Podcast> res = new PageImpl<Podcast>(rep.findByNameContainingOrOverviewContaining(s, s, p).stream()
 					   .filter(f -> f.getCategories().contains(genre))
 					   .filter(f -> f.getLangue().contains(langue))
@@ -378,7 +382,11 @@ public class PodcastService {
 	public Page<Podcast> filtre_recherche_complet_front(String s, Long genre, Long langue, Pageable p){
 		
 		
-		if(genre != null && langue !=null) {
+		if(s==null || s.isBlank() ||s.isEmpty()) {
+			
+			return filtre_complet_front(genre, langue, p);
+		}
+		else if(genre != null && langue !=null) {
 			 PageImpl<Podcast> res = new PageImpl<Podcast>(rep.findByNameContainingOrOverviewContaining(s, s, p).stream()
 					   .filter(f -> f.getCategories().contains(genre))
 					   .filter(f -> f.getLangue().contains(langue))

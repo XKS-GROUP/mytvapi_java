@@ -432,13 +432,11 @@ public class ServiceFilm {
 	public PageImpl<Film> filtre_recherche_complet(String val, Long genre, Long langue, Long pays, Pageable p){
 		
 		refresh();
-		PageImpl<Film> res = new PageImpl<Film>(rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
-				   .toList() 
-				   , p
-				   , rep.findAll(p).stream()
-				   .toList().size());
-		
-		if(genre != null && langue == null && pays == null) {
+		PageImpl<Film> res = null;
+		if(val==null || val.isBlank() ||val.isEmpty()) {
+			return filtre_complet(genre, langue, pays, p);
+		}
+		else if(genre != null && langue == null && pays == null) {
 			
 		  return res = new PageImpl<Film>(rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
 					   .filter(f -> f.getGenreList().contains(genre))
@@ -517,10 +515,24 @@ public class ServiceFilm {
 					   .filter(f -> f.getCountry().contains(pays))
 					   .toList().size());
 		}
-		else {
-			return res;
+		else if (pays == null && langue == null && genre == null) {
+			
+			return res = new PageImpl<Film>(rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .toList()
+					   , p
+					   , rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .toList().size());
 		}
-		
+		else {
+			
+			return res = new PageImpl<Film>(rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .toList()
+					   , p
+					   , rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
+					   .toList().size());
+				
+		}
+			
 	};
 	
 	
@@ -536,7 +548,11 @@ public class ServiceFilm {
 				   .filter(f -> f.isStatus())
 				   .toList().size());
 		
-		if(genre != null && langue == null && pays == null) {
+		if(val==null || val.isBlank() ||val.isEmpty()) {
+			System.out.println(" Declanche le truc papa");
+			return filtre_complet_front(genre, langue, pays, p);
+		}
+		else if(genre != null && langue == null && pays == null) {
 			
 		  return res = new PageImpl<Film>(rep.findByNameContainingOrOverviewContaining(val, val, p).stream()
 					   .filter(f -> f.getGenreList().contains(genre))

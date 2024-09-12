@@ -98,7 +98,7 @@ public class AlgoliaConfig {
     /*
      * cette fontion s execute qu une seule fois au debut pour charger les donnes valide sur algolia
      * 
-     */
+     
     @EventListener(ApplicationReadyEvent.class)
     public void onApplicationReady() {
     	
@@ -205,7 +205,7 @@ public class AlgoliaConfig {
 		searchClient().replaceAllObjects("acteur", acteurs, 50);
 
     }
-    
+    */
     /*
      * 
      * Les fonction refresh permettrons de rafraichir le contenue de chaque index apres une modification de donnees
