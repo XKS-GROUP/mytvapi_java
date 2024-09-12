@@ -15,20 +15,26 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.firebase.auth.FirebaseToken;
 import com.mytv.api.config.UserSessionTracker;
 import com.mytv.api.dto.NewPwdDTO;
 import com.mytv.api.dto.PwdResetPwdDTO;
+import com.mytv.api.dto.TokenFireDTO;
+import com.mytv.api.firebase.session.service.FirebaseUserDetailsService;
+import com.mytv.api.firebase.session.service.SessionService;
 import com.mytv.api.security.request.AuthenticationRequest;
 import com.mytv.api.security.request.AuthenticationResponse;
 import com.mytv.api.security.request.EntityResponse;
 import com.mytv.api.security.request.UserRegisterRequestDTO;
 import com.mytv.api.security.token.JWTTokenUtil;
+import com.mytv.api.telerama.TeleService;
 import com.mytv.api.user.model.Jwt;
 import com.mytv.api.user.model.User;
 import com.mytv.api.user.model.Validation;
@@ -41,9 +47,11 @@ import com.mytv.api.util.service.NotificationService;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("api/v1/auth")
@@ -478,16 +486,34 @@ public class UserAccessController {
 	    }
 
 
-	/*
-	 * GESTION DES COMMENTAIRES
-	 */
-	
-	/*
-	 * GESTION DES LIKES
-	 */
-	
-	/*
-	 * GESTION DES FAVORIS
-	 */
+	@Autowired
+	SessionService sessionService;
+	//Se connecter
+	@PostMapping("/login-firebase")
+	public ResponseEntity<Object> firebase_auth(@Valid @RequestBody TokenFireDTO token) throws Exception{
+		
+		//FirebaseUserDetailsService user = new FirebaseUserDetailsService();
+		
+		//FirebaseToken u = user.getUserDetailsFromToken(token.getToken());
+		
+		
+		
+		 return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, " ");
+		
+	}
+  	/*
+  	 * 
+  	 * Telerama 
+  	 * 
+  	 * 
+  	 */
+  	
+  	@Autowired
+    private TeleService teleService;
 
+  	@Tag(name = "Telerama")
+	@GetMapping(path = "telerama", produces = "application/json")
+    public Mono<String> getTeleramaData() {
+        return teleService.fetchTeleData();
+    }
 }

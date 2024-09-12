@@ -1,4 +1,4 @@
-package com.mytv.api.firebase.session;
+package com.mytv.api.firebase.session.service;
 
 import java.util.HashMap;
 import java.util.Map;

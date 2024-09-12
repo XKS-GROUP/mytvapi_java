@@ -2,8 +2,8 @@ package com.mytv.api.firebase.filter;
 
 import com.google.firebase.auth.FirebaseToken;
 import com.mytv.api.firebase.model.FirebaseUser;
-import com.mytv.api.firebase.session.FirebaseSessionManager;
-import com.mytv.api.firebase.session.FirebaseUserDetailsService;
+import com.mytv.api.firebase.session.service.FirebaseSessionManager;
+import com.mytv.api.firebase.session.service.FirebaseUserDetailsService;
 import com.mytv.api.firebase.token.FirebaseTokenUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +60,7 @@ public class FirebaseJwtFilter extends OncePerRequestFilter implements Filter {
             		
             		new FirebaseUser(decodedToken.getUid() ,decodedToken.getName(), decodedToken.getEmail(), decodedToken.getPicture(), decodedToken.isEmailVerified()),
             		
-            		new FirebaseUser(decodedToken.getUid() ,decodedToken.getName(), decodedToken.getEmail(), decodedToken.getPicture(), decodedToken.isEmailVerified())
+            		null
             		, null);
             
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

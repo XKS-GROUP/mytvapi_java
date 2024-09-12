@@ -1,4 +1,4 @@
-package com.mytv.api.firebase.session;
+package com.mytv.api.firebase.session.service;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseToken;

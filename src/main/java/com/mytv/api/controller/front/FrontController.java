@@ -2077,6 +2077,7 @@ public class FrontController {
 
   		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, settingService.list_Social());
   	}
+  	
 }
 
 
