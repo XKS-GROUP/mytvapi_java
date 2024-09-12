@@ -369,14 +369,7 @@ public class RadioService {
 				   , radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
 				   .toList().size());
 		
-		if (val ==null || val.isEmpty() || val.isBlank()) {
-			
-		  return  res = new PageImpl<Radio>(radioRep.findAll(p).stream()
-					   .toList() 
-					   , p
-					   , radioRep.findAll().stream()
-					   .toList().size());
-		}
+		
 		if(categ != null && langue == null && pays == null) {
 			
 		  return res = new PageImpl<Radio>(radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
@@ -476,14 +469,6 @@ public class RadioService {
 				   , radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()
 				   .toList().size());
 		
-		if (val ==null || val.isEmpty() || val.isBlank()) {
-			
-			  return  res = new PageImpl<Radio>(radioRep.findAll(p).stream()
-						   .toList() 
-						   , p
-						   , radioRep.findAll().stream()
-						   .toList().size());
-			}
 		if(categ != null && langue == null && pays == null) {
 			
 		  return res = new PageImpl<Radio>(radioRep.findByNameContainingOrOverviewContaining(val, val, p).stream()

@@ -2,6 +2,8 @@ package com.mytv.api.firebase.filter;
 
 import com.google.firebase.auth.FirebaseToken;
 import com.mytv.api.firebase.model.FirebaseUser;
+import com.mytv.api.firebase.session.FirebaseSessionManager;
+import com.mytv.api.firebase.session.FirebaseUserDetailsService;
 import com.mytv.api.firebase.token.FirebaseTokenUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,17 +13,24 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
+import jakarta.servlet.FilterConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class FirebaseJwtFilter extends OncePerRequestFilter {
+public class FirebaseJwtFilter extends OncePerRequestFilter implements Filter {
 
     @Autowired
     private FirebaseTokenUtil firebaseTokenUtil;
+    
+    private FirebaseSessionManager sessionManager;
+    private FirebaseUserDetailsService userDetailsService;
+    
+    
     
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)

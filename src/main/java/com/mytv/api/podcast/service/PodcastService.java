@@ -327,15 +327,6 @@ public class PodcastService {
 	
 	public Page<Podcast> filtre_recherche_complet(String s, Long genre, Long langue, Pageable p){
 		
-		if(s==null || s.isEmpty() || s.isBlank()) {
-			PageImpl<Podcast> res = new PageImpl<Podcast>(rep.findAll(p).stream()
-					   .toList() 
-					   , p
-					   , rep.findAll(p).stream()
-					   .toList().size());
-				
-				return res;
-		}
 		if(genre != null && langue !=null) {
 			 PageImpl<Podcast> res = new PageImpl<Podcast>(rep.findByNameContainingOrOverviewContaining(s, s, p).stream()
 					   .filter(f -> f.getCategories().contains(genre))
@@ -388,15 +379,6 @@ public class PodcastService {
 	public Page<Podcast> filtre_recherche_complet_front(String s, Long genre, Long langue, Pageable p){
 		
 		
-		if(s==null || s.isEmpty() || s.isBlank()) {
-			PageImpl<Podcast> res = new PageImpl<Podcast>(rep.findAll(p).stream()
-					   .toList() 
-					   , p
-					   , rep.findAll(p).stream()
-					   .toList().size());
-				
-				return res;
-		}
 		if(genre != null && langue !=null) {
 			 PageImpl<Podcast> res = new PageImpl<Podcast>(rep.findByNameContainingOrOverviewContaining(s, s, p).stream()
 					   .filter(f -> f.getCategories().contains(genre))
