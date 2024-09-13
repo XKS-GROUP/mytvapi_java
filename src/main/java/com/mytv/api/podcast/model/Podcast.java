@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
@@ -115,5 +116,5 @@ public class Podcast {
 	@Transient
 	boolean favorie;
 
-	String objectID;
+	String objectID = UUID.randomUUID().toString();
 }

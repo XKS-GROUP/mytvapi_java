@@ -3,6 +3,7 @@ package com.mytv.api.film.model;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.data.annotation.CreatedDate;
 
@@ -173,5 +174,5 @@ public class Film {
 	@Transient
 	boolean favorie;
 	
-	String objectID;
+	String objectID = UUID.randomUUID().toString();
 }

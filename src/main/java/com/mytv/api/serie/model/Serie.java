@@ -3,6 +3,7 @@ package com.mytv.api.serie.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.data.annotation.CreatedDate;
 
@@ -128,5 +129,7 @@ public class Serie {
 	
 	@Transient
 	boolean favorie;
+	
+	String objectID = UUID.randomUUID().toString();
 
 }

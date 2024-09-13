@@ -2,6 +2,7 @@ package com.mytv.api.news.model;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -72,6 +73,6 @@ public class Article {
 	@Transient
 	boolean favorie;
 	
-	String objectID;
+	String objectID = UUID.randomUUID().toString();
 	
 }

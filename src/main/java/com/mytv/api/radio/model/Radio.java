@@ -3,6 +3,7 @@ package com.mytv.api.radio.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.data.annotation.CreatedDate;
 
@@ -102,6 +103,6 @@ public class Radio {
 	@Transient
 	boolean favorie;
 	
-	String objectID;
+	String objectID= UUID.randomUUID().toString();
 	
 }

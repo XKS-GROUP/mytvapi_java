@@ -121,7 +121,12 @@ public class ArticleService {
 				   , rep.findAll(p).stream()
                    .toList().size());
 		
-		if(categ != null) {
+		if(s == null || s.isBlank() || s.isEmpty()) {
+			
+			return filtre_complet(categ, p);
+			
+		}
+		else if(categ != null) {
 			
 			return res = new PageImpl<Article>(
 					 rep.findByTitleContainingOrContentContaining(s, s, p).stream()
