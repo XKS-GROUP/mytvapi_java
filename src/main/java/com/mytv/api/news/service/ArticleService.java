@@ -148,8 +148,12 @@ public class ArticleService {
 				   .filter(f -> f.isStatus())
                    .toList().size());
 		
-		
-		if(categ != null) {
+		if(s == null || s.isBlank() || s.isEmpty()) {
+			
+			return filtre_complet_front(categ, p);
+			
+		}
+		else if(categ != null) {
 			
 			return res = new PageImpl<Article>(
 					 rep.findByTitleContainingOrContentContaining(s, s, p).stream()

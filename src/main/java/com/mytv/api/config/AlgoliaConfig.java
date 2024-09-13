@@ -227,7 +227,7 @@ public class AlgoliaConfig {
 					g.setList_langues(rep_langue.findAllById(g.getLangue()));
 				}
 		);
-    	searchClient().replaceAllObjects("film", films, 50);
+    	searchClient().replaceAllObjects("film", films, 10);
     }
     
     public void refreshSerie() {
@@ -245,7 +245,7 @@ public class AlgoliaConfig {
 					g.setList_langues(rep_langue.findAllById(g.getLangue()));
 				}
 		);
-		searchClient().replaceAllObjects("serie", series, 50);
+		searchClient().replaceAllObjects("serie", series, 10);
     }
     
     public void refreshLivetv() {
@@ -259,7 +259,7 @@ public class AlgoliaConfig {
 					g.setListCateg(rep_categ.findAllById(g.getCountry()));
 				  }
 				);
-		searchClient().replaceAllObjects("livetv", livetvs, 50);
+		searchClient().replaceAllObjects("livetv", livetvs, 10);
     }
     
     public void refreshRadio() {
@@ -273,7 +273,7 @@ public class AlgoliaConfig {
 					p.setList_categories(rep_categ.findAllById(p.getCategories()));
 				}
 		);		
-		searchClient().replaceAllObjects("radio", radios, 50);
+		searchClient().replaceAllObjects("radio", radios, 10);
     }
     
     public void refreshPodcast() {
@@ -291,7 +291,7 @@ public class AlgoliaConfig {
 				
 		);
     	
-		searchClient().replaceAllObjects("podcast", podcasts, 50 ); 
+		searchClient().replaceAllObjects("podcast", podcasts, 10 ); 
 		
     	
     }
@@ -308,7 +308,7 @@ public class AlgoliaConfig {
 					
 				}
 			);
-		searchClient().replaceAllObjects("article", articles, 50);
+		searchClient().replaceAllObjects("article", articles, 3);
     }
     
     public void refreshActeur() {
@@ -319,7 +319,7 @@ public class AlgoliaConfig {
 		  p -> p.setList_pays(rep_pays.findAllById(p.getPays()))
 		  
 		  );
-		searchClient().replaceAllObjects("acteur", acteurs, 50);
+		searchClient().replaceAllObjects("acteur", acteurs, 5);
     }
 
     
