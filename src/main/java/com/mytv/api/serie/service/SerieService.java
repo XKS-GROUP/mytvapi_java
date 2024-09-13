@@ -527,8 +527,10 @@ public class SerieService {
 		g.setDirectors(rep_dirs.findAllById(g.getDirectorList()));
 		g.setList_langues(rep_langue.findAllById(g.getLangue()));
 		refresh();
+		
+		Serie s = rep.save(g);
 		algoClient.refreshSerie();
-		return rep.save(g);
+		return s;
 	}
 
 	public Boolean delete(Long id) {

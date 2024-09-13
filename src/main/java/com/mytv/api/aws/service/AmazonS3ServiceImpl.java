@@ -15,12 +15,14 @@ import com.amazonaws.services.s3.model.ListObjectsV2Request;
 import com.amazonaws.services.s3.model.ListObjectsV2Result;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.amazonaws.HttpMethod;
+import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -34,7 +36,7 @@ import com.amazonaws.services.s3.model.S3Object;
 public class AmazonS3ServiceImpl implements AmazonS3Service {
 
     @Autowired
-    private AmazonS3 amazonS3;
+    private static AmazonS3 amazonS3;
 
 
     @Override
@@ -130,6 +132,27 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
         long expTimeMillis = expiration.getTime();
         expTimeMillis += 1000 * 60 * expirationInMinutes;
         
+        
+        //Expire en 2038
+        //expTimeMillis = new Date().getTime() + (1000L * 60 * 60 * 24 * 365 * 20);//Commenter cette ligne si vous vouler que le paramettre expirationInMinutes soit pris en compte
+        
+        expiration.setTime(expTimeMillis);
+
+        GeneratePresignedUrlRequest generatePresignedUrlRequest = 
+                new GeneratePresignedUrlRequest(bucketName, objectKey)
+                        .withMethod(HttpMethod.GET)
+                        .withExpiration(expiration);
+        return amazonS3.generatePresignedUrl(generatePresignedUrlRequest);
+    }
+    
+    @Value("${aws.s3.bucket.name}")
+    public static String bucketName;
+    
+    public static URL generatePresignedUrl(String objectKey, int expirationInMinutes) throws SdkClientException {
+       
+        Date expiration = new Date();
+        long expTimeMillis = expiration.getTime();
+        expTimeMillis += 1000 * 60 * expirationInMinutes;
         
         //Expire en 2038
         //expTimeMillis = new Date().getTime() + (1000L * 60 * 60 * 24 * 365 * 20);//Commenter cette ligne si vous vouler que le paramettre expirationInMinutes soit pris en compte

@@ -1,6 +1,7 @@
 package com.mytv.api.film.service;
 
 
+import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.mytv.api.aws.service.AmazonS3ServiceImpl;
 import com.mytv.api.config.AlgoliaConfig;
 import com.mytv.api.film.model.Film;
 import com.mytv.api.film.model.FilmGenre;
@@ -661,8 +663,9 @@ public class ServiceFilm {
 		g.setList_langues(rep_langue.findAllById(g.getLangue()));
 		refresh();
 		
+		Film f = rep.save(g);
 		algoClient.refreshFilm();
-		return rep.save(g);
+		return f;
 	}
 
 	public Boolean delete(Long id) {
@@ -678,6 +681,20 @@ public class ServiceFilm {
 	public Optional<Film> showById(Long id) {
 
 		refresh();
+		/*
+		Optional<Film> f = rep.findById(id);
+		
+		String objetId = f.get().getVideoFile();
+		
+		int indexDernierSlash = objetId.lastIndexOf('/');
+
+		String nomFichier = objetId.substring(indexDernierSlash + 1);
+		
+		URL pre = AmazonS3ServiceImpl.generatePresignedUrl( nomFichier, 10);
+		
+		f.get().setVideoFile(pre.toString());
+		*/
+		
 		return rep.findById(id);
 
 	}

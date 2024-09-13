@@ -491,15 +491,16 @@ public class PodcastService {
 		
 	};
 
-	public Podcast update(final Long id, Podcast p) {
+	public Podcast update(Long id, Podcast p) {
 
 		p.setIdPodcast(id);
 		p.setList_langues(rep_langue.findAllById(p.getLangue()));
 		p.setList_podcasteur(rep_podcasteur.findAllById(p.getIdPodcasteur()));
 		p.setList_categories(rep_categ.findAllById(p.getCategories()));
 		refresh();
+		Podcast pd = rep.save(p);
 		algoClient.refreshPodcast();
-		return rep.save(p);
+		return pd;
 	}
 
 	public Boolean delete(Long id) {

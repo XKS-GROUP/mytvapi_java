@@ -13,6 +13,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +28,7 @@ import com.google.firebase.auth.FirebaseToken;
 import com.mytv.api.config.UserSessionTracker;
 import com.mytv.api.dto.NewPwdDTO;
 import com.mytv.api.dto.PwdResetPwdDTO;
+import com.mytv.api.dto.RemoteAdd;
 import com.mytv.api.dto.TokenFireDTO;
 import com.mytv.api.firebase.session.service.FirebaseUserDetailsService;
 import com.mytv.api.firebase.session.service.SessionService;
@@ -490,15 +493,18 @@ public class UserAccessController {
 	SessionService sessionService;
 	//Se connecter
 	@PostMapping("/login-firebase")
-	public ResponseEntity<Object> firebase_auth(@Valid @RequestBody TokenFireDTO token) throws Exception{
+	public ResponseEntity<Object> firebase_auth(@Valid @RequestBody TokenFireDTO token, HttpServletRequest request) throws Exception{
 		
-		//FirebaseUserDetailsService user = new FirebaseUserDetailsService();
+		Authentication a = SecurityContextHolder.getContext().getAuthentication();
+		String ipAddress = request.getRemoteAddr();
 		
-		//FirebaseToken u = user.getUserDetailsFromToken(token.getToken());
+		System.out.println(" val == "+a.getDetails());
 		
+		FirebaseUserDetailsService user = new FirebaseUserDetailsService();
 		
+		FirebaseToken u = user.getUserDetailsFromToken(token.getToken());
 		
-		 return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, " ");
+		 return EntityResponse.generateResponse("SUCCES", HttpStatus.OK, request.toString());
 		
 	}
   	/*

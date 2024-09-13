@@ -232,8 +232,11 @@ public class ArticleService {
 		a.setId(id);
 		a.setList_categories(rep_cat.findAllById(a.getCategories()));
 		refresh();
+		
+		Article ar = rep.save(a);
 		algoClient.refreshArticle();
-		return rep.save(a);
+		
+		return ar;
 	}
 	
 	public List<Article> show(){

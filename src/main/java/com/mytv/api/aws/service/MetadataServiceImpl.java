@@ -217,18 +217,15 @@ public class MetadataServiceImpl implements MetadataService {
         
     }
     
-
     public List<FileMeta> lisByName(String nom){
 
     	return fileMetaRepository.findByFileName(nom);
     }
 
-    
     public void createFolder(String nom) {
     	
     	awsImpService.createFolder(nom, bucketName);
     }
-    
     
     public Page<String> listFolder(String prefix, Pageable p) {
     	
@@ -295,7 +292,6 @@ public class MetadataServiceImpl implements MetadataService {
     }
 
     public void updateFile(int id) {
-
 
     }
     

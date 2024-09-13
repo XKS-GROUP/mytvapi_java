@@ -139,8 +139,6 @@ public class LiveTvSetvice {
 	}
 	
 	
-	
-	
 	public Page<LiveTv> similaire_show(Long id, Pageable p) {
 		
 		refresh();
@@ -153,8 +151,6 @@ public class LiveTvSetvice {
 				   , rep.findAll().size());
 		return res;
 	}
-	
-	
 	
 	
 	public LiveTvDTO dto(LiveTv l) {
@@ -227,7 +223,7 @@ public class LiveTvSetvice {
 		
 	}
 
-	public LiveTv update(final Long id, LiveTv u) {
+	public LiveTv update(Long id, LiveTv u) {
 
 		LiveTv old = rep.findById(id).get();
 
@@ -235,8 +231,11 @@ public class LiveTvSetvice {
 
 		old.setIdLiveTv(id);
 		show();
+		rep.save(old);
+		
 		algoClient.refreshLivetv();
-		return rep.save(old);
+		
+		return old;
 	}
 
 	public Boolean delete(Long id) {
@@ -330,7 +329,6 @@ public class LiveTvSetvice {
 		}
 		
 	};
-	
 	
 	@SuppressWarnings("unused")
 	public Page<LiveTv> filtre_complet_front(Long categ, Long langue, Long pays, Pageable p){
@@ -439,8 +437,6 @@ public class LiveTvSetvice {
 		}
 		
 	};
-	
-	
 	
 	@SuppressWarnings("unused")
 	public Page<LiveTv> filtre_recherche_complet(String val,Long categ, Long langue, Long pays, Pageable p){

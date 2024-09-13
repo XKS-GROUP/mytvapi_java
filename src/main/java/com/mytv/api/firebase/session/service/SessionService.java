@@ -26,13 +26,16 @@ public class SessionService {
 	
 	private final Map<String, Map<String, String>> userSessions = new HashMap<>();
 	
-	public Session create(FirebaseToken t) {
+	public Session create(FirebaseToken t, String ip) {
 		
 		Session s = new Session();
 		
-		//s.setIpAddress(t.getClaims().get(s));
+		
+		
+		//s.setIpAddress( t.getClaims().get("").toString() );
 		
 		return sessionRep.save(s);
+		
 	}
 	
 	public void delete(Long id) {

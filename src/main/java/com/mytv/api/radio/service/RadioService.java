@@ -594,8 +594,10 @@ public class RadioService {
 		u.setList_categories(rep_categ.findAllById(u.getCategories()));
 
 		refresh();
+		
+		Radio rd = radioRep.save(u);
 		algoClient.refreshRadio();
-		return radioRep.save(u);
+		return rd;
 	}
 
 	public Boolean delete(Long id) {

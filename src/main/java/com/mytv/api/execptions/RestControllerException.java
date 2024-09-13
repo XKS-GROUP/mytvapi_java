@@ -148,13 +148,13 @@ public class RestControllerException {
         switch (ex.getAuthErrorCode()) {
             case EXPIRED_ID_TOKEN:
             	
-            	return EntityResponse.generateResponse("Envoi de mail", HttpStatus.UNAUTHORIZED,
+            	return EntityResponse.generateResponse("ERREUR", HttpStatus.UNAUTHORIZED,
             			Map.of("message", "Votre token à expiré"));
 		case USER_NOT_FOUND:
-			    return EntityResponse.generateResponse("Envoi de mail", HttpStatus.NOT_FOUND,
+			    return EntityResponse.generateResponse("ERREUR", HttpStatus.NOT_FOUND,
         			Map.of("message", "utilisateur n'existe pas"));
         default:
-        	return EntityResponse.generateResponse("Envoi de mail", HttpStatus.UNAUTHORIZED,
+        	return EntityResponse.generateResponse("ERREUR", HttpStatus.UNAUTHORIZED,
         			Map.of("message", "Erreur de connexion"));
         }
 
