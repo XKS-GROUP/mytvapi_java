@@ -113,6 +113,7 @@ public class ArticleService {
 	}
 	
 	public Page<Article> filtre_recherche_complet(String s,Long categ, Pageable p){
+		
 		refresh();
 		PageImpl<Article> res = new PageImpl<Article>(
 				rep.findByTitleContainingOrContentContaining(s, s, p).stream()
@@ -192,7 +193,8 @@ public class ArticleService {
 					rep.findAll(p).stream()
 	                .filter(f -> f.getCategories().contains(categ)).toList()
 					   , p
-					   , rep.findAll().size());
+					   , rep.findAll().stream()
+		                .filter(f -> f.getCategories().contains(categ)).toList().size());
 			
 		}
 		else {
@@ -203,6 +205,7 @@ public class ArticleService {
 	}
 	
 	public Page<Article> filtre_complet_front(Long categ, Pageable p){
+		
 		refresh();
 		PageImpl<Article> res = new PageImpl<Article>(
 				rep.findAll(p).stream()
@@ -235,7 +238,6 @@ public class ArticleService {
 		
 	}
 
-	
 	public Article update(Long id, Article a) {
 		
 		a.setId(id);
@@ -251,6 +253,13 @@ public class ArticleService {
 	public List<Article> show(){
 		refresh();
 		return rep.findAll();
+	}
+	
+	public List<Article> show_front(){
+		refresh();
+		return rep.findAll().stream().filter(
+				f -> f.isStatus()
+				).toList();
 	}
 	
 	public Article showById(Long id){
@@ -272,6 +281,7 @@ public class ArticleService {
 	public void delete(Long id) {
 		refresh();
 		rep.deleteById(id);
+		algoClient.refreshArticle();
 		
 	}
 	

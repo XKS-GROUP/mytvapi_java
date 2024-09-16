@@ -1873,7 +1873,7 @@ public class FrontController {
 	@GetMapping("articles")
 	public ResponseEntity<Object> article_show(){
 
-		return fnc.article_show();
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, artService.show_front());
 	}
     
 	@Tag(name = "Article")

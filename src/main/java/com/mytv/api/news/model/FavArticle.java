@@ -38,7 +38,7 @@ public class FavArticle {
 	private FirebaseUser user;
 	
 	@ManyToOne
-	@JoinColumn(name = "id", insertable = true, updatable = true)
+	@JoinColumn(name = "id", insertable = true, updatable = true )
 	private Article article;
 	
 }

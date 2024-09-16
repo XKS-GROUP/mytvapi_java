@@ -246,7 +246,7 @@ public class LiveTvSetvice {
 
 	}
 
-	public Optional<LiveTv> showById(final Long id) {
+	public Optional<LiveTv> showById( Long id) {
 		refresh();
 		return rep.findById(id);
 	}

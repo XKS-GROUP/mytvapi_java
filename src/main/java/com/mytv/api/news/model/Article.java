@@ -2,12 +2,10 @@ package com.mytv.api.news.model;
 
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -64,7 +62,7 @@ public class Article {
 	@Column(nullable = false, columnDefinition = "boolean default false")
 	boolean status;
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "id",  cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "id")
 	List<CategArticle> list_categories;
 	
 	@Column(nullable = false, columnDefinition = "TEXT")
@@ -73,6 +71,6 @@ public class Article {
 	@Transient
 	boolean favorie;
 	
-	String objectID = UUID.randomUUID().toString();
+	String objectID ;
 	
 }

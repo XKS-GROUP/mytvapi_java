@@ -29,6 +29,7 @@ import com.mytv.api.serie.repository.GenreRepository;
 import com.mytv.api.serie.repository.SerieRepository;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -110,6 +111,7 @@ public class AlgoliaConfig {
 		films.forEach(  
 				
 				g -> {
+					g.setObjectID(UUID.randomUUID().toString());
 					g.setActeurs(acteurRep.findAllById(g.getActeurList()));
 					g.setGenres(genreRep.findAllById(g.getGenreList()));
 					g.setDirectors(rep_dirs.findAllById(g.getDirectorList()));
@@ -126,6 +128,7 @@ public class AlgoliaConfig {
     	podcasts.forEach(  
 				
 				p -> {
+					p.setObjectID(UUID.randomUUID().toString());
 					p.setList_langues(rep_langue.findAllById(p.getLangue()));
 					p.setList_podcasteur(rep_podcasteur.findAllById(p.getIdPodcasteur()));
 					p.setList_categories(rep_pod_categ.findAllById(p.getCategories()));
@@ -141,6 +144,7 @@ public class AlgoliaConfig {
 		livetvs.forEach(
 				
 				g-> {
+					g.setObjectID(UUID.randomUUID().toString());
 					g.setLangues(rep_langue.findAllById(g.getLangue()));
 					g.setPays(rep_pays.findAllById(g.getCountry()));
 					g.setListCateg(rep_categ.findAllById(g.getCountry()));
@@ -157,6 +161,7 @@ public class AlgoliaConfig {
 		radios.forEach(  
 				
 				p -> {
+					p.setObjectID(UUID.randomUUID().toString());
 					p.setList_langues(rep_langue.findAllById(p.getLangue()));
 					p.setList_categories(rep_categ.findAllById(p.getCategories()));
 				}
@@ -169,7 +174,7 @@ public class AlgoliaConfig {
 		articles.forEach(  
 				
 				g -> {
-					
+					g.setObjectID(UUID.randomUUID().toString());
 					g.setList_categories(rep_article_categ.findAllById(g.getCategories()));
 					
 				}
@@ -185,6 +190,7 @@ public class AlgoliaConfig {
 		series.forEach(  
 				
 				g -> {
+					g.setObjectID(UUID.randomUUID().toString());
 					g.setActeurs(acteurRep.findAllById(g.getActeurList()));
 					g.setGenres(genreRep.findAllById(g.getGenreList()));
 					g.setDirectors(rep_dirs.findAllById(g.getDirectorList()));
@@ -199,13 +205,16 @@ public class AlgoliaConfig {
 				 
 		 acteurs.forEach(
 		  
-		  p -> p.setList_pays(rep_pays.findAllById(p.getPays()))
+		  p ->{ 
+			  p.setList_pays(rep_pays.findAllById(p.getPays()));
+		  
+		  	  p.setObjectID(UUID.randomUUID().toString());}
 		  
 		  );
 		searchClient().replaceAllObjects("acteur", acteurs, 50);
 
     }
-    
+   
     /*
      * 
      * Les fonction refresh permettrons de rafraichir le contenue de chaque index apres une modification de donnees
@@ -221,6 +230,7 @@ public class AlgoliaConfig {
 		films.forEach(  
 				
 				g -> {
+					g.setObjectID(UUID.randomUUID().toString());
 					g.setActeurs(acteurRep.findAllById(g.getActeurList()));
 					g.setGenres(genreRep.findAllById(g.getGenreList()));
 					g.setDirectors(rep_dirs.findAllById(g.getDirectorList()));
@@ -239,6 +249,7 @@ public class AlgoliaConfig {
 		series.forEach(  
 				
 				g -> {
+					g.setObjectID(UUID.randomUUID().toString());
 					g.setActeurs(acteurRep.findAllById(g.getActeurList()));
 					g.setGenres(genreRep.findAllById(g.getGenreList()));
 					g.setDirectors(rep_dirs.findAllById(g.getDirectorList()));
@@ -254,6 +265,7 @@ public class AlgoliaConfig {
 		livetvs.forEach(
 				
 				g-> {
+					g.setObjectID(UUID.randomUUID().toString());
 					g.setLangues(rep_langue.findAllById(g.getLangue()));
 					g.setPays(rep_pays.findAllById(g.getCountry()));
 					g.setListCateg(rep_categ.findAllById(g.getCountry()));
@@ -269,6 +281,8 @@ public class AlgoliaConfig {
 		radios.forEach(  
 				
 				p -> {
+					
+					p.setObjectID(UUID.randomUUID().toString());
 					p.setList_langues(rep_langue.findAllById(p.getLangue()));
 					p.setList_categories(rep_categ.findAllById(p.getCategories()));
 				}
@@ -284,6 +298,7 @@ public class AlgoliaConfig {
     	podcasts.forEach(  
 				
 				p -> {
+					p.setObjectID(UUID.randomUUID().toString());
 					p.setList_langues(rep_langue.findAllById(p.getLangue()));
 					p.setList_podcasteur(rep_podcasteur.findAllById(p.getIdPodcasteur()));
 					p.setList_categories(rep_pod_categ.findAllById(p.getCategories()));
@@ -303,7 +318,7 @@ public class AlgoliaConfig {
 		articles.forEach(  
 				
 				g -> {
-					
+					g.setObjectID(UUID.randomUUID().toString());
 					g.setList_categories(rep_article_categ.findAllById(g.getCategories()));
 					
 				}
@@ -316,7 +331,11 @@ public class AlgoliaConfig {
 		 
 		 acteurs.forEach(
 		  
-		  p -> p.setList_pays(rep_pays.findAllById(p.getPays()))
+		  p ->{
+			  p.setList_pays(rep_pays.findAllById(p.getPays()));
+		  
+			  p.setObjectID(UUID.randomUUID().toString());
+		  }
 		  
 		  );
 		searchClient().replaceAllObjects("acteur", acteurs, 5);
