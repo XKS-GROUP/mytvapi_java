@@ -1,6 +1,8 @@
 package com.mytv.api.util.service;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -12,13 +14,14 @@ import com.mytv.api.dto.EmailDTO;
 import com.mytv.api.firebase.model.Otp;
 import com.mytv.api.user.model.Validation;
 
-import lombok.AllArgsConstructor;
-
-@AllArgsConstructor
 @Service
 public class NotificationService {
 	
+	@Autowired
     JavaMailSender javaMailSender;
+    
+    @Value("${spring.mail.username}")
+    String fromEmail;
     
     
     public void envoyer(Validation validation) {
@@ -189,6 +192,17 @@ public class NotificationService {
                 );
 
         message.setText(texte);
+
+        javaMailSender.send(message);
+    }
+    
+    
+    public void sendTestEmail(String mail) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(mail);
+        message.setSubject("Smtp test");
+        message.setText("un mail test");
+        message.setFrom(fromEmail);
 
         javaMailSender.send(message);
     }

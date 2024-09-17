@@ -19,11 +19,15 @@ import com.mytv.api.newsletter.model.Subscriber;
 import com.mytv.api.newsletter.service.NewsletterService;
 import com.mytv.api.security.request.EntityResponse;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/api/")
-public class NewsletterController {
+@AllArgsConstructor
+@RequestMapping("api/v1/front/")
+@SecurityRequirement(name = "bearerAuth")
+public class FrontControler {
 
     @Autowired
     private NewsletterService newsletterService;
@@ -43,7 +47,7 @@ public class NewsletterController {
     }
     
     @Tag(name = "Newsletter")
-    @PostMapping("newsletter/abonne")
+    @PostMapping("newsletter/subscipt")
     public ResponseEntity<Object> subscribe() {
     	
     	FirebaseUser u = (FirebaseUser) getCurrentUser().getPrincipal();
@@ -57,7 +61,7 @@ public class NewsletterController {
     }
     
     @Tag(name = "Newsletter")
-    @PostMapping("newsletter/abonne/byEmail")
+    @PostMapping("newsletter/subscript/byEmail")
     public ResponseEntity<Object> subscribe(@RequestBody Subscriber sb) {
     	
     	if (newsletterService.dejainscrit(sb.getEmail())) {
@@ -73,7 +77,7 @@ public class NewsletterController {
     }
 
     @Tag(name = "Newsletter")
-    @PostMapping("newsletter/desabonne")
+    @PostMapping("newsletter/unsubscript")
     public ResponseEntity<Object> unsubscribe(@RequestBody EmailDTO email) {
     	
         newsletterService.unsubscribe(email.getValue());

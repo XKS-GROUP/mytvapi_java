@@ -19,10 +19,18 @@ public class SmtpService {
 	@Autowired
 	private smtpRepository rep;
 
-
 	public SmtpSetting create(SmtpSetting s) {
-
-		return rep.save(s);
+		
+		if(rep.findAll().isEmpty()) {
+			return rep.save(s);
+		}
+		else {
+			//Je recupere l id u paramettre existant 
+			
+			Long id = rep.findAll().get(0).getId();
+			s.setId(id);
+			return rep.save(s);
+		}
 
 	}
 
@@ -46,6 +54,11 @@ public class SmtpService {
 
 		return rep.findById(id);
 
+	}
+	
+	public boolean test() {
+		
+		return true;
 	}
 
 }

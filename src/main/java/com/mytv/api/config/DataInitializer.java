@@ -5,8 +5,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.mytv.api.setting.model.R2cloudSetting;
+import com.mytv.api.setting.model.SmtpSetting;
 import com.mytv.api.setting.repository.R2SettingRepository;
 import com.mytv.api.setting.service.SettingService;
+import com.mytv.api.setting.service.SmtpService;
 
 import jakarta.annotation.PostConstruct;
 
@@ -15,6 +17,9 @@ public class DataInitializer {
 
    	@Autowired
 	R2SettingRepository R2Rep;
+   	
+   	@Autowired
+   	SmtpService smtpService;
    	
    	@Autowired
    	SettingService setting;
@@ -35,6 +40,17 @@ public class DataInitializer {
     @Value("${aws.s3.bucket.name}")
     String CLOUDFLARE_R2_BUCKET;
     
+	@Value("${spring.mail.host}")
+	String host;
+	
+	@Value("${spring.mail.port}")
+	String port;
+	
+	@Value("${spring.mail.username}")
+	String email;
+	
+	@Value("${spring.mail.password}")
+	String password;
     
     @PostConstruct
     public void init() {
@@ -49,6 +65,17 @@ public class DataInitializer {
     	r2.setCLOUDFLARE_R2_BUCKET(CLOUDFLARE_R2_BUCKET);
     	
     	setting.add_R2Setting(r2);
+    	
+    	//SMTP SETTING
+    	
+    	SmtpSetting smtp = new SmtpSetting();
+    	
+    	smtp.setEmail(email);
+    	smtp.setHost(host);
+    	smtp.setPort(port);
+    	smtp.setPassword(password);
+    	
+    	smtpService.create(smtp);
     	
     }
 }

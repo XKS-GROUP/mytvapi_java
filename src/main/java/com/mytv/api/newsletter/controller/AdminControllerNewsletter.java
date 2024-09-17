@@ -24,7 +24,7 @@ import lombok.AllArgsConstructor;
 @RestController
 @AllArgsConstructor
 @RequestMapping("api/v1/admin/")
-public class NewsletterControllerAdmin {
+public class AdminControllerNewsletter {
 	
 	@Autowired
 	private NewsletterService newsletterService;

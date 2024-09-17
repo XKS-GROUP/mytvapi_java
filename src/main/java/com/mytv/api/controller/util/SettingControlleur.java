@@ -1,5 +1,7 @@
 package com.mytv.api.controller.util;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mytv.api.security.request.EntityResponse;
@@ -23,6 +26,7 @@ import com.mytv.api.setting.model.SocialSetting;
 import com.mytv.api.setting.model.TmdbSetting;
 import com.mytv.api.setting.service.SettingService;
 import com.mytv.api.setting.service.SmtpService;
+import com.mytv.api.util.service.NotificationService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -40,6 +44,9 @@ public class SettingControlleur {
 	
 	@Autowired
 	SettingService settingService;
+	
+	@Autowired
+	NotificationService notification;
 	
 	/*
 	 * 
@@ -264,16 +271,31 @@ public class SettingControlleur {
 	 */
 	
 	@Tag(name = "Setting smtp email")
+	@GetMapping("smtp/test-email/")
+	public ResponseEntity<Object> smtp_test(@RequestParam String email  ){
+
+		try {
+            notification.sendTestEmail(email);
+            
+            return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, Map.of("message", "envoyée avec succès à l adresse "+email));
+            
+        } catch (Exception e) {
+        	
+            return EntityResponse.generateResponse("ERREUR", HttpStatus.BAD_REQUEST, Map.of("message", "verifié vos parametre smtp"));
+        }
+		
+	}
+	
+	@Tag(name = "Setting smtp email")
 	@GetMapping("smtp")
-	public ResponseEntity<Object> showPub(){
+	public ResponseEntity<Object> smtp_show(){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, smtpService.show());
 	}
 
-    
 	@Tag(name = "Setting smtp email")
 	@GetMapping("smtp/{id}")
-	public ResponseEntity<Object> showPubById(@PathVariable long id){
+	public ResponseEntity<Object> smtp_show_by_id(@PathVariable long id){
 
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, smtpService.showById(id));
 	}
@@ -281,7 +303,7 @@ public class SettingControlleur {
 	
 	@Tag(name = "Setting smtp email")
 	@PostMapping("smtp/create")
-	public ResponseEntity<Object> createPub(
+	public ResponseEntity<Object> smtp_create(
 			@Valid @RequestBody SmtpSetting p){
 
 			return EntityResponse.generateResponse("SUCCES ", HttpStatus.CREATED, smtpService.create(p));
@@ -291,7 +313,7 @@ public class SettingControlleur {
 	
 	@Tag(name = "Setting smtp email")
 	@PutMapping("smtp/update/{id}")
-	public ResponseEntity<Object> updatePub(@PathVariable Long id, @Valid @RequestBody SmtpSetting p){
+	public ResponseEntity<Object> smtp_update(@PathVariable Long id, @Valid @RequestBody SmtpSetting p){
 
 		
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, smtpService.upadte(id, p));
@@ -300,7 +322,7 @@ public class SettingControlleur {
     
 	@Tag(name = "Setting smtp email")
 	@DeleteMapping("smtp/delete/{id}")
-	public ResponseEntity<Object> deletePub(@PathVariable Long id){
+	public ResponseEntity<Object> smtp_delete(@PathVariable Long id){
     	smtpService.delete(id);
 		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, "");
 		
