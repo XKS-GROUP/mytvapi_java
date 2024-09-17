@@ -1,6 +1,7 @@
 package com.mytv.api.episode.service;
 
 
+import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.mytv.api.aws.service.AmazonS3ServiceImpl;
 import com.mytv.api.episode.model.Episode;
 import com.mytv.api.episode.repository.EpisodeRepository;
 import com.mytv.api.episode.repository.FavEpisodeRepository;
@@ -581,7 +583,21 @@ public class EpisodeService {
 	}
 
 	public Optional<Episode> showById(final Long id) {
+		
 		refresh();
+		
+		Optional<Episode> f = rep.findById(id);
+		
+		String objetId = f.get().getVideoUrl();
+		
+		int indexDernierSlash = objetId.lastIndexOf('/');
+
+		String nomFichier = objetId.substring(indexDernierSlash + 1);
+		
+		URL pre = AmazonS3ServiceImpl.generatePresignedUrl( nomFichier, 10);
+		
+		f.get().setVideoUrl(pre.toString());
+		
 		return rep.findById(id);
 
 	}

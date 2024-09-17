@@ -681,7 +681,7 @@ public class ServiceFilm {
 	public Optional<Film> showById(Long id) {
 
 		refresh();
-		/*
+		
 		Optional<Film> f = rep.findById(id);
 		
 		String objetId = f.get().getVideoFile();
@@ -693,7 +693,7 @@ public class ServiceFilm {
 		URL pre = AmazonS3ServiceImpl.generatePresignedUrl( nomFichier, 10);
 		
 		f.get().setVideoFile(pre.toString());
-		*/
+		
 		
 		return rep.findById(id);
 
