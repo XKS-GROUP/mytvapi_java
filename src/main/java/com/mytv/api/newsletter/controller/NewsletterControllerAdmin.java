@@ -18,6 +18,7 @@ import com.mytv.api.newsletter.NewsletterDTO;
 import com.mytv.api.newsletter.service.NewsletterService;
 import com.mytv.api.security.request.EntityResponse;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -28,18 +29,21 @@ public class NewsletterControllerAdmin {
 	@Autowired
 	private NewsletterService newsletterService;
 	
+	@Tag(name = "Newsletter")
     @GetMapping("newletters/abonne")
     public ResponseEntity<Object> getAllSubscribers() {
     	
         return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, newsletterService.getAllSubscribers());
     }
     
+	@Tag(name = "Newsletter")
     @GetMapping("newletters/all/abonne")
     public ResponseEntity<Object> getAllSubscribers(Pageable p) {
     	
         return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, newsletterService.getAllSubscribers(p));
     }
     
+	@Tag(name = "Newsletter")
     @GetMapping("newletters/abonne/search/")
     public ResponseEntity<Object> getAllSubscribers(
     		@RequestParam (required = false) String  s, 
@@ -48,6 +52,7 @@ public class NewsletterControllerAdmin {
         return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, newsletterService.search(s, p));
     }
 
+	@Tag(name = "Newsletter")
     @PostMapping("newletters/send")
     public ResponseEntity<Object> sendNewsletter(@RequestBody NewsletterDTO news) {
     	

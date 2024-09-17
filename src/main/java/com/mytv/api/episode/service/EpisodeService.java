@@ -30,7 +30,10 @@ public class EpisodeService {
 	@Autowired
 	private EpisodeRepository rep;
 
-
+	@Autowired
+	AmazonS3ServiceImpl r2;
+	
+	
 	public Episode create(Episode g) {
 		
 			return rep.save(g);
@@ -602,7 +605,7 @@ public class EpisodeService {
 
 		String nomFichier = objetId.substring(indexDernierSlash + 1);
 		
-		URL pre = AmazonS3ServiceImpl.generatePresignedUrl( nomFichier, 10);
+		URL pre = r2.generatePresignedUrl( nomFichier, 10);
 		
 		f.get().setVideoUrl(pre.toString());
 		

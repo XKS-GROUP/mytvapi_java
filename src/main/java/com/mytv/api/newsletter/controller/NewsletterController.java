@@ -19,6 +19,8 @@ import com.mytv.api.newsletter.model.Subscriber;
 import com.mytv.api.newsletter.service.NewsletterService;
 import com.mytv.api.security.request.EntityResponse;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/api/")
 public class NewsletterController {
@@ -26,6 +28,7 @@ public class NewsletterController {
     @Autowired
     private NewsletterService newsletterService;
 
+    
     public Authentication getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         
@@ -38,6 +41,8 @@ public class NewsletterController {
             return authentication;
         }
     }
+    
+    @Tag(name = "Newsletter")
     @PostMapping("newsletter/abonne")
     public ResponseEntity<Object> subscribe() {
     	
@@ -51,6 +56,7 @@ public class NewsletterController {
         return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, newsletterService.subscribe(sb));
     }
     
+    @Tag(name = "Newsletter")
     @PostMapping("newsletter/abonne/byEmail")
     public ResponseEntity<Object> subscribe(@RequestBody Subscriber sb) {
     	
@@ -66,6 +72,7 @@ public class NewsletterController {
     	}
     }
 
+    @Tag(name = "Newsletter")
     @PostMapping("newsletter/desabonne")
     public ResponseEntity<Object> unsubscribe(@RequestBody EmailDTO email) {
     	
@@ -74,6 +81,7 @@ public class NewsletterController {
         return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, Map.of("message", "Successfully unsubscribed"));
     }
 
+    @Tag(name = "Newsletter")
     @GetMapping("newsletter/test/abonne")
     public ResponseEntity<Object> testAbonne(@RequestBody EmailDTO email) {
         

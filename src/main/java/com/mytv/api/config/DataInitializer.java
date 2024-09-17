@@ -38,6 +38,7 @@ public class DataInitializer {
     
     @PostConstruct
     public void init() {
+    	
         // Précharger des données
     	
     	R2cloudSetting r2 = new R2cloudSetting ();

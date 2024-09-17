@@ -36,6 +36,9 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class ServiceFilm {
 
+	
+	@Autowired
+	AmazonS3ServiceImpl r2;
 
 	@Autowired
 	private FilmRepository rep;
@@ -685,7 +688,7 @@ public class ServiceFilm {
 		return rep.findById(id);
 
 	}
-	
+
 	
 	public Optional<Film> showById_front(Long id) {
 
@@ -699,7 +702,7 @@ public class ServiceFilm {
 
 		String nomFichier = objetId.substring(indexDernierSlash + 1);
 		
-		URL pre = AmazonS3ServiceImpl.generatePresignedUrl( nomFichier, 10);
+		URL pre = r2.generatePresignedUrl(nomFichier, 10);
 		
 		f.get().setVideoFile(pre.toString());
 		

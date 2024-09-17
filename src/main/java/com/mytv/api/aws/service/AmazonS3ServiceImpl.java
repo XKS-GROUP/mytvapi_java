@@ -36,7 +36,7 @@ import com.amazonaws.services.s3.model.S3Object;
 public class AmazonS3ServiceImpl implements AmazonS3Service {
 
     @Autowired
-    private static AmazonS3 amazonS3;
+    private AmazonS3 amazonS3;
 
 
     @Override
@@ -146,9 +146,9 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
     }
     
     @Value("${aws.s3.bucket.name}")
-    public static String bucketName;
+    public String bucketName;
     
-    public static URL generatePresignedUrl(String objectKey, int expirationInMinutes) throws SdkClientException {
+    public URL generatePresignedUrl(String objectKey, int expirationInMinutes) throws SdkClientException {
        
         Date expiration = new Date();
         long expTimeMillis = expiration.getTime();
