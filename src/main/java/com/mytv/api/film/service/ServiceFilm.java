@@ -682,6 +682,15 @@ public class ServiceFilm {
 
 		refresh();
 		
+		return rep.findById(id);
+
+	}
+	
+	
+	public Optional<Film> showById_front(Long id) {
+
+		refresh();
+		
 		Optional<Film> f = rep.findById(id);
 		
 		String objetId = f.get().getVideoFile();
@@ -698,6 +707,7 @@ public class ServiceFilm {
 		return rep.findById(id);
 
 	}
+	
 
 	public Film findByName(String name) {
 		refresh();

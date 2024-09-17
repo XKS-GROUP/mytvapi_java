@@ -1158,8 +1158,8 @@ public class FrontController {
 	@Tag(name = "Films")
 	@GetMapping("films/{id}")
 	public ResponseEntity<Object> showbyIdM(@PathVariable Long id){
-
-		return fnc.film_show_by_id(id);
+		
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, filmService.showById_front(id));
 	}
     
 	@Tag(name = "Films")
@@ -1398,7 +1398,8 @@ public class FrontController {
 	@GetMapping("episodes/{id}")
 	public ResponseEntity<Object> episode_show_by_id(@PathVariable Long id){
 
-		return fnc.showbyIdE(id);
+		return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK,
+				episodeService.showById_front(id));
 	}
 	
 	@Tag(name = "Episodes")

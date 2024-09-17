@@ -89,7 +89,7 @@ public class AlgoliaConfig {
 	
 	@Autowired
 	private PodcasterRepository rep_podcasteur;
-    
+	
     
     public SearchClient searchClient() {
     	return new SearchClient(applicationId, apiKey);
@@ -102,6 +102,8 @@ public class AlgoliaConfig {
      */
     @EventListener(ApplicationReadyEvent.class)
     public void onApplicationReady() {
+    	
+    	
     	
     	System.out.println(" initialisation des donné ...... je demmare une fois seulement");
     	

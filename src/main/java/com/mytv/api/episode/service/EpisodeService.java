@@ -582,7 +582,15 @@ public class EpisodeService {
 
 	}
 
-	public Optional<Episode> showById(final Long id) {
+	
+	public Optional<Episode> showById( Long id) {
+		
+		refresh();
+		return rep.findById(id);
+
+	}
+	
+	public Optional<Episode> showById_front( Long id) {
 		
 		refresh();
 		
