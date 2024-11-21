@@ -184,7 +184,7 @@ public class UserAccessController {
 		}
 		else if (userService.findByUserEmail(request.getEmail()) !=null) {
 
-			return EntityResponse.generateResponse("Cette adresse email "+request.getEmail()+"existe deja ", HttpStatus.CONFLICT, 
+			return EntityResponse.generateResponse("Cette adresse email "+request.getEmail()+" existe deja ", HttpStatus.CONFLICT, 
 					Map.of("email", " cette adresse email existe déja"));
 		}
 		else if (userService.findByUserPhone(request.getPhone()) !=null) {

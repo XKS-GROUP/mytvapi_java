@@ -8,12 +8,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mytv.api.dto.EmailDTO;
 import com.mytv.api.firebase.model.FirebaseUser;
 import com.mytv.api.newsletter.model.Subscriber;
 import com.mytv.api.newsletter.service.NewsletterService;
@@ -52,12 +52,25 @@ public class FrontControler {
     	
     	FirebaseUser u = (FirebaseUser) getCurrentUser().getPrincipal();
         
-    	Subscriber sb = new Subscriber();
     	
-    	sb.setUid(u.getUid());
-    	sb.setEmail(sb.getEmail());
     	
-        return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, newsletterService.subscribe(sb));
+    	if (newsletterService.dejainscrit(u.getEmail())) {
+    		
+    		return EntityResponse.generateResponse("ATTENTION ", HttpStatus.OK, Map.of("message", "cet utilisateur est déja inscrit"));
+    	}
+    	else {
+    		
+	    	Subscriber sb = new Subscriber();
+	    	
+	    	sb.setUid(u.getUid());
+	    	
+	    	sb.setEmail(u.getEmail());
+	    	
+	    	newsletterService.subscribe(sb);
+	    	
+            return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, Map.of("message", "vous etes abonné a la newsletter"));
+        
+    	}
     }
     
     @Tag(name = "Newsletter")
@@ -69,7 +82,6 @@ public class FrontControler {
     		return EntityResponse.generateResponse("ATTENTION ", HttpStatus.OK, Map.of("message", "cet utilisateur est déja inscrit"));
     	}
     	else {
-    		
     	
             return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, newsletterService.subscribe(sb));
         
@@ -78,18 +90,33 @@ public class FrontControler {
 
     @Tag(name = "Newsletter")
     @PostMapping("newsletter/unsubscript")
-    public ResponseEntity<Object> unsubscribe(@RequestBody EmailDTO email) {
+    public ResponseEntity<Object> unsubscribe(@PathVariable String email) {
     	
-        newsletterService.unsubscribe(email.getValue());
-        
-        return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, Map.of("message", "Successfully unsubscribed"));
+    	if (newsletterService.dejainscrit(email)) {
+    		
+    		
+    		return EntityResponse.generateResponse("ATTENTION ", HttpStatus.OK, 
+    				Map.of("message", "vous n ete pas encore inscrit"));
+    		
+    		
+    	}
+    	else {
+    		
+    		
+    		
+    		
+	        newsletterService.unsubscribe(email);
+	        return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, 
+	        		Map.of("message", "desaboné avec succès"));
+	        
+    	}
     }
 
     @Tag(name = "Newsletter")
-    @GetMapping("newsletter/test/abonne")
-    public ResponseEntity<Object> testAbonne(@RequestBody EmailDTO email) {
+    @GetMapping("newsletter/test/abonne/{email}")
+    public ResponseEntity<Object> testAbonne(@PathVariable String email) {
         
-    	if(!newsletterService.dejainscrit(email.getValue())) {
+    	if(!newsletterService.dejainscrit(email)) {
     		
     		return EntityResponse.generateResponse("ERREUR ", HttpStatus.BAD_REQUEST, Map.of("message", "utilisateur non inscrit"));
     	}

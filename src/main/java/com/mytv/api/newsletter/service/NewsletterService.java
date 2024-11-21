@@ -65,7 +65,6 @@ public class NewsletterService {
     
     public boolean dejainscrit(String email) {
     	
-    	
     	if(subscriberRepository.findByEmail(email).isPresent()) {
     		return true;
     	}
@@ -82,5 +81,11 @@ public class NewsletterService {
         for (Subscriber subscriber : subscribers) {
             emailService.sendNewsletter(subscriber.getEmail(), subject, content);
         }
+    }
+    
+    public void deleteAbonne(Long id) {
+    	
+    	subscriberRepository.deleteById(id);
+    	
     }
 }

@@ -275,6 +275,7 @@ public class SettingControlleur {
 	public ResponseEntity<Object> smtp_test(@RequestParam String email  ){
 
 		try {
+			
             notification.sendTestEmail(email);
             
             return EntityResponse.generateResponse("SUCCES ", HttpStatus.OK, Map.of("message", "envoyée avec succès à l adresse "+email));
