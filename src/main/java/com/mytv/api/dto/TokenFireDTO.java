@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 public class TokenFireDTO {
 
 	
-	@NotEmpty(message="un token es requi")
+	@NotEmpty(message="un token est requi")
 	String token;
 }

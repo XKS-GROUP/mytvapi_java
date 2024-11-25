@@ -61,9 +61,15 @@ public class WUserService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String email) {
 
-		User user = userRepository.findByEmail(email);
+		//User user = userRepository.findByEmail(email);
+		
+		
+		System.out.println("je suis connecté avec xy ");
+		User user = userRepository.findByEmailOrPhone(email, email);
 
-		//System.out.println("je l ai vu avec "+user.getEmail());
+		System.out.println("je suis connecté avec "+user.getEmail());
+		
+		System.out.println("mon numéro de phone est "+user.getPhone());
 		
 		if (user != null) {
 			List<UserRole> userRoles = userRoleRepository.findAllByUserId(user.getId());
@@ -94,6 +100,10 @@ public class WUserService implements UserDetailsService {
 		return userRepository.findByEmail(email);
 	}
 	
+	public User findByUserEmailOrPhone(String email) {
+
+		return userRepository.findByEmailOrPhone(email, email);
+	}
 	public User findByUserPhone(String email) {
 
 		return userRepository.findByPhone(email);

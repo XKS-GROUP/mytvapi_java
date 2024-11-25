@@ -112,7 +112,8 @@ public class UserAccessController {
 		
 		final String refreshToken = jwtTokenUtil.generateRefreshToken(userDetails);
 
-		User usr = userService.findByUserEmail(authenticationRequest.getUsername());
+		//Charge par email ou phone
+		User usr = userService.findByUserEmailOrPhone(authenticationRequest.getUsername());
 
 		
 		if(usr.isValide()) {

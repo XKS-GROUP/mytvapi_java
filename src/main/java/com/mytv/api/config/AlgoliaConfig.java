@@ -99,6 +99,7 @@ public class AlgoliaConfig {
     /*
      * cette fontion s execute qu une seule fois au debut pour charger les donnes valide sur algolia
      * 
+     * 
      */
     @EventListener(ApplicationReadyEvent.class)
     public void onApplicationReady() {
