@@ -102,7 +102,7 @@ public class UserAccessController {
 			
 		} catch (Exception e) {
 			return EntityResponse.generateResponse("Authentication", HttpStatus.UNAUTHORIZED,
-					Map.of("message","Info non valide, le nom d utilsateur ou le mot de passe est incorrecte"));
+					Map.of("message","Infos non valide,  le nom d utilsateur ou le mot de passe est incorrecte"));
 		}
 
 		final UserDetails userDetails = userService.loadUserByUsername(authenticationRequest.getUsername());
