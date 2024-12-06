@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mytv.api.dto.EmailDTO;
 import com.mytv.api.dto.OtpConfirmDTO;
+import com.mytv.api.firebase.model.FirebaseUser;
 import com.mytv.api.firebase.model.Otp;
+import com.mytv.api.firebase.service.FirebaseUserService;
 import com.mytv.api.firebase.service.OtpService;
 import com.mytv.api.security.request.EntityResponse;
 import com.mytv.api.util.service.NotificationService;
@@ -31,6 +33,28 @@ public class FirebaseController {
 	
 	@Autowired
 	NotificationService notification;
+	
+	@Autowired
+	FirebaseUserService fbuser_service;
+	
+	
+	@PostMapping("firebase/user/create")
+    public ResponseEntity<Object> user_create(@Valid @RequestBody FirebaseUser user) {
+		
+		if(fbuser_service.findbyUid(user.getUid()) == null ) {
+			
+			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK,
+					fbuser_service.create(user));
+			
+		}else {
+		  
+			return EntityResponse.generateResponse("SUCCES", HttpStatus.OK,
+					Map.of("message", " utilisateur a été mis a jour "));
+		
+		}
+		
+	}
+	
 	
 	@PostMapping("otp/send/")
     public ResponseEntity<Object> otp_send(@Valid @RequestBody EmailDTO email) {

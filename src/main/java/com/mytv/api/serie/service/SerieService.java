@@ -378,13 +378,10 @@ public class SerieService {
 		
 		if(n==null || n.isEmpty() || n.isBlank()) {
 				
-				PageImpl<Serie> res = new PageImpl<Serie>(rep.findAll(p).stream()
-						   .toList() 
-						   , p
-						   , rep.findAll().stream()
-						   .toList().size());
+			System.out.println("c est a cause de la valeur du n ");
+			
+				return filtre_complet(genre, langue, p);
 				
-				return res;
 		}
 		if(genre != null && langue !=null) {
 			 PageImpl<Serie> res = new PageImpl<Serie>(rep.findByNameContainingOrOverviewContaining(n, n).stream()
@@ -441,15 +438,8 @@ public class SerieService {
 		
 		if(n==null || n.isEmpty() || n.isBlank()) {
 				
-				PageImpl<Serie> res = new PageImpl<Serie>(rep.findAll(p).stream()
-						.filter(f ->f.isStatus())
-						   .toList() 
-						   , p
-						   , rep.findAll().stream()
-						   .filter(f ->f.isStatus())
-						   .toList().size());
+			return filtre_complet_front(genre, langue, p);
 				
-				return res;
 		}
 		if(genre != null && langue !=null) {
 			 PageImpl<Serie> res = new PageImpl<Serie>(rep.findByNameContainingOrOverviewContaining(n, n).stream()
@@ -515,8 +505,6 @@ public class SerieService {
 		}
 		
 	}
-	
-
 	
 	
 	public Serie update(Long id, Serie g) {
