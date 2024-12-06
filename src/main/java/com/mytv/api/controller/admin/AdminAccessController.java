@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mytv.api.config.UserSessionTracker;
 import com.mytv.api.dto.PasswordDTO;
 import com.mytv.api.dto.UserDTO;
+import com.mytv.api.firebase.service.FirebaseUserService;
 import com.mytv.api.security.request.EntityResponse;
 import com.mytv.api.security.request.UserRegisterRequestDTO;
 import com.mytv.api.subscription.model.SubscriptionType;
@@ -62,6 +63,9 @@ public class AdminAccessController {
 	
 	@Autowired
 	PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	FirebaseUserService firebase_user_service;
 
 
 	//Gestion du profil admin
@@ -69,7 +73,8 @@ public class AdminAccessController {
 	@Tag(name = "ADMIN Profil")
 	@GetMapping("profil/info")
 	public ResponseEntity<Object> retrieveUserProfile(){
-		return EntityResponse.generateResponse("Admin Profil Info : "+userService.findCurrentUser().getUsername(), HttpStatus.OK, userService.findCurrentUser());
+		return EntityResponse.generateResponse("Admin Profil Info : "+userService.findCurrentUser().getUsername(),
+				HttpStatus.OK, userService.findCurrentUser());
 	}
 
 	
@@ -221,7 +226,7 @@ public class AdminAccessController {
 	}
 
 
-	//Supp by id
+	//Supp profile by id
 	@Tag(name = "User")
 	@DeleteMapping("users/delete/{id}")
 	public ResponseEntity<Object> deleteProfileById(@PathVariable Long id){
@@ -240,22 +245,29 @@ public class AdminAccessController {
 	
 	@Tag(name = "User")
 	@GetMapping("users/{idUser}")
-	public ResponseEntity<Object> getAllUserById(@PathVariable Long idUser){
-		return EntityResponse.generateResponse("Liste de tous les utilisateurs", HttpStatus.OK,
+	public ResponseEntity<Object> get_user_info_by_id(@PathVariable Long idUser){
+		return EntityResponse.generateResponse("Info user", HttpStatus.OK,
 				userService.findById(idUser));
 	}
 
 	@Tag(name = "User")
 	@GetMapping("users/all/")
-	public ResponseEntity<Object> getAllPaging (Pageable p){
+	public ResponseEntity<Object> get_all_user_admin (Pageable p){
 		return EntityResponse.generateResponse("Liste de tous les utilisateurs", HttpStatus.OK,
 				userService.retrieveAllUserListPages(p));
+	}
+	
+	@Tag(name = "User")
+	@GetMapping("users/all/firebase")
+	public ResponseEntity<Object> get_all_firebase_user (Pageable p){
+		return EntityResponse.generateResponse("Liste de tous les utilisateurs", HttpStatus.OK,
+				firebase_user_service.show_all(p));
 	}
 
 
 	@Tag(name = "User")
 	@PutMapping("users/update/{idUser}")
-	public ResponseEntity<Object> userUpdate(@PathVariable Long idUser,@Valid @RequestBody UserDTO u){
+	public ResponseEntity<Object> user_admin_update(@PathVariable Long idUser,@Valid @RequestBody UserDTO u){
 		
 		//String old_mail = userService.findCurrentUser().getEmail().toLowerCase();
 		
@@ -276,7 +288,7 @@ public class AdminAccessController {
 	//List des utilisateur non valide
 	@Tag(name = "User")
 	@GetMapping("users/notValide")
-	public ResponseEntity<Object> getAllUserValideList(){
+	public ResponseEntity<Object> get_all_user_non_valide_list(){
 		return EntityResponse.generateResponse("Liste de tous les utilisateur avec un compte non valide", HttpStatus.OK,
 				userService.AllUserNotValide());
 	}
@@ -284,7 +296,7 @@ public class AdminAccessController {
 	//List des utilisateur valide
 	@Tag(name = "User")
 	@GetMapping("users/valide")
-	public ResponseEntity<Object> getAllUserNotValideList(){
+	public ResponseEntity<Object> get_all_user_valide_list(){
 		return EntityResponse.generateResponse("Liste de tous les utilisateur avec un compte valide", HttpStatus.OK,
 				userService.AllUserValide());
 	}

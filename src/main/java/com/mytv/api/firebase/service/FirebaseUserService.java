@@ -1,6 +1,8 @@
 package com.mytv.api.firebase.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.mytv.api.firebase.model.FirebaseUser;
@@ -31,6 +33,11 @@ public class FirebaseUserService {
 		
 		rep.deleteById(uid);
 	}
+	
+	public Page<FirebaseUser> show_all(Pageable p){
+		
+		return rep.findAll(p);
+	};
 	
 	public FirebaseUser findbyUid(String uid) {
 		
